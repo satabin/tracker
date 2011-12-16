@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Environment Variables</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker SPARQL Library Reference Manual">
 <link rel="up" href="tracker-overview.html" title="Part I. Overview">
 <link rel="prev" href="tracker-overview-compiling.html" title="Compiling applications">
@@ -29,6 +29,14 @@
 
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<span class="emphasis"><em>TRACKER_USE_CONFIG_FILES</em></span><p>
+	    Don't use GSettings, instead use a config file similar to
+	    how settings were saved in 0.10.x. That is, a file which
+	    is much like an .ini file. These are saved to
+	    $HOME/.config/tracker/
+	  </p>
+</li>
 <li class="listitem">
 <span class="emphasis"><em>TRACKER_SPARQL_BACKEND</em></span><p>
 	    Backends for libtracker-sparql are dynamically loaded at

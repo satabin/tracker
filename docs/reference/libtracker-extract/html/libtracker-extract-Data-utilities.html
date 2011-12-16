@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Data utilities</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Extract Library Reference Manual">
 <link rel="up" href="ch02.html" title="Core API">
 <link rel="prev" href="libtracker-extract-TrackerExtractInfo.html" title="TrackerExtractInfo">
@@ -92,7 +92,7 @@ the in-house extractors quite frequently.
 </div>
 <p>
 This function iterates through a series of string pointers passed
-using <em class="parameter"><code>Varargs</code></em> and returns the first which is not <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, not empty
+using @... and returns the first which is not <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, not empty
 (i.e. "") and not comprised of one or more spaces (i.e. " ").
 </p>
 <p>
@@ -106,6 +106,10 @@ string pointers to this function!
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n_values</code></em> :</span></p></td>
 <td>the number of <em class="parameter"><code>Varargs</code></em> supplied</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>the string pointers to coalesce</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -123,7 +127,7 @@ matches, otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-St
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 This function iterates through a series of string pointers passed
-using <em class="parameter"><code>Varargs</code></em> and returns the first which is not <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, not empty
+using @... and returns the first which is not <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, not empty
 (i.e. "") and not comprised of one or more spaces (i.e. " ").
 </p>
 <p>
@@ -135,7 +139,11 @@ important NOT to pass constant string pointers to this function!
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n_values</code></em> :</span></p></td>
-<td>the number of <em class="parameter"><code>Varargs</code></em> supplied</td>
+<td>the number of @... supplied</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>the string pointers to coalesce</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -158,7 +166,7 @@ matches, otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-St
 </div>
 <p>
 This function iterates through a series of string pointers passed
-using <em class="parameter"><code>Varargs</code></em> and returns a newly allocated string of the merged
+using @... and returns a newly allocated string of the merged
 strings. All passed strings are freed (don't pass const values)/
 </p>
 <p>
@@ -174,7 +182,11 @@ between each merged string in the result.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n_values</code></em> :</span></p></td>
-<td>the number of <em class="parameter"><code>Varargs</code></em> supplied</td>
+<td>the number of @... supplied</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>the string pointers to merge</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -193,7 +205,7 @@ be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 This function iterates through a series of string pointers passed
-using <em class="parameter"><code>Varargs</code></em> and returns a newly allocated string of the merged
+using @... and returns a newly allocated string of the merged
 strings.
 </p>
 <p>
@@ -209,7 +221,11 @@ between each merged string in the result.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n_values</code></em> :</span></p></td>
-<td>the number of <em class="parameter"><code>Varargs</code></em> supplied</td>
+<td>the number of @... supplied</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>the string pointers to merge</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>

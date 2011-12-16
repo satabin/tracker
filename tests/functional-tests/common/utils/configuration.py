@@ -61,7 +61,7 @@ def expandvars (variable):
 
 
 
-PREFIX = "/usr"
+PREFIX = "/usr/local"
 #
 # This raw variables are set by autotools without translating vars:
 #   E.G. bindir='${exec_prefix}/bin
@@ -78,8 +78,8 @@ EXEC_PREFIX = os.path.normpath (expandvars (RAW_EXEC_DIR))
 DATADIR = os.path.normpath (expandvars (RAW_DATA_DIR))
 BINDIR = os.path.normpath (expandvars (RAW_BINDIR))
                             
-haveMaemo = ("#" == "")
-haveUpstart = ("#" == "")
+haveMaemo = ("" == "")
+haveUpstart = ("" == "")
 disableJournal = ("#" == "")
 
 TEST_TMP_DIR = os.path.join (os.environ["HOME"], "tracker-tests")

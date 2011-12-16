@@ -1,3 +1,163 @@
+2011-12-16  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.12.9
+
+2011-12-16  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-writeback: use g_thread_try_new() if GLib >= 2.31
+	Since 2.31, g_thread_create() is deprecated.
+
+	tracker-writeback: Use g_(mutex|cond)_(init|clear) if GLib >= 2.31
+	Since 2.31, g_mutex_new(), g_mutex_free(), g_cond_new(), g_cond_free() are
+	deprecated.
+
+	libtracker-miner: add TRACKER prefix to MAX_TIMEOUT_INTERVAL
+
+	libtracker-miner: use GPrivate if GLib >= 2.31
+	Since 2.31, GStaticPrivate is deprecated.
+
+	libtracker-data: properly print gint64 value
+
+	libtracker-data: use GMutex if GLib >= 2.31
+	Since 2.31, GStaticMutex is deprecated.
+
+	libtracker-data: use GPrivate if GLib >= 2.31
+	Since 2.31, GStaticPrivate is deprecated.
+
+	libtracker-data: use g_atomic_int_add() if GLib >= 2.30
+	Since 2.30, g_atomic_int_add() returns a gint and is fully equivalent to
+	g_atomic_int_exchange_and_add().
+
+	libtracker-common: use GRecMutex if GLib >= 2.31
+	Since 2.31, GStaticRecMutex is deprecated.
+
+	tracker-extract: use g_thread_try_new() if GLib >= 2.31
+	Since 2.31, g_thread_create() is deprecated.
+
+	tracker-extract: Use g_(mutex|cond)_(init|clear) if GLib >= 2.31
+	Since 2.31, g_mutex_new(), g_mutex_free(), g_cond_new(), g_cond_free() are
+	deprecated.
+
+	libtracker-common: Use g_mutex_(init|clear) if GLib >= 2.31
+	Since 2.31, g_mutex_new() and g_mutex_free() are deprecated.
+
+	libtracker-common: use g_format_size() if GLib >= 2.30
+	Since 2.30, g_format_size_for_display() is deprecated due to wrongly using
+	SI suffixes to denote IEC units.
+
+2011-12-16  Alexandre Franke  <alexandre.franke@gmail.com>
+
+	Fix typo in French translation
+
+	Update French translation
+	miner → collecteur
+	extractor → extracteur
+
+2011-12-16  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: ignore next update is deprecated
+	Fix deprecation comment and include the method between guards.
+
+	Conflicts:
+
+		src/libtracker-miner/tracker-miner-manager.c
+
+2011-12-16  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-sparql: Fix the documentation in preparation for 0.13.x release
+
+	libtracker-extract: Fix the documentation in preparation for 0.13.x release
+	Conflicts:
+
+		src/libtracker-extract/tracker-guarantee.c
+
+	build: Clean up more compiler warnings
+
+2011-12-16  Aleksander Morgado  <aleksander@lanedo.com>
+
+	build: ignore built files in git
+	Conflicts:
+
+		tests/libtracker-miner/.gitignore
+
+2011-12-16  Jürg Billeter  <j@bitron.ch>
+
+	Remove remaining g_thread_init calls
+	Calling g_thread_init with GLib 2.31 requires explicit dependency on
+	gthread-2.0. However, g_type_init initializes threads since GLib 2.24,
+	so it is no longer needed.
+
+	Conflicts:
+
+		tests/libtracker-miner/tracker-file-system-test.c
+		tests/libtracker-miner/tracker-indexing-tree-test.c
+
+2011-12-16  Martyn Russell  <martyn@lanedo.com>
+
+	build: Fixed various compiler warnings across the entire code base
+
+2011-12-16  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-extract,text: try to extract text from files in typical windows charsets
+	If the input file is not valid UTF-8, we now try:
+	 * UTF-16, if NUL bytes are found in the string (windows-1252 and locale
+	   encodings are not expected to have NUL bytes within the string).
+	 * If locale encoding is not UTF-8, try with the locale encoding.
+	 * If locale encoding didn't help, try with windows-1252.
+
+	Fixes GB#655383.
+
+2011-12-16  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-common: Document the TRACKER_USE_CONFIG_FILES env var
+	For tracker-extract, tracker-miner-fs, tracker-store and in the reference for
+	env vars.
+
+2011-12-16  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-common: if testing old .cfg files, ensure one is always available
+	Create the .cfg file when we detect that it doesn't exist.
+
+2011-12-16  Carlos Garnacho  <carlos@lanedo.com>
+
+	libtracker-common: Add a way to test things with old .cfg files
+	The TRACKER_USE_CONFIG_FILES envvar now triggers a mode where .cfg
+	files are dumped into GSettings, but not deleted. The changes done
+	to GSettings are also dumped to the .cfg file after any
+	g_settings_apply() call with unapplied data.
+
+2011-12-16  Jürg Billeter  <j@bitron.ch>
+
+	tracker-store: Fix memory leak in Steroids.update
+	This is caused by a bug in valac.
+
+	libtracker-common: Fix memory leak in tracker_string_to_date
+	Fixes NB#294705.
+
+	libtracker-data: Fix small memory leak
+
+	gvdb: Merge upstream changes
+	This fixes some memory leaks.
+
+2011-12-16  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-extract: Don't lock on freed mutexes
+	report_statistics() was locking on a mutex that was already freed,
+	so actually free it after this last use.
+
+2011-12-16  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Fix crash due to overflow in journal reader
+	Fixes GB#664833.
+
+2011-11-30  Takeshi AIHANA  <takeshi.aihana@gmail.com>
+
+	Updated Japanese translation.
+
+2011-11-25  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
 2011-11-25  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.12.8

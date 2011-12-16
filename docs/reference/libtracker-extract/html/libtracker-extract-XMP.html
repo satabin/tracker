@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>XMP</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Extract Library Reference Manual">
 <link rel="up" href="ch03.html" title="Common Embedded Support API">
 <link rel="prev" href="ch03.html" title="Common Embedded Support API">
@@ -45,6 +45,7 @@ Stable, unless otherwise indicated
 #include &lt;libtracker-extract/tracker-extract.h&gt;
 
                     <a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData">TrackerXmpData</a>;
+                    <a class="link" href="libtracker-extract-XMP.html#TrackerXmpRegion" title="TrackerXmpRegion">TrackerXmpRegion</a>;
 <a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="returnvalue">TrackerXmpData</span></a> *    <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-new" title="tracker_xmp_new ()">tracker_xmp_new</a>                     (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> len</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);
@@ -53,11 +54,15 @@ Stable, unless otherwise indicated
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-apply" title="tracker_xmp_apply ()">tracker_xmp_apply</a>                   (<em class="parameter"><code><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *preupdate</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *metadata</code></em>,
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-apply" title="tracker_xmp_apply ()">tracker_xmp_apply</a>                   (<em class="parameter"><code><span class="type">TrackerSparqlBuilder</span> *preupdate</code></em>,
+                                                         <em class="parameter"><code><span class="type">TrackerSparqlBuilder</span> *metadata</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Strings.html#GString"><span class="type">GString</span></a> *where</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-apply-regions" title="tracker_xmp_apply_regions ()">tracker_xmp_apply_regions</a>           (<em class="parameter"><code><span class="type">TrackerSparqlBuilder</span> *preupdate</code></em>,
+                                                         <em class="parameter"><code><span class="type">TrackerSparqlBuilder</span> *metadata</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);
 </pre>
 </div>
@@ -150,6 +155,24 @@ using these standards.
 	/* List of TrackerXmpRegion */
         GSList *regions;
 } TrackerXmpData;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="TrackerXmpRegion"></a><h3>TrackerXmpRegion</h3>
+<pre class="programlisting">typedef struct {
+        gchar *title;
+        gchar *description;
+        gchar *type;
+        gchar *x;
+        gchar *y;
+        gchar *width;
+        gchar *height;
+        gchar *link_class;
+        gchar *link_uri;
+} TrackerXmpRegion;
 </pre>
 <p>
 </p>
@@ -253,8 +276,8 @@ data found in <em class="parameter"><code>uri</code></em>.
 <hr>
 <div class="refsect2">
 <a name="tracker-xmp-apply"></a><h3>tracker_xmp_apply ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_xmp_apply                   (<em class="parameter"><code><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *preupdate</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *metadata</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_xmp_apply                   (<em class="parameter"><code><span class="type">TrackerSparqlBuilder</span> *preupdate</code></em>,
+                                                         <em class="parameter"><code><span class="type">TrackerSparqlBuilder</span> *metadata</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Strings.html#GString"><span class="type">GString</span></a> *where</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
@@ -266,7 +289,7 @@ This function applies all data in <em class="parameter"><code>data</code></em> t
 The <em class="parameter"><code>graph</code></em> parameter was added in 0.12.
 </p>
 <p>
-This function also calls <code class="function">tracker_xmp_apply_regions()</code>, so there is
+This function also calls <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-apply-regions" title="tracker_xmp_apply_regions ()"><code class="function">tracker_xmp_apply_regions()</code></a>, so there is
 no need to call both functions.
 </p>
 <div class="variablelist"><table border="0">
@@ -305,6 +328,55 @@ otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Ma
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-xmp-apply-regions"></a><h3>tracker_xmp_apply_regions ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_xmp_apply_regions           (<em class="parameter"><code><span class="type">TrackerSparqlBuilder</span> *preupdate</code></em>,
+                                                         <em class="parameter"><code><span class="type">TrackerSparqlBuilder</span> *metadata</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);</pre>
+<p>
+This function applies all regional <em class="parameter"><code>data</code></em> to <em class="parameter"><code>preupdate</code></em> and
+<em class="parameter"><code>metadata</code></em>. Regional data exists for image formats like JPEG, PNG,
+etc. where parts of the image refer to areas of interest. This can
+be people's faces, places to focus, barcodes, etc. The regional
+data describes the title, height, width, X, Y and can occur
+multiple times in a given file.
+</p>
+<p>
+This data usually is standardized between image formats and that's
+what makes this function different to <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-apply" title="tracker_xmp_apply ()"><code class="function">tracker_xmp_apply()</code></a> which is
+useful for XMP files only.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>preupdate</code></em> :</span></p></td>
+<td>the preupdate object to apply XMP data to.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>metadata</code></em> :</span></p></td>
+<td>the metadata object to apply XMP data to.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>graph</code></em> :</span></p></td>
+<td>the graph to apply XMP data to.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>the data to push into <em class="parameter"><code>preupdate</code></em> and <em class="parameter"><code>metadata</code></em>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>data</code></em> was applied to <em class="parameter"><code>preupdate</code></em> and <em class="parameter"><code>metadata</code></em>
+successfully, otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> is returned.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.12</p>
 </div>
 </div>
 </div>

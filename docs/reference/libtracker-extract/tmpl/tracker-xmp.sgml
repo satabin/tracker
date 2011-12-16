@@ -72,6 +72,21 @@ tracker-xmp
 @gps_direction: 
 @regions: 
 
+<!-- ##### STRUCT TrackerXmpRegion ##### -->
+<para>
+
+</para>
+
+@title: 
+@description: 
+@type: 
+@x: 
+@y: 
+@width: 
+@height: 
+@link_class: 
+@link_uri: 
+
 <!-- ##### FUNCTION tracker_xmp_new ##### -->
 <para>
 
@@ -113,6 +128,18 @@ tracker-xmp
 @graph: 
 @where: 
 @uri: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_xmp_apply_regions ##### -->
+<para>
+
+</para>
+
+@preupdate: 
+@metadata: 
+@graph: 
 @data: 
 @Returns: 
 

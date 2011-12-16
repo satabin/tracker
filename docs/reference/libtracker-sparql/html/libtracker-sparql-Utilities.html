@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Utilities</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker SPARQL Library Reference Manual">
 <link rel="up" href="libtracker-sparql-reference.html" title="Part II. Reference">
 <link rel="prev" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor">
@@ -112,7 +112,7 @@ The returned string should be freed with <a href="http://library.gnome.org/devel
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_sparql_escape_uri_printf    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
-Calls <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-vprintf" title="tracker_sparql_escape_uri_vprintf ()"><code class="function">tracker_sparql_escape_uri_vprintf()</code></a> with the <em class="parameter"><code>Varargs</code></em> supplied.
+Calls <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-vprintf" title="tracker_sparql_escape_uri_vprintf ()"><code class="function">tracker_sparql_escape_uri_vprintf()</code></a> with the @... supplied.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -122,6 +122,10 @@ Calls <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-esca
 <td>a standard <code class="function">printf()</code> format string, but notice
 string precision pitfalls documented in <a href="http://library.gnome.org/devel/glib/unstable/glib-String-Utility-Functions.html#g-strdup-printf"><code class="function">g_strdup_printf()</code></a>
 </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>the parameters to insert into the format string</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>

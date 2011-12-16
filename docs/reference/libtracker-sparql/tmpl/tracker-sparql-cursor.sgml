@@ -131,6 +131,14 @@ TrackerSparqlCursor
 @Returns: 
 
 
+<!-- ##### FUNCTION tracker_sparql_cursor_close ##### -->
+<para>
+
+</para>
+
+@self: 
+
+
 <!-- ##### FUNCTION tracker_sparql_cursor_is_bound ##### -->
 <para>
 

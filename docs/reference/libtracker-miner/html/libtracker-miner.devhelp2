@@ -121,7 +121,7 @@
     <keyword type="function" name="tracker_miner_manager_get_display_name ()" link="TrackerMinerManager.html#tracker-miner-manager-get-display-name" since="0.8"/>
     <keyword type="function" name="tracker_miner_manager_get_description ()" link="TrackerMinerManager.html#tracker-miner-manager-get-description" since="0.8"/>
     <keyword type="function" name="tracker_miner_manager_index_file ()" link="TrackerMinerManager.html#tracker-miner-manager-index-file" since="0.10"/>
-    <keyword type="function" name="tracker_miner_manager_ignore_next_update ()" link="TrackerMinerManager.html#tracker-miner-manager-ignore-next-update" since="0.8"/>
+    <keyword type="function" name="tracker_miner_manager_ignore_next_update ()" link="TrackerMinerManager.html#tracker-miner-manager-ignore-next-update" deprecated="0.12" since="0.8"/>
     <keyword type="function" name="tracker_miner_manager_reindex_by_mimetype ()" link="TrackerMinerManager.html#tracker-miner-manager-reindex-by-mimetype" since="0.10"/>
     <keyword type="property" name="The &quot;auto-start&quot; property" link="TrackerMinerManager.html#TrackerMinerManager--auto-start"/>
     <keyword type="signal" name="The &quot;miner-activated&quot; signal" link="TrackerMinerManager.html#TrackerMinerManager-miner-activated"/>

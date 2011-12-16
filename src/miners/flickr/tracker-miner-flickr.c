@@ -6648,12 +6648,10 @@ gint tracker_miner_flickr_main (gchar** args, int args_length1) {
 
 int main (int argc, char ** argv) {
 #line 950 "/home/martyn/Source/tracker/src/miners/flickr/tracker-miner-flickr.vala"
-	g_thread_init (NULL);
-#line 950 "/home/martyn/Source/tracker/src/miners/flickr/tracker-miner-flickr.vala"
 	g_type_init ();
 #line 950 "/home/martyn/Source/tracker/src/miners/flickr/tracker-miner-flickr.vala"
 	return tracker_miner_flickr_main (argv, argc);
-#line 6651 "tracker-miner-flickr.c"
+#line 6649 "tracker-miner-flickr.c"
 }
 
 
@@ -6663,14 +6661,14 @@ TrackerMinerFlickr* tracker_miner_flickr_construct (GType object_type) {
 	self = (TrackerMinerFlickr*) g_object_new (object_type, NULL);
 #line 35 "/home/martyn/Source/tracker/src/miners/flickr/tracker-miner-flickr.vala"
 	return self;
-#line 6661 "tracker-miner-flickr.c"
+#line 6659 "tracker-miner-flickr.c"
 }
 
 
 TrackerMinerFlickr* tracker_miner_flickr_new (void) {
 #line 35 "/home/martyn/Source/tracker/src/miners/flickr/tracker-miner-flickr.vala"
 	return tracker_miner_flickr_construct (TRACKER_TYPE_MINER_FLICKR);
-#line 6668 "tracker-miner-flickr.c"
+#line 6666 "tracker-miner-flickr.c"
 }
 
 
@@ -6701,7 +6699,7 @@ static GObject * tracker_miner_flickr_constructor (GType type, guint n_construct
 	self->priv->rest = _tmp0_;
 #line 91 "/home/martyn/Source/tracker/src/miners/flickr/tracker-miner-flickr.vala"
 	return obj;
-#line 6699 "tracker-miner-flickr.c"
+#line 6697 "tracker-miner-flickr.c"
 }
 
 
@@ -6722,7 +6720,7 @@ static void tracker_miner_flickr_class_init (TrackerMinerFlickrClass * klass) {
 	G_OBJECT_CLASS (klass)->constructor = tracker_miner_flickr_constructor;
 #line 35 "/home/martyn/Source/tracker/src/miners/flickr/tracker-miner-flickr.vala"
 	G_OBJECT_CLASS (klass)->finalize = tracker_miner_flickr_finalize;
-#line 6720 "tracker-miner-flickr.c"
+#line 6718 "tracker-miner-flickr.c"
 }
 
 
@@ -6731,14 +6729,14 @@ static void tracker_miner_flickr_g_initable_interface_init (GInitableIface * ifa
 	tracker_miner_flickr_g_initable_parent_iface = g_type_interface_peek_parent (iface);
 #line 35 "/home/martyn/Source/tracker/src/miners/flickr/tracker-miner-flickr.vala"
 	iface->init = (gboolean (*)(GInitable*, GCancellable*, GError**)) tracker_miner_flickr_real_init;
-#line 6729 "tracker-miner-flickr.c"
+#line 6727 "tracker-miner-flickr.c"
 }
 
 
 static void tracker_miner_flickr_instance_init (TrackerMinerFlickr * self) {
 #line 35 "/home/martyn/Source/tracker/src/miners/flickr/tracker-miner-flickr.vala"
 	self->priv = TRACKER_MINER_FLICKR_GET_PRIVATE (self);
-#line 6736 "tracker-miner-flickr.c"
+#line 6734 "tracker-miner-flickr.c"
 }
 
 
@@ -6756,7 +6754,7 @@ static void tracker_miner_flickr_finalize (GObject* obj) {
 	_g_free0 (self->priv->user_id);
 #line 35 "/home/martyn/Source/tracker/src/miners/flickr/tracker-miner-flickr.vala"
 	G_OBJECT_CLASS (tracker_miner_flickr_parent_class)->finalize (obj);
-#line 6754 "tracker-miner-flickr.c"
+#line 6752 "tracker-miner-flickr.c"
 }
 
 

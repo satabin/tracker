@@ -1,0 +1,246 @@
+
+<aegis>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/01-insertion.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/02-sparql-bugs.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/03-fts-functions.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/04-group-concat.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/05-coalesce.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/06-distance.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/07-graph.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/08-unique-insertions.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/09-concurrent-query.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/14-signals.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/15-statistics.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/16-collation.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/17-ontology-changes.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/200-backup-restore.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/300-miner-basic-ops.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/301-miner-resource-removal.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/310-fts-indexing.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/400-extractor.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/500-writeback.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/501-writeback-details.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/600-applications-camera.py" />
+   </request>
+
+   <request>
+      <credential name="TrackerReadAccess" />
+      <credential name="TrackerWriteAccess" />
+      <credential name="tracker::tracker-extract-access" />
+      <credential name="tracker::tracker-miner-fs-access" />
+      <credential name="GRP::metadata-users" />
+      <credential name="UID::user" />
+      <credential name="GID::users" />
+      <for path="/usr/local/share/tracker-tests/601-applications-sync.py" />
+   </request>
+
+</aegis>

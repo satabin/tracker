@@ -1,0 +1,552 @@
+
+<testdefinition version="0.1">
+  <suite name="tracker">
+    <description>Functional tests for the brilliant tracker</description> 
+
+    <set name="01-insertion">
+        <description>Stand-alone tests cases for the store, inserting, removing information
+in pure sparql and checking that the data is really there</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="TrackerStoreBatchUpdateTest">
+            <description>Insert data using the BatchSparqlUpdate method in the store</description>
+            <step>/usr/local/share/tracker-tests/01-insertion.py TrackerStoreBatchUpdateTest</step>
+        </case>
+        <case name="TrackerStoreDeleteTests">
+            <description>Use DELETE in Sparql and check the information is actually removed</description>
+            <step>/usr/local/share/tracker-tests/01-insertion.py TrackerStoreDeleteTests</step>
+        </case>
+        <case name="TrackerStoreInsertionTests">
+            <description>Insert single and multiple-valued properties, dates (ok and broken)
+        and check the results</description>
+            <step>/usr/local/share/tracker-tests/01-insertion.py TrackerStoreInsertionTests</step>
+        </case>
+        <case name="TrackerStorePhoneNumberTest">
+            <description>Tests around phone numbers (maemo specific). Inserting correct/incorrect ones
+        and running query to get the contact from the number.</description>
+            <step>/usr/local/share/tracker-tests/01-insertion.py TrackerStorePhoneNumberTest</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="02-sparql-bugs">
+        <description>Peculiar Sparql behavour reported in bugs</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="TrackerStoreSparqlBugsTests">
+            <description>FIXME description here</description>
+            <step>/usr/local/share/tracker-tests/02-sparql-bugs.py TrackerStoreSparqlBugsTests</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="03-fts-functions">
+        <description>These tests use only the store. They insert instances with known text
+and run sparql with fts functions to check the results.</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="TestFTSFunctions">
+            <description>Insert data with text and check the fts:xxxx functions are returning the expected results</description>
+            <step>/usr/local/share/tracker-tests/03-fts-functions.py TestFTSFunctions</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="04-group-concat">
+        <description>Test the GROUP_CONCAT function in Sparql. Only requires the store.</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="TestGroupConcat">
+            <description>Insert a multivalued property and request the results in GROUP_CONCAT</description>
+            <step>/usr/local/share/tracker-tests/04-group-concat.py TestGroupConcat</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="05-coalesce">
+        <description>Test tracker:coalesce function in Sparql. Only uses the Store</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="TestCoalesce">
+            <description>Insert and instance with some values, and tracker coalesce of some of them
+    with different combinations (first NULL, none NULL, all NULL...)</description>
+            <step>/usr/local/share/tracker-tests/05-coalesce.py TestCoalesce</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="06-distance">
+        <description>Test the distance-calculation functions in Sparql. Only requires the Store</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="TestDistanceFunctions">
+            <description>Insert some points and get the distance between them.</description>
+            <step>/usr/local/share/tracker-tests/06-distance.py TestDistanceFunctions</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="07-graph">
+        <description>Tests graphs in Sparql. Only requires the store.</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="TestGraphs">
+            <description>Insert triplets in different graphs and check the query results asking in
+    one specific graph, in all of them and so on.</description>
+            <step>/usr/local/share/tracker-tests/07-graph.py TestGraphs</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="08-unique-insertions">
+        <description>Replicate the behaviour of the miner inserting information in the store.</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="TestMinerInsertBehaviour">
+            <description>Mimic the behaviour of the miner, removing the previous information of the resource
+    and inserting a new one.</description>
+            <step>/usr/local/share/tracker-tests/08-unique-insertions.py TestMinerInsertBehaviour</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="09-concurrent-query">
+        <description>Send concurrent inserts and queries to the daemon to check the concurrency.</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="TestConcurrentQuery">
+            <description>Send a bunch of queries to the daemon asynchronously, to test the queue
+    holding those queries</description>
+            <step>/usr/local/share/tracker-tests/09-concurrent-query.py TestConcurrentQuery</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="14-signals">
+        <description>Test that after insertion/remove/updates in the store, the signals
+are emitted. Theses tests are not extensive (only few selected signals
+are tested)</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="TrackerStoreSignalsTests">
+            <description>Insert/update/remove instances from nco:PersonContact
+    and check that the signals are emitted</description>
+            <step>/usr/local/share/tracker-tests/14-signals.py TrackerStoreSignalsTests</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="15-statistics">
+        <description>Stand-alone tests cases for the store, checking the statistics
+are updated when different operations are executed on the store</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="TrackerStoreStatisticsTests">
+            <description>Check initial statistics, add, remove, update content and check results stats</description>
+            <step>/usr/local/share/tracker-tests/15-statistics.py TrackerStoreStatisticsTests</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="16-collation">
+        <description>Stand-alone tests cases for the store, checking the collation is working</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="TrackerStoreCollationTests">
+            <description>Insert few instances with a text field containing collation-problematic words.
+    Ask for those instances order by the field and check the results.</description>
+            <step>/usr/local/share/tracker-tests/16-collation.py TrackerStoreCollationTests</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="17-ontology-changes">
+        <description>Stand-alone tests cases for the store, booting it with different ontology
+changes and checking if the data is still there.</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="ClassNotifySet">
+            <description>Set tracker:notify to true in a class and check there is no data loss</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py ClassNotifySet</step>
+        </case>
+        <case name="ClassNotifyUnset">
+            <description>Set tracker:notify to true in a class and check there is no data loss</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py ClassNotifyUnset</step>
+        </case>
+        <case name="DomainIndexAddTest">
+            <description>Add tracker:domainIndex to a class and check there is no data loss.</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py DomainIndexAddTest</step>
+        </case>
+        <case name="DomainIndexRemoveTest">
+            <description>Remove tracker:domainIndex to a class and check there is no data loss.</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py DomainIndexRemoveTest</step>
+        </case>
+        <case name="OntologyAddClassTest">
+            <description>Add a class in the ontology.</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py OntologyAddClassTest</step>
+        </case>
+        <case name="OntologyAddPropertyTest">
+            <description>Add new properties in the ontology, with/without super prop and different ranges and cardinalities</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py OntologyAddPropertyTest</step>
+        </case>
+        <case name="OntologyRemoveClassTest">
+            <description>Remove a class from the ontology. With and without superclasses.</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py OntologyRemoveClassTest</step>
+        </case>
+        <case name="OntologyRemovePropertyTest">
+            <description>Remove properties from the ontology, with and without super props and different ranges and cardinalities</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py OntologyRemovePropertyTest</step>
+        </case>
+        <case name="PropertyIndexedSet">
+            <description>Set tracker:indexed true to single and multiple valued properties.
+    Check that instances and content of the property are still in the DB</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py PropertyIndexedSet</step>
+        </case>
+        <case name="PropertyIndexedUnset">
+            <description>tracker:indexed property from true to false in single and multiple valued properties.
+    Check that instances and content of the property are still in the DB.</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py PropertyIndexedUnset</step>
+        </case>
+        <case name="PropertyMaxCardinality1toN">
+            <description>Change cardinality of a property from 1 to N. There shouldn't be any data loss</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py PropertyMaxCardinality1toN</step>
+        </case>
+        <case name="PropertyMaxCardinalityNto1">
+            <description>Change the cardinality of a property for N to 1.</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py PropertyMaxCardinalityNto1</step>
+        </case>
+        <case name="PropertyPromotionTest">
+            <description>Move a property to the superclass</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py PropertyPromotionTest</step>
+        </case>
+        <case name="PropertyRangeDateToString">
+            <description>Change the range of a property from date to string. There shouldn't be any data loss.</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py PropertyRangeDateToString</step>
+        </case>
+        <case name="PropertyRangeIntToString">
+            <description>Change the range of a property from int to string. There shouldn't be any data loss.</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py PropertyRangeIntToString</step>
+        </case>
+        <case name="PropertyRangeStringToDate">
+            <description>Change the range of a property from string to date. There shouldn't be any data loss.</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py PropertyRangeStringToDate</step>
+        </case>
+        <case name="PropertyRangeStringToInt">
+            <description>Change the range of a property from string to int. There shouldn't be any data loss.</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py PropertyRangeStringToInt</step>
+        </case>
+        <case name="PropertyRelegationTest">
+            <description>Move a property to the subclass</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py PropertyRelegationTest</step>
+        </case>
+        <case name="SuperclassAdditionTest">
+            <description>Add a superclass to a class with no superclass previously</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py SuperclassAdditionTest</step>
+        </case>
+        <case name="SuperclassRemovalTest">
+            <description>Remove the superclass relation between two classes</description>
+            <step>/usr/local/share/tracker-tests/17-ontology-changes.py SuperclassRemovalTest</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="200-backup-restore">
+        <description>FIXME description here</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="BackupRestoreTest">
+            <description>Backup and restore to/from valid/invalid files</description>
+            <step>/usr/local/share/tracker-tests/200-backup-restore.py BackupRestoreTest</step>
+        </case>
+        <case name="JournalReplayTest">
+            <description>Force journal replaying and check that the DB is correct aftewards</description>
+            <step>/usr/local/share/tracker-tests/200-backup-restore.py JournalReplayTest</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="300-miner-basic-ops">
+        <description>Monitor a test directory and copy/move/remove/update files and folders there.
+Check the basic data of the files is updated accordingly in tracker.</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="MinerCrawlTest">
+            <description>Test cases to check if miner is able to monitor files that are created, deleted or moved</description>
+            <step>/usr/local/share/tracker-tests/300-miner-basic-ops.py MinerCrawlTest</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="301-miner-resource-removal">
+        <description>Test that resource removal does not leave debris or clobber too much,
+especially in the case where nie:InformationElement != nie:DataObject</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="MinerResourceRemovalTest">
+            <description>FIXME description here</description>
+            <step>/usr/local/share/tracker-tests/301-miner-resource-removal.py MinerResourceRemovalTest</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="310-fts-indexing">
+        <description>Monitor a directory, copy/move/remove/update text files and check that
+the text contents are updated accordingly in the indexes.</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="MinerFTSBasicTest">
+            <description>Tests different contents in a single file</description>
+            <step>/usr/local/share/tracker-tests/310-fts-indexing.py MinerFTSBasicTest</step>
+        </case>
+        <case name="MinerFTSFileOperationsTest">
+            <description>Move, update, delete the files and check the text indexes are updated accordingly.</description>
+            <step>/usr/local/share/tracker-tests/310-fts-indexing.py MinerFTSFileOperationsTest</step>
+        </case>
+        <case name="MinerFTSStopwordsTest">
+            <description>Search for stopwords in a file</description>
+            <step>/usr/local/share/tracker-tests/310-fts-indexing.py MinerFTSStopwordsTest</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="400-extractor">
+        <description>For a collection of files, call the extractor and check that the expected
+metadata is extracted. Load dynamically the test information from a data
+directory (containing xxx.expected files)</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="ExtractionTestCase">
+            <description>Test checks if the tracker extractor is able to retrieve metadata</description>
+            <step>/usr/local/share/tracker-tests/400-extractor.py ExtractionTestCase</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="500-writeback">
+        <description>Write values in tracker and check the actual values are written
+on the files. Note that these tests are highly platform dependant.</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="WritebackBasicDataTest">
+            <description>Write in tracker store the properties witih writeback support and check
+    that the new values are actually in the file</description>
+            <step>/usr/local/share/tracker-tests/500-writeback.py WritebackBasicDataTest</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="501-writeback-details">
+        <description>FIXME description here</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="WritebackKeepDateTest">
+            <description>FIXME description here</description>
+            <step>/usr/local/share/tracker-tests/501-writeback-details.py WritebackKeepDateTest</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="600-applications-camera">
+        <description>Tests trying to simulate the behaviour of applications working with tracker</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="TrackerCameraPicturesApplicationTests">
+            <description>FIXME description here</description>
+            <step>/usr/local/share/tracker-tests/600-applications-camera.py TrackerCameraPicturesApplicationTests</step>
+        </case>
+        <case name="TrackerCameraVideosApplicationTests">
+            <description>FIXME description here</description>
+            <step>/usr/local/share/tracker-tests/600-applications-camera.py TrackerCameraVideosApplicationTests</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+    <set name="601-applications-sync">
+        <description>Tests trying to simulate the behaviour of applications working with tracker</description>
+        <pre_steps>
+                   <step>initctl stop xsession/tracker-writeback</step>
+                   <step>initctl stop xsession/tracker-miner</step>
+                   <step>initctl start xsession/tracker-stop</step>
+                </pre_steps>
+        
+        <case name="TrackerSyncApplicationTests">
+            <description>FIXME description here</description>
+            <step>/usr/local/share/tracker-tests/601-applications-sync.py TrackerSyncApplicationTests</step>
+        </case>
+        <environments>
+            <scratchbox>true</scratchbox>
+            <hardware>true</hardware>
+        </environments>
+    </set>
+        
+
+  </suite>
+</testdefinition>

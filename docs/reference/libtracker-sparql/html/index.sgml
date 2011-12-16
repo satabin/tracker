@@ -111,6 +111,7 @@
 <ANCHOR id="tracker-sparql-cursor-get-integer" href="libtracker-sparql/TrackerSparqlCursor.html#tracker-sparql-cursor-get-integer">
 <ANCHOR id="tracker-sparql-cursor-get-value-type" href="libtracker-sparql/TrackerSparqlCursor.html#tracker-sparql-cursor-get-value-type">
 <ANCHOR id="tracker-sparql-cursor-get-variable-name" href="libtracker-sparql/TrackerSparqlCursor.html#tracker-sparql-cursor-get-variable-name">
+<ANCHOR id="tracker-sparql-cursor-close" href="libtracker-sparql/TrackerSparqlCursor.html#tracker-sparql-cursor-close">
 <ANCHOR id="tracker-sparql-cursor-is-bound" href="libtracker-sparql/TrackerSparqlCursor.html#tracker-sparql-cursor-is-bound">
 <ANCHOR id="tracker-sparql-cursor-next" href="libtracker-sparql/TrackerSparqlCursor.html#tracker-sparql-cursor-next">
 <ANCHOR id="tracker-sparql-cursor-next-async" href="libtracker-sparql/TrackerSparqlCursor.html#tracker-sparql-cursor-next-async">

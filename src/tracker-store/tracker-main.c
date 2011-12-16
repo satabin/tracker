@@ -614,36 +614,35 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 	gint _tmp34_;
 	gsize chunk_size;
 	TrackerDBConfig* _tmp35_;
-	const gchar* _tmp36_;
-	const gchar* _tmp37_;
-	gchar* _tmp38_;
+	gchar* _tmp36_;
+	gchar* _tmp37_;
 	gchar* rotate_to;
-	const gchar* _tmp39_;
-	gint _tmp40_;
+	const gchar* _tmp38_;
+	gint _tmp39_;
 	gboolean do_rotating;
-	gboolean _tmp41_;
-	gsize _tmp42_;
-	const gchar* _tmp43_;
+	gboolean _tmp40_;
+	gsize _tmp41_;
+	const gchar* _tmp42_;
 	gint select_cache_size = 0;
 	gint update_cache_size = 0;
 	gchar* cache_size_s = NULL;
-	const gchar* _tmp44_ = NULL;
-	gchar* _tmp45_;
-	gboolean _tmp46_ = FALSE;
-	const gchar* _tmp47_;
-	gboolean _tmp49_;
-	const gchar* _tmp52_ = NULL;
-	gchar* _tmp53_;
-	gboolean _tmp54_ = FALSE;
-	const gchar* _tmp55_;
-	gboolean _tmp57_;
+	const gchar* _tmp43_ = NULL;
+	gchar* _tmp44_;
+	gboolean _tmp45_ = FALSE;
+	const gchar* _tmp46_;
+	gboolean _tmp48_;
+	const gchar* _tmp51_ = NULL;
+	gchar* _tmp52_;
+	gboolean _tmp53_ = FALSE;
+	const gchar* _tmp54_;
+	gboolean _tmp56_;
 	gboolean is_first_time_index = FALSE;
+	gboolean _tmp66_;
 	gboolean _tmp67_;
-	gboolean _tmp68_;
-	TrackerConfig* _tmp71_;
-	gulong _tmp72_;
-	gint _tmp73_;
-	gsize _tmp74_;
+	TrackerConfig* _tmp70_;
+	gulong _tmp71_;
+	gint _tmp72_;
+	gsize _tmp73_;
 	GError * _inner_error_ = NULL;
 #line 157 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	setlocale (LC_ALL, "");
@@ -657,7 +656,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 	tzset ();
 #line 166 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	tracker_main_verbosity = -1;
-#line 657 "tracker-main.c"
+#line 656 "tracker-main.c"
 	{
 		const gchar* _tmp0_ = NULL;
 		GOptionContext* _tmp1_;
@@ -682,12 +681,12 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		if (_inner_error_ != NULL) {
 #line 174 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 			_g_option_context_free0 (context);
-#line 682 "tracker-main.c"
+#line 681 "tracker-main.c"
 			goto __catch6_g_error;
 		}
 #line 168 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		_g_option_context_free0 (context);
-#line 687 "tracker-main.c"
+#line 686 "tracker-main.c"
 	}
 	goto __finally6;
 	__catch6_g_error:
@@ -711,7 +710,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		_g_error_free0 (e);
 #line 177 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		return result;
-#line 711 "tracker-main.c"
+#line 710 "tracker-main.c"
 	}
 	__finally6:
 #line 168 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
@@ -722,7 +721,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		g_clear_error (&_inner_error_);
 #line 168 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		return 0;
-#line 722 "tracker-main.c"
+#line 721 "tracker-main.c"
 	}
 #line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	_tmp6_ = tracker_main_version;
@@ -734,7 +733,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		result = 0;
 #line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		return result;
-#line 734 "tracker-main.c"
+#line 733 "tracker-main.c"
 	}
 #line 186 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	g_print ("Initializing tracker-store...\n");
@@ -754,7 +753,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 	_tmp9_ = tracker_main_verbosity;
 #line 198 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	if (_tmp9_ > (-1)) {
-#line 754 "tracker-main.c"
+#line 753 "tracker-main.c"
 		TrackerConfig* _tmp10_;
 		gint _tmp11_;
 #line 199 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
@@ -763,7 +762,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		_tmp11_ = tracker_main_verbosity;
 #line 199 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		tracker_config_set_verbosity (_tmp10_, _tmp11_);
-#line 763 "tracker-main.c"
+#line 762 "tracker-main.c"
 	}
 #line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	_tmp12_ = config;
@@ -797,7 +796,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		_g_object_unref0 (config);
 #line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		return result;
-#line 797 "tracker-main.c"
+#line 796 "tracker-main.c"
 	}
 #line 213 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	_tmp19_ = config;
@@ -815,13 +814,13 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 	_tmp22_ = tracker_main_force_reindex;
 #line 218 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	if (_tmp22_) {
-#line 815 "tracker-main.c"
+#line 814 "tracker-main.c"
 		TrackerDBManagerFlags _tmp23_;
 #line 222 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		_tmp23_ = flags;
 #line 222 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		flags = _tmp23_ | TRACKER_DB_MANAGER_FORCE_REINDEX;
-#line 821 "tracker-main.c"
+#line 820 "tracker-main.c"
 	}
 #line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	_tmp24_ = tracker_dbus_register_notifier ();
@@ -861,7 +860,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		_g_object_unref0 (config);
 #line 232 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		return result;
-#line 861 "tracker-main.c"
+#line 860 "tracker-main.c"
 	}
 #line 235 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	_tmp30_ = tracker_dbus_register_names ();
@@ -885,7 +884,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		_g_object_unref0 (config);
 #line 236 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		return result;
-#line 885 "tracker-main.c"
+#line 884 "tracker-main.c"
 	}
 #line 239 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	_tmp31_ = db_config;
@@ -906,141 +905,139 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 #line 241 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	_tmp37_ = _tmp36_;
 #line 241 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp38_ = g_strdup (_tmp37_);
-#line 241 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	rotate_to = _tmp38_;
+	rotate_to = _tmp37_;
 #line 243 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp39_ = rotate_to;
+	_tmp38_ = rotate_to;
 #line 243 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	if (g_strcmp0 (_tmp39_, "") == 0) {
+	if (g_strcmp0 (_tmp38_, "") == 0) {
 #line 244 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		_g_free0 (rotate_to);
 #line 244 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		rotate_to = NULL;
-#line 917 "tracker-main.c"
+#line 914 "tracker-main.c"
 	}
 #line 247 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp40_ = chunk_size_mb;
+	_tmp39_ = chunk_size_mb;
 #line 247 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	do_rotating = _tmp40_ != (-1);
+	do_rotating = _tmp39_ != (-1);
 #line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp41_ = do_rotating;
+	_tmp40_ = do_rotating;
 #line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp42_ = chunk_size;
+	_tmp41_ = chunk_size;
 #line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp43_ = rotate_to;
+	_tmp42_ = rotate_to;
 #line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	tracker_db_journal_set_rotating (_tmp41_, _tmp42_, _tmp43_);
+	tracker_db_journal_set_rotating (_tmp40_, _tmp41_, _tmp42_);
 #line 254 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp44_ = g_getenv ("TRACKER_STORE_SELECT_CACHE_SIZE");
+	_tmp43_ = g_getenv ("TRACKER_STORE_SELECT_CACHE_SIZE");
 #line 254 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp45_ = g_strdup (_tmp44_);
+	_tmp44_ = g_strdup (_tmp43_);
 #line 254 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	_g_free0 (cache_size_s);
 #line 254 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	cache_size_s = _tmp45_;
+	cache_size_s = _tmp44_;
 #line 255 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp47_ = cache_size_s;
+	_tmp46_ = cache_size_s;
 #line 255 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	if (_tmp47_ != NULL) {
-#line 943 "tracker-main.c"
-		const gchar* _tmp48_;
+	if (_tmp46_ != NULL) {
+#line 940 "tracker-main.c"
+		const gchar* _tmp47_;
 #line 255 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp48_ = cache_size_s;
+		_tmp47_ = cache_size_s;
 #line 255 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp46_ = g_strcmp0 (_tmp48_, "") != 0;
-#line 949 "tracker-main.c"
+		_tmp45_ = g_strcmp0 (_tmp47_, "") != 0;
+#line 946 "tracker-main.c"
 	} else {
 #line 255 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp46_ = FALSE;
-#line 953 "tracker-main.c"
+		_tmp45_ = FALSE;
+#line 950 "tracker-main.c"
 	}
 #line 255 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp49_ = _tmp46_;
+	_tmp48_ = _tmp45_;
 #line 255 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	if (_tmp49_) {
-#line 959 "tracker-main.c"
-		const gchar* _tmp50_;
-		gint _tmp51_ = 0;
+	if (_tmp48_) {
+#line 956 "tracker-main.c"
+		const gchar* _tmp49_;
+		gint _tmp50_ = 0;
 #line 256 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp50_ = cache_size_s;
+		_tmp49_ = cache_size_s;
 #line 256 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp51_ = atoi (_tmp50_);
+		_tmp50_ = atoi (_tmp49_);
 #line 256 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		select_cache_size = _tmp51_;
-#line 968 "tracker-main.c"
+		select_cache_size = _tmp50_;
+#line 965 "tracker-main.c"
 	} else {
 #line 258 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		select_cache_size = TRACKER_MAIN_SELECT_CACHE_SIZE;
-#line 972 "tracker-main.c"
+#line 969 "tracker-main.c"
 	}
 #line 261 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp52_ = g_getenv ("TRACKER_STORE_UPDATE_CACHE_SIZE");
+	_tmp51_ = g_getenv ("TRACKER_STORE_UPDATE_CACHE_SIZE");
 #line 261 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp53_ = g_strdup (_tmp52_);
+	_tmp52_ = g_strdup (_tmp51_);
 #line 261 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	_g_free0 (cache_size_s);
 #line 261 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	cache_size_s = _tmp53_;
+	cache_size_s = _tmp52_;
 #line 262 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp55_ = cache_size_s;
+	_tmp54_ = cache_size_s;
 #line 262 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	if (_tmp55_ != NULL) {
-#line 986 "tracker-main.c"
-		const gchar* _tmp56_;
+	if (_tmp54_ != NULL) {
+#line 983 "tracker-main.c"
+		const gchar* _tmp55_;
 #line 262 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp56_ = cache_size_s;
+		_tmp55_ = cache_size_s;
 #line 262 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp54_ = g_strcmp0 (_tmp56_, "") != 0;
-#line 992 "tracker-main.c"
+		_tmp53_ = g_strcmp0 (_tmp55_, "") != 0;
+#line 989 "tracker-main.c"
 	} else {
 #line 262 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp54_ = FALSE;
-#line 996 "tracker-main.c"
+		_tmp53_ = FALSE;
+#line 993 "tracker-main.c"
 	}
 #line 262 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp57_ = _tmp54_;
+	_tmp56_ = _tmp53_;
 #line 262 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	if (_tmp57_) {
-#line 1002 "tracker-main.c"
-		const gchar* _tmp58_;
-		gint _tmp59_ = 0;
+	if (_tmp56_) {
+#line 999 "tracker-main.c"
+		const gchar* _tmp57_;
+		gint _tmp58_ = 0;
 #line 263 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp58_ = cache_size_s;
+		_tmp57_ = cache_size_s;
 #line 263 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp59_ = atoi (_tmp58_);
+		_tmp58_ = atoi (_tmp57_);
 #line 263 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		update_cache_size = _tmp59_;
-#line 1011 "tracker-main.c"
+		update_cache_size = _tmp58_;
+#line 1008 "tracker-main.c"
 	} else {
 #line 265 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		update_cache_size = TRACKER_MAIN_UPDATE_CACHE_SIZE;
-#line 1015 "tracker-main.c"
+#line 1012 "tracker-main.c"
 	}
 	{
-		TrackerDBManagerFlags _tmp60_;
+		TrackerDBManagerFlags _tmp59_;
+		gint _tmp60_;
 		gint _tmp61_;
-		gint _tmp62_;
-		TrackerBusyCallback _tmp63_;
-		void* _tmp63__target;
-		gboolean _tmp64_ = FALSE;
+		TrackerBusyCallback _tmp62_;
+		void* _tmp62__target;
+		gboolean _tmp63_ = FALSE;
 #line 271 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp60_ = flags;
+		_tmp59_ = flags;
 #line 271 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp61_ = select_cache_size;
+		_tmp60_ = select_cache_size;
 #line 271 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp62_ = update_cache_size;
+		_tmp61_ = update_cache_size;
 #line 271 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp63_ = busy_callback;
+		_tmp62_ = busy_callback;
 #line 271 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp63__target = busy_callback_target;
+		_tmp62__target = busy_callback_target;
 #line 271 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		tracker_data_manager_init (_tmp60_, NULL, &_tmp64_, TRUE, FALSE, (guint) _tmp61_, (guint) _tmp62_, _tmp63_, _tmp63__target, "Initializing", &_inner_error_);
+		tracker_data_manager_init (_tmp59_, NULL, &_tmp63_, TRUE, FALSE, (guint) _tmp60_, (guint) _tmp61_, _tmp62_, _tmp62__target, "Initializing", &_inner_error_);
 #line 271 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		is_first_time_index = _tmp64_;
+		is_first_time_index = _tmp63_;
 #line 271 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		if (_inner_error_ != NULL) {
-#line 1040 "tracker-main.c"
+#line 1037 "tracker-main.c"
 			goto __catch7_g_error;
 		}
 	}
@@ -1048,18 +1045,18 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 	__catch7_g_error:
 	{
 		GError* e = NULL;
-		GError* _tmp65_;
-		const gchar* _tmp66_;
+		GError* _tmp64_;
+		const gchar* _tmp65_;
 #line 270 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		e = _inner_error_;
 #line 270 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		_inner_error_ = NULL;
 #line 281 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp65_ = e;
+		_tmp64_ = e;
 #line 281 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp66_ = _tmp65_->message;
+		_tmp65_ = _tmp64_->message;
 #line 281 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		g_critical ("Cannot initialize database: %s", _tmp66_);
+		g_critical ("Cannot initialize database: %s", _tmp65_);
 #line 282 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		result = 1;
 #line 282 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
@@ -1084,7 +1081,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		_g_object_unref0 (config);
 #line 282 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		return result;
-#line 1084 "tracker-main.c"
+#line 1081 "tracker-main.c"
 	}
 	__finally7:
 #line 270 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
@@ -1113,7 +1110,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		g_clear_error (&_inner_error_);
 #line 270 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		return 0;
-#line 1113 "tracker-main.c"
+#line 1110 "tracker-main.c"
 	}
 #line 285 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	_g_object_unref0 (db_config);
@@ -1124,9 +1121,9 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 #line 286 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	notifier = NULL;
 #line 288 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp67_ = tracker_main_shutdown;
+	_tmp66_ = tracker_main_shutdown;
 #line 288 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	if (!_tmp67_) {
+	if (!_tmp66_) {
 #line 290 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		tracker_locale_change_initialize_subscription ();
 #line 292 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
@@ -1139,26 +1136,26 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		tracker_store_resume ();
 #line 298 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		g_message ("Waiting for D-Bus requests...");
-#line 1139 "tracker-main.c"
+#line 1136 "tracker-main.c"
 	}
 #line 304 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp68_ = tracker_main_shutdown;
+	_tmp67_ = tracker_main_shutdown;
 #line 304 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	if (!_tmp68_) {
-#line 1145 "tracker-main.c"
+	if (!_tmp67_) {
+#line 1142 "tracker-main.c"
+		GMainLoop* _tmp68_;
 		GMainLoop* _tmp69_;
-		GMainLoop* _tmp70_;
 #line 305 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp69_ = g_main_loop_new (NULL, FALSE);
+		_tmp68_ = g_main_loop_new (NULL, FALSE);
 #line 305 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		_g_main_loop_unref0 (tracker_main_main_loop);
 #line 305 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		tracker_main_main_loop = _tmp69_;
+		tracker_main_main_loop = _tmp68_;
 #line 306 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		_tmp70_ = tracker_main_main_loop;
+		_tmp69_ = tracker_main_main_loop;
 #line 306 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-		g_main_loop_run (_tmp70_);
-#line 1158 "tracker-main.c"
+		g_main_loop_run (_tmp69_);
+#line 1155 "tracker-main.c"
 	}
 #line 312 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	g_message ("Shutdown started");
@@ -1181,21 +1178,21 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 #line 328 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	tracker_log_shutdown ();
 #line 330 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp71_ = config;
+	_tmp70_ = config;
 #line 330 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp72_ = config_verbosity_id;
+	_tmp71_ = config_verbosity_id;
 #line 330 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	g_signal_handler_disconnect ((GObject*) _tmp71_, _tmp72_);
+	g_signal_handler_disconnect ((GObject*) _tmp70_, _tmp71_);
 #line 331 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	_g_object_unref0 (config);
 #line 331 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	config = NULL;
 #line 334 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp73_ = chunk_size_mb;
+	_tmp72_ = chunk_size_mb;
 #line 334 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	_tmp74_ = chunk_size;
+	_tmp73_ = chunk_size;
 #line 334 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
-	tracker_db_journal_set_rotating (_tmp73_ != (-1), _tmp74_, NULL);
+	tracker_db_journal_set_rotating (_tmp72_ != (-1), _tmp73_, NULL);
 #line 336 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	g_print ("\nOK\n\n");
 #line 338 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
@@ -1228,7 +1225,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 	_g_object_unref0 (config);
 #line 342 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	return result;
-#line 1228 "tracker-main.c"
+#line 1225 "tracker-main.c"
 }
 
 
@@ -1237,7 +1234,7 @@ int main (int argc, char ** argv) {
 	g_type_init ();
 #line 156 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	return tracker_main_main (argv, argc);
-#line 1237 "tracker-main.c"
+#line 1234 "tracker-main.c"
 }
 
 
@@ -1247,21 +1244,21 @@ TrackerMain* tracker_main_construct (GType object_type) {
 	self = (TrackerMain*) g_type_create_instance (object_type);
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	return self;
-#line 1247 "tracker-main.c"
+#line 1244 "tracker-main.c"
 }
 
 
 TrackerMain* tracker_main_new (void) {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	return tracker_main_construct (TRACKER_TYPE_MAIN);
-#line 1254 "tracker-main.c"
+#line 1251 "tracker-main.c"
 }
 
 
 static void tracker_value_main_init (GValue* value) {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	value->data[0].v_pointer = NULL;
-#line 1261 "tracker-main.c"
+#line 1258 "tracker-main.c"
 }
 
 
@@ -1270,7 +1267,7 @@ static void tracker_value_main_free_value (GValue* value) {
 	if (value->data[0].v_pointer) {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		tracker_main_unref (value->data[0].v_pointer);
-#line 1270 "tracker-main.c"
+#line 1267 "tracker-main.c"
 	}
 }
 
@@ -1280,11 +1277,11 @@ static void tracker_value_main_copy_value (const GValue* src_value, GValue* dest
 	if (src_value->data[0].v_pointer) {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		dest_value->data[0].v_pointer = tracker_main_ref (src_value->data[0].v_pointer);
-#line 1280 "tracker-main.c"
+#line 1277 "tracker-main.c"
 	} else {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		dest_value->data[0].v_pointer = NULL;
-#line 1284 "tracker-main.c"
+#line 1281 "tracker-main.c"
 	}
 }
 
@@ -1292,37 +1289,37 @@ static void tracker_value_main_copy_value (const GValue* src_value, GValue* dest
 static gpointer tracker_value_main_peek_pointer (const GValue* value) {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	return value->data[0].v_pointer;
-#line 1292 "tracker-main.c"
+#line 1289 "tracker-main.c"
 }
 
 
 static gchar* tracker_value_main_collect_value (GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	if (collect_values[0].v_pointer) {
-#line 1299 "tracker-main.c"
+#line 1296 "tracker-main.c"
 		TrackerMain* object;
 		object = collect_values[0].v_pointer;
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		if (object->parent_instance.g_class == NULL) {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 			return g_strconcat ("invalid unclassed object pointer for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 1306 "tracker-main.c"
+#line 1303 "tracker-main.c"
 		} else if (!g_value_type_compatible (G_TYPE_FROM_INSTANCE (object), G_VALUE_TYPE (value))) {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 			return g_strconcat ("invalid object type `", g_type_name (G_TYPE_FROM_INSTANCE (object)), "' for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 1310 "tracker-main.c"
+#line 1307 "tracker-main.c"
 		}
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		value->data[0].v_pointer = tracker_main_ref (object);
-#line 1314 "tracker-main.c"
+#line 1311 "tracker-main.c"
 	} else {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		value->data[0].v_pointer = NULL;
-#line 1318 "tracker-main.c"
+#line 1315 "tracker-main.c"
 	}
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	return NULL;
-#line 1322 "tracker-main.c"
+#line 1319 "tracker-main.c"
 }
 
 
@@ -1333,25 +1330,25 @@ static gchar* tracker_value_main_lcopy_value (const GValue* value, guint n_colle
 	if (!object_p) {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
-#line 1333 "tracker-main.c"
+#line 1330 "tracker-main.c"
 	}
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	if (!value->data[0].v_pointer) {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		*object_p = NULL;
-#line 1339 "tracker-main.c"
+#line 1336 "tracker-main.c"
 	} else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		*object_p = value->data[0].v_pointer;
-#line 1343 "tracker-main.c"
+#line 1340 "tracker-main.c"
 	} else {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		*object_p = tracker_main_ref (value->data[0].v_pointer);
-#line 1347 "tracker-main.c"
+#line 1344 "tracker-main.c"
 	}
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	return NULL;
-#line 1351 "tracker-main.c"
+#line 1348 "tracker-main.c"
 }
 
 
@@ -1365,7 +1362,7 @@ GParamSpec* tracker_param_spec_main (const gchar* name, const gchar* nick, const
 	G_PARAM_SPEC (spec)->value_type = object_type;
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	return G_PARAM_SPEC (spec);
-#line 1365 "tracker-main.c"
+#line 1362 "tracker-main.c"
 }
 
 
@@ -1374,7 +1371,7 @@ gpointer tracker_value_get_main (const GValue* value) {
 	g_return_val_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_TYPE_MAIN), NULL);
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	return value->data[0].v_pointer;
-#line 1374 "tracker-main.c"
+#line 1371 "tracker-main.c"
 }
 
 
@@ -1394,17 +1391,17 @@ void tracker_value_set_main (GValue* value, gpointer v_object) {
 		value->data[0].v_pointer = v_object;
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		tracker_main_ref (value->data[0].v_pointer);
-#line 1394 "tracker-main.c"
+#line 1391 "tracker-main.c"
 	} else {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		value->data[0].v_pointer = NULL;
-#line 1398 "tracker-main.c"
+#line 1395 "tracker-main.c"
 	}
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	if (old) {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		tracker_main_unref (old);
-#line 1404 "tracker-main.c"
+#line 1401 "tracker-main.c"
 	}
 }
 
@@ -1423,17 +1420,17 @@ void tracker_value_take_main (GValue* value, gpointer v_object) {
 		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		value->data[0].v_pointer = v_object;
-#line 1423 "tracker-main.c"
+#line 1420 "tracker-main.c"
 	} else {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		value->data[0].v_pointer = NULL;
-#line 1427 "tracker-main.c"
+#line 1424 "tracker-main.c"
 	}
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	if (old) {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		tracker_main_unref (old);
-#line 1433 "tracker-main.c"
+#line 1430 "tracker-main.c"
 	}
 }
 
@@ -1443,14 +1440,14 @@ static void tracker_main_class_init (TrackerMainClass * klass) {
 	tracker_main_parent_class = g_type_class_peek_parent (klass);
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	TRACKER_MAIN_CLASS (klass)->finalize = tracker_main_finalize;
-#line 1443 "tracker-main.c"
+#line 1440 "tracker-main.c"
 }
 
 
 static void tracker_main_instance_init (TrackerMain * self) {
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	self->ref_count = 1;
-#line 1450 "tracker-main.c"
+#line 1447 "tracker-main.c"
 }
 
 
@@ -1458,7 +1455,7 @@ static void tracker_main_finalize (TrackerMain* obj) {
 	TrackerMain * self;
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	self = TRACKER_MAIN (obj);
-#line 1458 "tracker-main.c"
+#line 1455 "tracker-main.c"
 }
 
 
@@ -1483,7 +1480,7 @@ gpointer tracker_main_ref (gpointer instance) {
 	g_atomic_int_inc (&self->ref_count);
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 	return instance;
-#line 1483 "tracker-main.c"
+#line 1480 "tracker-main.c"
 }
 
 
@@ -1496,7 +1493,7 @@ void tracker_main_unref (gpointer instance) {
 		TRACKER_MAIN_GET_CLASS (self)->finalize (self);
 #line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-main.vala"
 		g_type_free_instance ((GTypeInstance *) self);
-#line 1496 "tracker-main.c"
+#line 1493 "tracker-main.c"
 	}
 }
 

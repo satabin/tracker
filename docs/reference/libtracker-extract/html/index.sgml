@@ -43,10 +43,12 @@
 <ANCHOR id="libtracker-extract-XMP.description" href="libtracker-extract/libtracker-extract-XMP.html#libtracker-extract-XMP.description">
 <ANCHOR id="libtracker-extract-XMP.details" href="libtracker-extract/libtracker-extract-XMP.html#libtracker-extract-XMP.details">
 <ANCHOR id="TrackerXmpData" href="libtracker-extract/libtracker-extract-XMP.html#TrackerXmpData">
+<ANCHOR id="TrackerXmpRegion" href="libtracker-extract/libtracker-extract-XMP.html#TrackerXmpRegion">
 <ANCHOR id="tracker-xmp-new" href="libtracker-extract/libtracker-extract-XMP.html#tracker-xmp-new">
 <ANCHOR id="tracker-xmp-free" href="libtracker-extract/libtracker-extract-XMP.html#tracker-xmp-free">
 <ANCHOR id="tracker-xmp-read" href="libtracker-extract/libtracker-extract-XMP.html#tracker-xmp-read">
 <ANCHOR id="tracker-xmp-apply" href="libtracker-extract/libtracker-extract-XMP.html#tracker-xmp-apply">
+<ANCHOR id="tracker-xmp-apply-regions" href="libtracker-extract/libtracker-extract-XMP.html#tracker-xmp-apply-regions">
 <ANCHOR id="libtracker-extract-IPTC" href="libtracker-extract/libtracker-extract-IPTC.html">
 <ANCHOR id="libtracker-extract-IPTC.stability-level" href="libtracker-extract/libtracker-extract-IPTC.html#libtracker-extract-IPTC.stability-level">
 <ANCHOR id="libtracker-extract-IPTC.synopsis" href="libtracker-extract/libtracker-extract-IPTC.html#libtracker-extract-IPTC.synopsis">

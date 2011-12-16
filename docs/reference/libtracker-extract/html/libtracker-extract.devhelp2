@@ -44,10 +44,12 @@
     <keyword type="function" name="tracker_date_guess ()" link="libtracker-extract-Data-utilities.html#tracker-date-guess" since="0.8"/>
     <keyword type="function" name="tracker_keywords_parse ()" link="libtracker-extract-Data-utilities.html#tracker-keywords-parse" since="0.10"/>
     <keyword type="struct" name="TrackerXmpData" link="libtracker-extract-XMP.html#TrackerXmpData"/>
+    <keyword type="struct" name="TrackerXmpRegion" link="libtracker-extract-XMP.html#TrackerXmpRegion"/>
     <keyword type="function" name="tracker_xmp_new ()" link="libtracker-extract-XMP.html#tracker-xmp-new" since="0.10"/>
     <keyword type="function" name="tracker_xmp_free ()" link="libtracker-extract-XMP.html#tracker-xmp-free" since="0.10"/>
     <keyword type="function" name="tracker_xmp_read ()" link="libtracker-extract-XMP.html#tracker-xmp-read" deprecated="0.9. Use tracker_xmp_new() instead." since="0.8"/>
     <keyword type="function" name="tracker_xmp_apply ()" link="libtracker-extract-XMP.html#tracker-xmp-apply" since="0.8"/>
+    <keyword type="function" name="tracker_xmp_apply_regions ()" link="libtracker-extract-XMP.html#tracker-xmp-apply-regions" since="0.12"/>
     <keyword type="struct" name="TrackerIptcData" link="libtracker-extract-IPTC.html#TrackerIptcData"/>
     <keyword type="function" name="tracker_iptc_new ()" link="libtracker-extract-IPTC.html#tracker-iptc-new" since="0.10"/>
     <keyword type="function" name="tracker_iptc_free ()" link="libtracker-extract-IPTC.html#tracker-iptc-free" since="0.10"/>

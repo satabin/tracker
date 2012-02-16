@@ -46,12 +46,13 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
-noinst_PROGRAMS = $(am__EXEEXT_4)
+noinst_PROGRAMS = $(am__EXEEXT_5)
+@HAVE_EXIF_TRUE@am__append_1 = tracker-exif-test
 
 # This test also requires libjpeg...
-@HAVE_IPTC_TRUE@am__append_1 = tracker-iptc-test
-@HAVE_ENCA_TRUE@am__append_2 = tracker-encoding
-@HAVE_ENCA_FALSE@@HAVE_MEEGOTOUCH_TRUE@am__append_3 = tracker-encoding
+@HAVE_IPTC_TRUE@am__append_2 = tracker-iptc-test
+@HAVE_ENCA_TRUE@am__append_3 = tracker-encoding
+@HAVE_ENCA_FALSE@@HAVE_MEEGOTOUCH_TRUE@am__append_4 = tracker-encoding
 subdir = tests/libtracker-extract
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -71,13 +72,14 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-@HAVE_IPTC_TRUE@am__EXEEXT_1 = tracker-iptc-test$(EXEEXT)
-@HAVE_ENCA_TRUE@am__EXEEXT_2 = tracker-encoding$(EXEEXT)
-@HAVE_ENCA_FALSE@@HAVE_MEEGOTOUCH_TRUE@am__EXEEXT_3 = tracker-encoding$(EXEEXT)
-am__EXEEXT_4 = tracker-test-utils$(EXEEXT) tracker-test-xmp$(EXEEXT) \
-	tracker-extract-info-test$(EXEEXT) tracker-exif-test$(EXEEXT) \
+@HAVE_EXIF_TRUE@am__EXEEXT_1 = tracker-exif-test$(EXEEXT)
+@HAVE_IPTC_TRUE@am__EXEEXT_2 = tracker-iptc-test$(EXEEXT)
+@HAVE_ENCA_TRUE@am__EXEEXT_3 = tracker-encoding$(EXEEXT)
+@HAVE_ENCA_FALSE@@HAVE_MEEGOTOUCH_TRUE@am__EXEEXT_4 = tracker-encoding$(EXEEXT)
+am__EXEEXT_5 = tracker-test-utils$(EXEEXT) tracker-test-xmp$(EXEEXT) \
+	tracker-extract-info-test$(EXEEXT) \
 	tracker-guarantee-test$(EXEEXT) $(am__EXEEXT_1) \
-	$(am__EXEEXT_2) $(am__EXEEXT_3)
+	$(am__EXEEXT_2) $(am__EXEEXT_3) $(am__EXEEXT_4)
 PROGRAMS = $(noinst_PROGRAMS)
 am_tracker_encoding_OBJECTS = tracker-encoding-test.$(OBJEXT)
 tracker_encoding_OBJECTS = $(am_tracker_encoding_OBJECTS)
@@ -507,9 +509,9 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = tracker-test-utils tracker-test-xmp \
-	tracker-extract-info-test tracker-exif-test \
-	tracker-guarantee-test $(am__append_1) $(am__append_2) \
-	$(am__append_3)
+	tracker-extract-info-test tracker-guarantee-test \
+	$(am__append_1) $(am__append_2) $(am__append_3) \
+	$(am__append_4)
 AM_CPPFLAGS = \
 	-DTOP_SRCDIR=\"$(abs_top_srcdir)\"             \
 	-DTOP_BUILDDIR=\"$(abs_top_builddir)\"         \
@@ -536,7 +538,8 @@ tracker_guarantee_test_SOURCES = tracker-guarantee-test.c
 tracker_iptc_test_SOURCES = tracker-iptc-test.c
 tracker_iptc_test_LDADD = $(LDADD) $(LIBJPEG_LIBS)
 tracker_iptc_test_CFLAGS = $(LIBJPEG_CFLAGS)
-EXTRA_DIST = encoding-detect.bin 	\
+EXTRA_DIST = \
+	encoding-detect.bin             \
 	areas.xmp 			\
 	areas-with-contacts.xmp 	\
 	areas-ns.xmp 			\

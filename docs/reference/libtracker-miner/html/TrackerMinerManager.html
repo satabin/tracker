@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerMinerManager</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="up" href="ch04.html" title="Managing miners">
 <link rel="prev" href="ch04.html" title="Managing miners">
@@ -52,7 +52,7 @@
 enum                <a class="link" href="TrackerMinerManager.html#TrackerMinerManagerError" title="enum TrackerMinerManagerError">TrackerMinerManagerError</a>;
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-error-quark" title="tracker_miner_manager_error_quark ()">tracker_miner_manager_error_quark</a>   (<em class="parameter"><code><span class="type">void</span></code></em>);
 struct              <a class="link" href="TrackerMinerManager.html#TrackerMinerManager-struct" title="struct TrackerMinerManager">TrackerMinerManager</a>;
-struct              <a class="link" href="TrackerMinerManager.html#TrackerMinerManagerClass" title="struct TrackerMinerManagerClass">TrackerMinerManagerClass</a>;
+                    <a class="link" href="TrackerMinerManager.html#TrackerMinerManagerClass" title="TrackerMinerManagerClass">TrackerMinerManagerClass</a>;
 <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="returnvalue">TrackerMinerManager</span></a> * <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-new" title="tracker_miner_manager_new ()">tracker_miner_manager_new</a>         (<em class="parameter"><code><span class="type">void</span></code></em>);
 <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="returnvalue">TrackerMinerManager</span></a> * <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-new-full" title="tracker_miner_manager_new_full ()">tracker_miner_manager_new_full</a>    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> auto_start</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
@@ -189,8 +189,8 @@ Object to query and control miners.
 </div>
 <hr>
 <div class="refsect2">
-<a name="TrackerMinerManagerClass"></a><h3>struct TrackerMinerManagerClass</h3>
-<pre class="programlisting">struct TrackerMinerManagerClass {
+<a name="TrackerMinerManagerClass"></a><h3>TrackerMinerManagerClass</h3>
+<pre class="programlisting">typedef struct {
 	GObjectClass parent_class;
 
 	void (* miner_progress)    (TrackerMinerManager *manager,
@@ -205,7 +205,7 @@ Object to query and control miners.
 	                            const gchar         *miner_name);
 	void (* miner_deactivated) (TrackerMinerManager *manager,
 	                            const gchar         *miner_name);
-};
+} TrackerMinerManagerClass;
 </pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">

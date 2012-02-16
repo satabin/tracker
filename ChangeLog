@@ -1,3 +1,118 @@
+2012-02-15  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.12.10
+
+	libtracker-extract: Don't build EXIF tests if we don't have support enabled
+
+	libtracker-extract: Crash in miner-fs due to size_t vs gssize
+	Fixed by making use of GInputStream/GDataInputStream on the receiving end
+	(which we were doing on the sending end) to avoid use of strlen().
+
+	Crash was occurring on OpenBSD.
+
+	Fixes GB#669546.
+
+	tracker-miner-fs: Don't index removable media on initial index if disabled
+
+	build: Set _REQUIRED versions for giff, jpeg and tiff
+	We actually don't have a requirement, but if they're not installed, the error
+	message doesn't make sense.
+
+2012-02-15  Jürg Billeter  <j@bitron.ch>
+
+	tracker-needle: Fix build with GLib 2.31
+
+	tracker-extract: Add missing includes
+
+	tracker-store: Print warning if unable to initialize statistics
+
+	libtracker-data: Fix dead code with disabled journal
+
+	ttl2sgml: Do not call fclose if file is NULL
+
+2012-02-15  Antoine Jacoutot  <ajacoutot@openbsd.org>
+
+	libtracker-common: Add new function tracker_file_open_fd()
+	Add a new function to open fds in a portable way
+
+	open(2) with the NOATIME flag is only available on Linux. Instead of
+	duplicating the same code all over with ifdef, factorize into a function
+	that opens file descriptors in a portable way.
+
+	Fixes GB#666654.
+
+2012-02-15  Philip Van Hoof  <philip@codeminded.be>
+
+	miners/fs: Fix crash when SIGTERM happens before mainloop is available
+	Fixes NB#296488.
+
+2012-02-15  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	tests/libtracker-extract: Do not use tracker_coalesce_strip on constant strings.
+
+2012-02-15  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-common: Error isn't set and yet reply is NULL
+	The g_dbus_connection_call_sync claims not to return NULL
+	unless error is set. Yet we check for error being set and
+	have seen situations where reply was NULL nonetheless.
+
+	Test for reply being NULL and don't unref in that case.
+
+	Fixes NB#289635.
+
+2012-02-15  Martyn Russell  <martyn@lanedo.com>
+
+	build: Depend on gmodule for libtracker-extract
+	Since glib 2.31.4, gio does not depend on gmodule, so detecting on gmodule for
+	LIBTRACKER_EXTRACT is required.
+
+	Fixes GB#666410
+
+2012-02-15  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract, msoffice: Add debugging aid for when opening file fails
+	Related: NB#296009.
+
+2012-02-15  Philip Withnall  <philip@tecnocode.co.uk>
+
+	Bug 666678 — g_str_has_prefix() called on a NULL string…
+	Fix g_str_has_prefix() being called on a NULL string with the
+	tracker_config_file_new() constructor.
+
+	Closes: bgo#666678
+
+2012-02-15  Carlos Garnacho  <carlos@lanedo.com>
+
+	libtracker-miner: don't put sparql for missing/cancelled files
+	This behavior is analogous to 0.10. The miner has to allow lesser
+	errors and insert minimal sparql for the files, but this kind of
+	errors must not trigger sparql insertion.
+
+2012-02-15  Kjartan Maraas  <kmaraas@gnome.org>
+
+	Updated Norwegian bokmål translation
+
+2012-02-15  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: fix double reference
+
+	libtracker-miner: several documentation related fixes
+
+	libtracker-miner: fix deprecation comment format
+
+2012-02-15  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-extract: Fix mockup example which unrefs TrackerExtractInfo->GFile
+	This is not returned as a new reference.
+
+2011-12-19  Jürg Billeter  <j@bitron.ch>
+
+	Remove g_thread_init calls
+	Calling g_thread_init with GLib 2.31 requires explicit dependency on
+	gthread-2.0. However, g_type_init initializes threads since GLib 2.24,
+	so it is no longer needed.
+
 2011-12-16  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.12.9

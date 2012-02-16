@@ -1,0 +1,456 @@
+<!-- ##### SECTION ./tmpl/tracker-indexing-tree.sgml:Image ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-indexing-tree.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/tracker-indexing-tree.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/tracker-indexing-tree.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-indexing-tree.sgml:Stability_Level ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-indexing-tree.sgml:Title ##### -->
+TrackerIndexingTree
+
+
+<!-- ##### SECTION ./tmpl/tracker-media-art.sgml:Image ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-media-art.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/tracker-media-art.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/tracker-media-art.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-media-art.sgml:Stability_Level ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-media-art.sgml:Title ##### -->
+tracker-media-art
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-common.sgml:Image ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-common.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-common.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-common.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-common.sgml:Stability_Level ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-common.sgml:Title ##### -->
+tracker-miner-common
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-enum-types.sgml:Image ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-enum-types.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-enum-types.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-enum-types.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-enum-types.sgml:Stability_Level ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-enum-types.sgml:Title ##### -->
+tracker-miner-enum-types
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-enums.sgml:Image ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-enums.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-enums.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-enums.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-enums.sgml:Stability_Level ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-enums.sgml:Title ##### -->
+tracker-miner-enums
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-object.sgml:Image ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-object.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-object.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-object.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-object.sgml:Stability_Level ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/tracker-miner-object.sgml:Title ##### -->
+TrackerMiner
+
+
+<!-- ##### MACRO TRACKER_MINER_FS_GRAPH_URN ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM TrackerDirectoryFlags ##### -->
+<para>
+
+</para>
+
+@TRACKER_DIRECTORY_FLAG_NONE: 
+@TRACKER_DIRECTORY_FLAG_RECURSE: 
+@TRACKER_DIRECTORY_FLAG_CHECK_MTIME: 
+@TRACKER_DIRECTORY_FLAG_MONITOR: 
+@TRACKER_DIRECTORY_FLAG_IGNORE: 
+@TRACKER_DIRECTORY_FLAG_PRESERVE: 
+
+<!-- ##### ENUM TrackerFilterPolicy ##### -->
+<para>
+
+</para>
+
+@TRACKER_FILTER_POLICY_DENY: 
+@TRACKER_FILTER_POLICY_ACCEPT: 
+
+<!-- ##### ENUM TrackerFilterType ##### -->
+<para>
+
+</para>
+
+@TRACKER_FILTER_FILE: 
+@TRACKER_FILTER_DIRECTORY: 
+@TRACKER_FILTER_PARENT_DIRECTORY: 
+
+<!-- ##### STRUCT TrackerIndexingTree ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SIGNAL TrackerIndexingTree::directory-added ##### -->
+<para>
+
+</para>
+
+@trackerindexingtree: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL TrackerIndexingTree::directory-removed ##### -->
+<para>
+
+</para>
+
+@trackerindexingtree: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL TrackerIndexingTree::directory-updated ##### -->
+<para>
+
+</para>
+
+@trackerindexingtree: the object which received the signal.
+@arg1: 
+
+<!-- ##### ARG TrackerIndexingTree:filter-hidden ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT TrackerIndexingTreeClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@directory_added: 
+@directory_removed: 
+@directory_updated: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_add ##### -->
+<para>
+
+</para>
+
+@tree: 
+@directory: 
+@flags: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_add_filter ##### -->
+<para>
+
+</para>
+
+@tree: 
+@filter: 
+@glob_string: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_clear_filters ##### -->
+<para>
+
+</para>
+
+@tree: 
+@type: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_file_is_indexable ##### -->
+<para>
+
+</para>
+
+@tree: 
+@file: 
+@file_type: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_file_is_root ##### -->
+<para>
+
+</para>
+
+@tree: 
+@file: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_file_matches_filter ##### -->
+<para>
+
+</para>
+
+@tree: 
+@type: 
+@file: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_get_default_policy ##### -->
+<para>
+
+</para>
+
+@tree: 
+@filter: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_get_filter_hidden ##### -->
+<para>
+
+</para>
+
+@tree: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_get_root ##### -->
+<para>
+
+</para>
+
+@tree: 
+@file: 
+@directory_flags: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_list_roots ##### -->
+<para>
+
+</para>
+
+@tree: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_new ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_parent_is_indexable ##### -->
+<para>
+
+</para>
+
+@tree: 
+@parent: 
+@children: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_remove ##### -->
+<para>
+
+</para>
+
+@tree: 
+@directory: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_set_default_policy ##### -->
+<para>
+
+</para>
+
+@tree: 
+@filter: 
+@policy: 
+
+<!-- ##### FUNCTION tracker_indexing_tree_set_filter_hidden ##### -->
+<para>
+
+</para>
+
+@tree: 
+@filter_hidden: 
+
+<!-- ##### FUNCTION tracker_media_art_execute_queue ##### -->
+<para>
+
+</para>
+
+@connection: 
+
+<!-- ##### FUNCTION tracker_media_art_queue_removal ##### -->
+<para>
+
+</para>
+
+@uri: 
+@mime_type: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_miner_fs_check_directory_with_priority ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@priority: 
+@check_parents: 
+
+<!-- ##### FUNCTION tracker_miner_fs_check_file_with_priority ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@priority: 
+@check_parents: 
+
+<!-- ##### FUNCTION tracker_miner_fs_get_indexing_tree ##### -->
+<para>
+
+</para>
+
+@fs: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_miner_fs_writeback_file ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@rdf_types: 
+@results: 
+
+<!-- ##### FUNCTION tracker_miner_fs_writeback_notify ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@error: 
+
+<!-- ##### FUNCTION tracker_miner_manager_pause_for_process ##### -->
+<para>
+
+</para>
+
+@manager: 
+@miner: 
+@reason: 
+@cookie: 
+@Returns: 
+

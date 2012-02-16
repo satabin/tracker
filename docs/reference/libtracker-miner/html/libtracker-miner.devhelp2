@@ -22,7 +22,7 @@
       </sub>
       <sub name="Additional utilities" link="ch06.html">
         <sub name="TrackerStorage" link="libtracker-miner-TrackerStorage.html"/>
-        <sub name="TrackerThumbnailer" link="libtracker-miner-TrackerThumbnailer.html"/>
+        <sub name="Thumbnailer management" link="libtracker-miner-TrackerThumbnailer.html"/>
       </sub>
     </sub>
     <sub name="Annotation Glossary" link="annotation-glossary.html"/>
@@ -108,7 +108,7 @@
     <keyword type="enum" name="enum TrackerMinerManagerError" link="TrackerMinerManager.html#TrackerMinerManagerError" since="0.8"/>
     <keyword type="function" name="tracker_miner_manager_error_quark ()" link="TrackerMinerManager.html#tracker-miner-manager-error-quark"/>
     <keyword type="struct" name="struct TrackerMinerManager" link="TrackerMinerManager.html#TrackerMinerManager-struct"/>
-    <keyword type="struct" name="struct TrackerMinerManagerClass" link="TrackerMinerManager.html#TrackerMinerManagerClass"/>
+    <keyword type="struct" name="TrackerMinerManagerClass" link="TrackerMinerManager.html#TrackerMinerManagerClass"/>
     <keyword type="function" name="tracker_miner_manager_new ()" link="TrackerMinerManager.html#tracker-miner-manager-new" since="0.8"/>
     <keyword type="function" name="tracker_miner_manager_new_full ()" link="TrackerMinerManager.html#tracker-miner-manager-new-full" since="0.10.5"/>
     <keyword type="function" name="tracker_miner_manager_get_running ()" link="TrackerMinerManager.html#tracker-miner-manager-get-running" since="0.8"/>

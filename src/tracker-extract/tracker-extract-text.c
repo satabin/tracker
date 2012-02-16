@@ -36,6 +36,8 @@
 
 #include <gio/gio.h>
 
+#include <libtracker-common/tracker-file-utils.h>
+
 #include <libtracker-extract/tracker-extract.h>
 
 #include "tracker-main.h"
@@ -58,10 +60,7 @@ get_file_content (GFile *file,
 	/* Get filename from URI */
 	path = g_file_get_path (file);
 
-	fd = g_open (path, O_RDONLY | O_NOATIME, 0);
-	if (fd == -1 && errno == EPERM) {
-		fd = g_open (path, O_RDONLY, 0);
-	}
+	fd = tracker_file_open_fd (path);
 
 	if (fd == -1) {
 		g_message ("Could not open file '%s': %s",

@@ -1,0 +1,2 @@
+rm_conffile /etc/xdg/autostart/tracker-applet.desktop 0.6.96-2 tracker-search-tool
+rm_conffile /etc/xdg/autostart/tracker-status-icon.desktop 0.8.18-1 tracker-gui

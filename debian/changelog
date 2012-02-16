@@ -1,6 +1,8 @@
 tracker (0.12.10-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Use dh_installdeb maintscript files to handle removal of obsolete
+    conffiles in tracker and tracker-gui.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 16 Feb 2012 19:30:26 +0100
 

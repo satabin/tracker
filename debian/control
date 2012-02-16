@@ -51,6 +51,7 @@ Homepage: http://projects.gnome.org/tracker/
 
 Package: tracker
 Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          shared-mime-info,
@@ -252,6 +253,7 @@ Description: metadata database, indexer and search tool - commandline tools
 Package: tracker-gui
 Architecture: any
 Section: gnome
+Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          tracker (= ${binary:Version}),

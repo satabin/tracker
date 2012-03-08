@@ -1,6 +1,6 @@
-usr/lib/libtracker-miner-0.12.so
-usr/lib/pkgconfig/tracker-miner-0.12.pc
-usr/include/tracker-0.12/libtracker-miner/*.h
-usr/share/vala/vapi/tracker-miner-0.12.vapi
-usr/share/vala/vapi/tracker-miner-0.12.deps
-usr/share/gir-1.0/TrackerMiner-0.12.gir
+usr/lib/libtracker-miner-0.14.so
+usr/lib/pkgconfig/tracker-miner-0.14.pc
+usr/include/tracker-0.14/libtracker-miner/*.h
+usr/share/vala/vapi/tracker-miner-0.14.vapi
+usr/share/vala/vapi/tracker-miner-0.14.deps
+usr/share/gir-1.0/TrackerMiner-0.14.gir

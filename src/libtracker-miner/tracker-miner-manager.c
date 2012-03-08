@@ -1399,7 +1399,7 @@ tracker_miner_manager_ignore_next_update (TrackerMinerManager *manager,
 #endif /* TRACKER_DISABLE_DEPRECATED */
 
 /**
- * tracker_miner_manager_error_quark (skip):
+ * tracker_miner_manager_error_quark:
  *
  * Returns: the #GQuark used to identify miner manager errors in
  * GError structures.

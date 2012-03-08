@@ -34,6 +34,7 @@ rules_in_files = \
 	10-tiff.rule.in \
 	10-vorbis.rule.in \
 	10-xmp.rule.in \
+	11-iso.rule.in \
 	11-msoffice-xml.rule.in \
 	15-gstreamer-guess.rule.in \
 	15-playlist.rule.in \
@@ -139,6 +140,11 @@ endif
 if HAVE_TOTEM_PL_PARSER
 modules_LTLIBRARIES += libextract-playlist.la
 rules_DATA += 15-playlist.rule
+endif
+
+if HAVE_LIBOSINFO
+modules_LTLIBRARIES += libextract-iso.la
+rules_DATA += 11-iso.rule
 endif
 
 # ABW
@@ -422,6 +428,19 @@ libextract_icon_la_LIBADD = \
 	$(BUILD_LIBS) \
 	$(TRACKER_EXTRACT_MODULES_LIBS)
 
+# ISO
+libextract_iso_la_SOURCES = tracker-extract-iso.c
+libextract_iso_la_CFLAGS = \
+	$(TRACKER_EXTRACT_MODULES_CFLAGS) \
+	$(LIBOSINFO_CFLAGS)
+
+libextract_iso_la_LDFLAGS = $(module_flags)
+libextract_iso_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(BUILD_LIBS) \
+	$(TRACKER_EXTRACT_MODULES_LIBS) \
+	$(LIBOSINFO_LIBS)
+
 #
 # Binaries
 #
@@ -429,19 +448,19 @@ libexec_PROGRAMS = tracker-extract
 
 tracker_extract_SOURCES = \
 	$(marshal_sources) \
-	tracker-albumart.c \
-	tracker-albumart.h \
 	tracker-config.c \
 	tracker-config.h \
 	tracker-controller.c \
 	tracker-controller.h \
 	tracker-extract.c \
 	tracker-extract.h \
+	tracker-media-art.c \
+	tracker-media-art.h \
 	tracker-read.c \
 	tracker-read.h \
 	tracker-main.c \
 	tracker-main.h \
-	tracker-albumart-generic.h
+	tracker-media-art-generic.h
 
 tracker_extract_LDADD = \
 	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
@@ -463,12 +482,12 @@ tracker_extract_SOURCES += tracker-topanalyzer.cpp tracker-topanalyzer.h
 endif
 
 if HAVE_GDKPIXBUF
-tracker_extract_SOURCES += tracker-albumart-pixbuf.c
+tracker_extract_SOURCES += tracker-media-art-pixbuf.c
 else
 if HAVE_QT
-tracker_extract_SOURCES += tracker-albumart-qt.cpp
+tracker_extract_SOURCES += tracker-media-art-qt.cpp
 else
-tracker_extract_SOURCES += tracker-albumart-dummy.c
+tracker_extract_SOURCES += tracker-media-art-dummy.c
 endif
 endif
 

@@ -87,7 +87,44 @@ tracker_marshal_VOID__OBJECT_BOOLEAN (GClosure     *closure,
             data2);
 }
 
-/* VOID:OBJECT,OBJECT,BOOLEAN,BOOLEAN (tracker-marshal.list:2) */
+/* VOID:OBJECT,OBJECT (tracker-marshal.list:2) */
+void
+tracker_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
+                                     GValue       *return_value G_GNUC_UNUSED,
+                                     guint         n_param_values,
+                                     const GValue *param_values,
+                                     gpointer      invocation_hint G_GNUC_UNUSED,
+                                     gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__OBJECT_OBJECT) (gpointer     data1,
+                                                    gpointer     arg_1,
+                                                    gpointer     arg_2,
+                                                    gpointer     data2);
+  register GMarshalFunc_VOID__OBJECT_OBJECT callback;
+  register GCClosure *cc = (GCClosure*) closure;
+  register gpointer data1, data2;
+
+  g_return_if_fail (n_param_values == 3);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__OBJECT_OBJECT) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_marshal_value_peek_object (param_values + 1),
+            g_marshal_value_peek_object (param_values + 2),
+            data2);
+}
+
+/* VOID:OBJECT,OBJECT,BOOLEAN,BOOLEAN (tracker-marshal.list:3) */
 void
 tracker_marshal_VOID__OBJECT_OBJECT_BOOLEAN_BOOLEAN (GClosure     *closure,
                                                      GValue       *return_value G_GNUC_UNUSED,
@@ -128,7 +165,7 @@ tracker_marshal_VOID__OBJECT_OBJECT_BOOLEAN_BOOLEAN (GClosure     *closure,
             data2);
 }
 
-/* VOID:OBJECT,POINTER,UINT,UINT,UINT,UINT (tracker-marshal.list:3) */
+/* VOID:OBJECT,POINTER,UINT,UINT,UINT,UINT (tracker-marshal.list:4) */
 void
 tracker_marshal_VOID__OBJECT_POINTER_UINT_UINT_UINT_UINT (GClosure     *closure,
                                                           GValue       *return_value G_GNUC_UNUSED,
@@ -173,7 +210,50 @@ tracker_marshal_VOID__OBJECT_POINTER_UINT_UINT_UINT_UINT (GClosure     *closure,
             data2);
 }
 
-/* VOID:DOUBLE,UINT,UINT,UINT,UINT (tracker-marshal.list:4) */
+/* VOID:OBJECT,UINT,UINT,UINT,UINT (tracker-marshal.list:5) */
+void
+tracker_marshal_VOID__OBJECT_UINT_UINT_UINT_UINT (GClosure     *closure,
+                                                  GValue       *return_value G_GNUC_UNUSED,
+                                                  guint         n_param_values,
+                                                  const GValue *param_values,
+                                                  gpointer      invocation_hint G_GNUC_UNUSED,
+                                                  gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__OBJECT_UINT_UINT_UINT_UINT) (gpointer     data1,
+                                                                 gpointer     arg_1,
+                                                                 guint        arg_2,
+                                                                 guint        arg_3,
+                                                                 guint        arg_4,
+                                                                 guint        arg_5,
+                                                                 gpointer     data2);
+  register GMarshalFunc_VOID__OBJECT_UINT_UINT_UINT_UINT callback;
+  register GCClosure *cc = (GCClosure*) closure;
+  register gpointer data1, data2;
+
+  g_return_if_fail (n_param_values == 6);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__OBJECT_UINT_UINT_UINT_UINT) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_marshal_value_peek_object (param_values + 1),
+            g_marshal_value_peek_uint (param_values + 2),
+            g_marshal_value_peek_uint (param_values + 3),
+            g_marshal_value_peek_uint (param_values + 4),
+            g_marshal_value_peek_uint (param_values + 5),
+            data2);
+}
+
+/* VOID:DOUBLE,UINT,UINT,UINT,UINT (tracker-marshal.list:6) */
 void
 tracker_marshal_VOID__DOUBLE_UINT_UINT_UINT_UINT (GClosure     *closure,
                                                   GValue       *return_value G_GNUC_UNUSED,
@@ -216,7 +296,7 @@ tracker_marshal_VOID__DOUBLE_UINT_UINT_UINT_UINT (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING,DOUBLE,INT (tracker-marshal.list:5) */
+/* VOID:STRING,DOUBLE,INT (tracker-marshal.list:7) */
 void
 tracker_marshal_VOID__STRING_DOUBLE_INT (GClosure     *closure,
                                          GValue       *return_value G_GNUC_UNUSED,
@@ -255,7 +335,7 @@ tracker_marshal_VOID__STRING_DOUBLE_INT (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING,STRING (tracker-marshal.list:6) */
+/* VOID:STRING,STRING (tracker-marshal.list:8) */
 void
 tracker_marshal_VOID__STRING_STRING (GClosure     *closure,
                                      GValue       *return_value G_GNUC_UNUSED,
@@ -292,7 +372,7 @@ tracker_marshal_VOID__STRING_STRING (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING,STRING,DOUBLE,INT (tracker-marshal.list:7) */
+/* VOID:STRING,STRING,DOUBLE,INT (tracker-marshal.list:9) */
 void
 tracker_marshal_VOID__STRING_STRING_DOUBLE_INT (GClosure     *closure,
                                                 GValue       *return_value G_GNUC_UNUSED,
@@ -333,7 +413,7 @@ tracker_marshal_VOID__STRING_STRING_DOUBLE_INT (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING,STRING,BOOLEAN,BOOLEAN (tracker-marshal.list:8) */
+/* VOID:STRING,STRING,BOOLEAN,BOOLEAN (tracker-marshal.list:10) */
 void
 tracker_marshal_VOID__STRING_STRING_BOOLEAN_BOOLEAN (GClosure     *closure,
                                                      GValue       *return_value G_GNUC_UNUSED,
@@ -374,7 +454,7 @@ tracker_marshal_VOID__STRING_STRING_BOOLEAN_BOOLEAN (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING,STRING,STRING,BOOLEAN,BOOLEAN (tracker-marshal.list:9) */
+/* VOID:STRING,STRING,STRING,BOOLEAN,BOOLEAN (tracker-marshal.list:11) */
 void
 tracker_marshal_VOID__STRING_STRING_STRING_BOOLEAN_BOOLEAN (GClosure     *closure,
                                                             GValue       *return_value G_GNUC_UNUSED,
@@ -417,7 +497,7 @@ tracker_marshal_VOID__STRING_STRING_STRING_BOOLEAN_BOOLEAN (GClosure     *closur
             data2);
 }
 
-/* BOOL:OBJECT,OBJECT,OBJECT (tracker-marshal.list:10) */
+/* BOOL:OBJECT,OBJECT,OBJECT (tracker-marshal.list:12) */
 void
 tracker_marshal_BOOLEAN__OBJECT_OBJECT_OBJECT (GClosure     *closure,
                                                GValue       *return_value G_GNUC_UNUSED,
@@ -460,7 +540,7 @@ tracker_marshal_BOOLEAN__OBJECT_OBJECT_OBJECT (GClosure     *closure,
   g_value_set_boolean (return_value, v_return);
 }
 
-/* BOOL:OBJECT,OBJECT (tracker-marshal.list:11) */
+/* BOOL:OBJECT,OBJECT (tracker-marshal.list:13) */
 void
 tracker_marshal_BOOLEAN__OBJECT_OBJECT (GClosure     *closure,
                                         GValue       *return_value G_GNUC_UNUSED,
@@ -501,7 +581,7 @@ tracker_marshal_BOOLEAN__OBJECT_OBJECT (GClosure     *closure,
   g_value_set_boolean (return_value, v_return);
 }
 
-/* BOOL:OBJECT,POINTER (tracker-marshal.list:12) */
+/* BOOL:OBJECT,POINTER (tracker-marshal.list:14) */
 void
 tracker_marshal_BOOLEAN__OBJECT_POINTER (GClosure     *closure,
                                          GValue       *return_value G_GNUC_UNUSED,
@@ -542,7 +622,7 @@ tracker_marshal_BOOLEAN__OBJECT_POINTER (GClosure     *closure,
   g_value_set_boolean (return_value, v_return);
 }
 
-/* BOOL:OBJECT (tracker-marshal.list:13) */
+/* BOOL:OBJECT (tracker-marshal.list:15) */
 void
 tracker_marshal_BOOLEAN__OBJECT (GClosure     *closure,
                                  GValue       *return_value G_GNUC_UNUSED,
@@ -581,7 +661,7 @@ tracker_marshal_BOOLEAN__OBJECT (GClosure     *closure,
   g_value_set_boolean (return_value, v_return);
 }
 
-/* BOOL:OBJECT,BOXED,BOXED,OBJECT (tracker-marshal.list:14) */
+/* BOOL:OBJECT,BOXED,BOXED,OBJECT (tracker-marshal.list:16) */
 void
 tracker_marshal_BOOLEAN__OBJECT_BOXED_BOXED_OBJECT (GClosure     *closure,
                                                     GValue       *return_value G_GNUC_UNUSED,

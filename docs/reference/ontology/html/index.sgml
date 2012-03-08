@@ -193,9 +193,10 @@
 <ANCHOR id="nfo-fileCreated" href="ontology/nfo-properties.html#nfo-fileCreated">
 <ANCHOR id="nfo-sampleCount" href="ontology/nfo-properties.html#nfo-sampleCount">
 <ANCHOR id="nfo-compressionType" href="ontology/nfo-properties.html#nfo-compressionType">
-<ANCHOR id="nfo-model" href="ontology/nfo-properties.html#nfo-model">
+<ANCHOR id="nfo-isBootable" href="ontology/nfo-properties.html#nfo-isBootable">
 <ANCHOR id="nfo-listDuration" href="ontology/nfo-properties.html#nfo-listDuration">
 <ANCHOR id="nfo-regionOfInterestHeight" href="ontology/nfo-properties.html#nfo-regionOfInterestHeight">
+<ANCHOR id="nfo-model" href="ontology/nfo-properties.html#nfo-model">
 <ANCHOR id="nfo-aspectRatio" href="ontology/nfo-properties.html#nfo-aspectRatio">
 <ANCHOR id="nfo-hashValue" href="ontology/nfo-properties.html#nfo-hashValue">
 <ANCHOR id="nfo-heading" href="ontology/nfo-properties.html#nfo-heading">

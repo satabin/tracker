@@ -3,10 +3,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerNetworkProvider</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
-<link rel="up" href="ch05.html" title="Base abstract utilities">
-<link rel="prev" href="ch05.html" title="Base abstract utilities">
+<link rel="up" href="ch05.html" title="Base abstract providers for network/password/etc control">
+<link rel="prev" href="ch05.html" title="Base abstract providers for network/password/etc control">
 <link rel="next" href="libtracker-miner-TrackerPasswordProvider.html" title="TrackerPasswordProvider">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -40,7 +40,6 @@
 <pre class="synopsis">
 #include &lt;libtracker-miner/tracker-miner.h&gt;
 
-#define             <a class="link" href="libtracker-miner-TrackerNetworkProvider.html#TRACKER-NETWORK-PROVIDER-GET-INTERFACE:CAPS" title="TRACKER_NETWORK_PROVIDER_GET_INTERFACE()">TRACKER_NETWORK_PROVIDER_GET_INTERFACE</a>(o)
 typedef             <a class="link" href="libtracker-miner-TrackerNetworkProvider.html#TrackerNetworkProvider" title="TrackerNetworkProvider">TrackerNetworkProvider</a>;
                     <a class="link" href="libtracker-miner-TrackerNetworkProvider.html#TrackerNetworkProviderIface" title="TrackerNetworkProviderIface">TrackerNetworkProviderIface</a>;
 enum                <a class="link" href="libtracker-miner-TrackerNetworkProvider.html#TrackerNetworkProviderStatus" title="enum TrackerNetworkProviderStatus">TrackerNetworkProviderStatus</a>;
@@ -64,14 +63,6 @@ is.
 </div>
 <div class="refsect1">
 <a name="libtracker-miner-TrackerNetworkProvider.details"></a><h2>Details</h2>
-<div class="refsect2">
-<a name="TRACKER-NETWORK-PROVIDER-GET-INTERFACE:CAPS"></a><h3>TRACKER_NETWORK_PROVIDER_GET_INTERFACE()</h3>
-<pre class="programlisting">#define TRACKER_NETWORK_PROVIDER_GET_INTERFACE(o) (G_TYPE_INSTANCE_GET_INTERFACE ((o), TRACKER_TYPE_NETWORK_PROVIDER, TrackerNetworkProviderIface))
-</pre>
-<p>
-</p>
-</div>
-<hr>
 <div class="refsect2">
 <a name="TrackerNetworkProvider"></a><h3>TrackerNetworkProvider</h3>
 <pre class="programlisting">typedef struct TrackerNetworkProvider TrackerNetworkProvider;

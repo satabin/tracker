@@ -3,9 +3,9 @@
 <include name="GObject" version="2.0"/>
 <include name="Gio" version="2.0"/>
 <include name="GLib" version="2.0"/>
-<package name="tracker-sparql-0.12"/>
+<package name="tracker-sparql-0.14"/>
 <c:include name="libtracker-sparql/tracker-generated-no-checks.h"/>
-<namespace name="Tracker" version="0.12" c:prefix="Tracker">
+<namespace name="Tracker" version="0.14" c:prefix="Tracker">
 	<enumeration name="SparqlValueType" c:type="TrackerSparqlValueType" glib:type-name="TrackerSparqlValueType" glib:get-type="tracker_sparql_value_type_get_type">
 		<member name="unbound" c:identifier="TRACKER_SPARQL_VALUE_TYPE_UNBOUND" value="0"/>
 		<member name="uri" c:identifier="TRACKER_SPARQL_VALUE_TYPE_URI" value="1"/>

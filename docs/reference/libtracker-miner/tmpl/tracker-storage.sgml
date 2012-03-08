@@ -9,10 +9,12 @@ TrackerStorage
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -41,31 +43,6 @@ TrackerStorage
 
 @TRACKER_STORAGE_REMOVABLE: 
 @TRACKER_STORAGE_OPTICAL: 
-
-<!-- ##### MACRO TRACKER_STORAGE_TYPE_IS_REMOVABLE ##### -->
-<para>
-
-</para>
-
-@type: 
-
-
-<!-- ##### MACRO TRACKER_STORAGE_TYPE_IS_OPTICAL ##### -->
-<para>
-
-</para>
-
-@type: 
-
-
-<!-- ##### FUNCTION tracker_storage_new ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
 
 <!-- ##### FUNCTION tracker_storage_get_device_roots ##### -->
 <para>
@@ -116,6 +93,15 @@ TrackerStorage
 
 @storage: 
 @file: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_storage_new ##### -->
+<para>
+
+</para>
+
+@void: 
 @Returns: 
 
 

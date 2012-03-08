@@ -55,7 +55,7 @@ DIST_COMMON = $(libtracker_minerinclude_HEADERS) \
 # Using enable_gcov instead of have_unit_test because when doing a release
 #  we disable gcov but NOT the unit tests
 @ENABLE_GCOV_FALSE@am__append_1 = \
-@ENABLE_GCOV_FALSE@	-export-symbols-regex '^tracker_(miner|thumbnailer|crawler|storage|password_provider|network_provider)_.*'
+@ENABLE_GCOV_FALSE@	-export-symbols-regex '^tracker_(miner|thumbnailer|crawler|storage|password_provider|network_provider|indexing_tree|file_system|file_notifier|directory_flags|filter_type|filter_policy)_.*'
 
 @HAVE_INTROSPECTION_TRUE@am__append_2 = $(AM_CPPFLAGS)
 @HAVE_INTROSPECTION_TRUE@am__append_3 = TrackerMiner-$(TRACKER_API_VERSION).gir
@@ -121,13 +121,15 @@ am__libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES_DIST =  \
 	tracker-utils.h \
 	$(top_srcdir)/src/libtracker-miner/tracker-monitor.c \
 	$(top_srcdir)/src/libtracker-miner/tracker-monitor.h \
-	tracker-miner-dbus.h tracker-miner-object.c \
+	tracker-miner-dbus.h tracker-miner-enum-types.c \
+	tracker-miner-enum-types.h tracker-miner-object.c \
 	tracker-miner-object.h tracker-miner-fs.c tracker-miner-fs.h \
 	tracker-miner-manager.c tracker-miner-manager.h \
 	tracker-miner-web.c tracker-miner-web.h \
+	tracker-indexing-tree.c tracker-indexing-tree.h \
 	tracker-network-provider.c tracker-password-provider.c \
-	tracker-thumbnailer.c tracker-thumbnailer.h tracker-albumart.c \
-	tracker-albumart.h
+	tracker-thumbnailer.c tracker-thumbnailer.h \
+	tracker-media-art.c tracker-media-art.h
 @HAVE_NETWORK_MANAGER_FALSE@am__objects_1 =  \
 @HAVE_NETWORK_MANAGER_FALSE@	tracker-network-provider-dummy.lo
 @HAVE_NETWORK_MANAGER_TRUE@am__objects_1 = tracker-network-provider-network-manager.lo
@@ -140,13 +142,14 @@ am__objects_5 = $(am__objects_3) $(am__objects_4) tracker-crawler.lo \
 	tracker-utils.lo
 am__objects_6 = tracker-monitor.lo
 am__objects_7 = $(am__objects_6) $(am__objects_4) \
-	tracker-miner-object.lo tracker-miner-fs.lo \
-	tracker-miner-manager.lo tracker-miner-web.lo
+	tracker-miner-enum-types.lo tracker-miner-object.lo \
+	tracker-miner-fs.lo tracker-miner-manager.lo \
+	tracker-miner-web.lo
 am_libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS =  \
 	$(am__objects_1) $(am__objects_2) $(am__objects_5) \
-	$(am__objects_7) tracker-network-provider.lo \
-	tracker-password-provider.lo tracker-thumbnailer.lo \
-	tracker-albumart.lo
+	$(am__objects_7) tracker-indexing-tree.lo \
+	tracker-network-provider.lo tracker-password-provider.lo \
+	tracker-thumbnailer.lo tracker-media-art.lo
 libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS =  \
 	$(am_libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
@@ -158,7 +161,8 @@ libtracker_miner_@TRACKER_API_VERSION@_la_LINK = $(LIBTOOL) $(AM_V_lt) \
 	$(libtracker_miner_@TRACKER_API_VERSION@_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
 libtracker_miner_private_la_LIBADD =
-am__objects_8 = tracker-priority-queue.lo tracker-task-pool.lo \
+am__objects_8 = tracker-file-notifier.lo tracker-file-system.lo \
+	tracker-priority-queue.lo tracker-task-pool.lo \
 	tracker-sparql-buffer.lo tracker-storage.lo
 am_libtracker_miner_private_la_OBJECTS = $(am__objects_8)
 libtracker_miner_private_la_OBJECTS =  \
@@ -313,6 +317,8 @@ LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
+LIBOSINFO_CFLAGS = @LIBOSINFO_CFLAGS@
+LIBOSINFO_LIBS = @LIBOSINFO_LIBS@
 LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
 LIBPNG_LIBS = @LIBPNG_LIBS@
 LIBS = @LIBS@
@@ -374,8 +380,6 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
-PANGO_CFLAGS = @PANGO_CFLAGS@
-PANGO_LIBS = @PANGO_LIBS@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
@@ -526,17 +530,12 @@ libtracker_miner_monitor_sources = \
 libtracker_miner_monitor_headers = \
 	$(top_srcdir)/src/libtracker-miner/tracker-monitor.h
 
+libtracker_miner_file_system_sources = \
+	$(top_srcdir)/src/libtracker-miner/tracker-file-system.c
 
-# Include list of shared sources:
-#  Defines:
-#    $(libtracker_miner_marshal_sources)
-#    $(libtracker_miner_marshal_headers)
-#    $(libtracker_miner_monitor_sources)
-#    $(libtracker_miner_monitor_headers)
-#
-# Headers and sources are split for the tests to build
-# with make distcheck.
-#
+libtracker_miner_file_system_headers = \
+	$(top_srcdir)/src/libtracker-miner/tracker-file-system.h
+
 AM_CPPFLAGS = \
 	$(BUILD_CFLAGS)                                \
 	-I$(top_srcdir)/src                            \
@@ -558,6 +557,10 @@ crawler_sources = \
 	tracker-utils.h					
 
 private_sources = \
+	tracker-file-notifier.h                        \
+	tracker-file-notifier.c                        \
+	tracker-file-system.h                          \
+	tracker-file-system.c                          \
 	tracker-priority-queue.h                       \
 	tracker-priority-queue.c                       \
 	tracker-task-pool.h                            \
@@ -571,6 +574,8 @@ miner_sources = \
 	$(libtracker_miner_monitor_sources)            \
 	$(libtracker_miner_monitor_headers)            \
 	tracker-miner-dbus.h                           \
+	tracker-miner-enum-types.c                     \
+	tracker-miner-enum-types.h                     \
 	tracker-miner-object.c                         \
 	tracker-miner-object.h                         \
 	tracker-miner-fs.c                             \
@@ -588,18 +593,23 @@ libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES = \
 	$(password_provider_sources)                   \
 	$(crawler_sources)			       \
 	$(miner_sources)			       \
+	tracker-indexing-tree.c                        \
+	tracker-indexing-tree.h                        \
 	tracker-network-provider.c                     \
 	tracker-password-provider.c                    \
 	tracker-thumbnailer.c                          \
 	tracker-thumbnailer.h                          \
-	tracker-albumart.c                             \
-	tracker-albumart.h
+	tracker-media-art.c                            \
+	tracker-media-art.h
 
 libtracker_minerinclude_HEADERS = \
-	tracker-albumart.h                             \
 	tracker-crawler.h                              \
+	tracker-indexing-tree.h                        \
+	tracker-media-art.h                            \
 	tracker-miner.h                                \
 	tracker-miner-common.h                         \
+	tracker-miner-enums.h                          \
+	tracker-miner-enum-types.h                     \
 	tracker-miner-object.h                         \
 	tracker-miner-fs.h                             \
 	tracker-miner-manager.h                        \
@@ -631,12 +641,16 @@ vapi_DATA = \
 	tracker-miner-$(TRACKER_API_VERSION).deps
 
 BUILT_SOURCES = \
+	tracker-miner-enum-types.c                     \
+	tracker-miner-enum-types.h                     \
 	$(libtracker_miner_marshal_sources)            \
 	$(libtracker_miner_marshal_headers)            \
 	$(vapi_DATA)
 
 CLEANFILES = $(BUILT_SOURCES) $(am__append_4)
 EXTRA_DIST = \
+	tracker-miner-enum-types.c.template            \
+	tracker-miner-enum-types.h.template            \
 	tracker-marshal.list                           \
 	tracker-miner.vapi                             \
 	tracker-miner.deps
@@ -755,9 +769,13 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-albumart.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crawler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-notifier.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-system.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-indexing-tree.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-marshal.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-media-art.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-enum-types.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-fs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-manager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-object.Plo@am__quote@
@@ -1166,6 +1184,24 @@ test-report perf-report full-report:	${TEST_PROGS}
 .PHONY: test test-report perf-report full-report
 # run make test as part of make check
 check-local: test
+
+# Include list of shared sources:
+#  Defines:
+#    $(libtracker_miner_marshal_sources)
+#    $(libtracker_miner_marshal_headers)
+#    $(libtracker_miner_monitor_sources)
+#    $(libtracker_miner_monitor_headers)
+#    $(libtracker_miner_file_system_sources)
+#
+# Headers and sources are split for the tests to build
+# with make distcheck.
+#
+
+tracker-miner-enum-types.h: tracker-miner-enum-types.h.template tracker-miner-enums.h
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template tracker-miner-enum-types.h.template tracker-miner-enums.h) > $@
+
+tracker-miner-enum-types.c: tracker-miner-enum-types.c.template
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template tracker-miner-enum-types.c.template tracker-miner-enums.h) > $@
 
 $(top_builddir)/src/libtracker-miner/tracker-marshal.h: tracker-marshal.list
 	$(AM_V_GEN)$(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --header > $@

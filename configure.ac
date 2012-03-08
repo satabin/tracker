@@ -12,15 +12,15 @@ AC_PREREQ([2.64])
 # if backwards compatibility has been broken,
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
-m4_define([tracker_minor_version], [12])
-m4_define([tracker_micro_version], [10])
-m4_define([tracker_interface_age], [10])
+m4_define([tracker_minor_version], [14])
+m4_define([tracker_micro_version], [0])
+m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
           [tracker_major_version.tracker_minor_version.tracker_micro_version])
 # This is the X.Y used in -llibtracker-FOO-X.Y
-m4_define([tracker_api_version], [0.12])
+m4_define([tracker_api_version], [0.14])
 
 # libtool version related macros
 m4_define([tracker_lt_release], [tracker_major_version.tracker_minor_version])
@@ -38,7 +38,7 @@ m4_define([tracker_lt_current_minus_age],
 # for Tracker.
 #
 # TRACKER_BINARY_VERSION=$TRACKER_MAJOR_VERSION.$TRACKER_MINOR_VERSION.$LT_CURRENT
-m4_define([tracker_binary_version], [0.12.0])
+m4_define([tracker_binary_version], [0.14.0])
 
 AC_INIT([tracker],
         [tracker_version],
@@ -178,6 +178,7 @@ LIBVORBIS_REQUIRED=0.22
 LIBFLAC_REQUIRED=1.2.1
 LIBEXIF_REQUIRED=0.6
 LIBGSF_REQUIRED=1.13
+LIBOSINFO_REQUIRED=0.0.2
 EXEMPI_REQUIRED=2.1.0
 EVO_REQUIRED=2.32.0
 EVO_SHELL_REQUIRED=2.32.0
@@ -331,51 +332,76 @@ PKG_CHECK_MODULES(TRACKER_MINER_FS, [$TRACKER_MINER_FS_REQUIRED])
 TRACKER_MINER_FS_LIBS="$TRACKER_MINER_FS_LIBS -lz -lm"
 
 # Check requirements for tracker-miner-evolution
-TRACKER_MINER_EVOLUTION_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
-                                  evolution-shell-3.0       >= 3.1
-                                  evolution-plugin-3.0
-                                  evolution-data-server-1.2 >= $EDS_REQUIRED
-                                  camel-1.2                 >= $CAMEL_REQUIRED"
+evolution_plugin_name=""
 
-PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_REQUIRED],
+# First test for 3_3_5
+TRACKER_MINER_EVOLUTION_3_3_5_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
+                                        evolution-shell-3.0       >= 3.1
+                                        evolution-plugin-3.0
+                                        libemail-utils
+                                        libemail-engine
+                                        evolution-data-server-1.2 >= $EDS_REQUIRED
+                                        camel-1.2                 >= $CAMEL_REQUIRED"
+
+PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_3_3_5_REQUIRED],
                   [have_tracker_miner_evolution=yes],
                   [have_tracker_miner_evolution=no])
 
-if test "x$have_tracker_miner_evolution" = "xyes"; then
+if test -z "$evolution_plugin_name" && test "x$have_tracker_miner_evolution" = "xyes"; then
+   evolution_plugin_name="evolution-plugin-3.0"
+
+   AC_DEFINE(EVOLUTION_SHELL_3_3_5, 1, [Use new evolution-shell API])
+   AC_DEFINE(EVOLUTION_SHELL_3_2, 1, [Use new evolution-shell API])
+   AC_DEFINE(EVOLUTION_SHELL_2_91, 1, [Use new evolution-shell API])
+fi
+
+# Second test for 3_2
+TRACKER_MINER_EVOLUTION_3_2_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
+                                      evolution-shell-3.0       >= 3.1
+                                      evolution-plugin-3.0
+                                      evolution-data-server-1.2 >= $EDS_REQUIRED
+                                      camel-1.2                 >= $CAMEL_REQUIRED"
+
+PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_3_2_REQUIRED],
+                  [have_tracker_miner_evolution=yes],
+                  [have_tracker_miner_evolution=no])
+
+if test -z "$evolution_plugin_name" && test "x$have_tracker_miner_evolution" = "xyes"; then
    evolution_plugin_name="evolution-plugin-3.0"
 
    AC_DEFINE(EVOLUTION_SHELL_3_2, 1, [Use new evolution-shell API])
    AC_DEFINE(EVOLUTION_SHELL_2_91, 1, [Use new evolution-shell API])
-else
-   TRACKER_MINER_EVOLUTION_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
-                                     evolution-shell-3.0
-                                     evolution-plugin-3.0
-                                     evolution-data-server-1.2 >= $EDS_REQUIRED
-                                     camel-1.2                 >= $CAMEL_REQUIRED"
+fi
 
-   PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_REQUIRED],
-                     [have_tracker_miner_evolution=yes],
-                     [have_tracker_miner_evolution=no])
+# Third test for 2_91
+TRACKER_MINER_EVOLUTION_2_91_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
+                                       evolution-shell-3.0
+                                       evolution-plugin-3.0
+                                       evolution-data-server-1.2 >= $EDS_REQUIRED
+                                       camel-1.2                 >= $CAMEL_REQUIRED"
 
-   if test "x$have_tracker_miner_evolution" = "xyes"; then
-      evolution_plugin_name="evolution-plugin-3.0"
+PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_2_91_REQUIRED],
+                  [have_tracker_miner_evolution=yes],
+                  [have_tracker_miner_evolution=no])
 
-      AC_DEFINE(EVOLUTION_SHELL_2_91, 1, [Use new evolution-shell API])
-   else
-      evolution_plugin_name="evolution-plugin"
+if test -z "$evolution_plugin_name" && test "x$have_tracker_miner_evolution" = "xyes"; then
+   evolution_plugin_name="evolution-plugin-3.0"
+   AC_DEFINE(EVOLUTION_SHELL_2_91, 1, [Use new evolution-shell API])
+fi
 
+# Fourth test others (do we really want support for anything < 3.2)?
+TRACKER_MINER_EVOLUTION_LAST_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
+                                       evolution-shell           >= $EVO_SHELL_REQUIRED
+                                       evolution-plugin          >= $EVO_REQUIRED
+                                       evolution-data-server-1.2 >= $EDS_REQUIRED
+                                       camel-1.2                 >= $CAMEL_REQUIRED"
 
-      TRACKER_MINER_EVOLUTION_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
-                                        evolution-shell           >= $EVO_SHELL_REQUIRED
-                                        evolution-plugin          >= $EVO_REQUIRED
-                                        evolution-data-server-1.2 >= $EDS_REQUIRED
-                                        camel-1.2                 >= $CAMEL_REQUIRED"
+PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_LAST_REQUIRED],
+                  [have_tracker_miner_evolution=yes],
+                  [have_tracker_miner_evolution=no])
 
-      PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_REQUIRED],
-                        [have_tracker_miner_evolution=yes],
-                        [have_tracker_miner_evolution=no])
-
-   fi
+if test -z "$evolution_plugin_name" && test "x$have_tracker_miner_evolution" = "xyes"; then
+   evolution_plugin_name="evolution-plugin"
 fi
 
 # Check requirements for tracker-miner-thunderbird
@@ -811,8 +837,6 @@ AM_CONDITIONAL(HAVE_HAL, test "x$have_hal" = "xyes")
 # By default, AUTO with this order of preference:
 #  1)  libunistring
 #  2)  libicu
-#
-# Note that glib can only be used if explicitly requested for it.
 ##################################################################
 
 # Check for libunistring...
@@ -833,16 +857,10 @@ AC_CHECK_HEADER(unicode/ubrk.h,
 LIBICU_CFLAGS=""
 LIBICU_LIBS="-licuuc -licui18n"
 
-# Check for Pango...
-PKG_CHECK_MODULES(PANGO,
-                  [pango >= $PANGO_REQUIRED],
-                  [have_pango=yes],
-                  [have_pango=no])
-
 # Configure option
 AC_ARG_WITH([unicode-support],
             AS_HELP_STRING([--with-unicode-support],
-                           [Unicode support library? (libunistring|libicu|glib) [[default=auto (!glib)]]]),,
+                           [Unicode support library? (libunistring|libicu) [[default=auto]]]),,
             [with_unicode_support=auto])
 
 # If auto, decide ourselves
@@ -853,10 +871,7 @@ if test "x$with_unicode_support" = "xauto"; then
       if test "x$have_libicu" = "xyes"; then
          with_unicode_support=libicu
       else
-         AC_MSG_ERROR([Couldn't find neither libunistring nor libicu. You can still compile tracker
-                       without any of these two, using glib instead, but be warned that the FTS parsing
-                       performance will be much worse. If you still want to use glib as Unicode support
-                       library, enable it with an explicit --with-unicode-support=glib])
+         AC_MSG_ERROR([Couldn't find neither libunistring nor libicu])
       fi
    fi
 fi
@@ -883,14 +898,6 @@ case "x$with_unicode_support" in
           AC_DEFINE(HAVE_LIBICU, [1], [libicu Unicode support library])
         else
           AC_MSG_ERROR([Couldn't find libicu])
-        fi
-     ;;
-     # Use glib/pango
-     "xglib")
-        UNICODE_SUPPORT_CFLAGS=$PANGO_CFLAGS
-        UNICODE_SUPPORT_LIBS=$PANGO_LIBS
-        if test "x$have_pango" != "xyes"; then
-          AC_MSG_ERROR([Couldn't find pango])
         fi
      ;;
      # Invalid option value
@@ -1173,7 +1180,6 @@ else
 fi
 
 if test "x$have_tracker_miner_evolution" = "xyes"; then
-
    AC_ARG_WITH([evolution_plugin_dir],
                AS_HELP_STRING([--with-evolution-plugin-dir],
                               [path to Evolution plugin directory]))
@@ -1223,7 +1229,7 @@ if test "x$have_tracker_miner_thunderbird" = "xyes"; then
                               [path to Thunderbird plugin directory]))
    if test "x$with_thunderbird_plugin_dir" = "x" ; then
       # This is a symlinked to $prefix/share/xul-ext
-      tracker_miner_thunderbird_install_dir="${prefix}/lib/thunderbird-5.0/extensions"
+      tracker_miner_thunderbird_install_dir="${prefix}/lib/thunderbird-${thunderbird_version}/extensions"
    else
       tracker_miner_thunderbird_install_dir="$with_thunderbird_plugin_dir"
    fi
@@ -1262,13 +1268,12 @@ else
 fi
 
 if test "x$have_tracker_miner_firefox" = "xyes"; then
-
    AC_ARG_WITH([firefox_plugin_dir],
                AS_HELP_STRING([--with-firefox-plugin-dir],
                               [path to Firefox plugin directory]))
    if test "x$with_firefox_plugin_dir" = "x" ; then
       # This is a symlinked to $prefix/share/xul-ext
-      tracker_miner_firefox_install_dir="${prefix}/lib/firefox-5.0/extensions"
+      tracker_miner_firefox_install_dir="${prefix}/lib/firefox-${firefox_version}/extensions"
    else
       tracker_miner_firefox_install_dir="$with_firefox_plugin_dir"
    fi
@@ -1565,7 +1570,7 @@ AC_ARG_ENABLE(qt,
                              [enable Qt support, (MP3 album art) [[default=auto]]]),,
               [enable_qt=auto])
 
-selected_for_albumart="no  (disabled)"
+selected_for_media_art="no  (disabled)"
 
 ##################################################################
 # Check for tracker-extract: Choose between GdkPixbuf/Qt
@@ -1582,7 +1587,7 @@ if test "x$enable_qt" != "xno" && test "x$enable_gdkpixbuf" != "xyes"; then
 
    if test "x$have_qt" = "xyes"; then
       AC_DEFINE(HAVE_QT, [], [Define if we have Qt])
-      selected_for_albumart="yes (qt)"
+      selected_for_media_art="yes (qt)"
    fi
 else
    have_qt="no  (disabled)"
@@ -1607,7 +1612,7 @@ if test "x$enable_gdkpixbuf" != "xno" && test "x$enable_quill" != "xyes"; then
 
    if test "x$have_gdkpixbuf" = "xyes"; then
       AC_DEFINE(HAVE_GDKPIXBUF, [], [Define if we have GdkPixbuf])
-      selected_for_albumart="yes (GdkPixbuf)"
+      selected_for_media_art="yes (GdkPixbuf)"
    fi
 else
    have_gdkpixbuf="no  (disabled)"
@@ -1832,6 +1837,39 @@ if test "x$enable_libgsf" = "xyes"; then
 fi
 
 AM_CONDITIONAL(HAVE_LIBGSF, test "x$have_libgsf" = "xyes")
+
+##################################################################
+# Check for tracker-extract: libosinfo
+##################################################################
+
+AC_ARG_ENABLE(libosinfo,
+              AS_HELP_STRING([--enable-libosinfo],
+                             [enable extractor for ISO data [[default=auto]]]),,
+              [enable_libosinfo=auto])
+
+if test "x$enable_libosinfo" != "xno" ; then
+   PKG_CHECK_MODULES(LIBOSINFO,
+                     [libosinfo-1.0 >= $LIBOSINFO_REQUIRED],
+		     [have_libosinfo=yes],
+		     [have_libosinfo=no])
+
+   AC_SUBST(LIBOSINFO_CFLAGS)
+   AC_SUBST(LIBOSINFO_LIBS)
+
+   if test "x$have_libosinfo" = "xyes"; then
+      AC_DEFINE(HAVE_LIBOSINFO, [], [Define if we have libosinfo])
+   fi
+else
+   have_libosinfo="no  (disabled)"
+fi
+
+if test "x$enable_libosinfo" = "xyes"; then
+   if test "x$have_libosinfo" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find libosinfo >= $LIBOSINFO_REQUIRED.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_LIBOSINFO, test "x$have_libosinfo" = "xyes")
 
 ##################################################################
 # Check for tracker-extract: libgif
@@ -2349,9 +2387,10 @@ Metadata Extractors:
 	Support XML / HTML:                     $have_libxml2
 	Support embedded / sidecar XMP:         $have_exempi
 	Support generic media formats:          $have_generic_media_handler ($have_generic_media_handler_app) (backend: $gstreamer_backend)
-	Support MP3 album art:                  $selected_for_albumart
+	Support media art processing:           $selected_for_media_art
 	Support cue sheet parsing:              $have_libcue
 	Support playlists (w/ Totem):           $have_playlist
+	Support ISO image parsing:              $have_libosinfo
 
 Data Miners:
 

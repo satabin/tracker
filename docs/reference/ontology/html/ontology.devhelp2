@@ -277,9 +277,10 @@
     <keyword type="" name="nfo:fileCreated" link="nfo-properties.html#nfo-fileCreated"/>
     <keyword type="" name="nfo:sampleCount" link="nfo-properties.html#nfo-sampleCount"/>
     <keyword type="" name="nfo:compressionType" link="nfo-properties.html#nfo-compressionType"/>
-    <keyword type="" name="nfo:model" link="nfo-properties.html#nfo-model"/>
+    <keyword type="" name="nfo:isBootable" link="nfo-properties.html#nfo-isBootable"/>
     <keyword type="" name="nfo:listDuration" link="nfo-properties.html#nfo-listDuration"/>
     <keyword type="" name="nfo:regionOfInterestHeight" link="nfo-properties.html#nfo-regionOfInterestHeight"/>
+    <keyword type="" name="nfo:model" link="nfo-properties.html#nfo-model"/>
     <keyword type="" name="nfo:aspectRatio" link="nfo-properties.html#nfo-aspectRatio"/>
     <keyword type="" name="nfo:hashValue" link="nfo-properties.html#nfo-hashValue"/>
     <keyword type="" name="nfo:heading" link="nfo-properties.html#nfo-heading"/>

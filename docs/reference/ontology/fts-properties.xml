@@ -15,23 +15,38 @@
 <tbody>
 <tr>
   <td>
-<link linkend='nmm-category'>nmm:category</link>,   </td>
-  <td>4</td>
+<link linkend='nmo-messageSubject'>nmo:messageSubject</link>,   </td>
+  <td>5</td>
 </tr>
 <tr>
   <td>
-<link linkend='nmm-albumTitle'>nmm:albumTitle</link>,   </td>
-  <td>6</td>
+<link linkend='nie-keyword'>nie:keyword</link>,   </td>
+  <td>5</td>
 </tr>
 <tr>
   <td>
-<link linkend='nmm-genre'>nmm:genre</link>,   </td>
-  <td>4</td>
+<link linkend='nie-comment'>nie:comment</link>,   </td>
+  <td>2</td>
 </tr>
 <tr>
   <td>
-<link linkend='nmm-artistName'>nmm:artistName</link>,   </td>
-  <td>6</td>
+<link linkend='nie-subject'>nie:subject</link>,   </td>
+  <td>5</td>
+</tr>
+<tr>
+  <td>
+<link linkend='nie-description'>nie:description</link>,   </td>
+  <td>3</td>
+</tr>
+<tr>
+  <td>
+<link linkend='nie-plainTextContent'>nie:plainTextContent</link>,   </td>
+  <td>2</td>
+</tr>
+<tr>
+  <td>
+<link linkend='nie-title'>nie:title</link>,   </td>
+  <td>10</td>
 </tr>
 <tr>
   <td>
@@ -50,33 +65,23 @@
 </tr>
 <tr>
   <td>
-<link linkend='nao-prefLabel'>nao:prefLabel</link>,   </td>
-  <td>10</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nao-description'>nao:description</link>,   </td>
-  <td>3</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nfo-tableOfContents'>nfo:tableOfContents</link>,   </td>
-  <td>5</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nfo-fontFamily'>nfo:fontFamily</link>,   </td>
-  <td>5</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nfo-fileName'>nfo:fileName</link>,   </td>
-  <td>7</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nfo-genre'>nfo:genre</link>,   </td>
+<link linkend='nmm-category'>nmm:category</link>,   </td>
   <td>4</td>
+</tr>
+<tr>
+  <td>
+<link linkend='nmm-albumTitle'>nmm:albumTitle</link>,   </td>
+  <td>6</td>
+</tr>
+<tr>
+  <td>
+<link linkend='nmm-genre'>nmm:genre</link>,   </td>
+  <td>4</td>
+</tr>
+<tr>
+  <td>
+<link linkend='nmm-artistName'>nmm:artistName</link>,   </td>
+  <td>6</td>
 </tr>
 <tr>
   <td>
@@ -205,38 +210,33 @@
 </tr>
 <tr>
   <td>
-<link linkend='nmo-messageSubject'>nmo:messageSubject</link>,   </td>
-  <td>5</td>
+<link linkend='nao-prefLabel'>nao:prefLabel</link>,   </td>
+  <td>10</td>
 </tr>
 <tr>
   <td>
-<link linkend='nie-keyword'>nie:keyword</link>,   </td>
-  <td>5</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nie-comment'>nie:comment</link>,   </td>
-  <td>2</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nie-subject'>nie:subject</link>,   </td>
-  <td>5</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nie-description'>nie:description</link>,   </td>
+<link linkend='nao-description'>nao:description</link>,   </td>
   <td>3</td>
 </tr>
 <tr>
   <td>
-<link linkend='nie-plainTextContent'>nie:plainTextContent</link>,   </td>
-  <td>2</td>
+<link linkend='nfo-tableOfContents'>nfo:tableOfContents</link>,   </td>
+  <td>5</td>
 </tr>
 <tr>
   <td>
-<link linkend='nie-title'>nie:title</link>,   </td>
-  <td>10</td>
+<link linkend='nfo-fontFamily'>nfo:fontFamily</link>,   </td>
+  <td>5</td>
+</tr>
+<tr>
+  <td>
+<link linkend='nfo-fileName'>nfo:fileName</link>,   </td>
+  <td>7</td>
+</tr>
+<tr>
+  <td>
+<link linkend='nfo-genre'>nfo:genre</link>,   </td>
+  <td>4</td>
 </tr>
 <tr>
   <td>

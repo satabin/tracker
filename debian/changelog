@@ -1,8 +1,9 @@
 tracker (0.14.0-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Rename library packages for the API version bump 0.12 → 0.14.
 
- -- Michael Biebl <biebl@debian.org>  Thu, 08 Mar 2012 20:11:09 +0100
+ -- Michael Biebl <biebl@debian.org>  Thu, 08 Mar 2012 20:19:56 +0100
 
 tracker (0.12.10-1) unstable; urgency=low
 

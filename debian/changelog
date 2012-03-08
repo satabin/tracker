@@ -2,6 +2,7 @@ tracker (0.14.0-1) UNRELEASED; urgency=low
 
   * New upstream release.
   * Rename library packages for the API version bump 0.12 → 0.14.
+  * Update symbols file for libtracker-miner.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 08 Mar 2012 20:19:56 +0100
 

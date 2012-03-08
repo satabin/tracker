@@ -1,11 +1,50 @@
 libtracker-miner-0.14.so.0 libtracker-miner-0.14-0 #MINVER#
+ tracker_crawler_get_file_attributes@Base 0.14.0
+ tracker_crawler_get_file_info@Base 0.14.0
  tracker_crawler_get_type@Base 0.8.0
  tracker_crawler_new@Base 0.8.0
  tracker_crawler_pause@Base 0.8.0
  tracker_crawler_resume@Base 0.8.0
+ tracker_crawler_set_file_attributes@Base 0.14.0
  tracker_crawler_set_throttle@Base 0.8.0
  tracker_crawler_start@Base 0.8.0
  tracker_crawler_stop@Base 0.8.0
+ tracker_directory_flags_get_type@Base 0.14.0
+ tracker_file_notifier_get_file_iri@Base 0.14.0
+ tracker_file_notifier_get_type@Base 0.14.0
+ tracker_file_notifier_is_active@Base 0.14.0
+ tracker_file_notifier_new@Base 0.14.0
+ tracker_file_notifier_start@Base 0.14.0
+ tracker_file_notifier_stop@Base 0.14.0
+ tracker_file_system_delete_files@Base 0.14.0
+ tracker_file_system_get_file@Base 0.14.0
+ tracker_file_system_get_property@Base 0.14.0
+ tracker_file_system_get_type@Base 0.14.0
+ tracker_file_system_new@Base 0.14.0
+ tracker_file_system_peek_file@Base 0.14.0
+ tracker_file_system_peek_parent@Base 0.14.0
+ tracker_file_system_register_property@Base 0.14.0
+ tracker_file_system_set_property@Base 0.14.0
+ tracker_file_system_traverse@Base 0.14.0
+ tracker_file_system_unset_property@Base 0.14.0
+ tracker_filter_policy_get_type@Base 0.14.0
+ tracker_filter_type_get_type@Base 0.14.0
+ tracker_indexing_tree_add@Base 0.14.0
+ tracker_indexing_tree_add_filter@Base 0.14.0
+ tracker_indexing_tree_clear_filters@Base 0.14.0
+ tracker_indexing_tree_file_is_indexable@Base 0.14.0
+ tracker_indexing_tree_file_is_root@Base 0.14.0
+ tracker_indexing_tree_file_matches_filter@Base 0.14.0
+ tracker_indexing_tree_get_default_policy@Base 0.14.0
+ tracker_indexing_tree_get_filter_hidden@Base 0.14.0
+ tracker_indexing_tree_get_root@Base 0.14.0
+ tracker_indexing_tree_get_type@Base 0.14.0
+ tracker_indexing_tree_list_roots@Base 0.14.0
+ tracker_indexing_tree_new@Base 0.14.0
+ tracker_indexing_tree_parent_is_indexable@Base 0.14.0
+ tracker_indexing_tree_remove@Base 0.14.0
+ tracker_indexing_tree_set_default_policy@Base 0.14.0
+ tracker_indexing_tree_set_filter_hidden@Base 0.14.0
  tracker_miner_error_quark@Base 0.8.0
  tracker_miner_fs_add_directory_without_parent@Base 0.10.0
  tracker_miner_fs_check_directory@Base 0.10.0
@@ -18,6 +57,7 @@ libtracker-miner-0.14.so.0 libtracker-miner-0.14-0 #MINVER#
  tracker_miner_fs_file_notify@Base 0.8.0
  tracker_miner_fs_force_mtime_checking@Base 0.10.26
  tracker_miner_fs_force_recheck@Base 0.8.0
+ tracker_miner_fs_get_indexing_tree@Base 0.14.0
  tracker_miner_fs_get_initial_crawling@Base 0.10.0
  tracker_miner_fs_get_mtime_checking@Base 0.10.0
  tracker_miner_fs_get_parent_urn@Base 0.8.0

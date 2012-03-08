@@ -3061,11 +3061,11 @@ static void tracker_sparql_expression_convert_expression_to_string (GString* sql
 #line 325 "/home/martyn/Source/tracker/src/libtracker-data/tracker-sparql-expression.vala"
 			_tmp11_ = begin;
 #line 325 "/home/martyn/Source/tracker/src/libtracker-data/tracker-sparql-expression.vala"
-			g_string_insert (_tmp10_, (gssize) _tmp11_, "strftime (\"%Y-%m-%dT%H:%M:%fZ\", ");
+			g_string_insert (_tmp10_, (gssize) _tmp11_, "SparqlFormatTime (");
 #line 326 "/home/martyn/Source/tracker/src/libtracker-data/tracker-sparql-expression.vala"
 			_tmp12_ = sql;
 #line 326 "/home/martyn/Source/tracker/src/libtracker-data/tracker-sparql-expression.vala"
-			g_string_append (_tmp12_, ", \"unixepoch\")");
+			g_string_append (_tmp12_, ")");
 #line 327 "/home/martyn/Source/tracker/src/libtracker-data/tracker-sparql-expression.vala"
 			break;
 #line 3072 "tracker-sparql-expression.c"

@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-TrackerThumbnailer
+tracker-thumbnailer
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -9,15 +9,26 @@ TrackerThumbnailer
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
+
 <!-- ##### SECTION Stability_Level ##### -->
 
 
 <!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION tracker_thumbnailer_cleanup ##### -->
+<para>
+
+</para>
+
+@uri_prefix: 
+@Returns: 
 
 
 <!-- ##### FUNCTION tracker_thumbnailer_init ##### -->
@@ -27,22 +38,6 @@ TrackerThumbnailer
 
 @void: 
 @Returns: 
-
-
-<!-- ##### FUNCTION tracker_thumbnailer_shutdown ##### -->
-<para>
-
-</para>
-
-@void: 
-
-
-<!-- ##### FUNCTION tracker_thumbnailer_send ##### -->
-<para>
-
-</para>
-
-@void: 
 
 
 <!-- ##### FUNCTION tracker_thumbnailer_move_add ##### -->
@@ -66,12 +61,19 @@ TrackerThumbnailer
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_thumbnailer_cleanup ##### -->
+<!-- ##### FUNCTION tracker_thumbnailer_send ##### -->
 <para>
 
 </para>
 
-@uri_prefix: 
-@Returns: 
+@void: 
+
+
+<!-- ##### FUNCTION tracker_thumbnailer_shutdown ##### -->
+<para>
+
+</para>
+
+@void: 
 
 

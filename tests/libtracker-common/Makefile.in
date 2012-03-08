@@ -68,27 +68,20 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__EXEEXT_1 = tracker-type-utils$(EXEEXT) tracker-dbus$(EXEEXT) \
 	tracker-file-utils$(EXEEXT) tracker-utils$(EXEEXT) \
-	tracker-albumart-test$(EXEEXT) tracker-sched-test$(EXEEXT) \
+	tracker-media-art-test$(EXEEXT) tracker-sched-test$(EXEEXT) \
 	tracker-crc32-test$(EXEEXT) tracker-date-time-test$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
-am_tracker_albumart_test_OBJECTS = tracker-albumart-test.$(OBJEXT)
-tracker_albumart_test_OBJECTS = $(am_tracker_albumart_test_OBJECTS)
-tracker_albumart_test_LDADD = $(LDADD)
+am_tracker_crc32_test_OBJECTS = tracker-crc32-test.$(OBJEXT)
+tracker_crc32_test_OBJECTS = $(am_tracker_crc32_test_OBJECTS)
+tracker_crc32_test_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
-tracker_albumart_test_DEPENDENCIES =  \
+tracker_crc32_test_DEPENDENCIES =  \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
-am_tracker_crc32_test_OBJECTS = tracker-crc32-test.$(OBJEXT)
-tracker_crc32_test_OBJECTS = $(am_tracker_crc32_test_OBJECTS)
-tracker_crc32_test_LDADD = $(LDADD)
-tracker_crc32_test_DEPENDENCIES =  \
-	$(top_builddir)/tests/common/libtracker-testcommon.la \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_tracker_date_time_test_OBJECTS = tracker-date-time-test.$(OBJEXT)
 tracker_date_time_test_OBJECTS = $(am_tracker_date_time_test_OBJECTS)
 tracker_date_time_test_LDADD = $(LDADD)
@@ -107,6 +100,13 @@ am_tracker_file_utils_OBJECTS = tracker-file-utils-test.$(OBJEXT)
 tracker_file_utils_OBJECTS = $(am_tracker_file_utils_OBJECTS)
 tracker_file_utils_LDADD = $(LDADD)
 tracker_file_utils_DEPENDENCIES =  \
+	$(top_builddir)/tests/common/libtracker-testcommon.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+tracker_media_art_test_SOURCES = tracker-media-art-test.c
+tracker_media_art_test_OBJECTS = tracker-media-art-test.$(OBJEXT)
+tracker_media_art_test_LDADD = $(LDADD)
+tracker_media_art_test_DEPENDENCIES =  \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -157,16 +157,16 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(tracker_albumart_test_SOURCES) \
-	$(tracker_crc32_test_SOURCES) \
+SOURCES = $(tracker_crc32_test_SOURCES) \
 	$(tracker_date_time_test_SOURCES) $(tracker_dbus_SOURCES) \
-	$(tracker_file_utils_SOURCES) $(tracker_sched_test_SOURCES) \
-	$(tracker_type_utils_SOURCES) $(tracker_utils_SOURCES)
-DIST_SOURCES = $(tracker_albumart_test_SOURCES) \
-	$(tracker_crc32_test_SOURCES) \
+	$(tracker_file_utils_SOURCES) tracker-media-art-test.c \
+	$(tracker_sched_test_SOURCES) $(tracker_type_utils_SOURCES) \
+	$(tracker_utils_SOURCES)
+DIST_SOURCES = $(tracker_crc32_test_SOURCES) \
 	$(tracker_date_time_test_SOURCES) $(tracker_dbus_SOURCES) \
-	$(tracker_file_utils_SOURCES) $(tracker_sched_test_SOURCES) \
-	$(tracker_type_utils_SOURCES) $(tracker_utils_SOURCES)
+	$(tracker_file_utils_SOURCES) tracker-media-art-test.c \
+	$(tracker_sched_test_SOURCES) $(tracker_type_utils_SOURCES) \
+	$(tracker_utils_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -284,6 +284,8 @@ LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
+LIBOSINFO_CFLAGS = @LIBOSINFO_CFLAGS@
+LIBOSINFO_LIBS = @LIBOSINFO_LIBS@
 LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
 LIBPNG_LIBS = @LIBPNG_LIBS@
 LIBS = @LIBS@
@@ -345,8 +347,6 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
-PANGO_CFLAGS = @PANGO_CFLAGS@
-PANGO_LIBS = @PANGO_LIBS@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
@@ -485,7 +485,7 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = tracker-type-utils tracker-dbus tracker-file-utils \
-	tracker-utils tracker-albumart-test tracker-sched-test \
+	tracker-utils tracker-media-art-test tracker-sched-test \
 	tracker-crc32-test tracker-date-time-test
 AM_CPPFLAGS = \
 	-DTOP_SRCDIR=\"$(abs_top_srcdir)\"             \
@@ -507,7 +507,7 @@ tracker_dbus_SOURCES = \
 tracker_type_utils_SOURCES = tracker-type-utils-test.c
 tracker_file_utils_SOURCES = tracker-file-utils-test.c
 tracker_utils_SOURCES = tracker-utils-test.c
-tracker_albumart_test_SOURCES = tracker-albumart-test.c
+tracker_media_art = tracker-media-art-test.c
 tracker_sched_test_SOURCES = tracker-sched-test.c
 tracker_crc32_test_SOURCES = tracker-crc32-test.c
 tracker_date_time_test_SOURCES = tracker-date-time-test.c
@@ -555,9 +555,6 @@ clean-noinstPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
-tracker-albumart-test$(EXEEXT): $(tracker_albumart_test_OBJECTS) $(tracker_albumart_test_DEPENDENCIES) 
-	@rm -f tracker-albumart-test$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(tracker_albumart_test_OBJECTS) $(tracker_albumart_test_LDADD) $(LIBS)
 tracker-crc32-test$(EXEEXT): $(tracker_crc32_test_OBJECTS) $(tracker_crc32_test_DEPENDENCIES) 
 	@rm -f tracker-crc32-test$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_crc32_test_OBJECTS) $(tracker_crc32_test_LDADD) $(LIBS)
@@ -570,6 +567,9 @@ tracker-dbus$(EXEEXT): $(tracker_dbus_OBJECTS) $(tracker_dbus_DEPENDENCIES)
 tracker-file-utils$(EXEEXT): $(tracker_file_utils_OBJECTS) $(tracker_file_utils_DEPENDENCIES) 
 	@rm -f tracker-file-utils$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_file_utils_OBJECTS) $(tracker_file_utils_LDADD) $(LIBS)
+tracker-media-art-test$(EXEEXT): $(tracker_media_art_test_OBJECTS) $(tracker_media_art_test_DEPENDENCIES) 
+	@rm -f tracker-media-art-test$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_media_art_test_OBJECTS) $(tracker_media_art_test_LDADD) $(LIBS)
 tracker-sched-test$(EXEEXT): $(tracker_sched_test_OBJECTS) $(tracker_sched_test_DEPENDENCIES) 
 	@rm -f tracker-sched-test$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_sched_test_OBJECTS) $(tracker_sched_test_LDADD) $(LIBS)
@@ -586,11 +586,11 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-albumart-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crc32-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-date-time-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-dbus-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-utils-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-media-art-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-sched-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-type-utils-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils-test.Po@am__quote@

@@ -70,6 +70,9 @@ struct _TrackerQueryPrivate {
 	gchar** where_clauses;
 	gint where_clauses_length1;
 	gint _where_clauses_size_;
+	gchar** sort_clauses;
+	gint sort_clauses_length1;
+	gint _sort_clauses_size_;
 	gchar* _criteria;
 	guint _offset;
 	guint _limit;
@@ -178,21 +181,45 @@ struct _TrackerQueryGetCountAsyncData {
 	gint _tmp57__length1;
 	TrackerQueryType _tmp58_;
 	const gchar* _tmp59_;
-	const gchar* _tmp60_;
-	gchar* _tmp61_;
-	gchar* _tmp62_;
-	gchar* _tmp63_;
-	gchar* _tmp64_;
-	TrackerSparqlConnection* _tmp65_;
+	gint _tmp60_;
+	gint _tmp61_;
+	const gchar* _tmp62_;
+	gchar** _tmp63_;
+	gint _tmp63__length1;
+	TrackerQueryType _tmp64_;
+	const gchar* _tmp65_;
 	const gchar* _tmp66_;
-	TrackerSparqlCursor* _tmp67_;
-	TrackerSparqlCursor* _tmp68_;
-	TrackerSparqlCursor* _tmp69_;
+	gchar* _tmp67_;
+	gchar* _tmp68_;
+	gchar* _tmp69_;
+	gchar* _tmp70_;
+	gchar* _tmp71_;
+	gchar* _tmp72_;
+	gchar** _tmp73_;
+	gint _tmp73__length1;
+	TrackerQueryType _tmp74_;
+	const gchar* _tmp75_;
+	gint _tmp76_;
+	gint _tmp77_;
+	const gchar* _tmp78_;
+	gchar** _tmp79_;
+	gint _tmp79__length1;
+	TrackerQueryType _tmp80_;
+	const gchar* _tmp81_;
+	gchar* _tmp82_;
+	gchar* _tmp83_;
+	gchar* _tmp84_;
+	gchar* _tmp85_;
+	TrackerSparqlConnection* _tmp86_;
+	const gchar* _tmp87_;
+	TrackerSparqlCursor* _tmp88_;
+	TrackerSparqlCursor* _tmp89_;
+	TrackerSparqlCursor* _tmp90_;
 	GError* e;
-	GError* _tmp70_;
-	const gchar* _tmp71_;
-	TrackerSparqlCursor* _tmp72_;
-	gint64 _tmp73_;
+	GError* _tmp91_;
+	const gchar* _tmp92_;
+	TrackerSparqlCursor* _tmp93_;
+	gint64 _tmp94_;
 	GError * _inner_error_;
 };
 
@@ -277,36 +304,54 @@ struct _TrackerQueryPerformAsyncData {
 	gchar* _tmp59_;
 	gchar* _tmp60_;
 	gchar* _tmp61_;
-	gchar* _tmp62_;
-	gchar* _tmp63_;
-	gchar** _tmp64_;
-	gint _tmp64__length1;
-	TrackerQueryType _tmp65_;
-	const gchar* _tmp66_;
+	gchar** _tmp62_;
+	gint _tmp62__length1;
+	TrackerQueryType _tmp63_;
+	const gchar* _tmp64_;
+	gint _tmp65_;
+	gint _tmp66_;
 	const gchar* _tmp67_;
-	gchar* _tmp68_;
-	gchar* _tmp69_;
-	gchar* _tmp70_;
-	gchar* _tmp71_;
-	const gchar* _tmp72_;
-	guint _tmp73_;
+	gchar** _tmp68_;
+	gint _tmp68__length1;
+	TrackerQueryType _tmp69_;
+	const gchar* _tmp70_;
+	const gchar* _tmp71_;
+	gchar* _tmp72_;
+	gchar* _tmp73_;
 	gchar* _tmp74_;
 	gchar* _tmp75_;
-	guint _tmp76_;
+	gchar* _tmp76_;
 	gchar* _tmp77_;
-	gchar* _tmp78_;
-	gchar* _tmp79_;
-	gchar* _tmp80_;
-	gchar* _tmp81_;
-	gchar* _tmp82_;
+	gchar** _tmp78_;
+	gint _tmp78__length1;
+	TrackerQueryType _tmp79_;
+	const gchar* _tmp80_;
+	gint _tmp81_;
+	gint _tmp82_;
 	const gchar* _tmp83_;
-	TrackerSparqlConnection* _tmp84_;
-	const gchar* _tmp85_;
-	TrackerSparqlCursor* _tmp86_;
-	TrackerSparqlCursor* _tmp87_;
+	gchar** _tmp84_;
+	gint _tmp84__length1;
+	TrackerQueryType _tmp85_;
+	const gchar* _tmp86_;
+	gchar* _tmp87_;
+	gchar* _tmp88_;
+	gchar* _tmp89_;
+	gchar* _tmp90_;
+	const gchar* _tmp91_;
+	guint _tmp92_;
+	guint _tmp93_;
+	gchar* _tmp94_;
+	gchar* _tmp95_;
+	gchar* _tmp96_;
+	gchar* _tmp97_;
+	const gchar* _tmp98_;
+	TrackerSparqlConnection* _tmp99_;
+	const gchar* _tmp100_;
+	TrackerSparqlCursor* _tmp101_;
+	TrackerSparqlCursor* _tmp102_;
 	GError* e;
-	GError* _tmp88_;
-	const gchar* _tmp89_;
+	GError* _tmp103_;
+	const gchar* _tmp104_;
 	GError * _inner_error_;
 };
 
@@ -411,7 +456,7 @@ TrackerQuery* tracker_query_construct (GType object_type) {
 		_inner_error_ = NULL;
 		_tmp2_ = e;
 		_tmp3_ = _tmp2_->message;
-		g_warning ("tracker-query.vala:185: Could not get Sparql connection: %s", _tmp3_);
+		g_warning ("tracker-query.vala:220: Could not get Sparql connection: %s", _tmp3_);
 		_g_error_free0 (e);
 	}
 	__finally3:
@@ -569,7 +614,7 @@ static gboolean tracker_query_check_query_and_match_type (TrackerQuery* self, Tr
 	if (_tmp3_) {
 		TrackerQueryType _tmp4_;
 		_tmp4_ = query_type;
-		g_critical ("tracker-query.vala:210: You can not use a non-IMAGES query (%d) with N" \
+		g_critical ("tracker-query.vala:245: You can not use a non-IMAGES query (%d) with N" \
 "ONE matching", (gint) _tmp4_);
 		result = FALSE;
 		return result;
@@ -594,7 +639,7 @@ static gboolean tracker_query_check_query_and_match_type (TrackerQuery* self, Tr
 	}
 	_tmp11_ = _tmp5_;
 	if (_tmp11_) {
-		g_critical ("tracker-query.vala:216: You can not use a MUSIC query with match TITLE" \
+		g_critical ("tracker-query.vala:251: You can not use a MUSIC query with match TITLE" \
 "S or FTS, INDIRECT required");
 		result = FALSE;
 		return result;
@@ -633,7 +678,7 @@ static gboolean tracker_query_check_query_and_match_type (TrackerQuery* self, Tr
 		TrackerQueryMatch _tmp23_;
 		_tmp22_ = query_type;
 		_tmp23_ = match_type;
-		g_critical ("tracker-query.vala:223: You can not use a non-MUSIC query (%d) with IN" \
+		g_critical ("tracker-query.vala:258: You can not use a non-MUSIC query (%d) with IN" \
 "DIRECT matching (%d)", (gint) _tmp22_, (gint) _tmp23_);
 		result = FALSE;
 		return result;
@@ -762,7 +807,7 @@ static gboolean tracker_query_get_count_async_co (TrackerQueryGetCountAsyncData*
 		}
 	}
 	_data_->_tmp14_ = _data_->match_type;
-	g_debug ("tracker-query.vala:247: match_type:%d", (gint) _data_->_tmp14_);
+	g_debug ("tracker-query.vala:282: match_type:%d", (gint) _data_->_tmp14_);
 	_data_->_tmp18_ = _data_->match_type;
 	if (_data_->_tmp18_ != TRACKER_QUERY_MATCH_NONE) {
 		_data_->_tmp19_ = _data_->match_type;
@@ -795,7 +840,7 @@ static gboolean tracker_query_get_count_async_co (TrackerQueryGetCountAsyncData*
 	}
 	_data_->_tmp29_ = _data_->_tmp15_;
 	if (_data_->_tmp29_) {
-		g_warning ("tracker-query.vala:252: Criteria was NULL or an empty string no query " \
+		g_warning ("tracker-query.vala:287: Criteria was NULL or an empty string no query " \
 "performed");
 		_data_->result = (guint) 0;
 		_g_object_unref0 (_data_->cursor);
@@ -865,40 +910,73 @@ static gboolean tracker_query_get_count_async_co (TrackerQueryGetCountAsyncData*
 		}
 		_g_free0 (_data_->criteria_escaped);
 	}
+	tracker_query_set_query (_data_->self, "SELECT count(?urn)");
 	_data_->_tmp57_ = _data_->self->priv->where_clauses;
 	_data_->_tmp57__length1 = _data_->self->priv->where_clauses_length1;
 	_data_->_tmp58_ = _data_->query_type;
 	_data_->_tmp59_ = _data_->_tmp57_[_data_->_tmp58_];
-	_data_->_tmp60_ = _data_->match;
-	_data_->_tmp61_ = NULL;
-	_data_->_tmp61_ = g_strdup_printf (_data_->_tmp59_, _data_->_tmp60_);
-	_data_->_tmp62_ = _data_->_tmp61_;
-	_data_->_tmp63_ = g_strconcat ("SELECT count(?urn) ", _data_->_tmp62_, NULL);
-	_data_->_tmp64_ = _data_->_tmp63_;
-	tracker_query_set_query (_data_->self, _data_->_tmp64_);
-	_g_free0 (_data_->_tmp64_);
-	_g_free0 (_data_->_tmp62_);
+	_data_->_tmp60_ = strlen (_data_->_tmp59_);
+	_data_->_tmp61_ = _data_->_tmp60_;
+	if (_data_->_tmp61_ > 0) {
+		_data_->_tmp62_ = _data_->self->priv->_query;
+		_data_->_tmp63_ = _data_->self->priv->where_clauses;
+		_data_->_tmp63__length1 = _data_->self->priv->where_clauses_length1;
+		_data_->_tmp64_ = _data_->query_type;
+		_data_->_tmp65_ = _data_->_tmp63_[_data_->_tmp64_];
+		_data_->_tmp66_ = _data_->match;
+		_data_->_tmp67_ = NULL;
+		_data_->_tmp67_ = g_strdup_printf (_data_->_tmp65_, _data_->_tmp66_);
+		_data_->_tmp68_ = _data_->_tmp67_;
+		_data_->_tmp69_ = g_strconcat (" ", _data_->_tmp68_, NULL);
+		_data_->_tmp70_ = _data_->_tmp69_;
+		_data_->_tmp71_ = g_strconcat (_data_->_tmp62_, _data_->_tmp70_, NULL);
+		_data_->_tmp72_ = _data_->_tmp71_;
+		tracker_query_set_query (_data_->self, _data_->_tmp72_);
+		_g_free0 (_data_->_tmp72_);
+		_g_free0 (_data_->_tmp70_);
+		_g_free0 (_data_->_tmp68_);
+	}
+	_data_->_tmp73_ = _data_->self->priv->sort_clauses;
+	_data_->_tmp73__length1 = _data_->self->priv->sort_clauses_length1;
+	_data_->_tmp74_ = _data_->query_type;
+	_data_->_tmp75_ = _data_->_tmp73_[_data_->_tmp74_];
+	_data_->_tmp76_ = strlen (_data_->_tmp75_);
+	_data_->_tmp77_ = _data_->_tmp76_;
+	if (_data_->_tmp77_ > 0) {
+		_data_->_tmp78_ = _data_->self->priv->_query;
+		_data_->_tmp79_ = _data_->self->priv->sort_clauses;
+		_data_->_tmp79__length1 = _data_->self->priv->sort_clauses_length1;
+		_data_->_tmp80_ = _data_->query_type;
+		_data_->_tmp81_ = _data_->_tmp79_[_data_->_tmp80_];
+		_data_->_tmp82_ = g_strconcat (" ORDER BY ", _data_->_tmp81_, NULL);
+		_data_->_tmp83_ = _data_->_tmp82_;
+		_data_->_tmp84_ = g_strconcat (_data_->_tmp78_, _data_->_tmp83_, NULL);
+		_data_->_tmp85_ = _data_->_tmp84_;
+		tracker_query_set_query (_data_->self, _data_->_tmp85_);
+		_g_free0 (_data_->_tmp85_);
+		_g_free0 (_data_->_tmp83_);
+	}
 	{
-		_data_->_tmp65_ = tracker_query_connection;
-		_data_->_tmp66_ = _data_->self->priv->_query;
+		_data_->_tmp86_ = tracker_query_connection;
+		_data_->_tmp87_ = _data_->self->priv->_query;
 		_data_->_state_ = 1;
-		tracker_sparql_connection_query_async (_data_->_tmp65_, _data_->_tmp66_, NULL, tracker_query_get_count_async_ready, _data_);
+		tracker_sparql_connection_query_async (_data_->_tmp86_, _data_->_tmp87_, NULL, tracker_query_get_count_async_ready, _data_);
 		return FALSE;
 		_state_1:
-		_data_->_tmp67_ = NULL;
-		_data_->_tmp67_ = tracker_sparql_connection_query_finish (_data_->_tmp65_, _data_->_res_, &_data_->_inner_error_);
-		_data_->_tmp68_ = _data_->_tmp67_;
+		_data_->_tmp88_ = NULL;
+		_data_->_tmp88_ = tracker_sparql_connection_query_finish (_data_->_tmp86_, _data_->_res_, &_data_->_inner_error_);
+		_data_->_tmp89_ = _data_->_tmp88_;
 		if (_data_->_inner_error_ != NULL) {
 			goto __catch4_g_error;
 		}
 		_g_object_unref0 (_data_->cursor);
-		_data_->cursor = _data_->_tmp68_;
-		_data_->_tmp69_ = _data_->cursor;
+		_data_->cursor = _data_->_tmp89_;
+		_data_->_tmp90_ = _data_->cursor;
 		_data_->_state_ = 2;
-		tracker_sparql_cursor_next_async (_data_->_tmp69_, NULL, tracker_query_get_count_async_ready, _data_);
+		tracker_sparql_cursor_next_async (_data_->_tmp90_, NULL, tracker_query_get_count_async_ready, _data_);
 		return FALSE;
 		_state_2:
-		tracker_sparql_cursor_next_finish (_data_->_tmp69_, _data_->_res_, &_data_->_inner_error_);
+		tracker_sparql_cursor_next_finish (_data_->_tmp90_, _data_->_res_, &_data_->_inner_error_);
 		if (_data_->_inner_error_ != NULL) {
 			goto __catch4_g_error;
 		}
@@ -908,9 +986,9 @@ static gboolean tracker_query_get_count_async_co (TrackerQueryGetCountAsyncData*
 	{
 		_data_->e = _data_->_inner_error_;
 		_data_->_inner_error_ = NULL;
-		_data_->_tmp70_ = _data_->e;
-		_data_->_tmp71_ = _data_->_tmp70_->message;
-		g_warning ("tracker-query.vala:279: Could not run Sparql count query: %s", _data_->_tmp71_);
+		_data_->_tmp91_ = _data_->e;
+		_data_->_tmp92_ = _data_->_tmp91_->message;
+		g_warning ("tracker-query.vala:322: Could not run Sparql count query: %s", _data_->_tmp92_);
 		_g_error_free0 (_data_->e);
 	}
 	__finally4:
@@ -935,10 +1013,10 @@ static gboolean tracker_query_get_count_async_co (TrackerQueryGetCountAsyncData*
 			return FALSE;
 		}
 	}
-	_data_->_tmp72_ = _data_->cursor;
-	_data_->_tmp73_ = 0LL;
-	_data_->_tmp73_ = tracker_sparql_cursor_get_integer (_data_->_tmp72_, 0);
-	_data_->result = (guint) _data_->_tmp73_;
+	_data_->_tmp93_ = _data_->cursor;
+	_data_->_tmp94_ = 0LL;
+	_data_->_tmp94_ = tracker_sparql_cursor_get_integer (_data_->_tmp93_, 0);
+	_data_->result = (guint) _data_->_tmp94_;
 	_g_free0 (_data_->match);
 	_g_object_unref0 (_data_->cursor);
 	if (_data_->_state_ == 0) {
@@ -1124,7 +1202,7 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* _d
 	}
 	_data_->_tmp28_ = _data_->_tmp14_;
 	if (_data_->_tmp28_) {
-		g_warning ("tracker-query.vala:307: Criteria was NULL or an empty string no query " \
+		g_warning ("tracker-query.vala:350: Criteria was NULL or an empty string no query " \
 "performed");
 		_data_->result = NULL;
 		_g_object_unref0 (_data_->cursor);
@@ -1138,7 +1216,7 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* _d
 	}
 	_data_->_tmp29_ = _data_->self->priv->_limit;
 	if (_data_->_tmp29_ < ((guint) 1)) {
-		g_warning ("tracker-query.vala:312: Limit was < 1, no query performed");
+		g_warning ("tracker-query.vala:355: Limit was < 1, no query performed");
 		_data_->result = NULL;
 		_g_object_unref0 (_data_->cursor);
 		if (_data_->_state_ == 0) {
@@ -1214,69 +1292,91 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* _d
 	_data_->_tmp59_ = _data_->_tmp58_;
 	_data_->_tmp60_ = g_strconcat ("SELECT ", _data_->_tmp59_, NULL);
 	_data_->_tmp61_ = _data_->_tmp60_;
-	_data_->_tmp62_ = g_strconcat (_data_->_tmp61_, " ", NULL);
-	_data_->_tmp63_ = _data_->_tmp62_;
-	_data_->_tmp64_ = _data_->self->priv->where_clauses;
-	_data_->_tmp64__length1 = _data_->self->priv->where_clauses_length1;
-	_data_->_tmp65_ = _data_->query_type;
-	_data_->_tmp66_ = _data_->_tmp64_[_data_->_tmp65_];
-	_data_->_tmp67_ = _data_->match;
-	_data_->_tmp68_ = NULL;
-	_data_->_tmp68_ = g_strdup_printf (_data_->_tmp66_, _data_->_tmp67_);
-	_data_->_tmp69_ = _data_->_tmp68_;
-	_data_->_tmp70_ = g_strconcat (_data_->_tmp63_, _data_->_tmp69_, NULL);
-	_data_->_tmp71_ = _data_->_tmp70_;
-	tracker_query_set_query (_data_->self, _data_->_tmp71_);
-	_g_free0 (_data_->_tmp71_);
-	_g_free0 (_data_->_tmp69_);
-	_g_free0 (_data_->_tmp63_);
+	tracker_query_set_query (_data_->self, _data_->_tmp61_);
 	_g_free0 (_data_->_tmp61_);
 	_g_free0 (_data_->_tmp59_);
-	_data_->_tmp72_ = _data_->self->priv->_query;
-	_data_->_tmp73_ = _data_->self->priv->_offset;
-	_data_->_tmp74_ = NULL;
-	_data_->_tmp74_ = g_strdup_printf ("%u", _data_->_tmp73_);
-	_data_->_tmp75_ = _data_->_tmp74_;
-	_data_->_tmp76_ = _data_->self->priv->_limit;
-	_data_->_tmp77_ = NULL;
-	_data_->_tmp77_ = g_strdup_printf ("%u", _data_->_tmp76_);
-	_data_->_tmp78_ = _data_->_tmp77_;
-	_data_->_tmp79_ = NULL;
-	_data_->_tmp79_ = g_strconcat (" OFFSET ", _data_->_tmp75_, " LIMIT ", _data_->_tmp78_, NULL);
-	_data_->_tmp80_ = _data_->_tmp79_;
-	_data_->_tmp81_ = g_strconcat (_data_->_tmp72_, _data_->_tmp80_, NULL);
+	_data_->_tmp62_ = _data_->self->priv->where_clauses;
+	_data_->_tmp62__length1 = _data_->self->priv->where_clauses_length1;
+	_data_->_tmp63_ = _data_->query_type;
+	_data_->_tmp64_ = _data_->_tmp62_[_data_->_tmp63_];
+	_data_->_tmp65_ = strlen (_data_->_tmp64_);
+	_data_->_tmp66_ = _data_->_tmp65_;
+	if (_data_->_tmp66_ > 0) {
+		_data_->_tmp67_ = _data_->self->priv->_query;
+		_data_->_tmp68_ = _data_->self->priv->where_clauses;
+		_data_->_tmp68__length1 = _data_->self->priv->where_clauses_length1;
+		_data_->_tmp69_ = _data_->query_type;
+		_data_->_tmp70_ = _data_->_tmp68_[_data_->_tmp69_];
+		_data_->_tmp71_ = _data_->match;
+		_data_->_tmp72_ = NULL;
+		_data_->_tmp72_ = g_strdup_printf (_data_->_tmp70_, _data_->_tmp71_);
+		_data_->_tmp73_ = _data_->_tmp72_;
+		_data_->_tmp74_ = g_strconcat (" ", _data_->_tmp73_, NULL);
+		_data_->_tmp75_ = _data_->_tmp74_;
+		_data_->_tmp76_ = g_strconcat (_data_->_tmp67_, _data_->_tmp75_, NULL);
+		_data_->_tmp77_ = _data_->_tmp76_;
+		tracker_query_set_query (_data_->self, _data_->_tmp77_);
+		_g_free0 (_data_->_tmp77_);
+		_g_free0 (_data_->_tmp75_);
+		_g_free0 (_data_->_tmp73_);
+	}
+	_data_->_tmp78_ = _data_->self->priv->sort_clauses;
+	_data_->_tmp78__length1 = _data_->self->priv->sort_clauses_length1;
+	_data_->_tmp79_ = _data_->query_type;
+	_data_->_tmp80_ = _data_->_tmp78_[_data_->_tmp79_];
+	_data_->_tmp81_ = strlen (_data_->_tmp80_);
 	_data_->_tmp82_ = _data_->_tmp81_;
-	tracker_query_set_query (_data_->self, _data_->_tmp82_);
-	_g_free0 (_data_->_tmp82_);
-	_g_free0 (_data_->_tmp80_);
-	_g_free0 (_data_->_tmp78_);
-	_g_free0 (_data_->_tmp75_);
-	_data_->_tmp83_ = _data_->self->priv->_query;
-	g_debug ("tracker-query.vala:336: Running query: '%s'", _data_->_tmp83_);
+	if (_data_->_tmp82_ > 0) {
+		_data_->_tmp83_ = _data_->self->priv->_query;
+		_data_->_tmp84_ = _data_->self->priv->sort_clauses;
+		_data_->_tmp84__length1 = _data_->self->priv->sort_clauses_length1;
+		_data_->_tmp85_ = _data_->query_type;
+		_data_->_tmp86_ = _data_->_tmp84_[_data_->_tmp85_];
+		_data_->_tmp87_ = g_strconcat (" ORDER BY ", _data_->_tmp86_, NULL);
+		_data_->_tmp88_ = _data_->_tmp87_;
+		_data_->_tmp89_ = g_strconcat (_data_->_tmp83_, _data_->_tmp88_, NULL);
+		_data_->_tmp90_ = _data_->_tmp89_;
+		tracker_query_set_query (_data_->self, _data_->_tmp90_);
+		_g_free0 (_data_->_tmp90_);
+		_g_free0 (_data_->_tmp88_);
+	}
+	_data_->_tmp91_ = _data_->self->priv->_query;
+	_data_->_tmp92_ = _data_->self->priv->_offset;
+	_data_->_tmp93_ = _data_->self->priv->_limit;
+	_data_->_tmp94_ = NULL;
+	_data_->_tmp94_ = g_strdup_printf (" OFFSET %u LIMIT %u", _data_->_tmp92_, _data_->_tmp93_);
+	_data_->_tmp95_ = _data_->_tmp94_;
+	_data_->_tmp96_ = g_strconcat (_data_->_tmp91_, _data_->_tmp95_, NULL);
+	_data_->_tmp97_ = _data_->_tmp96_;
+	tracker_query_set_query (_data_->self, _data_->_tmp97_);
+	_g_free0 (_data_->_tmp97_);
+	_g_free0 (_data_->_tmp95_);
+	_data_->_tmp98_ = _data_->self->priv->_query;
+	g_debug ("tracker-query.vala:387: Running query: '%s'", _data_->_tmp98_);
 	{
-		_data_->_tmp84_ = tracker_query_connection;
-		_data_->_tmp85_ = _data_->self->priv->_query;
+		_data_->_tmp99_ = tracker_query_connection;
+		_data_->_tmp100_ = _data_->self->priv->_query;
 		_data_->_state_ = 1;
-		tracker_sparql_connection_query_async (_data_->_tmp84_, _data_->_tmp85_, NULL, tracker_query_perform_async_ready, _data_);
+		tracker_sparql_connection_query_async (_data_->_tmp99_, _data_->_tmp100_, NULL, tracker_query_perform_async_ready, _data_);
 		return FALSE;
 		_state_1:
-		_data_->_tmp86_ = NULL;
-		_data_->_tmp86_ = tracker_sparql_connection_query_finish (_data_->_tmp84_, _data_->_res_, &_data_->_inner_error_);
-		_data_->_tmp87_ = _data_->_tmp86_;
+		_data_->_tmp101_ = NULL;
+		_data_->_tmp101_ = tracker_sparql_connection_query_finish (_data_->_tmp99_, _data_->_res_, &_data_->_inner_error_);
+		_data_->_tmp102_ = _data_->_tmp101_;
 		if (_data_->_inner_error_ != NULL) {
 			goto __catch5_g_error;
 		}
 		_g_object_unref0 (_data_->cursor);
-		_data_->cursor = _data_->_tmp87_;
+		_data_->cursor = _data_->_tmp102_;
 	}
 	goto __finally5;
 	__catch5_g_error:
 	{
 		_data_->e = _data_->_inner_error_;
 		_data_->_inner_error_ = NULL;
-		_data_->_tmp88_ = _data_->e;
-		_data_->_tmp89_ = _data_->_tmp88_->message;
-		g_warning ("tracker-query.vala:341: Could not run Sparql query: %s", _data_->_tmp89_);
+		_data_->_tmp103_ = _data_->e;
+		_data_->_tmp104_ = _data_->_tmp103_->message;
+		g_warning ("tracker-query.vala:392: Could not run Sparql query: %s", _data_->_tmp104_);
 		_g_error_free0 (_data_->e);
 	}
 	__finally5:
@@ -1301,7 +1401,7 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* _d
 			return FALSE;
 		}
 	}
-	g_debug ("tracker-query.vala:344: Done");
+	g_debug ("tracker-query.vala:395: Done");
 	_data_->result = _data_->cursor;
 	_g_free0 (_data_->match);
 	if (_data_->_state_ == 0) {
@@ -1565,6 +1665,18 @@ static void tracker_query_instance_init (TrackerQuery * self) {
 	gchar* _tmp17_;
 	gchar* _tmp18_;
 	gchar** _tmp19_ = NULL;
+	gchar* _tmp20_;
+	gchar* _tmp21_;
+	gchar* _tmp22_;
+	gchar* _tmp23_;
+	gchar* _tmp24_;
+	gchar* _tmp25_;
+	gchar* _tmp26_;
+	gchar* _tmp27_;
+	gchar* _tmp28_;
+	gchar* _tmp29_;
+	gchar* _tmp30_;
+	gchar** _tmp31_ = NULL;
 	self->priv = TRACKER_QUERY_GET_PRIVATE (self);
 	_tmp0_ = g_strdup ("");
 	_tmp1_ = g_strdup ("{\n" \
@@ -1674,6 +1786,33 @@ static void tracker_query_instance_init (TrackerQuery * self) {
 	self->priv->where_clauses = _tmp19_;
 	self->priv->where_clauses_length1 = 11;
 	self->priv->_where_clauses_size_ = self->priv->where_clauses_length1;
+	_tmp20_ = g_strdup ("DESC(nfo:fileLastModified(?urn)) DESC(nie:contentCreated(?urn)) ASC(ni" \
+"e:title(?urn))");
+	_tmp21_ = g_strdup ("ASC(nco:fullname(?urn))");
+	_tmp22_ = g_strdup ("ASC(nie:title(?urn)) ASC(nie:comment(?urn))");
+	_tmp23_ = g_strdup ("DESC(nfo:fileLastModified(?urn)) ASC(nie:title(?urn))");
+	_tmp24_ = g_strdup ("DESC(nfo:fileLastModified(?urn)) ASC(nie:title(?urn))");
+	_tmp25_ = g_strdup ("DESC(nfo:fileLastModified(?urn)) ASC(nie:title(?urn))");
+	_tmp26_ = g_strdup ("DESC(nfo:fileLastModified(?urn)) ASC(nie:title(?urn))");
+	_tmp27_ = g_strdup ("DESC(nmo:receivedDate(?urn)) ASC(nmo:messageSubject(?urn))");
+	_tmp28_ = g_strdup ("DESC(nie:contentCreated(?urn))");
+	_tmp29_ = g_strdup ("DESC(nfo:fileLastModified(?urn)) ASC(nie:title(?urn))");
+	_tmp30_ = g_strdup ("DESC(nie:contentLastModified(?urn)) ASC(nie:title(?urn))");
+	_tmp31_ = g_new0 (gchar*, 11 + 1);
+	_tmp31_[0] = _tmp20_;
+	_tmp31_[1] = _tmp21_;
+	_tmp31_[2] = _tmp22_;
+	_tmp31_[3] = _tmp23_;
+	_tmp31_[4] = _tmp24_;
+	_tmp31_[5] = _tmp25_;
+	_tmp31_[6] = _tmp26_;
+	_tmp31_[7] = _tmp27_;
+	_tmp31_[8] = _tmp28_;
+	_tmp31_[9] = _tmp29_;
+	_tmp31_[10] = _tmp30_;
+	self->priv->sort_clauses = _tmp31_;
+	self->priv->sort_clauses_length1 = 11;
+	self->priv->_sort_clauses_size_ = self->priv->sort_clauses_length1;
 	self->ref_count = 1;
 }
 
@@ -1683,6 +1822,7 @@ static void tracker_query_finalize (TrackerQuery* obj) {
 	self = TRACKER_QUERY (obj);
 	self->priv->match_clauses = (_vala_array_free (self->priv->match_clauses, self->priv->match_clauses_length1, (GDestroyNotify) g_free), NULL);
 	self->priv->where_clauses = (_vala_array_free (self->priv->where_clauses, self->priv->where_clauses_length1, (GDestroyNotify) g_free), NULL);
+	self->priv->sort_clauses = (_vala_array_free (self->priv->sort_clauses, self->priv->sort_clauses_length1, (GDestroyNotify) g_free), NULL);
 	_g_free0 (self->priv->_criteria);
 	_g_free0 (self->priv->_query);
 	_g_ptr_array_unref0 (self->priv->_tags);

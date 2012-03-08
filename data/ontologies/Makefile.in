@@ -214,6 +214,8 @@ LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
+LIBOSINFO_CFLAGS = @LIBOSINFO_CFLAGS@
+LIBOSINFO_LIBS = @LIBOSINFO_LIBS@
 LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
 LIBPNG_LIBS = @LIBPNG_LIBS@
 LIBS = @LIBS@
@@ -275,8 +277,6 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
-PANGO_CFLAGS = @PANGO_CFLAGS@
-PANGO_LIBS = @PANGO_LIBS@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
@@ -431,7 +431,8 @@ config_DATA = 10-xsd.ontology 10-xsd.description 11-rdf.ontology \
 	39-mto.description 40-mlo.ontology 40-mlo.description \
 	41-mfo.ontology 41-mfo.description 89-mtp.ontology \
 	89-mtp.description 92-slo.ontology 92-slo.description \
-	90-tracker.ontology 90-tracker.description $(am__append_1)
+	90-tracker.ontology 90-tracker.description \
+	93-libosinfo.ontology 93-libosinfo.description $(am__append_1)
 EXTRA_DIST = \
 	$(maemo_ontology)                              \
 	$(config_DATA)

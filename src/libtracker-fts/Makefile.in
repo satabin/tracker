@@ -47,8 +47,7 @@ host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
 @BUILD_LIBUNISTRING_PARSER_TRUE@am__append_1 = tracker-parser-libunistring.c
-@BUILD_LIBICU_PARSER_TRUE@@BUILD_LIBUNISTRING_PARSER_FALSE@am__append_2 = tracker-parser-libicu.c
-@BUILD_LIBICU_PARSER_FALSE@@BUILD_LIBUNISTRING_PARSER_FALSE@am__append_3 = tracker-parser-glib.c
+@BUILD_LIBICU_PARSER_TRUE@am__append_2 = tracker-parser-libicu.c
 subdir = src/libtracker-fts
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -77,14 +76,12 @@ am__libtracker_fts_la_SOURCES_DIST = tracker-fts.c tracker-fts.h \
 	tracker-fts-config.c tracker-fts-config.h tracker-fts-hash.c \
 	tracker-fts-hash.h tracker-parser-utils.c \
 	tracker-parser-utils.h tracker-parser.h \
-	tracker-parser-libunistring.c tracker-parser-libicu.c \
-	tracker-parser-glib.c
+	tracker-parser-libunistring.c tracker-parser-libicu.c
 @BUILD_LIBUNISTRING_PARSER_TRUE@am__objects_1 = tracker-parser-libunistring.lo
-@BUILD_LIBICU_PARSER_TRUE@@BUILD_LIBUNISTRING_PARSER_FALSE@am__objects_2 = tracker-parser-libicu.lo
-@BUILD_LIBICU_PARSER_FALSE@@BUILD_LIBUNISTRING_PARSER_FALSE@am__objects_3 = tracker-parser-glib.lo
+@BUILD_LIBICU_PARSER_TRUE@am__objects_2 = tracker-parser-libicu.lo
 am_libtracker_fts_la_OBJECTS = tracker-fts.lo tracker-fts-config.lo \
 	tracker-fts-hash.lo tracker-parser-utils.lo $(am__objects_1) \
-	$(am__objects_2) $(am__objects_3)
+	$(am__objects_2)
 libtracker_fts_la_OBJECTS = $(am_libtracker_fts_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -234,6 +231,8 @@ LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
+LIBOSINFO_CFLAGS = @LIBOSINFO_CFLAGS@
+LIBOSINFO_LIBS = @LIBOSINFO_LIBS@
 LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
 LIBPNG_LIBS = @LIBPNG_LIBS@
 LIBS = @LIBS@
@@ -295,8 +294,6 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
-PANGO_CFLAGS = @PANGO_CFLAGS@
-PANGO_LIBS = @PANGO_LIBS@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
@@ -446,7 +443,7 @@ libtracker_fts_la_SOURCES = tracker-fts.c tracker-fts.h \
 	tracker-fts-config.c tracker-fts-config.h tracker-fts-hash.c \
 	tracker-fts-hash.h tracker-parser-utils.c \
 	tracker-parser-utils.h tracker-parser.h $(am__append_1) \
-	$(am__append_2) $(am__append_3)
+	$(am__append_2)
 libtracker_fts_la_LIBADD = \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(BUILD_LIBS)                                  \
@@ -507,7 +504,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-fts-config.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-fts-hash.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-fts.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-parser-glib.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-parser-libicu.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-parser-libunistring.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-parser-utils.Plo@am__quote@

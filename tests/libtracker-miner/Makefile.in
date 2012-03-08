@@ -55,6 +55,9 @@ DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	libtracker_miner_tests_la_vala.stamp tracker-connection-mock.c \
 	tracker-miner-mock.c tracker-miner-mock.h \
 	tracker_crawler_test_vala.stamp \
+	tracker_file_notifier_test_vala.stamp \
+	tracker_file_system_test_vala.stamp \
+	tracker_indexing_tree_test_vala.stamp \
 	tracker_miner_manager_test_vala.stamp \
 	tracker_monitor_test_vala.stamp \
 	tracker_password_provider_test_vala.stamp \
@@ -101,17 +104,50 @@ AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
 am__EXEEXT_1 = tracker-crawler-test$(EXEEXT) \
+	tracker-file-notifier-test$(EXEEXT) \
+	tracker-file-system-test$(EXEEXT) \
 	tracker-miner-manager-test$(EXEEXT) \
 	tracker-password-provider-test$(EXEEXT) \
 	tracker-thumbnailer-test$(EXEEXT) \
 	tracker-monitor-test$(EXEEXT) \
 	tracker-priority-queue-test$(EXEEXT) \
-	tracker-task-pool-test$(EXEEXT)
+	tracker-task-pool-test$(EXEEXT) \
+	tracker-indexing-tree-test$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
 am_tracker_crawler_test_OBJECTS = tracker-crawler-test.$(OBJEXT)
 tracker_crawler_test_OBJECTS = $(am_tracker_crawler_test_OBJECTS)
 tracker_crawler_test_LDADD = $(LDADD)
 tracker_crawler_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_tracker_file_notifier_test_OBJECTS =  \
+	tracker-file-notifier-test.$(OBJEXT)
+tracker_file_notifier_test_OBJECTS =  \
+	$(am_tracker_file_notifier_test_OBJECTS)
+tracker_file_notifier_test_LDADD = $(LDADD)
+tracker_file_notifier_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_tracker_file_system_test_OBJECTS =  \
+	tracker-file-system-test.$(OBJEXT)
+tracker_file_system_test_OBJECTS =  \
+	$(am_tracker_file_system_test_OBJECTS)
+tracker_file_system_test_LDADD = $(LDADD)
+tracker_file_system_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_tracker_indexing_tree_test_OBJECTS =  \
+	tracker-indexing-tree-test.$(OBJEXT)
+tracker_indexing_tree_test_OBJECTS =  \
+	$(am_tracker_indexing_tree_test_OBJECTS)
+tracker_indexing_tree_test_LDADD = $(LDADD)
+tracker_indexing_tree_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
@@ -213,6 +249,9 @@ am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(libtracker_miner_tests_la_SOURCES) \
 	$(tracker_crawler_test_SOURCES) \
+	$(tracker_file_notifier_test_SOURCES) \
+	$(tracker_file_system_test_SOURCES) \
+	$(tracker_indexing_tree_test_SOURCES) \
 	$(tracker_miner_manager_test_SOURCES) \
 	$(tracker_monitor_test_SOURCES) \
 	$(tracker_password_provider_test_SOURCES) \
@@ -221,6 +260,9 @@ SOURCES = $(libtracker_miner_tests_la_SOURCES) \
 	$(tracker_thumbnailer_test_SOURCES)
 DIST_SOURCES = $(libtracker_miner_tests_la_SOURCES) \
 	$(tracker_crawler_test_SOURCES) \
+	$(tracker_file_notifier_test_SOURCES) \
+	$(tracker_file_system_test_SOURCES) \
+	$(tracker_indexing_tree_test_SOURCES) \
 	$(tracker_miner_manager_test_SOURCES) \
 	$(am__tracker_monitor_test_SOURCES_DIST) \
 	$(tracker_password_provider_test_SOURCES) \
@@ -345,6 +387,8 @@ LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
+LIBOSINFO_CFLAGS = @LIBOSINFO_CFLAGS@
+LIBOSINFO_LIBS = @LIBOSINFO_LIBS@
 LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
 LIBPNG_LIBS = @LIBPNG_LIBS@
 LIBS = @LIBS@
@@ -406,8 +450,6 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
-PANGO_CFLAGS = @PANGO_CFLAGS@
-PANGO_LIBS = @PANGO_LIBS@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
@@ -545,10 +587,11 @@ GTESTER = gtester 			# for non-GLIB packages
 GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
-TEST_PROGS = tracker-crawler-test tracker-miner-manager-test \
+TEST_PROGS = tracker-crawler-test tracker-file-notifier-test \
+	tracker-file-system-test tracker-miner-manager-test \
 	tracker-password-provider-test tracker-thumbnailer-test \
 	tracker-monitor-test tracker-priority-queue-test \
-	tracker-task-pool-test
+	tracker-task-pool-test tracker-indexing-tree-test
 libtracker_miner_marshal_sources = \
 	$(top_builddir)/src/libtracker-miner/tracker-marshal.c
 
@@ -560,6 +603,12 @@ libtracker_miner_monitor_sources = \
 
 libtracker_miner_monitor_headers = \
 	$(top_srcdir)/src/libtracker-miner/tracker-monitor.h
+
+libtracker_miner_file_system_sources = \
+	$(top_srcdir)/src/libtracker-miner/tracker-file-system.c
+
+libtracker_miner_file_system_headers = \
+	$(top_srcdir)/src/libtracker-miner/tracker-file-system.h
 
 
 # Include list of shared sources:
@@ -574,14 +623,14 @@ libtracker_miner_monitor_headers = \
 #
 noinst_LTLIBRARIES = libtracker-miner-tests.la
 AM_CPPFLAGS = \
-	$(BUILD_CFLAGS)                                \
-	-DTEST                                         \
-	-DLIBEXEC_PATH=\""$(libexecdir)"\"             \
+	$(BUILD_CFLAGS) \
+	-DTEST \
+	-DLIBEXEC_PATH=\""$(libexecdir)"\" \
 	-DTEST_DATA_DIR=\""$(abs_top_srcdir)/tests/libtracker-miner/data"\" \
 	-DTEST_MINERS_DIR=\""$(abs_top_srcdir)/tests/libtracker-miner/mock-miners"\" \
-	-I$(top_srcdir)/src                            \
-	-I$(top_builddir)/src                          \
-	-I$(top_srcdir)/tests/common                   \
+	-I$(top_srcdir)/src \
+	-I$(top_builddir)/src \
+	-I$(top_srcdir)/tests/common \
 	$(LIBTRACKER_MINER_CFLAGS)
 
 LDADD = \
@@ -589,7 +638,7 @@ LDADD = \
 	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(BUILD_LIBS)                                  \
+	$(BUILD_LIBS) \
 	$(LIBTRACKER_MINER_LIBS)
 
 libtracker_miner_tests_la_VALAFLAGS = \
@@ -615,24 +664,24 @@ tracker_crawler_test_SOURCES = \
 	tracker-crawler-test.c
 
 tracker_miner_manager_test_SOURCES = \
-	tracker-miner-manager-test.c                   \
-	miners-mock.c                                  \
+	tracker-miner-manager-test.c \
+	miners-mock.c \
 	empty-gobject.c
 
 tracker_miner_manager_test_LDADD = \
-	libtracker-miner-tests.la                      \
+	libtracker-miner-tests.la \
 	$(LDADD)
 
 tracker_password_provider_test_SOURCES = \
 	tracker-password-provider-test.c
 
 tracker_password_provider_test_LDADD = \
-	libtracker-miner-tests.la                      \
+	libtracker-miner-tests.la \
 	$(LDADD)
 
 tracker_thumbnailer_test_SOURCES = \
-	tracker-thumbnailer-test.c                     \
-	thumbnailer-mock.c                             \
+	tracker-thumbnailer-test.c \
+	thumbnailer-mock.c \
 	empty-gobject.c
 
 tracker_monitor_test_SOURCES = tracker-monitor-test.c $(am__append_1)
@@ -641,6 +690,15 @@ tracker_priority_queue_test_SOURCES = \
 
 tracker_task_pool_test_SOURCES = \
 	tracker-task-pool-test.c
+
+tracker_indexing_tree_test_SOURCES = \
+	tracker-indexing-tree-test.c
+
+tracker_file_system_test_SOURCES = \
+	tracker-file-system-test.c
+
+tracker_file_notifier_test_SOURCES = \
+	tracker-file-notifier-test.c
 
 noinst_HEADERS = \
 	$(libtracker_miner_marshal_headers)            \
@@ -651,15 +709,17 @@ noinst_HEADERS = \
 	empty-gobject.h
 
 BUILT_SOURCES = \
+	$(libtracker_miner_file_system_sources) \
+	$(libtracker_miner_file_system_headers) \
 	libtracker_miner_tests_la_vala.stamp
 
 EXTRA_DIST = \
-	data/empty-dir/.hidden                         \
-	data/file1                                     \
-	data/dir/empty-dir/.hidden                     \
-	data/dir/file1                                 \
-	data/dir/file2                                 \
-	mock-miners/mock-miner-1.desktop               \
+	data/empty-dir/.hidden \
+	data/file1 \
+	data/dir/empty-dir/.hidden \
+	data/dir/file1 \
+	data/dir/file2 \
+	mock-miners/mock-miner-1.desktop \
 	mock-miners/mock-miner-2.desktop
 
 all: $(BUILT_SOURCES)
@@ -720,6 +780,15 @@ clean-noinstPROGRAMS:
 tracker-crawler-test$(EXEEXT): $(tracker_crawler_test_OBJECTS) $(tracker_crawler_test_DEPENDENCIES) 
 	@rm -f tracker-crawler-test$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_crawler_test_OBJECTS) $(tracker_crawler_test_LDADD) $(LIBS)
+tracker-file-notifier-test$(EXEEXT): $(tracker_file_notifier_test_OBJECTS) $(tracker_file_notifier_test_DEPENDENCIES) 
+	@rm -f tracker-file-notifier-test$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_file_notifier_test_OBJECTS) $(tracker_file_notifier_test_LDADD) $(LIBS)
+tracker-file-system-test$(EXEEXT): $(tracker_file_system_test_OBJECTS) $(tracker_file_system_test_DEPENDENCIES) 
+	@rm -f tracker-file-system-test$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_file_system_test_OBJECTS) $(tracker_file_system_test_LDADD) $(LIBS)
+tracker-indexing-tree-test$(EXEEXT): $(tracker_indexing_tree_test_OBJECTS) $(tracker_indexing_tree_test_DEPENDENCIES) 
+	@rm -f tracker-indexing-tree-test$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_indexing_tree_test_OBJECTS) $(tracker_indexing_tree_test_LDADD) $(LIBS)
 tracker-miner-manager-test$(EXEEXT): $(tracker_miner_manager_test_OBJECTS) $(tracker_miner_manager_test_DEPENDENCIES) 
 	@rm -f tracker-miner-manager-test$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_miner_manager_test_OBJECTS) $(tracker_miner_manager_test_LDADD) $(LIBS)
@@ -750,6 +819,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/thumbnailer-mock.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-connection-mock.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crawler-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-notifier-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-system-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-indexing-tree-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-marshal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-manager-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-mock.Plo@am__quote@
@@ -815,6 +887,9 @@ tracker-monitor.obj: $(top_srcdir)/src/libtracker-miner/tracker-monitor.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/libtracker-miner/tracker-monitor.c' object='tracker-monitor.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o tracker-monitor.obj `if test -f '$(top_srcdir)/src/libtracker-miner/tracker-monitor.c'; then $(CYGPATH_W) '$(top_srcdir)/src/libtracker-miner/tracker-monitor.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/libtracker-miner/tracker-monitor.c'; fi`
+tracker_file_system_test_vala.stamp: $(tracker_file_system_test_SOURCES)
+	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_file_system_test_SOURCES)
+	$(AM_V_at)touch $@
 tracker_password_provider_test_vala.stamp: $(tracker_password_provider_test_SOURCES)
 	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_password_provider_test_SOURCES)
 	$(AM_V_at)touch $@
@@ -832,6 +907,12 @@ tracker_miner_manager_test_vala.stamp: $(tracker_miner_manager_test_SOURCES)
 	$(AM_V_at)touch $@
 tracker_priority_queue_test_vala.stamp: $(tracker_priority_queue_test_SOURCES)
 	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_priority_queue_test_SOURCES)
+	$(AM_V_at)touch $@
+tracker_indexing_tree_test_vala.stamp: $(tracker_indexing_tree_test_SOURCES)
+	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_indexing_tree_test_SOURCES)
+	$(AM_V_at)touch $@
+tracker_file_notifier_test_vala.stamp: $(tracker_file_notifier_test_SOURCES)
+	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_file_notifier_test_SOURCES)
 	$(AM_V_at)touch $@
 tracker_crawler_test_vala.stamp: $(tracker_crawler_test_SOURCES)
 	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_crawler_test_SOURCES)
@@ -980,6 +1061,9 @@ maintainer-clean-generic:
 	-rm -f tracker-miner-mock.c
 	-rm -f tracker-miner-mock.h
 	-rm -f tracker_crawler_test_vala.stamp
+	-rm -f tracker_file_notifier_test_vala.stamp
+	-rm -f tracker_file_system_test_vala.stamp
+	-rm -f tracker_indexing_tree_test_vala.stamp
 	-rm -f tracker_miner_manager_test_vala.stamp
 	-rm -f tracker_monitor_test_vala.stamp
 	-rm -f tracker_password_provider_test_vala.stamp

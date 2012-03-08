@@ -16,6 +16,9 @@
 /* Use new evolution-shell API */
 #undef EVOLUTION_SHELL_3_2
 
+/* Use new evolution-shell API */
+#undef EVOLUTION_SHELL_3_3_5
+
 /* The gettext translation domain */
 #undef GETTEXT_PACKAGE
 
@@ -109,6 +112,9 @@
 
 /* Define if we have libjpeg */
 #undef HAVE_LIBJPEG
+
+/* Define if we have libosinfo */
+#undef HAVE_LIBOSINFO
 
 /* Define to 1 if you have the `sqlite3' library (-lsqlite3). */
 #undef HAVE_LIBSQLITE3

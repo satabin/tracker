@@ -3,11 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Part II. Reference</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="up" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="prev" href="tracker-overview-compiling.html" title="Compiling applications">
-<link rel="next" href="ch02.html" title="Base abstract miners">
+<link rel="next" href="ch02.html" title="Base abstract miner classes">
 <meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -30,24 +30,29 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="chapter"><a href="ch02.html">Base abstract miners</a></span></dt>
+<dt><span class="chapter"><a href="ch02.html">Base abstract miner classes</a></span></dt>
 <dd><dl>
 <dt>
-<span class="refentrytitle"><a href="libtracker-miner-tracker-miner.html">TrackerMiner</a></span><span class="refpurpose"></span>
+<span class="refentrytitle"><a href="TrackerMiner.html">TrackerMiner</a></span><span class="refpurpose"> — Abstract base class for data miners</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="libtracker-miner-tracker-miner-web.html">TrackerMinerWeb</a></span><span class="refpurpose"> — Abstract base class for miners using web services</span>
+<span class="refentrytitle"><a href="libtracker-miner-TrackerMinerWeb.html">TrackerMinerWeb</a></span><span class="refpurpose"> — Abstract base class for miners using web services</span>
 </dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch03.html">Additional miners</a></span></dt>
-<dd><dl><dt>
-<span class="refentrytitle"><a href="libtracker-miner-tracker-miner-fs.html">TrackerMinerFS</a></span><span class="refpurpose"> — Abstract base class for filesystem miners</span>
-</dt></dl></dd>
+<dt><span class="chapter"><a href="ch03.html">Miner classes for file system</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="TrackerMinerFS.html">TrackerMinerFS</a></span><span class="refpurpose"> — Abstract base class for filesystem miners</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="TrackerIndexingTree.html">TrackerIndexingTree</a></span><span class="refpurpose"> — Indexing tree handling</span>
+</dt>
+</dl></dd>
 <dt><span class="chapter"><a href="ch04.html">Managing miners</a></span></dt>
 <dd><dl><dt>
 <span class="refentrytitle"><a href="TrackerMinerManager.html">TrackerMinerManager</a></span><span class="refpurpose"> — External control and monitoring of miners</span>
 </dt></dl></dd>
-<dt><span class="chapter"><a href="ch05.html">Base abstract utilities</a></span></dt>
+<dt><span class="chapter"><a href="ch05.html">Base abstract providers for network/password/etc control</a></span></dt>
 <dd><dl>
 <dt>
 <span class="refentrytitle"><a href="libtracker-miner-TrackerNetworkProvider.html">TrackerNetworkProvider</a></span><span class="refpurpose"> — Network status interface for cross platform backends</span>
@@ -56,13 +61,19 @@
 <span class="refentrytitle"><a href="libtracker-miner-TrackerPasswordProvider.html">TrackerPasswordProvider</a></span><span class="refpurpose"> — Password storage interface for cross platform backends</span>
 </dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch06.html">Additional utilities</a></span></dt>
+<dt><span class="chapter"><a href="ch06.html">Utilities</a></span></dt>
 <dd><dl>
+<dt>
+<span class="refentrytitle"><a href="libtracker-miner-Enumerations.html">Enumerations</a></span><span class="refpurpose"> — Common enumerations</span>
+</dt>
 <dt>
 <span class="refentrytitle"><a href="libtracker-miner-TrackerStorage.html">TrackerStorage</a></span><span class="refpurpose"> — Removable storage and mount point convenience API</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="libtracker-miner-TrackerThumbnailer.html">Thumbnailer management</a></span><span class="refpurpose"> — Request the thumbnailer service creates or
+<span class="refentrytitle"><a href="libtracker-miner-Media-art-management.html">Media art management</a></span><span class="refpurpose"> — Media art request and management.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libtracker-miner-Thumbnailer-management.html">Thumbnailer management</a></span><span class="refpurpose"> — Request the thumbnailer service creates or
 updates thumbnails.</span>
 </dt>
 </dl></dd>

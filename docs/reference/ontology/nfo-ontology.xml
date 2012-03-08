@@ -1159,6 +1159,10 @@
 <listitem><simpara><link linkend='nfo-belongsToContainer'>nfo:belongsToContainer</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
+<note>
+<title>Note:</title>
+<para>This class notifies about changes</para>
+</note>
 </refsect2>
 
 <refsect2 id='nfo-BookmarkFolder'>
@@ -2435,9 +2439,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nfo-model'>
-<title>nfo:model</title>
-<para>The model of the equipment</para>
+<refsect2 id='nfo-isBootable'>
+<title>nfo:isBootable</title>
+<para>True when the file is bootable, for example like an ISO or other disc images</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -2445,11 +2449,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-Equipment'>nfo:Equipment</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -2512,6 +2516,37 @@
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
 <listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nfo-model'>
+<title>nfo:model</title>
+<para>The model of the equipment</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Equipment'>nfo:Equipment</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>

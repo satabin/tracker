@@ -1,4 +1,4 @@
-tracker (0.14.0-1) UNRELEASED; urgency=low
+tracker (0.14.0-1) experimental; urgency=low
 
   * New upstream release.
   * Rename library packages for the API version bump 0.12 → 0.14.
@@ -6,7 +6,7 @@ tracker (0.14.0-1) UNRELEASED; urgency=low
   * Bump Build-Depends on debhelper to (>= 8.1.0~).
   * Bump Standards-Version to 3.9.3. No further changes.
 
- -- Michael Biebl <biebl@debian.org>  Thu, 08 Mar 2012 20:40:02 +0100
+ -- Michael Biebl <biebl@debian.org>  Thu, 08 Mar 2012 20:40:22 +0100
 
 tracker (0.12.10-1) unstable; urgency=low
 

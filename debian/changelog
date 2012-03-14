@@ -1,10 +1,10 @@
-tracker (0.14.0-2) UNRELEASED; urgency=low
+tracker (0.14.0-2) unstable; urgency=low
 
   * Upload to unstable.
   * Update and rewrite debian/copyright using the machine-readable copyright
     format 1.0.
 
- -- Michael Biebl <biebl@debian.org>  Wed, 14 Mar 2012 16:43:36 +0100
+ -- Michael Biebl <biebl@debian.org>  Wed, 14 Mar 2012 17:21:04 +0100
 
 tracker (0.14.0-1) experimental; urgency=low
 

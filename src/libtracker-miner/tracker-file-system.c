@@ -469,6 +469,7 @@ tracker_file_system_get_file (TrackerFileSystem *file_system,
 
 	priv = file_system->priv;
 	node = NULL;
+	parent_node = NULL;
 
 	if (parent) {
 		parent_node = file_system_get_node (file_system, parent);
@@ -480,7 +481,16 @@ tracker_file_system_get_file (TrackerFileSystem *file_system,
 	}
 
 	if (!node) {
-		g_assert (parent_node != NULL);
+		if (!parent_node) {
+			gchar *uri;
+
+			uri = g_file_get_uri (file);
+			g_warning ("Could not find parent node for URI:'%s'", uri);
+			g_warning ("NOTE: URI themes other than 'file://' are not supported currently.");
+			g_free (uri);
+
+			return NULL;
+		}
 
 		node = g_node_new (NULL);
 

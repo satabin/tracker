@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerMinerManager</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="up" href="ch04.html" title="Managing miners">
 <link rel="prev" href="ch04.html" title="Managing miners">
@@ -85,19 +85,19 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-pause" title="tracker_miner_manager_pause ()">tracker_miner_manager_pause</a>         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *reason</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *cookie</code></em>);
+                                                         <em class="parameter"><code><span class="type">guint32</span> *cookie</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-pause-for-process" title="tracker_miner_manager_pause_for_process ()">tracker_miner_manager_pause_for_process</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *reason</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *cookie</code></em>);
+                                                         <em class="parameter"><code><span class="type">guint32</span> *cookie</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-reindex-by-mimetype" title="tracker_miner_manager_reindex_by_mimetype ()">tracker_miner_manager_reindex_by_mimetype</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a> mimetypes</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-resume" title="tracker_miner_manager_resume ()">tracker_miner_manager_resume</a>        (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> cookie</code></em>);
+                                                         <em class="parameter"><code><span class="type">guint32</span> cookie</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -626,7 +626,7 @@ accordingly.</td>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_miner_manager_pause         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *reason</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *cookie</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">guint32</span> *cookie</code></em>);</pre>
 <p>
 Asks <em class="parameter"><code>miner</code></em> to pause. a miner could be paused by
 several reasons, and its activity won't be resumed
@@ -669,7 +669,7 @@ until all pause requests have been resumed.
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *reason</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *cookie</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">guint32</span> *cookie</code></em>);</pre>
 <p>
 This function operates exactly the same way as
 <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-pause" title="tracker_miner_manager_pause ()"><code class="function">tracker_miner_manager_pause()</code></a> with the exception that if the calling
@@ -759,7 +759,7 @@ with a mimetype in that list will be reindexed. <span class="annotation">[<acron
 <a name="tracker-miner-manager-resume"></a><h3>tracker_miner_manager_resume ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_miner_manager_resume        (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> cookie</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">guint32</span> cookie</code></em>);</pre>
 <p>
 Tells <em class="parameter"><code>miner</code></em> to resume activity. The miner won't actually resume
 operations until all pause requests have been resumed.

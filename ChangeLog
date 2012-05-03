@@ -1,3 +1,110 @@
+2012-05-03  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.14.1
+
+2012-05-03  Karl Relton  <karllinuxtest.relton@ntlworld.com>
+
+	tracker-extract: Simplify text extraction in oasis extractor for ODT files
+
+	tracker-extract: Support Libreoffice graphic/drawing files (*.odg)
+
+2012-05-03  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2012-05-03  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-{common|sparql}: Set G_MESSAGES_DEBUG when verbosity > 2
+	Since glib 2.32, debug statements are not shown without this environment
+	variable being set.
+
+	tracker-extract: Added 'max-media-art-width' config option
+	Allows all media/album art to be disabled with a setting of -1 or resized to a
+	width of choosing.
+
+	Based on the patch from Kiran Bhide <kiran.bhide@in.bosch.com>
+
+	libtracker-miner: Don't abort() if none file:// URI themes are used
+	Was occuring with sftp:// mounts pulled in from GVFS.
+
+2012-05-03  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2012-05-03  Alexandre Franke  <alexandre.franke@gmail.com>
+
+	Fix typo (missing 'not')
+
+2012-05-03  Jürg Billeter  <j@bitron.ch>
+
+	build: Remove obsolete check for dbus-binding-tool
+
+	tracker-miner-fs: Do not index non-eligible mount points on startup
+
+	tracker-miner-fs: Add tracker_miner_files_is_file_eligible
+	Logic moved from tracker-miner-files-index.c, no change in behavior.
+
+2012-05-03  Yinghua Wang  <wantinghard@gmail.com>
+
+	update Simplified Chinese (zh_CN) translation
+
+2012-05-03  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Don't crash in _file_system_get_file() if node non-NULL
+	This occurred where parent_node was unset because of strange URI themes, e.g.
+	sftp://.
+
+	Fixes GB#672308.
+
+	evolution: Fixed includes ... yet again
+	So I have this time put each include in separate sections. The logic was
+	getting too complicated and it was hard to maintain. This is why single
+	include files make so much sense.
+
+	I've checked each release of the libraries we import from and the files do
+	exist for each of the versions we support.
+
+	I removed the camel include because all the Evolution includes include that
+	already.
+
+	I also removed the include for older than 2.91 versions which didn't exist
+	there and was reported under the bug below.
+
+	Fixes GB#672415
+
+2012-05-03  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	utils: Add tracker-sandbox to EXTRA_DIST
+	Also, fix whitespace errors.
+
+2012-05-03  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2012-05-03  Jiro Matsuzawa  <jmatsuzawa@src.gnome.org>
+
+	[l10n] Update Japanese translation
+
+2012-05-03  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	utils: Add tracker-sandbox
+	This script assists in running development versions of Tracker in
+	parallel and avoiding interference with real user data.
+
+	Run 'utils/tracker-sandbox --help' for documentation.
+
+	tests: Fix build with GLib 2.28
+
+	autogen.sh: Error gracefully when valac is not installed
+
+2012-04-09  Timo Jyrinki  <timo.jyrinki@iki.fi>
+
+	Updated Finnish translation by Jiri Grönroos.
+
+2012-03-08  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
 2012-03-08  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.14.0

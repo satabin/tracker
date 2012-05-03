@@ -13,8 +13,8 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [14])
-m4_define([tracker_micro_version], [0])
-m4_define([tracker_interface_age], [0])
+m4_define([tracker_micro_version], [1])
+m4_define([tracker_interface_age], [1])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -724,12 +724,6 @@ fi
 
 DBUS_SERVICES_DIR="$services_dir"
 AC_SUBST(DBUS_SERVICES_DIR)
-
-# Check we have the D-Bus binding tool we need
-AC_PATH_PROG(DBUSBINDINGTOOL, dbus-binding-tool)
-if test -z $DBUSBINDINGTOOL; then
-   AC_MSG_ERROR([Could not find 'dbus-binding-tool'])
-fi
 
 GLIB_GENMARSHAL=`$PKG_CONFIG glib-2.0 --variable=glib_genmarshal`
 AC_SUBST(GLIB_GENMARSHAL)

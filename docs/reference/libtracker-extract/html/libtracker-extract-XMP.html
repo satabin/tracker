@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>XMP</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="Tracker Extract Library Reference Manual">
 <link rel="up" href="ch03.html" title="Common Embedded Support API">
 <link rel="prev" href="ch03.html" title="Common Embedded Support API">
@@ -47,7 +47,7 @@ Stable, unless otherwise indicated
                     <a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData">TrackerXmpData</a>;
                     <a class="link" href="libtracker-extract-XMP.html#TrackerXmpRegion" title="TrackerXmpRegion">TrackerXmpRegion</a>;
 <a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="returnvalue">TrackerXmpData</span></a> *    <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-new" title="tracker_xmp_new ()">tracker_xmp_new</a>                     (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> len</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> len</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-free" title="tracker_xmp_free ()">tracker_xmp_free</a>                    (<em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-read" title="tracker_xmp_read ()">tracker_xmp_read</a>                    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer</code></em>,
@@ -403,7 +403,7 @@ Structure defining data of a given region in a <a class="link" href="libtracker-
 <div class="refsect2">
 <a name="tracker-xmp-new"></a><h3>tracker_xmp_new ()</h3>
 <pre class="programlisting"><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="returnvalue">TrackerXmpData</span></a> *    tracker_xmp_new                     (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> len</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> len</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);</pre>
 <p>
 This function takes <em class="parameter"><code>len</code></em> bytes of <em class="parameter"><code>buffer</code></em> and runs it through the

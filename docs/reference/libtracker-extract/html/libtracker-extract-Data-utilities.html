@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Data utilities</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="Tracker Extract Library Reference Manual">
 <link rel="up" href="ch02.html" title="Core API">
 <link rel="prev" href="libtracker-extract-TrackerExtractInfo.html" title="TrackerExtractInfo">
@@ -55,16 +55,16 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-extract-Data-utilities.html#tracker-merge-const" title="tracker_merge_const ()">tracker_merge_const</a>                 (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *delimiter</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gssize"><span class="returnvalue">gssize</span></a>              <a class="link" href="libtracker-extract-Data-utilities.html#tracker-getline" title="tracker_getline ()">tracker_getline</a>                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **lineptr</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> *n</code></em>,
+<span class="returnvalue">gssize</span>              <a class="link" href="libtracker-extract-Data-utilities.html#tracker-getline" title="tracker_getline ()">tracker_getline</a>                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **lineptr</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> *n</code></em>,
                                                          <em class="parameter"><code><span class="type">FILE</span> *stream</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-extract-Data-utilities.html#tracker-text-normalize" title="tracker_text_normalize ()">tracker_text_normalize</a>              (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> max_words</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_words</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-Data-utilities.html#tracker-text-validate-utf8" title="tracker_text_validate_utf8 ()">tracker_text_validate_utf8</a>          (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gssize"><span class="type">gssize</span></a> text_len</code></em>,
+                                                         <em class="parameter"><code><span class="type">gssize</span> text_len</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Strings.html#GString"><span class="type">GString</span></a> **str</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> *valid_len</code></em>);
+                                                         <em class="parameter"><code><span class="type">gsize</span> *valid_len</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-extract-Data-utilities.html#tracker-date-format-to-iso8601" title="tracker_date_format_to_iso8601 ()">tracker_date_format_to_iso8601</a>      (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *date_string</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-extract-Data-utilities.html#tracker-date-guess" title="tracker_date_guess ()">tracker_date_guess</a>                  (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *date_string</code></em>);
@@ -239,8 +239,8 @@ be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-
 <hr>
 <div class="refsect2">
 <a name="tracker-getline"></a><h3>tracker_getline ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gssize"><span class="returnvalue">gssize</span></a>              tracker_getline                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **lineptr</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> *n</code></em>,
+<pre class="programlisting"><span class="returnvalue">gssize</span>              tracker_getline                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **lineptr</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> *n</code></em>,
                                                          <em class="parameter"><code><span class="type">FILE</span> *stream</code></em>);</pre>
 <p>
 Reads an entire line from stream, storing the address of the buffer
@@ -338,9 +338,9 @@ be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-
 <div class="refsect2">
 <a name="tracker-text-validate-utf8"></a><h3>tracker_text_validate_utf8 ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_text_validate_utf8          (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gssize"><span class="type">gssize</span></a> text_len</code></em>,
+                                                         <em class="parameter"><code><span class="type">gssize</span> text_len</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Strings.html#GString"><span class="type">GString</span></a> **str</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> *valid_len</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gsize</span> *valid_len</code></em>);</pre>
 <p>
 This function iterates through <em class="parameter"><code>text</code></em> checking for UTF-8 validity
 using <a href="http://library.gnome.org/devel/glib/unstable/glib-Unicode-Manipulation.html#g-utf8-validate"><code class="function">g_utf8_validate()</code></a>, appends the first chunk of valid characters

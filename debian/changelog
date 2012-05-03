@@ -1,8 +1,8 @@
-tracker (0.14.1-1) UNRELEASED; urgency=low
+tracker (0.14.1-1) unstable; urgency=low
 
   * New upstream release.
 
- -- Michael Biebl <biebl@debian.org>  Fri, 04 May 2012 00:28:17 +0200
+ -- Michael Biebl <biebl@debian.org>  Fri, 04 May 2012 00:36:35 +0200
 
 tracker (0.14.0-2) unstable; urgency=low
 

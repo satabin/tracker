@@ -1,3 +1,11 @@
+tracker (0.14.1-2) UNRELEASED; urgency=low
+
+  * debian/patches/0001-evolution-plugin-include-missing-header.patch: Include
+    missing mail/e-mail-backend.h header. Otherwise evolution fails to load
+    the Tracker evolution plugin due to undefined symbols. (Closes: #678444)
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 21 Jun 2012 23:01:57 +0200
+
 tracker (0.14.1-1) unstable; urgency=low
 
   * New upstream release.

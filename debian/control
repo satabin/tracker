@@ -23,9 +23,9 @@ Build-Depends: debhelper (>= 8.1.0~),
                libtotem-plparser-dev,
                zlib1g-dev,
                libexempi-dev (>= 2.1.0),
-               evolution-dev (>= 2.32.0),
-               evolution-data-server-dev (>= 2.32.0),
-               libcamel1.2-dev (>= 2.32.0),
+#               evolution-dev (>= 2.32.0),
+#               evolution-data-server-dev (>= 2.32.0),
+#               libcamel1.2-dev (>= 2.32.0),
                libxml2-dev (>= 2.6),
                libupower-glib-dev (>= 0.9.0),
                libnautilus-extension-dev (>= 3.0),
@@ -58,7 +58,7 @@ Depends: ${shlibs:Depends},
 Recommends: tracker-utils,
             tracker-gui,
             tracker-miner-fs,
-            tracker-miner-evolution
+#            tracker-miner-evolution
 Breaks: rygel-tracker (<< 0.5)
 Description: metadata database, indexer and search tool
  Tracker is an advanced framework for first class objects with associated
@@ -312,17 +312,17 @@ Description: metadata database, indexer and search tool - filesystem indexer
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: tracker-miner-evolution
-Architecture: any
-Depends: ${shlibs:Depends},
-         ${misc:Depends},
-         tracker (= ${binary:Version})
-Description: metadata database, indexer and search tool - evolution plugin
- This package contains a plugin for indexing your evolution emails.
- .
- Tracker is an advanced framework for first class objects with associated
- metadata and tags. It provides a one stop solution for all metadata, tags,
- shared object databases, search tools and indexing.
+#Package: tracker-miner-evolution
+#Architecture: any
+#Depends: ${shlibs:Depends},
+#         ${misc:Depends},
+#         tracker (= ${binary:Version})
+#Description: metadata database, indexer and search tool - evolution plugin
+# This package contains a plugin for indexing your evolution emails.
+# .
+# Tracker is an advanced framework for first class objects with associated
+# metadata and tags. It provides a one stop solution for all metadata, tags,
+# shared object databases, search tools and indexing.
 
 Package: tracker-dbg
 Architecture: any

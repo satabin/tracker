@@ -46,8 +46,13 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
-@HAVE_MAEMO_TRUE@am__append_1 = org.freedesktop.Tracker1.Miner.Userguides.service.in
-@HAVE_MAEMO_TRUE@am__append_2 = org.freedesktop.Tracker1.Miner.Userguides.service
+@HAVE_TRACKER_MINER_FS_TRUE@am__append_1 = \
+@HAVE_TRACKER_MINER_FS_TRUE@	org.freedesktop.Tracker1.Miner.Files.service \
+@HAVE_TRACKER_MINER_FS_TRUE@	org.freedesktop.Tracker1.Miner.Applications.service
+
+
+# Userguides are done in the miner-fs process
+@HAVE_MAEMO_TRUE@@HAVE_TRACKER_MINER_FS_TRUE@am__append_2 = org.freedesktop.Tracker1.Miner.Userguides.service
 @HAVE_TRACKER_MINER_EVOLUTION_TRUE@am__append_3 = org.freedesktop.Tracker1.Miner.EMails.service
 @HAVE_TRACKER_MINER_RSS_TRUE@am__append_4 = org.freedesktop.Tracker1.Miner.RSS.service
 @HAVE_TRACKER_MINER_FLICKR_TRUE@am__append_5 = org.freedesktop.Tracker1.Miner.Flickr.service
@@ -218,6 +223,8 @@ LIBGIF_CFLAGS = @LIBGIF_CFLAGS@
 LIBGIF_LIBS = @LIBGIF_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBGXPS_CFLAGS = @LIBGXPS_CFLAGS@
+LIBGXPS_LIBS = @LIBGXPS_LIBS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
@@ -444,23 +451,25 @@ config_noinst = \
 
 
 # Services
-service_in_files = org.freedesktop.Tracker1.service.in \
+service_in_files = \
+	org.freedesktop.Tracker1.service.in \
 	org.freedesktop.Tracker1.Miner.Applications.service.in \
 	org.freedesktop.Tracker1.Miner.EMails.service.in \
 	org.freedesktop.Tracker1.Miner.Files.service.in \
+	org.freedesktop.Tracker1.Miner.Userguides.service.in \
 	org.freedesktop.Tracker1.Miner.Flickr.service.in \
-	org.freedesktop.Tracker1.Miner.RSS.service.in \
+	org.freedesktop.Tracker1.Miner.RSS.service.in  \
 	org.freedesktop.Tracker1.Extract.service.in \
-	org.freedesktop.Tracker1.Writeback.service.in $(am__append_1)
+	org.freedesktop.Tracker1.Writeback.service.in
+
 
 # Services
 servicedir = $(DBUS_SERVICES_DIR)
 service_DATA = org.freedesktop.Tracker1.service \
-	org.freedesktop.Tracker1.Miner.Applications.service \
-	org.freedesktop.Tracker1.Miner.Files.service \
 	org.freedesktop.Tracker1.Extract.service \
-	org.freedesktop.Tracker1.Writeback.service $(am__append_2) \
-	$(am__append_3) $(am__append_4) $(am__append_5)
+	org.freedesktop.Tracker1.Writeback.service $(am__append_1) \
+	$(am__append_2) $(am__append_3) $(am__append_4) \
+	$(am__append_5)
 EXTRA_DIST = \
 	$(service_in_files) \
 	$(config_DATA) \

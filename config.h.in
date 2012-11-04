@@ -104,6 +104,9 @@
 /* Define if we have libgsf */
 #undef HAVE_LIBGSF
 
+/* Define if we have libgxps */
+#undef HAVE_LIBGXPS
+
 /* libicu Unicode support library */
 #undef HAVE_LIBICU
 

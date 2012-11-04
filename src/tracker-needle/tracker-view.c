@@ -1805,6 +1805,7 @@ static void tracker_view_context_menu_tags_clicked (TrackerView* self) {
 	_tmp17_ = g_strdup (_tmp16_);
 	files = g_list_prepend (files, _tmp17_);
 	_tmp18_ = files;
+	files = NULL;
 	_tmp19_ = tracker_tags_view_new (_tmp18_);
 	_tmp20_ = (GtkVBox*) g_object_ref_sink (_tmp19_);
 	vbox = _tmp20_;

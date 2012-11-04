@@ -45,6 +45,7 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
+@HAVE_TRACKER_MINER_FS_TRUE@am__append_1 = $(miner_fs_schema)
 subdir = data/gschemas
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -183,6 +184,8 @@ LIBGIF_CFLAGS = @LIBGIF_CFLAGS@
 LIBGIF_LIBS = @LIBGIF_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBGXPS_CFLAGS = @LIBGXPS_CFLAGS@
+LIBGXPS_LIBS = @LIBGXPS_LIBS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
@@ -395,18 +398,20 @@ GTESTER_REPORT = gtester-report
 TEST_PROGS = 
 gsettings_ENUM_NAMESPACE = org.freedesktop.Tracker
 gsettings_ENUM_FILES = $(top_srcdir)/src/libtracker-common/tracker-enums.h
-gsettings_SCHEMAS = \
+base_schemas = \
 	org.freedesktop.Tracker.gschema.xml \
 	org.freedesktop.Tracker.DB.gschema.xml \
 	org.freedesktop.Tracker.FTS.gschema.xml \
 	org.freedesktop.Tracker.Store.gschema.xml \
 	org.freedesktop.Tracker.Extract.gschema.xml \
-	org.freedesktop.Tracker.Writeback.gschema.xml \
-	org.freedesktop.Tracker.Miner.Files.gschema.xml
+	org.freedesktop.Tracker.Writeback.gschema.xml
 
+miner_fs_schema = org.freedesktop.Tracker.Miner.Files.gschema.xml
+all_schemas = $(base_schemas) $(miner_fs_schema)
+gsettings_SCHEMAS = $(base_schemas) $(am__append_1)
 CLEANFILES = $(gsettings_SCHEMAS)
 EXTRA_DIST = \
-	$(gsettings_SCHEMAS:.xml=.xml.in)
+	$(all_schemas:.xml=.xml.in)
 
 all: all-am
 

@@ -13,8 +13,8 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [14])
-m4_define([tracker_micro_version], [1])
-m4_define([tracker_interface_age], [1])
+m4_define([tracker_micro_version], [4])
+m4_define([tracker_interface_age], [4])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -53,6 +53,10 @@ AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.11 no-define tar-ustar -Wno-portability])
 
 AM_SILENT_RULES([yes])
+
+dnl http://people.gnome.org/~walters/docs/build-api.txt
+dnl We don't support srcdir != builddir.
+echo \#buildapi-variable-no-builddir >/dev/null
 
 IDT_COMPILE_WARNINGS
 
@@ -684,6 +688,24 @@ if test "x$ax_cv_sqlite_threadsafe" != "xyes"; then
   AC_MSG_ERROR([sqlite3 is not compiled thread-safe])
 fi
 
+# Make sure we're not using versions which cause problems.
+# Avoid versions:
+#   3.7.10 - 3.7.13
+# For details, see:
+#   https://mail.gnome.org/archives/tracker-list/2012-October/msg00028.html
+AC_MSG_CHECKING(whether SQLite3 version is safe)
+
+PKG_CHECK_EXISTS([sqlite3 <= 3.7.9], sqlite_safe=yes, sqlite_safe=no)
+if test "x$sqlite_safe" != "xyes"; then
+   PKG_CHECK_EXISTS([sqlite3 >= 3.7.14], sqlite_safe=yes, sqlite_safe=no)
+fi
+
+if test "x$sqlite_safe" != "xyes"; then
+   AC_MSG_RESULT(no)
+else
+   AC_MSG_RESULT(yes)
+fi
+
 ##################################################################
 # Check for tracker-fts, allow disabling FTS support
 ##################################################################
@@ -859,13 +881,13 @@ AC_ARG_WITH([unicode-support],
 
 # If auto, decide ourselves
 if test "x$with_unicode_support" = "xauto"; then
-   if test "x$have_libunistring" = "xyes"; then
-      with_unicode_support=libunistring
+   if test "x$have_libicu" = "xyes"; then
+      with_unicode_support=libicu
    else
-      if test "x$have_libicu" = "xyes"; then
-         with_unicode_support=libicu
+      if test "x$have_libunistring" = "xyes"; then
+         with_unicode_support=libunistring
       else
-         AC_MSG_ERROR([Couldn't find neither libunistring nor libicu])
+         AC_MSG_ERROR([Couldn't find either libunistring or libicu])
       fi
    fi
 fi
@@ -1103,6 +1125,31 @@ else
 fi
 
 AM_CONDITIONAL(HAVE_MEEGOTOUCH, test "x$have_meegotouch" = "xyes")
+
+##################################################################
+# Check for tracker-miner-fs
+##################################################################
+
+have_tracker_miner_fs="yes"
+
+AC_ARG_ENABLE(miner_fs,
+              AS_HELP_STRING([--enable-miner-fs],
+                             [enable File System miner [[default=yes]]]),,
+                             [enable_tracker_miner_fs=yes])
+
+enable_tracker_miner_fs=$enable_miner_fs
+
+if test "x$enable_tracker_miner_fs" = "xyes"; then
+   if test "x$have_tracker_miner_fs" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find tracker-miner-fs dependencies ($TRACKER_MINER_FS_REQUIRED).])
+   fi
+else
+   if test "x$enable_tracker_miner_fs" = "xno"; then
+      have_tracker_miner_fs="no  (disabled)"
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_TRACKER_MINER_FS, test "x$have_tracker_miner_fs" = "xyes")
 
 ##################################################################
 # Check for tracker-miner-flickr
@@ -1402,6 +1449,12 @@ AC_ARG_ENABLE([tracker-preferences],
               AS_HELP_STRING([--enable-tracker-preferences],
                              [enable the tracker preferences dialog [[default=auto]]]),,
               [enable_tracker_preferences=auto])
+
+# If we don't have miner-fs enabled, the preferences are pointless
+# So we override in this case.
+if test "x$enable_tracker_miner_fs" = "xyes" ; then
+   enable_tracker_miner_fs = "no"
+fi
 
 if test "x$enable_tracker_preferences" = "xyes" ; then
    if test "x$have_tracker_preferences" != "xyes"; then
@@ -1798,6 +1851,39 @@ if test "x$enable_poppler" = "xyes"; then
 fi
 
 AM_CONDITIONAL(HAVE_POPPLER, test "x$have_poppler" = "xyes")
+
+##################################################################
+# Check for tracker-extract: libgxps for XPS
+##################################################################
+
+AC_ARG_ENABLE(libgxps,
+              AS_HELP_STRING([--enable-libgxps],
+                             [enable extractor for PDF data [[default=auto]]]),,
+              [enable_libgxps=auto])
+
+if test "x$enable_libgxps" != "xno" ; then
+   PKG_CHECK_MODULES(LIBGXPS,
+                     [libgxps],
+                     [have_libgxps=yes],
+                     [have_libgxps=no])
+
+   AC_SUBST(LIBGXPS_CFLAGS)
+   AC_SUBST(LIBGXPS_LIBS)
+
+   if test "x$have_libgxps" = "xyes"; then
+      AC_DEFINE(HAVE_LIBGXPS, [], [Define if we have libgxps])
+   fi
+else
+   have_libgxps="no  (disabled)"
+fi
+
+if test "x$enable_libgxps" = "xyes"; then
+   if test "x$have_libgxps" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find libgxps.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_LIBGXPS, test "x$have_libgxps" = "xyes")
 
 ##################################################################
 # Check for tracker-extract: libgsf
@@ -2372,6 +2458,7 @@ Metadata Extractors:
 	Support libstreamanalyzer:              $have_libstreamanalyzer
 	Support PNG:                            yes
 	Support PDF:                            $have_poppler
+	Support XPS:                            $have_libgxps
 	Support GIF:                            $have_libgif (xmp: $have_exempi)
 	Support JPEG:                           $have_libjpeg (xmp: $have_exempi, exif: $have_libexif, iptc: $have_libiptcdata)
 	Support TIFF:                           $have_libtiff (xmp: $have_exempi, exif: yes, iptc: $have_libiptcdata)
@@ -2388,7 +2475,10 @@ Metadata Extractors:
 
 Data Miners:
 
-	Applications:                           yes (MeeGo support: $have_meegotouch)
+	FS:                                     $have_tracker_miner_fs (MeeGo support: $have_meegotouch)
+	  Includes File Systems
+	  Includes Applications
+	  Includes User Guides
 	RSS:                                    $have_tracker_miner_rss
 	Evolution:                              $have_tracker_miner_evolution ($tracker_miner_evolution_install_dir)
         Thunderbird:                            $have_tracker_miner_thunderbird ($tracker_miner_thunderbird_install_dir)
@@ -2409,4 +2499,16 @@ Frameworks / Options:
 	Support Maemo                           $enable_maemo
 	Support libmeegotouch                   $have_meegotouch
 	Support Guaranteed Metadata             $enable_guarantee_metadata (e.g. guess nie:title from files)
+
 "
+
+# Any warnings we need to issue...
+if test "x$sqlite_safe" = "xno"; then
+echo "
+WARNING:
+        SQLite3 version is not safe. For details see:
+        https://mail.gnome.org/archives/tracker-list/2012-October/msg00028.html
+        Unsafe versions are 3.7.10 to 3.7.13.
+
+"
+fi

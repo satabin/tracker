@@ -18,6 +18,7 @@ AM_CPPFLAGS = \
 # date.
 rules_in_files = \
 	10-abw.rule.in \
+	10-dvi.rule.in \
 	10-epub.rule.in \
 	10-flac.rule.in \
 	10-gif.rule.in \
@@ -34,6 +35,7 @@ rules_in_files = \
 	10-tiff.rule.in \
 	10-vorbis.rule.in \
 	10-xmp.rule.in \
+	10-xps.rule.in \
 	11-iso.rule.in \
 	11-msoffice-xml.rule.in \
 	15-gstreamer-guess.rule.in \
@@ -53,6 +55,7 @@ rules_in_files = \
 # against it if we directly use functions in the .so
 modules_LTLIBRARIES = \
 	libextract-abw.la \
+	libextract-dvi.la \
 	libextract-mp3.la \
 	libextract-png.la \
 	libextract-ps.la \
@@ -61,6 +64,7 @@ modules_LTLIBRARIES = \
 
 rules_DATA = \
 	10-abw.rule \
+	10-dvi.rule \
 	10-ico.rule \
 	10-mp3.rule \
 	10-png.rule \
@@ -109,6 +113,11 @@ modules_LTLIBRARIES += \
 	libextract-msoffice-xml.la \
 	libextract-oasis.la
 rules_DATA += 10-epub.rule 10-oasis.rule 10-msoffice.rule 11-msoffice-xml.rule
+endif
+
+if HAVE_LIBGXPS
+modules_LTLIBRARIES += libextract-xps.la
+rules_DATA += 10-xps.rule
 endif
 
 if HAVE_POPPLER
@@ -305,6 +314,19 @@ libextract_msoffice_xml_la_LIBADD = \
 	$(BUILD_LIBS) \
 	$(TRACKER_EXTRACT_MODULES_LIBS)
 
+# XPS
+libextract_xps_la_SOURCES = tracker-extract-xps.c
+libextract_xps_la_CFLAGS = \
+	$(TRACKER_EXTRACT_MODULES_CFLAGS) \
+	$(LIBGXPS_CFLAGS)
+libextract_xps_la_LDFLAGS = $(module_flags)
+libextract_xps_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(BUILD_LIBS) \
+	$(TRACKER_EXTRACT_MODULES_LIBS) \
+	$(LIBGXPS_LIBS)
+
 # PDF
 libextract_pdf_la_SOURCES = tracker-extract-pdf.c
 libextract_pdf_la_CFLAGS = \
@@ -317,6 +339,17 @@ libextract_pdf_la_LIBADD = \
 	$(BUILD_LIBS) \
 	$(TRACKER_EXTRACT_MODULES_LIBS) \
 	$(POPPLER_LIBS)
+
+# DVI
+libextract_dvi_la_SOURCES = tracker-extract-dvi.c
+libextract_dvi_la_CFLAGS = \
+	$(TRACKER_EXTRACT_MODULES_CFLAGS)
+libextract_dvi_la_LDFLAGS = $(module_flags)
+libextract_dvi_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(BUILD_LIBS) \
+	$(TRACKER_EXTRACT_MODULES_LIBS)
 
 # GStreamer
 libextract_gstreamer_la_SOURCES = \

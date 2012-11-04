@@ -2227,13 +2227,11 @@ void tracker_sparql_builder_object_blank_close (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState* _tmp3_;
 	gint _tmp3__length1;
 	TrackerSparqlBuilderState _tmp4_;
-	TrackerSparqlBuilderState _tmp5_;
-	TrackerSparqlBuilderState _tmp6_;
-	GString* _tmp7_;
+	GString* _tmp5_;
+	gint _tmp6_;
+	TrackerSparqlBuilderState* _tmp7_;
+	gint _tmp7__length1;
 	gint _tmp8_;
-	TrackerSparqlBuilderState* _tmp9_;
-	gint _tmp9__length1;
-	gint _tmp10_;
 #line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
 #line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
@@ -2251,30 +2249,26 @@ void tracker_sparql_builder_object_blank_close (TrackerSparqlBuilder* self) {
 #line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = _tmp2_[_tmp3__length1 - 3];
 #line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp5_ = tracker_sparql_builder_get_state (self);
-#line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp6_ = _tmp5_;
-#line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) && (_tmp4_ == TRACKER_SPARQL_BUILDER_STATE_BLANK));
 #line 660 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp7_ = self->priv->str;
+	_tmp5_ = self->priv->str;
 #line 660 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
-	g_string_append (_tmp7_, "]");
+	g_string_append (_tmp5_, "]");
 #line 661 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->states_length1 = self->priv->states_length1 - 3;
 #line 661 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp8_ = self->priv->states_length1;
+	_tmp6_ = self->priv->states_length1;
 #line 662 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp9_ = self->priv->states;
+	_tmp7_ = self->priv->states;
 #line 662 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp9__length1 = self->priv->states_length1;
+	_tmp7__length1 = self->priv->states_length1;
 #line 662 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add15 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_OBJECT);
 #line 664 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp10_ = self->priv->_length;
+	_tmp8_ = self->priv->_length;
 #line 664 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
-	tracker_sparql_builder_set_length (self, _tmp10_ + 1);
-#line 2278 "tracker-builder.c"
+	tracker_sparql_builder_set_length (self, _tmp8_ + 1);
+#line 2272 "tracker-builder.c"
 }
 
 
@@ -2313,7 +2307,7 @@ void tracker_sparql_builder_prepend (TrackerSparqlBuilder* self, const gchar* ra
 	_tmp4_ = self->priv->_length;
 #line 680 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_set_length (self, _tmp4_ + 1);
-#line 2317 "tracker-builder.c"
+#line 2311 "tracker-builder.c"
 }
 
 
@@ -2342,7 +2336,7 @@ void tracker_sparql_builder_append (TrackerSparqlBuilder* self, const gchar* raw
 	_tmp1_ = _tmp0_;
 #line 694 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
-#line 2346 "tracker-builder.c"
+#line 2340 "tracker-builder.c"
 		GString* _tmp2_;
 		gint _tmp3_;
 #line 695 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
@@ -2353,7 +2347,7 @@ void tracker_sparql_builder_append (TrackerSparqlBuilder* self, const gchar* raw
 		self->priv->states_length1 = self->priv->states_length1 - 3;
 #line 696 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp3_ = self->priv->states_length1;
-#line 2357 "tracker-builder.c"
+#line 2351 "tracker-builder.c"
 	}
 #line 699 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = self->priv->str;
@@ -2365,7 +2359,7 @@ void tracker_sparql_builder_append (TrackerSparqlBuilder* self, const gchar* raw
 	_tmp6_ = self->priv->_length;
 #line 701 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_set_length (self, _tmp6_ + 1);
-#line 2369 "tracker-builder.c"
+#line 2363 "tracker-builder.c"
 }
 
 
@@ -2375,14 +2369,14 @@ TrackerSparqlBuilder* tracker_sparql_builder_construct (GType object_type) {
 	self = (TrackerSparqlBuilder*) g_object_new (object_type, NULL);
 #line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return self;
-#line 2379 "tracker-builder.c"
+#line 2373 "tracker-builder.c"
 }
 
 
 TrackerSparqlBuilder* tracker_sparql_builder_new (void) {
 #line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return tracker_sparql_builder_construct (TRACKER_SPARQL_TYPE_BUILDER);
-#line 2386 "tracker-builder.c"
+#line 2380 "tracker-builder.c"
 }
 
 
@@ -2404,7 +2398,7 @@ const gchar* tracker_sparql_builder_get_result (TrackerSparqlBuilder* self) {
 	if (_tmp1__length1 == 1) {
 #line 108 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp0_ = TRUE;
-#line 2408 "tracker-builder.c"
+#line 2402 "tracker-builder.c"
 	} else {
 		gboolean _tmp2_ = FALSE;
 		TrackerSparqlBuilderState* _tmp3_;
@@ -2419,7 +2413,7 @@ const gchar* tracker_sparql_builder_get_result (TrackerSparqlBuilder* self) {
 		_tmp4_ = _tmp3_[0];
 #line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 		if (_tmp4_ == TRACKER_SPARQL_BUILDER_STATE_EMBEDDED_INSERT) {
-#line 2423 "tracker-builder.c"
+#line 2417 "tracker-builder.c"
 			TrackerSparqlBuilderState* _tmp5_;
 			gint _tmp5__length1;
 #line 110 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
@@ -2428,17 +2422,17 @@ const gchar* tracker_sparql_builder_get_result (TrackerSparqlBuilder* self) {
 			_tmp5__length1 = self->priv->states_length1;
 #line 110 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp2_ = _tmp5__length1 == 3;
-#line 2432 "tracker-builder.c"
+#line 2426 "tracker-builder.c"
 		} else {
 #line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp2_ = FALSE;
-#line 2436 "tracker-builder.c"
+#line 2430 "tracker-builder.c"
 		}
 #line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = _tmp2_;
 #line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp0_ = _tmp6_;
-#line 2442 "tracker-builder.c"
+#line 2436 "tracker-builder.c"
 	}
 #line 108 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp7_ = _tmp0_;
@@ -2452,7 +2446,7 @@ const gchar* tracker_sparql_builder_get_result (TrackerSparqlBuilder* self) {
 	result = _tmp9_;
 #line 111 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return result;
-#line 2456 "tracker-builder.c"
+#line 2450 "tracker-builder.c"
 }
 
 
@@ -2467,7 +2461,7 @@ gint tracker_sparql_builder_get_length (TrackerSparqlBuilder* self) {
 	result = _tmp0_;
 #line 134 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return result;
-#line 2471 "tracker-builder.c"
+#line 2465 "tracker-builder.c"
 }
 
 
@@ -2481,7 +2475,7 @@ static void tracker_sparql_builder_set_length (TrackerSparqlBuilder* self, gint 
 	self->priv->_length = _tmp0_;
 #line 135 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_object_notify ((GObject *) self, "length");
-#line 2485 "tracker-builder.c"
+#line 2479 "tracker-builder.c"
 }
 
 
@@ -2508,7 +2502,7 @@ TrackerSparqlBuilderState tracker_sparql_builder_get_state (TrackerSparqlBuilder
 	result = _tmp2_;
 #line 157 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return result;
-#line 2512 "tracker-builder.c"
+#line 2506 "tracker-builder.c"
 }
 
 
@@ -2523,7 +2517,7 @@ static void tracker_sparql_builder_class_init (TrackerSparqlBuilderClass * klass
 	G_OBJECT_CLASS (klass)->set_property = _vala_tracker_sparql_builder_set_property;
 #line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	G_OBJECT_CLASS (klass)->finalize = tracker_sparql_builder_finalize;
-#line 2527 "tracker-builder.c"
+#line 2521 "tracker-builder.c"
 	/**
 	 * TrackerSparqlBuilder:result:
 	 *
@@ -2533,7 +2527,7 @@ static void tracker_sparql_builder_class_init (TrackerSparqlBuilderClass * klass
 	 */
 #line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_SPARQL_BUILDER_RESULT, g_param_spec_string ("result", "result", "result", NULL, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
-#line 2537 "tracker-builder.c"
+#line 2531 "tracker-builder.c"
 	/**
 	 * TrackerSparqlBuilder:length:
 	 *
@@ -2543,7 +2537,7 @@ static void tracker_sparql_builder_class_init (TrackerSparqlBuilderClass * klass
 	 */
 #line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_SPARQL_BUILDER_LENGTH, g_param_spec_int ("length", "length", "length", G_MININT, G_MAXINT, 0, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
-#line 2547 "tracker-builder.c"
+#line 2541 "tracker-builder.c"
 	/**
 	 * TrackerSparqlBuilder:state:
 	 *
@@ -2553,7 +2547,7 @@ static void tracker_sparql_builder_class_init (TrackerSparqlBuilderClass * klass
 	 */
 #line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_SPARQL_BUILDER_STATE, g_param_spec_enum ("state", "state", "state", TRACKER_SPARQL_BUILDER_TYPE_STATE, 0, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
-#line 2557 "tracker-builder.c"
+#line 2551 "tracker-builder.c"
 }
 
 
@@ -2565,7 +2559,7 @@ static void tracker_sparql_builder_instance_init (TrackerSparqlBuilder * self) {
 	_tmp0_ = g_string_new ("");
 #line 161 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->str = _tmp0_;
-#line 2569 "tracker-builder.c"
+#line 2563 "tracker-builder.c"
 }
 
 
@@ -2579,7 +2573,7 @@ static void tracker_sparql_builder_finalize (GObject* obj) {
 	_g_string_free0 (self->priv->str);
 #line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 	G_OBJECT_CLASS (tracker_sparql_builder_parent_class)->finalize (obj);
-#line 2583 "tracker-builder.c"
+#line 2577 "tracker-builder.c"
 }
 
 
@@ -2627,13 +2621,13 @@ static void _vala_tracker_sparql_builder_get_property (GObject * object, guint p
 		g_value_set_enum (value, tracker_sparql_builder_get_state (self));
 #line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
-#line 2631 "tracker-builder.c"
+#line 2625 "tracker-builder.c"
 		default:
 #line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
-#line 2637 "tracker-builder.c"
+#line 2631 "tracker-builder.c"
 	}
 }
 
@@ -2649,13 +2643,13 @@ static void _vala_tracker_sparql_builder_set_property (GObject * object, guint p
 		tracker_sparql_builder_set_length (self, g_value_get_int (value));
 #line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
-#line 2653 "tracker-builder.c"
+#line 2647 "tracker-builder.c"
 		default:
 #line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
-#line 2659 "tracker-builder.c"
+#line 2653 "tracker-builder.c"
 	}
 }
 

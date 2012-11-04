@@ -45,8 +45,9 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
-@HAVE_TRACKER_MINER_RSS_TRUE@am__append_1 = rss
-@HAVE_TRACKER_MINER_FLICKR_TRUE@am__append_2 = flickr
+@HAVE_TRACKER_MINER_FS_TRUE@am__append_1 = fs
+@HAVE_TRACKER_MINER_RSS_TRUE@am__append_2 = rss
+@HAVE_TRACKER_MINER_FLICKR_TRUE@am__append_3 = flickr
 subdir = src/miners
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -225,6 +226,8 @@ LIBGIF_CFLAGS = @LIBGIF_CFLAGS@
 LIBGIF_LIBS = @LIBGIF_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBGXPS_CFLAGS = @LIBGXPS_CFLAGS@
+LIBGXPS_LIBS = @LIBGXPS_LIBS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
@@ -435,7 +438,7 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-SUBDIRS = fs $(am__append_1) $(am__append_2)
+SUBDIRS = $(am__append_1) $(am__append_2) $(am__append_3)
 all: all-recursive
 
 .SUFFIXES:

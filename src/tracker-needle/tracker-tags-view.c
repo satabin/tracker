@@ -880,8 +880,8 @@ static GType tracker_tags_view_selection_get_type (void) {
 TrackerTagsView* tracker_tags_view_construct (GType object_type, GList* _files) {
 	TrackerTagsView * self = NULL;
 	GList* _tmp4_;
-	GCancellable* _tmp7_;
-	GtkListStore* _tmp8_;
+	GCancellable* _tmp5_;
+	GtkListStore* _tmp6_;
 	GError * _inner_error_ = NULL;
 	self = (TrackerTagsView*) g_object_new (object_type, NULL);
 	{
@@ -910,29 +910,23 @@ TrackerTagsView* tracker_tags_view_construct (GType object_type, GList* _files) 
 	}
 	__finally13:
 	if (_inner_error_ != NULL) {
+		__g_list_free__g_free0_0 (_files);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 		return NULL;
 	}
 	_tmp4_ = _files;
-	if (_tmp4_ != NULL) {
-		GList* _tmp5_;
-		GList* _tmp6_ = NULL;
-		_tmp5_ = _files;
-		_tmp6_ = g_list_copy (_tmp5_);
-		__g_list_free__g_free0_0 (self->priv->files);
-		self->priv->files = _tmp6_;
-	} else {
-		__g_list_free__g_free0_0 (self->priv->files);
-		self->priv->files = NULL;
-	}
-	_tmp7_ = g_cancellable_new ();
+	_files = NULL;
+	__g_list_free__g_free0_0 (self->priv->files);
+	self->priv->files = _tmp4_;
+	_tmp5_ = g_cancellable_new ();
 	_g_object_unref0 (self->priv->cancellable);
-	self->priv->cancellable = _tmp7_;
-	_tmp8_ = gtk_list_store_new ((gint) TRACKER_TAGS_VIEW_COL_N_COLUMNS, G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INT);
+	self->priv->cancellable = _tmp5_;
+	_tmp6_ = gtk_list_store_new ((gint) TRACKER_TAGS_VIEW_COL_N_COLUMNS, G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INT);
 	_g_object_unref0 (self->priv->store);
-	self->priv->store = _tmp8_;
+	self->priv->store = _tmp6_;
 	tracker_tags_view_create_ui (self);
+	__g_list_free__g_free0_0 (_files);
 	return self;
 }
 
@@ -1092,7 +1086,7 @@ void tracker_tags_view_button_remove_clicked_cb (GtkButton* source, TrackerTagsV
 	GtkTreeModel* _tmp7_;
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (source != NULL);
-	g_debug ("tracker-tags-view.vala:181: Remove clicked");
+	g_debug ("tracker-tags-view.vala:177: Remove clicked");
 	_tmp0_ = self->priv->view;
 	_tmp1_ = gtk_tree_view_get_selection (_tmp0_);
 	_tmp2_ = _g_object_ref0 (_tmp1_);
@@ -1140,7 +1134,7 @@ void tracker_tags_view_button_add_clicked_cb (GtkButton* source, TrackerTagsView
 	const gchar* tag;
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (source != NULL);
-	g_debug ("tracker-tags-view.vala:202: Add clicked");
+	g_debug ("tracker-tags-view.vala:198: Add clicked");
 	_tmp0_ = self->priv->entry;
 	_tmp1_ = gtk_entry_get_text (_tmp0_);
 	tag = _tmp1_;
@@ -1152,7 +1146,7 @@ void tracker_tags_view_entry_tag_activated_cb (GtkEntry* source, TrackerTagsView
 	GtkButton* _tmp0_;
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (source != NULL);
-	g_debug ("tracker-tags-view.vala:209: Entry activated");
+	g_debug ("tracker-tags-view.vala:205: Entry activated");
 	_tmp0_ = self->priv->button_add;
 	gtk_widget_activate (GTK_WIDGET (_tmp0_));
 }
@@ -1168,7 +1162,7 @@ void tracker_tags_view_entry_tag_changed_cb (GtkEditable* source, TrackerTagsVie
 	gboolean _tmp4_ = FALSE;
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (source != NULL);
-	g_debug ("tracker-tags-view.vala:215: Entry changed");
+	g_debug ("tracker-tags-view.vala:211: Entry changed");
 	_tmp0_ = self->priv->entry;
 	_tmp1_ = gtk_entry_get_text (_tmp0_);
 	tag = _tmp1_;
@@ -1206,7 +1200,7 @@ void tracker_tags_view_treeview_tags_cell_toggled_cb (GtkCellRendererToggle* sou
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (source != NULL);
 	g_return_if_fail (path_string != NULL);
-	g_debug ("tracker-tags-view.vala:229: Treeview row cell toggled");
+	g_debug ("tracker-tags-view.vala:225: Treeview row cell toggled");
 	_tmp0_ = path_string;
 	_tmp1_ = gtk_tree_path_new_from_string (_tmp0_);
 	path = _tmp1_;
@@ -1225,7 +1219,7 @@ void tracker_tags_view_treeview_tags_row_selected_cb (GtkTreeSelection* selectio
 	GtkTreeModel* _tmp4_;
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (selection != NULL);
-	g_debug ("tracker-tags-view.vala:236: Treeview row selected");
+	g_debug ("tracker-tags-view.vala:232: Treeview row selected");
 	_tmp0_ = selection;
 	_tmp3_ = gtk_tree_selection_get_selected (_tmp0_, &_tmp1_, &_tmp2_);
 	_g_object_unref0 (model);
@@ -1251,7 +1245,7 @@ void tracker_tags_view_treeview_tags_row_activated_cb (GtkTreeView* source, GtkT
 	g_return_if_fail (source != NULL);
 	g_return_if_fail (path != NULL);
 	g_return_if_fail (column != NULL);
-	g_debug ("tracker-tags-view.vala:250: Treeview row activated");
+	g_debug ("tracker-tags-view.vala:246: Treeview row activated");
 	_tmp0_ = path;
 	tracker_tags_view_model_toggle_row (self, _tmp0_, NULL, NULL);
 }
@@ -1406,7 +1400,7 @@ static void tracker_tags_view_create_ui (TrackerTagsView* self) {
 	_tmp0_ = gtk_builder_new ();
 	builder = _tmp0_;
 	{
-		g_debug ("tracker-tags-view.vala:267: Trying to use UI file:'%s'", SRCDIR TRACKER_TAGS_VIEW_UI_FILE);
+		g_debug ("tracker-tags-view.vala:263: Trying to use UI file:'%s'", SRCDIR TRACKER_TAGS_VIEW_UI_FILE);
 		gtk_builder_add_from_file (builder, SRCDIR TRACKER_TAGS_VIEW_UI_FILE, &_inner_error_);
 		if (_inner_error_ != NULL) {
 			goto __catch14_g_error;
@@ -1419,7 +1413,7 @@ static void tracker_tags_view_create_ui (TrackerTagsView* self) {
 		e = _inner_error_;
 		_inner_error_ = NULL;
 		{
-			g_debug ("tracker-tags-view.vala:272: Trying to use UI file:'%s'", TRACKER_UI_DIR TRACKER_TAGS_VIEW_UI_FILE);
+			g_debug ("tracker-tags-view.vala:268: Trying to use UI file:'%s'", TRACKER_UI_DIR TRACKER_TAGS_VIEW_UI_FILE);
 			gtk_builder_add_from_file (builder, TRACKER_UI_DIR TRACKER_TAGS_VIEW_UI_FILE, &_inner_error_);
 			if (_inner_error_ != NULL) {
 				goto __catch15_g_error;
@@ -1811,7 +1805,7 @@ static gboolean tracker_tags_view_model_toggle_row_co (TrackerTagsViewModelToggl
 	_data_->tag_escaped = NULL;
 	_data_->_tmp28_ = _data_->self->priv->connection;
 	if (_data_->_tmp28_ == NULL) {
-		g_warning ("tracker-tags-view.vala:450: Can't update tags, no SPARQL connection av" \
+		g_warning ("tracker-tags-view.vala:446: Can't update tags, no SPARQL connection av" \
 "ailable");
 		_tag_data_unref0 (_data_->td);
 		_g_free0 (_data_->query);
@@ -1828,7 +1822,7 @@ static gboolean tracker_tags_view_model_toggle_row_co (TrackerTagsViewModelToggl
 		g_object_unref (_data_->_async_result);
 		return FALSE;
 	}
-	g_debug ("tracker-tags-view.vala:454: Updating tags for uris");
+	g_debug ("tracker-tags-view.vala:450: Updating tags for uris");
 	_data_->_tmp29_ = _data_->self->priv->entry;
 	gtk_widget_set_sensitive ((GtkWidget*) _data_->_tmp29_, FALSE);
 	_data_->_tmp30_ = _data_->id;
@@ -1853,7 +1847,7 @@ static gboolean tracker_tags_view_model_toggle_row_co (TrackerTagsViewModelToggl
 		if (_data_->_inner_error_ != NULL) {
 			goto __catch16_g_error;
 		}
-		g_debug ("tracker-tags-view.vala:464: Updated tags");
+		g_debug ("tracker-tags-view.vala:460: Updated tags");
 		_data_->_tmp40_ = _data_->td;
 		tracker_tags_view_update_tag_data (_data_->self, _data_->_tmp40_);
 		_data_->_tmp41_ = _data_->self->priv->entry;
@@ -1866,7 +1860,7 @@ static gboolean tracker_tags_view_model_toggle_row_co (TrackerTagsViewModelToggl
 		_data_->_inner_error_ = NULL;
 		_data_->_tmp42_ = _data_->e;
 		_data_->_tmp43_ = _data_->_tmp42_->message;
-		g_warning ("tracker-tags-view.vala:469: Could not run Sparql update query: %s", _data_->_tmp43_);
+		g_warning ("tracker-tags-view.vala:465: Could not run Sparql update query: %s", _data_->_tmp43_);
 		_data_->_tmp44_ = NULL;
 		_data_->_tmp44_ = _ ("Could not update tags");
 		_data_->_tmp45_ = _data_->e;
@@ -2107,7 +2101,7 @@ static gboolean tracker_tags_view_remove_tag_co (TrackerTagsViewRemoveTagData* _
 	if (_data_->_tmp0_ == NULL) {
 		_data_->_tmp1_ = _data_->td;
 		_data_->_tmp2_ = _data_->_tmp1_->tag_id;
-		g_warning ("tracker-tags-view.vala:515: Can't remove tag '%s', no SPARQL connectio" \
+		g_warning ("tracker-tags-view.vala:511: Can't remove tag '%s', no SPARQL connectio" \
 "n available", _data_->_tmp2_);
 		_data_->_tmp3_ = _data_->td;
 		_data_->self->priv->tag_data_requests = g_list_remove (_data_->self->priv->tag_data_requests, _data_->_tmp3_);
@@ -2138,7 +2132,7 @@ static gboolean tracker_tags_view_remove_tag_co (TrackerTagsViewRemoveTagData* _
 		if (_data_->_inner_error_ != NULL) {
 			goto __catch17_g_error;
 		}
-		g_debug ("tracker-tags-view.vala:526: Tag removed");
+		g_debug ("tracker-tags-view.vala:522: Tag removed");
 		_data_->_tmp11_ = _data_->self->priv->store;
 		_data_->_tmp12_ = _data_->td;
 		_data_->_tmp13_ = _data_->_tmp12_->iter;
@@ -2151,7 +2145,7 @@ static gboolean tracker_tags_view_remove_tag_co (TrackerTagsViewRemoveTagData* _
 		_data_->_inner_error_ = NULL;
 		_data_->_tmp14_ = _data_->e;
 		_data_->_tmp15_ = _data_->_tmp14_->message;
-		g_warning ("tracker-tags-view.vala:529: Could not run Sparql update query: %s", _data_->_tmp15_);
+		g_warning ("tracker-tags-view.vala:525: Could not run Sparql update query: %s", _data_->_tmp15_);
 		_data_->_tmp16_ = NULL;
 		_data_->_tmp16_ = _ ("Could not remove tag");
 		_data_->_tmp17_ = _data_->e;
@@ -2234,7 +2228,7 @@ static gboolean tracker_tags_view_add_tag_co (TrackerTagsViewAddTagData* _data_)
 	_data_->_tmp0_ = _data_->self->priv->connection;
 	if (_data_->_tmp0_ == NULL) {
 		_data_->_tmp1_ = _data_->tag;
-		g_warning ("tracker-tags-view.vala:541: Can't add tag '%s', no SPARQL connection a" \
+		g_warning ("tracker-tags-view.vala:537: Can't add tag '%s', no SPARQL connection a" \
 "vailable", _data_->_tmp1_);
 		_g_free0 (_data_->query);
 		if (_data_->_state_ == 0) {
@@ -2372,7 +2366,7 @@ static gboolean tracker_tags_view_add_tag_co (TrackerTagsViewAddTagData* _data_)
 		if (_data_->_inner_error_ != NULL) {
 			goto __catch18_g_error;
 		}
-		g_debug ("tracker-tags-view.vala:604: Updated tags");
+		g_debug ("tracker-tags-view.vala:600: Updated tags");
 		_data_->_tmp42_ = _data_->td;
 		tracker_tags_view_update_tag_data (_data_->self, _data_->_tmp42_);
 		_data_->_tmp43_ = _data_->self->priv->entry;
@@ -2385,7 +2379,7 @@ static gboolean tracker_tags_view_add_tag_co (TrackerTagsViewAddTagData* _data_)
 		_data_->_inner_error_ = NULL;
 		_data_->_tmp44_ = _data_->e;
 		_data_->_tmp45_ = _data_->_tmp44_->message;
-		g_warning ("tracker-tags-view.vala:610: Could not run Sparql update query: %s", _data_->_tmp45_);
+		g_warning ("tracker-tags-view.vala:606: Could not run Sparql update query: %s", _data_->_tmp45_);
 		_data_->_tmp46_ = NULL;
 		_data_->_tmp46_ = _ ("Could not update tags");
 		_data_->_tmp47_ = _data_->e;
@@ -2446,7 +2440,7 @@ static void tracker_tags_view_update_tag_data (TrackerTagsView* self, TagData* t
 		gchar* _tmp14_;
 		TagData* _tmp15_;
 		gint _tmp16_;
-		g_debug ("tracker-tags-view.vala:626: Setting tag selection state to ON (new)");
+		g_debug ("tracker-tags-view.vala:622: Setting tag selection state to ON (new)");
 		_tmp4_ = self->priv->store;
 		gtk_list_store_append (_tmp4_, &_tmp5_);
 		iter = _tmp5_;
@@ -2475,7 +2469,7 @@ static void tracker_tags_view_update_tag_data (TrackerTagsView* self, TagData* t
 			TagData* _tmp22_;
 			TagData* _tmp23_;
 			TagData* _tmp24_;
-			g_debug ("tracker-tags-view.vala:637: Setting tag selection state to ON");
+			g_debug ("tracker-tags-view.vala:633: Setting tag selection state to ON");
 			_tmp19_ = self->priv->store;
 			_tmp20_ = td;
 			_tmp21_ = _tmp20_->iter;
@@ -2492,7 +2486,7 @@ static void tracker_tags_view_update_tag_data (TrackerTagsView* self, TagData* t
 			TagData* _tmp28_;
 			TagData* _tmp29_;
 			TagData* _tmp30_;
-			g_debug ("tracker-tags-view.vala:644: Setting tag selection state to FALSE");
+			g_debug ("tracker-tags-view.vala:640: Setting tag selection state to FALSE");
 			_tmp25_ = self->priv->store;
 			_tmp26_ = td;
 			_tmp27_ = _tmp26_->iter;
@@ -2663,7 +2657,7 @@ static gboolean tracker_tags_view_query_tags_for_files_co (TrackerTagsViewQueryT
 	_data_->_tmp15_ = g_strdup_printf ("select ?tag nao:prefLabel(?tag) WHERE { ?urn nao:hasTag ?tag . FILTER(" \
 "nie:url(?urn) IN (%s)) } ORDER BY (?tag)", _data_->_tmp14_);
 	_data_->query = _data_->_tmp15_;
-	g_debug ("tracker-tags-view.vala:683: Getting tags for files selected...");
+	g_debug ("tracker-tags-view.vala:679: Getting tags for files selected...");
 	{
 		_data_->_tmp16_ = _data_->self->priv->connection;
 		_data_->_tmp17_ = _data_->query;
@@ -2693,7 +2687,7 @@ static gboolean tracker_tags_view_query_tags_for_files_co (TrackerTagsViewQueryT
 			if (!_data_->_tmp21_) {
 				break;
 			}
-			g_debug ("tracker-tags-view.vala:689: Toggling tags...");
+			g_debug ("tracker-tags-view.vala:685: Toggling tags...");
 			_data_->_tmp22_ = _data_->cursor;
 			_data_->_tmp23_ = NULL;
 			_data_->_tmp23_ = tracker_sparql_cursor_get_string (_data_->_tmp22_, 0, NULL);
@@ -2704,7 +2698,7 @@ static gboolean tracker_tags_view_query_tags_for_files_co (TrackerTagsViewQueryT
 			_data_->label = _data_->_tmp25_;
 			_data_->_tmp26_ = _data_->id;
 			_data_->_tmp27_ = _data_->label;
-			g_debug ("tracker-tags-view.vala:694:   Enabling tag:'%s', label:'%s'", _data_->_tmp26_, _data_->_tmp27_);
+			g_debug ("tracker-tags-view.vala:690:   Enabling tag:'%s', label:'%s'", _data_->_tmp26_, _data_->_tmp27_);
 			_data_->_tmp28_ = _data_->label;
 			memset (&_data_->_tmp29_, 0, sizeof (GtkTreeIter));
 			_data_->_tmp30_ = FALSE;
@@ -2725,9 +2719,9 @@ static gboolean tracker_tags_view_query_tags_for_files_co (TrackerTagsViewQueryT
 		_data_->_inner_error_ = NULL;
 		_data_->_tmp33_ = _data_->e;
 		_data_->_tmp34_ = _data_->_tmp33_->message;
-		g_warning ("tracker-tags-view.vala:704: Could not run Sparql query: %s", _data_->_tmp34_);
+		g_warning ("tracker-tags-view.vala:700: Could not run Sparql query: %s", _data_->_tmp34_);
 		_data_->_tmp35_ = NULL;
-		_data_->_tmp35_ = _ ("Could not toggle tags according to selection");
+		_data_->_tmp35_ = _ ("Could not retrieve tags for the current selection");
 		_data_->_tmp36_ = _data_->e;
 		tracker_tags_view_show_error_dialog (_data_->self, _data_->_tmp35_, _data_->_tmp36_);
 		_g_error_free0 (_data_->e);
@@ -2802,7 +2796,7 @@ static gboolean tracker_tags_view_query_tags_co (TrackerTagsViewQueryTagsData* _
 	_data_->_tmp0_ = g_strdup ("SELECT ?urn ?label WHERE { ?urn a nao:Tag ; nao:prefLabel ?label . } O" \
 "RDER BY ?label");
 	_data_->query = _data_->_tmp0_;
-	g_debug ("tracker-tags-view.vala:713: Clearing tags in store");
+	g_debug ("tracker-tags-view.vala:709: Clearing tags in store");
 	_data_->_tmp1_ = _data_->self->priv->store;
 	gtk_list_store_clear (_data_->_tmp1_);
 	{
@@ -2834,7 +2828,7 @@ static gboolean tracker_tags_view_query_tags_co (TrackerTagsViewQueryTagsData* _
 			if (!_data_->_tmp7_) {
 				break;
 			}
-			g_debug ("tracker-tags-view.vala:721: Adding all tags...");
+			g_debug ("tracker-tags-view.vala:717: Adding all tags...");
 			_data_->_tmp8_ = _data_->cursor;
 			_data_->_tmp9_ = NULL;
 			_data_->_tmp9_ = tracker_sparql_cursor_get_string (_data_->_tmp8_, 0, NULL);
@@ -2845,7 +2839,7 @@ static gboolean tracker_tags_view_query_tags_co (TrackerTagsViewQueryTagsData* _
 			_data_->label = _data_->_tmp11_;
 			_data_->_tmp12_ = _data_->id;
 			_data_->_tmp13_ = _data_->label;
-			g_debug ("tracker-tags-view.vala:726:   Adding tag id:'%s' with label:'%s' to st" \
+			g_debug ("tracker-tags-view.vala:722:   Adding tag id:'%s' with label:'%s' to st" \
 "ore", _data_->_tmp12_, _data_->_tmp13_);
 			_data_->_tmp14_ = _data_->self->priv->store;
 			memset (&_data_->_tmp15_, 0, sizeof (GtkTreeIter));
@@ -2876,7 +2870,7 @@ static gboolean tracker_tags_view_query_tags_co (TrackerTagsViewQueryTagsData* _
 		_data_->_inner_error_ = NULL;
 		_data_->_tmp26_ = _data_->e;
 		_data_->_tmp27_ = _data_->_tmp26_->message;
-		g_warning ("tracker-tags-view.vala:743: Could not run Sparql query: %s", _data_->_tmp27_);
+		g_warning ("tracker-tags-view.vala:739: Could not run Sparql query: %s", _data_->_tmp27_);
 		_data_->_tmp28_ = NULL;
 		_data_->_tmp28_ = _ ("Could not add tag");
 		_data_->_tmp29_ = _data_->e;
@@ -2958,7 +2952,7 @@ static gboolean tracker_tags_view_query_files_for_tag_id_co (TrackerTagsViewQuer
 	if (_data_->_tmp0_ == NULL) {
 		_data_->_tmp1_ = _data_->td;
 		_data_->_tmp2_ = _data_->_tmp1_->tag_id;
-		g_warning ("tracker-tags-view.vala:750: Can't query files for tag id '%s', no SPAR" \
+		g_warning ("tracker-tags-view.vala:746: Can't query files for tag id '%s', no SPAR" \
 "QL connection available", _data_->_tmp2_);
 		_data_->_tmp3_ = _data_->td;
 		_data_->self->priv->tag_data_requests = g_list_remove (_data_->self->priv->tag_data_requests, _data_->_tmp3_);
@@ -3030,7 +3024,7 @@ static gboolean tracker_tags_view_query_files_for_tag_id_co (TrackerTagsViewQuer
 						_data_->url_returned = _data_->_tmp21_;
 						_data_->_tmp22_ = _data_->url;
 						_data_->_tmp23_ = _data_->url_returned;
-						g_debug ("tracker-tags-view.vala:771: --> '%s' vs '%s'", _data_->_tmp22_, _data_->_tmp23_);
+						g_debug ("tracker-tags-view.vala:767: --> '%s' vs '%s'", _data_->_tmp22_, _data_->_tmp23_);
 						_data_->_tmp24_ = _data_->url_returned;
 						if (_data_->_tmp24_ == NULL) {
 							_g_free0 (_data_->url);
@@ -3052,7 +3046,7 @@ static gboolean tracker_tags_view_query_files_for_tag_id_co (TrackerTagsViewQuer
 		_data_->_tmp28_ = _data_->has_tag_in_selection;
 		_data_->_tmp29_ = _data_->files_with_tag;
 		_data_->_tmp30_ = _data_->files_selected;
-		g_debug ("tracker-tags-view.vala:784: Querying files with tag, in selection:%ld," \
+		g_debug ("tracker-tags-view.vala:780: Querying files with tag, in selection:%ld," \
 " in total:%ld, selected:%ld", (glong) _data_->_tmp28_, (glong) _data_->_tmp29_, (glong) _data_->_tmp30_);
 		_data_->_tmp31_ = _data_->has_tag_in_selection;
 		if (_data_->_tmp31_ == ((guint) 0)) {
@@ -3085,7 +3079,7 @@ static gboolean tracker_tags_view_query_files_for_tag_id_co (TrackerTagsViewQuer
 		_data_->_tmp48_ = _data_->str;
 		_data_->_tmp49_ = _data_->files_with_tag;
 		gtk_list_store_set (_data_->_tmp45_, &_data_->_tmp47_, TRACKER_TAGS_VIEW_COL_TAG_COUNT, _data_->_tmp48_, TRACKER_TAGS_VIEW_COL_TAG_COUNT_VALUE, _data_->_tmp49_, -1, -1);
-		g_debug ("tracker-tags-view.vala:798: Tags for file updated");
+		g_debug ("tracker-tags-view.vala:794: Tags for file updated");
 		_g_free0 (_data_->str);
 		_g_object_unref0 (_data_->cursor);
 	}
@@ -3096,7 +3090,7 @@ static gboolean tracker_tags_view_query_files_for_tag_id_co (TrackerTagsViewQuer
 		_data_->_inner_error_ = NULL;
 		_data_->_tmp50_ = _data_->e;
 		_data_->_tmp51_ = _data_->_tmp50_->message;
-		g_warning ("tracker-tags-view.vala:800: Could not run Sparql query: %s", _data_->_tmp51_);
+		g_warning ("tracker-tags-view.vala:796: Could not run Sparql query: %s", _data_->_tmp51_);
 		_data_->_tmp52_ = NULL;
 		_data_->_tmp52_ = _ ("Could not update tags for file");
 		_data_->_tmp53_ = _data_->e;

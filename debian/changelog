@@ -1,3 +1,9 @@
+tracker (0.14.4-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Michael Biebl <biebl@debian.org>  Sun, 04 Nov 2012 16:00:33 +0100
+
 tracker (0.14.1-3) unstable; urgency=low
 
   * Use xz compression for binary packages.

@@ -333,7 +333,8 @@ static const gchar* tracker_mock_results_real_get_string (TrackerSparqlCursor* b
 	gint _tmp2_;
 	gint _tmp3_;
 	const gchar* _tmp4_;
-	const gchar* _tmp8_;
+	gint _tmp5_;
+	gint _tmp6_;
 #line 33 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	self = (TrackerMockResults*) base;
 #line 33 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
@@ -355,34 +356,22 @@ static const gchar* tracker_mock_results_real_get_string (TrackerSparqlCursor* b
 #line 37 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	str = _tmp4_;
 #line 39 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
-	if ((&_vala_length) != NULL) {
-#line 360 "tracker-connection-mock.c"
-		const gchar* _tmp5_;
-		gint _tmp6_;
-		gint _tmp7_;
-#line 40 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
-		_tmp5_ = str;
-#line 40 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
-		_tmp6_ = strlen (_tmp5_);
-#line 40 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
-		_tmp7_ = _tmp6_;
-#line 40 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
-		_vala_length = (glong) _tmp7_;
-#line 372 "tracker-connection-mock.c"
-	}
-#line 43 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
-	_tmp8_ = str;
-#line 43 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
-	result = _tmp8_;
-#line 43 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+	_tmp5_ = strlen (str);
+#line 39 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+	_tmp6_ = _tmp5_;
+#line 39 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+	_vala_length = (glong) _tmp6_;
+#line 41 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+	result = str;
+#line 41 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	if (length) {
-#line 43 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 41 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		*length = _vala_length;
-#line 382 "tracker-connection-mock.c"
+#line 371 "tracker-connection-mock.c"
 	}
-#line 43 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 41 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	return result;
-#line 386 "tracker-connection-mock.c"
+#line 375 "tracker-connection-mock.c"
 }
 
 
@@ -392,29 +381,29 @@ static gboolean tracker_mock_results_real_next (TrackerSparqlCursor* base, GCanc
 	gint _tmp0_;
 	gint _tmp1_;
 	gint _tmp2_;
-#line 46 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 44 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	self = (TrackerMockResults*) base;
-#line 47 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 45 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp0_ = self->priv->current_row;
-#line 47 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 45 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp1_ = self->priv->rows;
-#line 47 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 45 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	if (_tmp0_ >= (_tmp1_ - 1)) {
-#line 48 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 46 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		result = FALSE;
-#line 48 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 46 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		return result;
-#line 408 "tracker-connection-mock.c"
+#line 397 "tracker-connection-mock.c"
 	}
-#line 50 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 48 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp2_ = self->priv->current_row;
-#line 50 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 48 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	self->priv->current_row = _tmp2_ + 1;
-#line 51 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 49 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	result = TRUE;
-#line 51 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 49 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	return result;
-#line 418 "tracker-connection-mock.c"
+#line 407 "tracker-connection-mock.c"
 }
 
 
@@ -427,14 +416,14 @@ static void tracker_mock_results_real_next_async_data_free (gpointer _data) {
 	_g_object_unref0 (_data_->self);
 #line 5 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	g_slice_free (TrackerMockResultsNextAsyncData, _data_);
-#line 431 "tracker-connection-mock.c"
+#line 420 "tracker-connection-mock.c"
 }
 
 
 static gpointer _g_object_ref0 (gpointer self) {
 #line 5 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	return self ? g_object_ref (self) : NULL;
-#line 438 "tracker-connection-mock.c"
+#line 427 "tracker-connection-mock.c"
 }
 
 
@@ -464,7 +453,7 @@ static void tracker_mock_results_real_next_async (TrackerSparqlCursor* base, GCa
 	_data_->cancellable = _tmp2_;
 #line 5 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	tracker_mock_results_real_next_async_co (_data_);
-#line 468 "tracker-connection-mock.c"
+#line 457 "tracker-connection-mock.c"
 }
 
 
@@ -475,7 +464,7 @@ static gboolean tracker_mock_results_real_next_finish (TrackerSparqlCursor* base
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
 #line 5 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		return FALSE;
-#line 479 "tracker-connection-mock.c"
+#line 468 "tracker-connection-mock.c"
 	}
 #line 5 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
@@ -483,94 +472,94 @@ static gboolean tracker_mock_results_real_next_finish (TrackerSparqlCursor* base
 	result = _data_->result;
 #line 5 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	return result;
-#line 487 "tracker-connection-mock.c"
+#line 476 "tracker-connection-mock.c"
 }
 
 
 static gboolean tracker_mock_results_real_next_async_co (TrackerMockResultsNextAsyncData* _data_) {
-#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 52 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	switch (_data_->_state_) {
-#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 52 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		case 0:
-#line 496 "tracker-connection-mock.c"
+#line 485 "tracker-connection-mock.c"
 		goto _state_0;
 		default:
-#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 52 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		g_assert_not_reached ();
-#line 501 "tracker-connection-mock.c"
+#line 490 "tracker-connection-mock.c"
 	}
 	_state_0:
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_data_->_tmp0_ = _data_->cancellable;
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_data_->_tmp1_ = FALSE;
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_data_->_tmp1_ = tracker_sparql_cursor_next ((TrackerSparqlCursor*) _data_->self, _data_->_tmp0_, &_data_->_inner_error_);
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_data_->_tmp2_ = _data_->_tmp1_;
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		g_error_free (_data_->_inner_error_);
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		if (_data_->_state_ == 0) {
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 522 "tracker-connection-mock.c"
+#line 511 "tracker-connection-mock.c"
 		} else {
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 			g_simple_async_result_complete (_data_->_async_result);
-#line 526 "tracker-connection-mock.c"
+#line 515 "tracker-connection-mock.c"
 		}
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		g_object_unref (_data_->_async_result);
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		return FALSE;
-#line 532 "tracker-connection-mock.c"
+#line 521 "tracker-connection-mock.c"
 	}
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_data_->result = _data_->_tmp2_;
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
-	if (_data_->_state_ == 0) {
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
-		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 540 "tracker-connection-mock.c"
-	} else {
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
-		g_simple_async_result_complete (_data_->_async_result);
-#line 544 "tracker-connection-mock.c"
-	}
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
-	g_object_unref (_data_->_async_result);
-#line 56 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
-	return FALSE;
 #line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	if (_data_->_state_ == 0) {
 #line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 554 "tracker-connection-mock.c"
+#line 529 "tracker-connection-mock.c"
 	} else {
 #line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 558 "tracker-connection-mock.c"
+#line 533 "tracker-connection-mock.c"
 	}
 #line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	g_object_unref (_data_->_async_result);
 #line 54 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	return FALSE;
-#line 564 "tracker-connection-mock.c"
+#line 52 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+	if (_data_->_state_ == 0) {
+#line 52 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+		g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 543 "tracker-connection-mock.c"
+	} else {
+#line 52 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+		g_simple_async_result_complete (_data_->_async_result);
+#line 547 "tracker-connection-mock.c"
+	}
+#line 52 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+	g_object_unref (_data_->_async_result);
+#line 52 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+	return FALSE;
+#line 553 "tracker-connection-mock.c"
 }
 
 
 static void tracker_mock_results_real_rewind (TrackerSparqlCursor* base) {
 	TrackerMockResults * self;
-#line 59 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 57 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	self = (TrackerMockResults*) base;
-#line 60 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 58 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	self->priv->current_row = 0;
-#line 574 "tracker-connection-mock.c"
+#line 563 "tracker-connection-mock.c"
 }
 
 
@@ -586,7 +575,7 @@ static gint tracker_mock_results_real_get_n_columns (TrackerSparqlCursor* base) 
 	result = _tmp0_;
 #line 21 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	return result;
-#line 590 "tracker-connection-mock.c"
+#line 579 "tracker-connection-mock.c"
 }
 
 
@@ -617,7 +606,7 @@ static void tracker_mock_results_class_init (TrackerMockResultsClass * klass) {
 	G_OBJECT_CLASS (klass)->finalize = tracker_mock_results_finalize;
 #line 5 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_MOCK_RESULTS_N_COLUMNS, g_param_spec_int ("n-columns", "n-columns", "n-columns", G_MININT, G_MAXINT, 0, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
-#line 621 "tracker-connection-mock.c"
+#line 610 "tracker-connection-mock.c"
 }
 
 
@@ -626,7 +615,7 @@ static void tracker_mock_results_instance_init (TrackerMockResults * self) {
 	self->priv = TRACKER_MOCK_RESULTS_GET_PRIVATE (self);
 #line 7 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	self->priv->current_row = -1;
-#line 630 "tracker-connection-mock.c"
+#line 619 "tracker-connection-mock.c"
 }
 
 
@@ -642,7 +631,7 @@ static void tracker_mock_results_finalize (GObject* obj) {
 	self->priv->types = (g_free (self->priv->types), NULL);
 #line 5 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	G_OBJECT_CLASS (tracker_mock_results_parent_class)->finalize (obj);
-#line 646 "tracker-connection-mock.c"
+#line 635 "tracker-connection-mock.c"
 }
 
 
@@ -669,13 +658,13 @@ static void _vala_tracker_mock_results_get_property (GObject * object, guint pro
 		g_value_set_int (value, tracker_sparql_cursor_get_n_columns ((TrackerSparqlCursor*) self));
 #line 5 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		break;
-#line 673 "tracker-connection-mock.c"
+#line 662 "tracker-connection-mock.c"
 		default:
 #line 5 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 5 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		break;
-#line 679 "tracker-connection-mock.c"
+#line 668 "tracker-connection-mock.c"
 	}
 }
 
@@ -684,38 +673,38 @@ static TrackerSparqlCursor* tracker_mock_connection_real_query (TrackerSparqlCon
 	TrackerMockConnection * self;
 	TrackerSparqlCursor* result = NULL;
 	TrackerMockResults* _tmp0_;
-#line 74 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 72 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	self = (TrackerMockConnection*) base;
-#line 74 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 72 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	g_return_val_if_fail (sparql != NULL, NULL);
-#line 77 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 75 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp0_ = self->priv->results;
-#line 77 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 75 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	if (_tmp0_ != NULL) {
-#line 696 "tracker-connection-mock.c"
+#line 685 "tracker-connection-mock.c"
 		TrackerMockResults* _tmp1_;
 		TrackerSparqlCursor* _tmp2_;
-#line 78 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 76 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		_tmp1_ = self->priv->results;
-#line 78 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 76 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		_tmp2_ = _g_object_ref0 ((TrackerSparqlCursor*) _tmp1_);
-#line 78 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 76 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		result = _tmp2_;
-#line 78 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 76 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		return result;
-#line 707 "tracker-connection-mock.c"
+#line 696 "tracker-connection-mock.c"
 	} else {
 		TrackerMockResults* _tmp3_;
 		TrackerSparqlCursor* _tmp4_;
-#line 80 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 78 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		_tmp3_ = self->priv->hardcoded;
-#line 80 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 78 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		_tmp4_ = _g_object_ref0 ((TrackerSparqlCursor*) _tmp3_);
-#line 80 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 78 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		result = _tmp4_;
-#line 80 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 78 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		return result;
-#line 719 "tracker-connection-mock.c"
+#line 708 "tracker-connection-mock.c"
 	}
 }
 
@@ -723,17 +712,17 @@ static TrackerSparqlCursor* tracker_mock_connection_real_query (TrackerSparqlCon
 static void tracker_mock_connection_real_query_async_data_free (gpointer _data) {
 	TrackerMockConnectionQueryAsyncData* _data_;
 	_data_ = _data;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_g_free0 (_data_->sparql);
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_g_object_unref0 (_data_->result);
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_g_object_unref0 (_data_->self);
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	g_slice_free (TrackerMockConnectionQueryAsyncData, _data_);
-#line 737 "tracker-connection-mock.c"
+#line 726 "tracker-connection-mock.c"
 }
 
 
@@ -745,186 +734,186 @@ static void tracker_mock_connection_real_query_async (TrackerSparqlConnection* b
 	gchar* _tmp2_;
 	GCancellable* _tmp3_;
 	GCancellable* _tmp4_;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	self = (TrackerMockConnection*) base;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_data_ = g_slice_new0 (TrackerMockConnectionQueryAsyncData);
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_mock_connection_real_query_async);
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_mock_connection_real_query_async_data_free);
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_data_->self = _tmp0_;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp1_ = sparql;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_data_->sparql = _tmp2_;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp3_ = cancellable;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_data_->cancellable = _tmp4_;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	tracker_mock_connection_real_query_async_co (_data_);
-#line 775 "tracker-connection-mock.c"
+#line 764 "tracker-connection-mock.c"
 }
 
 
 static TrackerSparqlCursor* tracker_mock_connection_real_query_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerSparqlCursor* result;
 	TrackerMockConnectionQueryAsyncData* _data_;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		return NULL;
-#line 786 "tracker-connection-mock.c"
+#line 775 "tracker-connection-mock.c"
 	}
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	result = _data_->result;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_data_->result = NULL;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	return result;
-#line 796 "tracker-connection-mock.c"
+#line 785 "tracker-connection-mock.c"
 }
 
 
 static gboolean tracker_mock_connection_real_query_async_co (TrackerMockConnectionQueryAsyncData* _data_) {
-#line 85 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 83 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	switch (_data_->_state_) {
-#line 85 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 83 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		case 0:
-#line 805 "tracker-connection-mock.c"
+#line 794 "tracker-connection-mock.c"
 		goto _state_0;
 		default:
-#line 85 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 83 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		g_assert_not_reached ();
-#line 810 "tracker-connection-mock.c"
+#line 799 "tracker-connection-mock.c"
 	}
 	_state_0:
-#line 87 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 85 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_data_->_tmp0_ = _data_->self->priv->results;
-#line 87 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 85 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	if (_data_->_tmp0_ != NULL) {
-#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 86 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		_data_->_tmp1_ = _data_->self->priv->results;
-#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 86 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		_data_->_tmp2_ = _g_object_ref0 ((TrackerSparqlCursor*) _data_->_tmp1_);
-#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 86 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		_data_->result = _data_->_tmp2_;
-#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 86 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		if (_data_->_state_ == 0) {
-#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 86 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 827 "tracker-connection-mock.c"
+#line 816 "tracker-connection-mock.c"
 		} else {
-#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 86 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 			g_simple_async_result_complete (_data_->_async_result);
-#line 831 "tracker-connection-mock.c"
+#line 820 "tracker-connection-mock.c"
 		}
-#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 86 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		g_object_unref (_data_->_async_result);
-#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 86 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		return FALSE;
-#line 837 "tracker-connection-mock.c"
+#line 826 "tracker-connection-mock.c"
 	} else {
-#line 90 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		_data_->_tmp3_ = _data_->self->priv->hardcoded;
-#line 90 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		_data_->_tmp4_ = _g_object_ref0 ((TrackerSparqlCursor*) _data_->_tmp3_);
-#line 90 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		_data_->result = _data_->_tmp4_;
-#line 90 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		if (_data_->_state_ == 0) {
-#line 90 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 849 "tracker-connection-mock.c"
+#line 838 "tracker-connection-mock.c"
 		} else {
-#line 90 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 			g_simple_async_result_complete (_data_->_async_result);
-#line 853 "tracker-connection-mock.c"
+#line 842 "tracker-connection-mock.c"
 		}
-#line 90 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		g_object_unref (_data_->_async_result);
-#line 90 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 88 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		return FALSE;
-#line 859 "tracker-connection-mock.c"
+#line 848 "tracker-connection-mock.c"
 	}
-#line 85 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 83 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	if (_data_->_state_ == 0) {
-#line 85 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 83 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 865 "tracker-connection-mock.c"
+#line 854 "tracker-connection-mock.c"
 	} else {
-#line 85 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 83 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 869 "tracker-connection-mock.c"
+#line 858 "tracker-connection-mock.c"
 	}
-#line 85 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 83 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	g_object_unref (_data_->_async_result);
-#line 85 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 83 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	return FALSE;
-#line 875 "tracker-connection-mock.c"
+#line 864 "tracker-connection-mock.c"
 }
 
 
 void tracker_mock_connection_set_results (TrackerMockConnection* self, TrackerMockResults* results) {
 	TrackerMockResults* _tmp0_;
 	TrackerMockResults* _tmp1_;
-#line 95 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 93 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	g_return_if_fail (self != NULL);
-#line 95 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 93 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	g_return_if_fail (results != NULL);
-#line 96 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 94 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp0_ = results;
-#line 96 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 94 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 96 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 94 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_g_object_unref0 (self->priv->results);
-#line 96 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 94 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	self->priv->results = _tmp1_;
-#line 894 "tracker-connection-mock.c"
+#line 883 "tracker-connection-mock.c"
 }
 
 
 TrackerMockConnection* tracker_mock_connection_construct (GType object_type) {
 	TrackerMockConnection * self = NULL;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	self = (TrackerMockConnection*) tracker_sparql_connection_construct (object_type);
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	return self;
-#line 904 "tracker-connection-mock.c"
+#line 893 "tracker-connection-mock.c"
 }
 
 
 TrackerMockConnection* tracker_mock_connection_new (void) {
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	return tracker_mock_connection_construct (TYPE_TRACKER_MOCK_CONNECTION);
-#line 911 "tracker-connection-mock.c"
+#line 900 "tracker-connection-mock.c"
 }
 
 
 static void tracker_mock_connection_class_init (TrackerMockConnectionClass * klass) {
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	tracker_mock_connection_parent_class = g_type_class_peek_parent (klass);
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	g_type_class_add_private (klass, sizeof (TrackerMockConnectionPrivate));
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query = tracker_mock_connection_real_query;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_async = tracker_mock_connection_real_query_async;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_finish = tracker_mock_connection_real_query_finish;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	G_OBJECT_CLASS (klass)->finalize = tracker_mock_connection_finalize;
-#line 928 "tracker-connection-mock.c"
+#line 917 "tracker-connection-mock.c"
 }
 
 
@@ -943,75 +932,75 @@ static void tracker_mock_connection_instance_init (TrackerMockConnection * self)
 	TrackerSparqlValueType* _tmp10_;
 	gint _tmp10__length1;
 	TrackerMockResults* _tmp11_;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	self->priv = TRACKER_MOCK_CONNECTION_GET_PRIVATE (self);
-#line 69 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	self->priv->results = NULL;
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp0_ = g_strdup ("11");
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp1_ = g_strdup ("12");
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp2_ = g_strdup ("21");
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp3_ = g_strdup ("22");
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp4_ = g_new0 (gchar*, (2 * 2) + 1);
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp4_[0] = _tmp0_;
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp4_[1] = _tmp1_;
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp4_[2] = _tmp2_;
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp4_[3] = _tmp3_;
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp5_ = g_strdup ("artist");
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp6_ = g_strdup ("album");
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp7_ = g_new0 (gchar*, 2 + 1);
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp7_[0] = _tmp5_;
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp7_[1] = _tmp6_;
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp8_ = _tmp7_;
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp8__length1 = 2;
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp9_ = g_new0 (TrackerSparqlValueType, 2);
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp9_[0] = TRACKER_SPARQL_VALUE_TYPE_STRING;
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp9_[1] = TRACKER_SPARQL_VALUE_TYPE_STRING;
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp10_ = _tmp9_;
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp10__length1 = 2;
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp11_ = tracker_mock_results_new (_tmp4_, 2, 2, 2, 2, _tmp8_, 2, _tmp10_, 2);
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	self->priv->hardcoded = _tmp11_;
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp10_ = (g_free (_tmp10_), NULL);
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	_tmp8_ = (_vala_array_free (_tmp8_, _tmp8__length1, (GDestroyNotify) g_free), NULL);
-#line 1001 "tracker-connection-mock.c"
+#line 990 "tracker-connection-mock.c"
 }
 
 
 static void tracker_mock_connection_finalize (GObject* obj) {
 	TrackerMockConnection * self;
-#line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	self = TRACKER_MOCK_CONNECTION (obj);
-#line 69 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
-	_g_object_unref0 (self->priv->results);
-#line 70 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
-	_g_object_unref0 (self->priv->hardcoded);
 #line 67 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+	_g_object_unref0 (self->priv->results);
+#line 68 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
+	_g_object_unref0 (self->priv->hardcoded);
+#line 65 "/home/martyn/Source/tracker/tests/libtracker-miner/tracker-connection-mock.vala"
 	G_OBJECT_CLASS (tracker_mock_connection_parent_class)->finalize (obj);
-#line 1015 "tracker-connection-mock.c"
+#line 1004 "tracker-connection-mock.c"
 }
 
 

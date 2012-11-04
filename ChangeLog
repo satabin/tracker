@@ -1,3 +1,413 @@
+2012-11-01  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.14.4
+
+2012-11-01  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	tracker-extract: add a simple extractor for XPS
+	Fixes GB#687160
+
+	tracker-extract: add a simple extractor for DVI files
+	Code to extract information from the headers is taken from Evince.
+
+	Fixes GB#687162
+
+2012-10-31  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-extract: Fixed g_data_input_stream_read_upto() return value mem leak
+	Fixes GB#687134
+
+	tracker-extract-pdf: Avoid leaving Zombie processes around
+
+2012-10-31  Мирослав Николић  <miroslavnikolic@rocketmail.com>
+
+	Updated Serbian translation
+
+2012-10-26  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2012-10-24  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.14.3
+
+2012-10-24  Julien Cristau  <jcristau@debian.org>
+
+	libtracker-data: get rid of unused TRACKER_DB_LOCATION_SYS_TMP_DIR
+	And don't create a /tmp/tracker-$user directory.
+
+2012-10-24  Martyn Russell  <martyn@lanedo.com>
+
+	build: Add SQLite3 version check and warning for crashes with complex queries
+
+2012-10-24  Fran Diéguez  <fran.dieguez@mabishu.com>
+
+	Updated Galician translations
+
+2012-10-24  Aurimas Černius  <aurisc4@gmail.com>
+
+	Updated Lithuanian translation
+
+2012-10-24  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2012-10-24  Andika Triwidada  <andika@gmail.com>
+
+	Updated Indonesian translation
+
+2012-10-24  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2012-10-24  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-needle: Update tooltip for category searching to mention FTS
+	Basically, it's not clear that this approach searches the content of files
+	too. It is clear from the other categories that this isn't the case.
+
+	This fixes GB#686071.
+
+	build: Default to icu over unistring when automatically guessing unicode support
+	This is to help with GB#666749. This isn't a complete fix but the support for
+	icu is better with asian language sorting.
+
+	tracker-info: Added --plain-text-content || -c option
+	To show nie:plainTextContent for resources. By default this is disabled.
+
+	tracker-extract-playlist: Don't error when to_metadata hash table is NULL
+
+	tracker-extract-playlist: Log message for ignoring playlists with > 1k entries
+
+2012-10-24  Aleksander Morgado  <aleksander@lanedo.com>
+
+	build: test files should always be included in dist
+
+	build: include missing tiff files in dist
+
+2012-10-24  Colin Walters  <walters@verbum.org>
+
+	build: Note we don't support srcdir != builddir
+	This is presently due to the vapigen tool.
+
+2012-10-24  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-extract: Fixed EXIF extractor due to changes by libexif
+	Seems libexif now appends " (Photographer) - [None] (Editor)", previously it
+	was the same string without the "[None]", which broke our hack to work around
+	this superfluous information. Test cases now pass
+
+	tracker-miner-fs: Make building this optional
+	Now you can use --disable-miner-fs (default=enabled)
+
+	NOTE: the miner-fs also includes application and user guide mining built in.
+
+	Fixes GB#628857
+
+2012-10-24  Chris Leonard  <cjl@laptop.org>
+
+	Updated British English translation
+
+2012-10-24  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2012-10-24  Aurimas Černius  <aurisc4@gmail.com>
+
+	Updated Lithuanian translation
+
+2012-10-24  Kjartan Maraas  <kmaraas@gnome.org>
+
+	Updated Norwegian bokmål translation
+
+	Updated Norwegian bokmål translation
+
+2012-10-24  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract-pdf: Fix timeout situation with PDF extraction
+	The 10 second timeout was always being used for every PDF extraction because
+	writing to the pipe was blocking and only killing the process would result in
+	reading from the parent of the fork(). This meant all extractions were much
+	slower than they needed to be.
+
+	This approach uses select() instead of signal handling to make sure the FDs
+	from pipe() are read at the right times too.
+
+	This fixes GB#680897
+
+2012-10-24  Jürg Billeter  <j@bitron.ch>
+
+	tests: Remove unneeded parameter guard
+
+	tracker-needle: Do not use implicit .begin for async methods
+
+	Do not access static members with instance references in Vala
+
+	libtracker-common: Consistently use long in get_memory_total
+
+2012-10-24  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	tracker-extract-pdf: Fix crash if mmap() fails
+	Patch from Fedora: https://bugzilla.redhat.com/show_bug.cgi?id=751922
+
+2012-10-24  Jürg Billeter  <j@bitron.ch>
+
+	tracker-miner-fs: Ignore XDG directories set to $HOME
+	This prevents accidental recursive indexing of $HOME.
+
+	Fixes GB#680172.
+
+	tracker-needle: Fix double free
+	Fixes GB#680350.
+
+2012-10-24  Alexandre Rostovtsev  <tetromino@gentoo.org>
+
+	libtracker-fts: ICU cannot handle complex locale descriptions
+	ubrk_open expects the name of just a single locale (e.g. "en_US.UTF-8"),
+	not the full definition of your various locale variables and their
+	values as returned by glibc's setlocale(LC_ALL, NULL).
+
+	Instead, limit ourselves to LC_CTYPE, since after all, that's all we
+	need to determine word boundaries.
+
+	Fixes GB#675660.
+
+2012-10-24  Fran Diéguez  <fran.dieguez@mabishu.com>
+
+	Updated Galician translations
+
+2012-10-24  Dimitris Spingos  <dmtrs32@gmail.com>
+
+	Updated Greek translation
+
+2012-09-04  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2012-07-05  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2012-07-05  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.14.2
+
+	tracker-search: Fix man page so EXPRESSION is not directly linked to options
+	Fixes GB#679313
+
+	libtracker-miner: Make reentry maximum (2) a #define and update error given
+
+	libtracker-miner: Don't conditionally unref blocker file if queue was set up
+
+2012-07-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	libtracker-miner: Avoid stalling when blocking file is dropped due to errors
+
+	libtracker-miner: Prevent stalling if we drop the last queued file
+
+	libtracker-miner: Protect against infinite loops
+	When we defer processing on an item, set a counter in its qdata to
+	prevent the miner ever becoming stuck in an infinite loop.
+
+	Fixes GB#676435 and GB#674869
+
+	libtracker-miner: Remove unneeded call to item_queue_handlers_set_up()
+	item_add_or_update_cb() does not usually need to call this function as
+	the item queue is not stopped while waiting for extraction tasks. We
+	do need to call it if the queues are empty to ensure a QUEUE_NONE
+	event is processed.
+
+	libtracker-miner: Prevent item queue handlers from running when blocked
+	If we pop the next item from a queue and find that either that file or
+	its parent is still being processed, the item queue handler must wait
+	until the outstanding tasks finish and are committed.
+
+	In this case we stop the item_queue_handlers_cb() timeout from
+	executing, but it is often restarted early as there are many triggers
+	for item_queue_handlers_set_up(), and the callback then pops the file
+	again, discovers it is still blocked and reenqueues it. This is a waste
+	of time and also makes it hard to implement infinite loop detection
+	reliably.
+
+	We now remember the file that is blocking progress, and
+	item_queue_handlers_set_up() will not start the item queue handlers
+	until sparql_buffer_task_finished_cb() has been called for the file
+	in question.
+
+2012-07-05  Andika Triwidada  <andika@gmail.com>
+
+	Updated Indonesian translation
+
+	Updated Indonesian translation
+
+2012-07-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	miners/fs: Correctly remove failed extractions from queue
+	Correctly remove task from extraction queue if g_file_query_info_async()
+	fails.
+
+	This bug prevents failsafe extraction from starting in some cases, which
+	in turn means that the miner may eventually stall due to the extraction
+	queue being full.
+
+	tracker-extract-gstreamer: Fix invalid pointer access
+	gst_tag_list_get_string() does not initialise the output pointer to
+	NULL if there is no value for that tag. In some cases, neither do we
+	which leads to invalid string pointers and the occasional segfault
+	when processing files with no tags.
+
+	functional-tests: Fix out-of-tree build
+
+2012-07-05  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2012-07-05  Andika Triwidada  <andika@gmail.com>
+
+	Updated Indonesian translation
+
+2012-07-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	miners/fs: Remove unused property in Files miner
+	quark_directory_config_root was introduced here:
+
+	  daf0c383b5daf19cd4a27b5669cfd6db7f768b6f
+
+	but is no longer used anywhere.
+
+2012-07-05  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2012-07-05  Alexandre Franke  <alexandre.franke@gmail.com>
+
+	Update French translation
+
+	Change wording to remove ambiguity and ease translation
+
+2012-07-05  Praveen Illa  <mail2ipn@gmail.com>
+
+	Added Telugu Translation
+
+	Updated Telugu Translation
+
+2012-07-05  Luca Ferretti  <lferrett@gnome.org>
+
+	l10n:Updated Italian translation
+
+2012-07-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	libtracker-miner: Keep GTimer objects around forever
+	Logic to create and destroy on demand was slightly broken, and for the
+	extra complexity we were only saving 48 bytes of memory.
+
+	Fixes GB#676437.
+
+2012-07-05  Martyn Russell  <martyn@lanedo.com>
+
+	nautilus: Fix build warnings
+
+	nautilus: Don't use g_print() use g_{debug|message}() to avoid xsession logging
+	Fixed GB#676516.
+
+2012-07-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	tracker-extract: 'initialized' flag was not being initialized
+
+2012-07-05  William Jon McCann  <jmccann@redhat.com>
+
+	Don't install an item to the nautilus context menu
+	https://bugzilla.gnome.org/show_bug.cgi?id=676514
+
+2012-07-05  Ville Skyttä  <ville.skytta@iki.fi>
+
+	tracker-sparql, tracker-store: Man page syntax fixes
+	Fixed GB#676213.
+
+2012-07-05  Christian Kirbach  <Christian.Kirbach@googlemail.com>
+
+	Updated German translation
+
+2012-07-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	libtracker-miner: Fix crash when USB removed during crawl
+	In tracker-file-notifier.c:indexing_tree_directory_removed() we don't
+	remove the directory from priv->pending_index_roots, unless it's the
+	current indexing root.
+
+	If it's a USB mountpoint, the GFile gets freed before we get around to
+	crawling it, so all hell breaks loose.
+
+	Fixes GB#676153.
+
+2012-07-05  Fran Diéguez  <fran.dieguez@mabishu.com>
+
+	Updated Galician translations
+
+	Updated Galician translations
+
+2012-07-05  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2012-07-05  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+	Updated Czech translation
+
+2012-07-05  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-preferences: Sort the list contents for ignored patterns
+	Fixes GB#675431.
+
+2012-07-05  Antoine Jacoutot  <ajacoutot@gnome.org>
+
+	evolution plugin: include missing header
+	To prevent liborg-freedesktop-Tracker-evolution-plugin.so:
+	undefined symbol 'E_MAIL_BACKEND'
+	liborg-freedesktop-Tracker-evolution-plugin.so':
+	Cannot load specified object
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=675437
+
+2012-07-05  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2012-06-15  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	libtracker-miner: Prevent double unref of cached GFile objects
+	The reference owned by the TrackerFileSystem cache may be removed
+	more than once. Add a flag to ensure that the cache will only ever
+	unref it once, even if it is being kept alive in the cache by
+	references held elsewhere in the code.
+
+	tracker_file_system_delete_files() is renamed to
+	tracker_file_system_forget_files() to avoid confusion.
+
+	Fixes GB#676849
+
+2012-06-11  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	libtracker-extract: Fix GCancellable deadlock
+	Triggering one cancellable in another's callback is a bad idea, because
+	these objects share a single global mutex. This can be triggered by
+	removing a USB stick during the extraction process.
+
+	There's no real need to use two separate cancellables for the same
+	file here.
+
+	Fixes GB#676433.
+
+2012-05-11  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	tracker-extract: Fix compile of Qt media art backend
+
+2012-05-03  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
 2012-05-03  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.14.1

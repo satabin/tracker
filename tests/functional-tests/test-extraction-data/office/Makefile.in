@@ -46,16 +46,8 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
-@HAVE_LIBGSF_TRUE@am__append_1 = \
-@HAVE_LIBGSF_TRUE@	office-doc.doc                                 	\
-@HAVE_LIBGSF_TRUE@	office-doc.expected                            	\
-@HAVE_LIBGSF_TRUE@	powerpoint.ppt                                 	\
-@HAVE_LIBGSF_TRUE@	powerpoint.expected
-
-@HAVE_POPPLER_TRUE@am__append_2 = \
-@HAVE_POPPLER_TRUE@	pdf-doc.pdf                                    	\
-@HAVE_POPPLER_TRUE@	pdf-doc.expected
-
+@HAVE_LIBGSF_TRUE@am__append_1 = $(docs)
+@HAVE_POPPLER_TRUE@am__append_2 = $(pdfs)
 subdir = tests/functional-tests/test-extraction-data/office
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -223,6 +215,8 @@ LIBGIF_CFLAGS = @LIBGIF_CFLAGS@
 LIBGIF_LIBS = @LIBGIF_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBGXPS_CFLAGS = @LIBGXPS_CFLAGS@
+LIBGXPS_LIBS = @LIBGXPS_LIBS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
@@ -433,11 +427,24 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
+docs = \
+	office-doc.doc \
+	office-doc.expected \
+	powerpoint.ppt \
+	powerpoint.expected
+
+pdfs = \
+	pdf-doc.pdf \
+	pdf-doc.expected
+
 officetestdir = $(datadir)/tracker-tests/test-extraction-data/office
 
 # initialize variable for unconditional += appending
 officetest_DATA = $(am__append_1) $(am__append_2)
-EXTRA_DIST = $(officetest_DATA)
+EXTRA_DIST = \
+	$(docs) \
+	$(pdfs)
+
 all: all-am
 
 .SUFFIXES:

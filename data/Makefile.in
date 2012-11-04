@@ -47,8 +47,9 @@ host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/tracker-extract.pc.in $(srcdir)/tracker-miner.pc.in \
 	$(srcdir)/tracker-sparql.pc.in $(top_srcdir)/Makefile.decl
-@HAVE_TRACKER_MINER_RSS_TRUE@am__append_1 = tracker-miner-rss.desktop
-@HAVE_TRACKER_MINER_FLICKR_TRUE@am__append_2 = tracker-miner-flickr.desktop
+@HAVE_TRACKER_MINER_FS_TRUE@am__append_1 = tracker-miner-fs.desktop
+@HAVE_TRACKER_MINER_RSS_TRUE@am__append_2 = tracker-miner-rss.desktop
+@HAVE_TRACKER_MINER_FLICKR_TRUE@am__append_3 = tracker-miner-flickr.desktop
 subdir = data
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -258,6 +259,8 @@ LIBGIF_CFLAGS = @LIBGIF_CFLAGS@
 LIBGIF_LIBS = @LIBGIF_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBGXPS_CFLAGS = @LIBGXPS_CFLAGS@
+LIBGXPS_LIBS = @LIBGXPS_LIBS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
@@ -486,8 +489,8 @@ desktop_in_files = \
 
 # Third we choose what we want installed based on config
 autostartdir = $(sysconfdir)/xdg/autostart
-autostart_DATA = tracker-store.desktop tracker-miner-fs.desktop \
-	$(am__append_1) $(am__append_2)
+autostart_DATA = tracker-store.desktop $(am__append_1) $(am__append_2) \
+	$(am__append_3)
 
 # Set up pkg-config .pc files for exported libraries
 pkgconfigdir = $(libdir)/pkgconfig

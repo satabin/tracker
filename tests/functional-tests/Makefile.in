@@ -261,6 +261,8 @@ LIBGIF_CFLAGS = @LIBGIF_CFLAGS@
 LIBGIF_LIBS = @LIBGIF_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBGXPS_CFLAGS = @LIBGXPS_CFLAGS@
+LIBGXPS_LIBS = @LIBGXPS_LIBS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
@@ -502,6 +504,7 @@ slow_tests = \
 	12-transactions.py \
 	13-threaded-store.py
 
+TEST_RUNNER = $(top_srcdir)/tests/functional-tests/test-runner.sh
 EXTRA_DIST = \
 	$(config_SCRIPTS) \
 	$(dconf_DATA) \
@@ -974,13 +977,13 @@ tests.xml:
 	@if test -h /targets/links/scratchbox.config ; then \
 		export SBOX_REDIRECT_IGNORE=/usr/bin/python ; \
 	fi;
-	./create-tests-xml.py $(standard_tests) > tests.xml
+	$(top_srcdir)/tests/functional-tests/create-tests-xml.py $(standard_tests) > tests.xml
 
 tracker-tests.aegis:
 	@if test -h /targets/links/scratchbox.config ; then \
 		export SBOX_REDIRECT_IGNORE=/usr/bin/python ; \
 	fi;
-	./create-tests-aegis.py $(standard_tests) > tracker-tests.aegis
+	$(top_srcdir)/tests/functional-tests/create-tests-aegis.py $(standard_tests) > tracker-tests.aegis
 
 10-sqlite-misused.py: ttl/gen-test-data.stamp
 11-sqlite-misused-batch.py: ttl/gen-test-data.stamp
@@ -991,12 +994,12 @@ ttl/gen-test-data.stamp:
 
 functional-test: ${standard_tests}
 	for test in ${standard_tests} ; do \
-		./test-runner.sh python ./$$test; \
+		$(TEST_RUNNER) python $(top_srcdir)/tests/functional-tests/$$test; \
 	done
 
 functional-test-slow: ${slow_tests}
 	@for test in ${slow_tests} ; do \
-		./test-runner.sh python ./$$test; \
+		$(TEST_RUNNER) python $(top_srcdir)/tests/functional-tests/$$test; \
 	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

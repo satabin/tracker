@@ -3575,22 +3575,18 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 				}
 #line 332 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				if (_tmp203_) {
-#line 3579 "tracker-turtle-reader.c"
-					TrackerTurtleReaderState _tmp204_;
-#line 333 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-					_tmp204_ = self->priv->state;
 #line 333 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					self->priv->state = TRACKER_TURTLE_READER_STATE_PREDICATE;
 #line 334 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					continue;
-#line 3587 "tracker-turtle-reader.c"
+#line 3583 "tracker-turtle-reader.c"
 				} else {
-					gboolean _tmp205_ = FALSE;
-					gboolean _tmp206_;
+					gboolean _tmp204_ = FALSE;
+					gboolean _tmp205_;
 #line 335 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-					_tmp205_ = tracker_turtle_reader_accept (self, TRACKER_SPARQL_TOKEN_TYPE_SEMICOLON, &_inner_error_);
+					_tmp204_ = tracker_turtle_reader_accept (self, TRACKER_SPARQL_TOKEN_TYPE_SEMICOLON, &_inner_error_);
 #line 335 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-					_tmp206_ = _tmp205_;
+					_tmp205_ = _tmp204_;
 #line 335 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					if (_inner_error_ != NULL) {
 #line 335 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3599,7 +3595,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_propagate_error (error, _inner_error_);
 #line 335 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 3603 "tracker-turtle-reader.c"
+#line 3599 "tracker-turtle-reader.c"
 						} else {
 #line 335 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3607,19 +3603,18 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_clear_error (&_inner_error_);
 #line 335 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 3611 "tracker-turtle-reader.c"
+#line 3607 "tracker-turtle-reader.c"
 						}
 					}
 #line 335 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-					if (_tmp206_) {
-#line 3616 "tracker-turtle-reader.c"
-						gboolean _tmp207_ = FALSE;
-						gboolean _tmp208_;
-						TrackerTurtleReaderState _tmp209_;
+					if (_tmp205_) {
+#line 3612 "tracker-turtle-reader.c"
+						gboolean _tmp206_ = FALSE;
+						gboolean _tmp207_;
 #line 336 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-						_tmp207_ = tracker_turtle_reader_accept (self, TRACKER_SPARQL_TOKEN_TYPE_DOT, &_inner_error_);
+						_tmp206_ = tracker_turtle_reader_accept (self, TRACKER_SPARQL_TOKEN_TYPE_DOT, &_inner_error_);
 #line 336 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-						_tmp208_ = _tmp207_;
+						_tmp207_ = _tmp206_;
 #line 336 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						if (_inner_error_ != NULL) {
 #line 336 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3628,7 +3623,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_propagate_error (error, _inner_error_);
 #line 336 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 3632 "tracker-turtle-reader.c"
+#line 3627 "tracker-turtle-reader.c"
 							} else {
 #line 336 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3636,47 +3631,45 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_clear_error (&_inner_error_);
 #line 336 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 3640 "tracker-turtle-reader.c"
+#line 3635 "tracker-turtle-reader.c"
 							}
 						}
 #line 336 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-						if (_tmp208_) {
+						if (_tmp207_) {
 #line 338 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							self->priv->state = TRACKER_TURTLE_READER_STATE_BOS;
 #line 339 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							continue;
-#line 3649 "tracker-turtle-reader.c"
+#line 3644 "tracker-turtle-reader.c"
 						}
-#line 341 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-						_tmp209_ = self->priv->state;
 #line 341 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						self->priv->state = TRACKER_TURTLE_READER_STATE_SUBJECT;
 #line 342 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						continue;
-#line 3657 "tracker-turtle-reader.c"
+#line 3650 "tracker-turtle-reader.c"
 					} else {
-						gchar** _tmp210_;
-						gint _tmp210__length1;
+						gchar** _tmp208_;
+						gint _tmp208__length1;
 #line 343 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-						_tmp210_ = self->priv->subject_stack;
+						_tmp208_ = self->priv->subject_stack;
 #line 343 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-						_tmp210__length1 = self->priv->subject_stack_length1;
+						_tmp208__length1 = self->priv->subject_stack_length1;
 #line 343 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-						if (_tmp210__length1 > 0) {
-#line 3667 "tracker-turtle-reader.c"
-							const gchar* _tmp211_;
-							gchar** _tmp212_;
-							gint _tmp212__length1;
-							gchar** _tmp213_;
-							gint _tmp213__length1;
-							const gchar* _tmp214_;
-							gint _tmp215_;
-							gchar** _tmp216_;
-							gint _tmp216__length1;
-							gchar** _tmp217_;
-							gint _tmp217__length1;
-							const gchar* _tmp218_;
-							gint _tmp219_;
+						if (_tmp208__length1 > 0) {
+#line 3660 "tracker-turtle-reader.c"
+							const gchar* _tmp209_;
+							gchar** _tmp210_;
+							gint _tmp210__length1;
+							gchar** _tmp211_;
+							gint _tmp211__length1;
+							const gchar* _tmp212_;
+							gint _tmp213_;
+							gchar** _tmp214_;
+							gint _tmp214__length1;
+							gchar** _tmp215_;
+							gint _tmp215__length1;
+							const gchar* _tmp216_;
+							gint _tmp217_;
 #line 345 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							tracker_turtle_reader_expect (self, TRACKER_SPARQL_TOKEN_TYPE_CLOSE_BRACKET, &_inner_error_);
 #line 345 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3687,7 +3680,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_propagate_error (error, _inner_error_);
 #line 345 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 3691 "tracker-turtle-reader.c"
+#line 3684 "tracker-turtle-reader.c"
 								} else {
 #line 345 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3695,61 +3688,61 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_clear_error (&_inner_error_);
 #line 345 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 3699 "tracker-turtle-reader.c"
+#line 3692 "tracker-turtle-reader.c"
 								}
 							}
 #line 347 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp211_ = self->priv->_subject;
+							_tmp209_ = self->priv->_subject;
 #line 347 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							tracker_turtle_reader_set_object (self, _tmp211_);
+							tracker_turtle_reader_set_object (self, _tmp209_);
 #line 348 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							tracker_turtle_reader_set_object_is_uri (self, TRUE);
 #line 350 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp212_ = self->priv->subject_stack;
+							_tmp210_ = self->priv->subject_stack;
 #line 350 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp212__length1 = self->priv->subject_stack_length1;
+							_tmp210__length1 = self->priv->subject_stack_length1;
 #line 350 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp213_ = self->priv->subject_stack;
+							_tmp211_ = self->priv->subject_stack;
 #line 350 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp213__length1 = self->priv->subject_stack_length1;
+							_tmp211__length1 = self->priv->subject_stack_length1;
 #line 350 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp214_ = _tmp212_[_tmp213__length1 - 1];
+							_tmp212_ = _tmp210_[_tmp211__length1 - 1];
 #line 350 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							tracker_turtle_reader_set_subject (self, _tmp214_);
+							tracker_turtle_reader_set_subject (self, _tmp212_);
 #line 351 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp215_ = self->priv->subject_stack_length1;
+							_tmp213_ = self->priv->subject_stack_length1;
 #line 351 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							self->priv->subject_stack_length1 = _tmp215_ - 1;
+							self->priv->subject_stack_length1 = _tmp213_ - 1;
 #line 353 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp216_ = self->priv->predicate_stack;
+							_tmp214_ = self->priv->predicate_stack;
 #line 353 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp216__length1 = self->priv->predicate_stack_length1;
+							_tmp214__length1 = self->priv->predicate_stack_length1;
 #line 353 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp217_ = self->priv->predicate_stack;
+							_tmp215_ = self->priv->predicate_stack;
 #line 353 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp217__length1 = self->priv->predicate_stack_length1;
+							_tmp215__length1 = self->priv->predicate_stack_length1;
 #line 353 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp218_ = _tmp216_[_tmp217__length1 - 1];
+							_tmp216_ = _tmp214_[_tmp215__length1 - 1];
 #line 353 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							tracker_turtle_reader_set_predicate (self, _tmp218_);
+							tracker_turtle_reader_set_predicate (self, _tmp216_);
 #line 354 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp219_ = self->priv->predicate_stack_length1;
+							_tmp217_ = self->priv->predicate_stack_length1;
 #line 354 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							self->priv->predicate_stack_length1 = _tmp219_ - 1;
+							self->priv->predicate_stack_length1 = _tmp217_ - 1;
 #line 356 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							self->priv->state = TRACKER_TURTLE_READER_STATE_OBJECT;
 #line 357 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							result = TRUE;
 #line 357 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return result;
-#line 3746 "tracker-turtle-reader.c"
+#line 3739 "tracker-turtle-reader.c"
 						} else {
-							gboolean _tmp220_ = FALSE;
-							gboolean _tmp221_;
+							gboolean _tmp218_ = FALSE;
+							gboolean _tmp219_;
 #line 358 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp220_ = tracker_turtle_reader_accept (self, TRACKER_SPARQL_TOKEN_TYPE_DOT, &_inner_error_);
+							_tmp218_ = tracker_turtle_reader_accept (self, TRACKER_SPARQL_TOKEN_TYPE_DOT, &_inner_error_);
 #line 358 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							_tmp221_ = _tmp220_;
+							_tmp219_ = _tmp218_;
 #line 358 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							if (_inner_error_ != NULL) {
 #line 358 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3758,7 +3751,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_propagate_error (error, _inner_error_);
 #line 358 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 3762 "tracker-turtle-reader.c"
+#line 3755 "tracker-turtle-reader.c"
 								} else {
 #line 358 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3766,29 +3759,29 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_clear_error (&_inner_error_);
 #line 358 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 3770 "tracker-turtle-reader.c"
+#line 3763 "tracker-turtle-reader.c"
 								}
 							}
 #line 358 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-							if (_tmp221_) {
+							if (_tmp219_) {
 #line 359 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								self->priv->state = TRACKER_TURTLE_READER_STATE_BOS;
 #line 360 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								continue;
-#line 3779 "tracker-turtle-reader.c"
+#line 3772 "tracker-turtle-reader.c"
 							} else {
-								GError* _tmp222_ = NULL;
+								GError* _tmp220_ = NULL;
 #line 362 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-								_tmp222_ = tracker_turtle_reader_get_error (self, "expected comma, semicolon, or dot");
+								_tmp220_ = tracker_turtle_reader_get_error (self, "expected comma, semicolon, or dot");
 #line 362 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
-								_inner_error_ = _tmp222_;
+								_inner_error_ = _tmp220_;
 #line 362 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 #line 362 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_propagate_error (error, _inner_error_);
 #line 362 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 3792 "tracker-turtle-reader.c"
+#line 3785 "tracker-turtle-reader.c"
 								} else {
 #line 362 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3796,7 +3789,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_clear_error (&_inner_error_);
 #line 362 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 3800 "tracker-turtle-reader.c"
+#line 3793 "tracker-turtle-reader.c"
 								}
 							}
 						}
@@ -3806,7 +3799,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 			default:
 #line 150 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			break;
-#line 3810 "tracker-turtle-reader.c"
+#line 3803 "tracker-turtle-reader.c"
 		}
 	}
 }
@@ -3815,7 +3808,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 static gpointer _g_error_copy0 (gpointer self) {
 #line 385 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return self ? g_error_copy (self) : NULL;
-#line 3819 "tracker-turtle-reader.c"
+#line 3812 "tracker-turtle-reader.c"
 }
 
 
@@ -3823,7 +3816,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 	GError * _inner_error_ = NULL;
 #line 368 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_return_if_fail (path != NULL);
-#line 3827 "tracker-turtle-reader.c"
+#line 3820 "tracker-turtle-reader.c"
 	{
 		const gchar* _tmp0_;
 		TrackerTurtleReader* _tmp1_;
@@ -3834,12 +3827,12 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 		if (_inner_error_ != NULL) {
 #line 370 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 3838 "tracker-turtle-reader.c"
+#line 3831 "tracker-turtle-reader.c"
 				goto __catch4_tracker_sparql_error;
 			}
 #line 370 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 3843 "tracker-turtle-reader.c"
+#line 3836 "tracker-turtle-reader.c"
 				goto __catch4_tracker_db_interface_error;
 			}
 #line 370 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3848,7 +3841,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 			g_clear_error (&_inner_error_);
 #line 370 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			return;
-#line 3852 "tracker-turtle-reader.c"
+#line 3845 "tracker-turtle-reader.c"
 		}
 #line 372 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		_tmp0_ = path;
@@ -3860,19 +3853,19 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 		if (_inner_error_ != NULL) {
 #line 372 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 3864 "tracker-turtle-reader.c"
+#line 3857 "tracker-turtle-reader.c"
 				goto __catch4_tracker_sparql_error;
 			}
 #line 372 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 3869 "tracker-turtle-reader.c"
+#line 3862 "tracker-turtle-reader.c"
 				goto __catch4_tracker_db_interface_error;
 			}
 			goto __finally4;
 		}
 #line 373 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		while (TRUE) {
-#line 3876 "tracker-turtle-reader.c"
+#line 3869 "tracker-turtle-reader.c"
 			TrackerTurtleReader* _tmp2_;
 			gboolean _tmp3_ = FALSE;
 			gboolean _tmp4_;
@@ -3890,12 +3883,12 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 				_g_object_unref0 (reader);
 #line 373 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 3894 "tracker-turtle-reader.c"
+#line 3887 "tracker-turtle-reader.c"
 					goto __catch4_tracker_sparql_error;
 				}
 #line 373 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 3899 "tracker-turtle-reader.c"
+#line 3892 "tracker-turtle-reader.c"
 					goto __catch4_tracker_db_interface_error;
 				}
 #line 373 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3906,13 +3899,13 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 				g_clear_error (&_inner_error_);
 #line 373 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				return;
-#line 3910 "tracker-turtle-reader.c"
+#line 3903 "tracker-turtle-reader.c"
 			}
 #line 373 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (!_tmp4_) {
 #line 373 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				break;
-#line 3916 "tracker-turtle-reader.c"
+#line 3909 "tracker-turtle-reader.c"
 			}
 #line 374 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			_tmp5_ = reader;
@@ -3920,7 +3913,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 			_tmp6_ = _tmp5_->priv->_object_is_uri;
 #line 374 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (_tmp6_) {
-#line 3924 "tracker-turtle-reader.c"
+#line 3917 "tracker-turtle-reader.c"
 				TrackerTurtleReader* _tmp7_;
 				const gchar* _tmp8_;
 				TrackerTurtleReader* _tmp9_;
@@ -3953,12 +3946,12 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 					_g_object_unref0 (reader);
 #line 375 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 3957 "tracker-turtle-reader.c"
+#line 3950 "tracker-turtle-reader.c"
 						goto __catch4_tracker_sparql_error;
 					}
 #line 375 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 3962 "tracker-turtle-reader.c"
+#line 3955 "tracker-turtle-reader.c"
 						goto __catch4_tracker_db_interface_error;
 					}
 #line 375 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3969,7 +3962,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 					g_clear_error (&_inner_error_);
 #line 375 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					return;
-#line 3973 "tracker-turtle-reader.c"
+#line 3966 "tracker-turtle-reader.c"
 				}
 			} else {
 				TrackerTurtleReader* _tmp15_;
@@ -4004,12 +3997,12 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 					_g_object_unref0 (reader);
 #line 377 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 4008 "tracker-turtle-reader.c"
+#line 4001 "tracker-turtle-reader.c"
 						goto __catch4_tracker_sparql_error;
 					}
 #line 377 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 4013 "tracker-turtle-reader.c"
+#line 4006 "tracker-turtle-reader.c"
 						goto __catch4_tracker_db_interface_error;
 					}
 					goto __finally4;
@@ -4023,12 +4016,12 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 				_g_object_unref0 (reader);
 #line 379 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 4027 "tracker-turtle-reader.c"
+#line 4020 "tracker-turtle-reader.c"
 					goto __catch4_tracker_sparql_error;
 				}
 #line 379 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 4032 "tracker-turtle-reader.c"
+#line 4025 "tracker-turtle-reader.c"
 					goto __catch4_tracker_db_interface_error;
 				}
 #line 379 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -4039,7 +4032,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 				g_clear_error (&_inner_error_);
 #line 379 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				return;
-#line 4043 "tracker-turtle-reader.c"
+#line 4036 "tracker-turtle-reader.c"
 			}
 		}
 #line 382 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -4050,12 +4043,12 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 			_g_object_unref0 (reader);
 #line 382 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 4054 "tracker-turtle-reader.c"
+#line 4047 "tracker-turtle-reader.c"
 				goto __catch4_tracker_sparql_error;
 			}
 #line 382 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 4059 "tracker-turtle-reader.c"
+#line 4052 "tracker-turtle-reader.c"
 				goto __catch4_tracker_db_interface_error;
 			}
 #line 382 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -4066,11 +4059,11 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 			g_clear_error (&_inner_error_);
 #line 382 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			return;
-#line 4070 "tracker-turtle-reader.c"
+#line 4063 "tracker-turtle-reader.c"
 		}
 #line 369 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		_g_object_unref0 (reader);
-#line 4074 "tracker-turtle-reader.c"
+#line 4067 "tracker-turtle-reader.c"
 	}
 	goto __finally4;
 	__catch4_tracker_sparql_error:
@@ -4092,7 +4085,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 		_inner_error_ = _tmp24_;
 #line 385 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		_g_error_free0 (e);
-#line 4096 "tracker-turtle-reader.c"
+#line 4089 "tracker-turtle-reader.c"
 		goto __finally4;
 	}
 	goto __finally4;
@@ -4115,7 +4108,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 		_inner_error_ = _tmp26_;
 #line 388 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		_g_error_free0 (e);
-#line 4119 "tracker-turtle-reader.c"
+#line 4112 "tracker-turtle-reader.c"
 		goto __finally4;
 	}
 	__finally4:
@@ -4127,7 +4120,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 			g_propagate_error (error, _inner_error_);
 #line 369 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			return;
-#line 4131 "tracker-turtle-reader.c"
+#line 4124 "tracker-turtle-reader.c"
 		} else {
 #line 369 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -4135,7 +4128,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 			g_clear_error (&_inner_error_);
 #line 369 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			return;
-#line 4139 "tracker-turtle-reader.c"
+#line 4132 "tracker-turtle-reader.c"
 		}
 	}
 }
@@ -4152,7 +4145,7 @@ const gchar* tracker_turtle_reader_get_graph (TrackerTurtleReader* self) {
 	result = _tmp0_;
 #line 49 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 4156 "tracker-turtle-reader.c"
+#line 4149 "tracker-turtle-reader.c"
 }
 
 
@@ -4171,7 +4164,7 @@ static void tracker_turtle_reader_set_graph (TrackerTurtleReader* self, const gc
 	self->priv->_graph = _tmp1_;
 #line 49 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_object_notify ((GObject *) self, "graph");
-#line 4175 "tracker-turtle-reader.c"
+#line 4168 "tracker-turtle-reader.c"
 }
 
 
@@ -4186,7 +4179,7 @@ const gchar* tracker_turtle_reader_get_subject (TrackerTurtleReader* self) {
 	result = _tmp0_;
 #line 51 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 4190 "tracker-turtle-reader.c"
+#line 4183 "tracker-turtle-reader.c"
 }
 
 
@@ -4205,7 +4198,7 @@ static void tracker_turtle_reader_set_subject (TrackerTurtleReader* self, const 
 	self->priv->_subject = _tmp1_;
 #line 51 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_object_notify ((GObject *) self, "subject");
-#line 4209 "tracker-turtle-reader.c"
+#line 4202 "tracker-turtle-reader.c"
 }
 
 
@@ -4220,7 +4213,7 @@ const gchar* tracker_turtle_reader_get_predicate (TrackerTurtleReader* self) {
 	result = _tmp0_;
 #line 52 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 4224 "tracker-turtle-reader.c"
+#line 4217 "tracker-turtle-reader.c"
 }
 
 
@@ -4239,7 +4232,7 @@ static void tracker_turtle_reader_set_predicate (TrackerTurtleReader* self, cons
 	self->priv->_predicate = _tmp1_;
 #line 52 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_object_notify ((GObject *) self, "predicate");
-#line 4243 "tracker-turtle-reader.c"
+#line 4236 "tracker-turtle-reader.c"
 }
 
 
@@ -4254,7 +4247,7 @@ const gchar* tracker_turtle_reader_get_object (TrackerTurtleReader* self) {
 	result = _tmp0_;
 #line 53 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 4258 "tracker-turtle-reader.c"
+#line 4251 "tracker-turtle-reader.c"
 }
 
 
@@ -4273,7 +4266,7 @@ static void tracker_turtle_reader_set_object (TrackerTurtleReader* self, const g
 	self->priv->_object = _tmp1_;
 #line 53 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_object_notify ((GObject *) self, "object");
-#line 4277 "tracker-turtle-reader.c"
+#line 4270 "tracker-turtle-reader.c"
 }
 
 
@@ -4288,7 +4281,7 @@ gboolean tracker_turtle_reader_get_object_is_uri (TrackerTurtleReader* self) {
 	result = _tmp0_;
 #line 54 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 4292 "tracker-turtle-reader.c"
+#line 4285 "tracker-turtle-reader.c"
 }
 
 
@@ -4302,7 +4295,7 @@ static void tracker_turtle_reader_set_object_is_uri (TrackerTurtleReader* self, 
 	self->priv->_object_is_uri = _tmp0_;
 #line 54 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_object_notify ((GObject *) self, "object-is-uri");
-#line 4306 "tracker-turtle-reader.c"
+#line 4299 "tracker-turtle-reader.c"
 }
 
 
@@ -4314,14 +4307,14 @@ static TrackerTurtleReaderTokenInfo* tracker_turtle_reader_token_info_dup (const
 	memcpy (dup, self, sizeof (TrackerTurtleReaderTokenInfo));
 #line 32 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return dup;
-#line 4318 "tracker-turtle-reader.c"
+#line 4311 "tracker-turtle-reader.c"
 }
 
 
 static void tracker_turtle_reader_token_info_free (TrackerTurtleReaderTokenInfo* self) {
 #line 32 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_free (self);
-#line 4325 "tracker-turtle-reader.c"
+#line 4318 "tracker-turtle-reader.c"
 }
 
 
@@ -4357,7 +4350,7 @@ static void tracker_turtle_reader_class_init (TrackerTurtleReaderClass * klass) 
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_TURTLE_READER_OBJECT, g_param_spec_string ("object", "object", "object", NULL, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
 #line 20 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_TURTLE_READER_OBJECT_IS_URI, g_param_spec_boolean ("object-is-uri", "object-is-uri", "object-is-uri", FALSE, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
-#line 4361 "tracker-turtle-reader.c"
+#line 4354 "tracker-turtle-reader.c"
 }
 
 
@@ -4366,7 +4359,7 @@ static void tracker_turtle_reader_instance_init (TrackerTurtleReader * self) {
 	self->priv = TRACKER_TURTLE_READER_GET_PRIVATE (self);
 #line 61 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	self->priv->bnodeid = 0;
-#line 4370 "tracker-turtle-reader.c"
+#line 4363 "tracker-turtle-reader.c"
 }
 
 
@@ -4398,7 +4391,7 @@ static void tracker_turtle_reader_finalize (GObject* obj) {
 	_g_mapped_file_unref0 (self->priv->mapped_file);
 #line 20 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	G_OBJECT_CLASS (tracker_turtle_reader_parent_class)->finalize (obj);
-#line 4402 "tracker-turtle-reader.c"
+#line 4395 "tracker-turtle-reader.c"
 }
 
 
@@ -4449,13 +4442,13 @@ static void _vala_tracker_turtle_reader_get_property (GObject * object, guint pr
 		g_value_set_boolean (value, tracker_turtle_reader_get_object_is_uri (self));
 #line 20 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		break;
-#line 4453 "tracker-turtle-reader.c"
+#line 4446 "tracker-turtle-reader.c"
 		default:
 #line 20 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 20 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		break;
-#line 4459 "tracker-turtle-reader.c"
+#line 4452 "tracker-turtle-reader.c"
 	}
 }
 
@@ -4495,13 +4488,13 @@ static void _vala_tracker_turtle_reader_set_property (GObject * object, guint pr
 		tracker_turtle_reader_set_object_is_uri (self, g_value_get_boolean (value));
 #line 20 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		break;
-#line 4499 "tracker-turtle-reader.c"
+#line 4492 "tracker-turtle-reader.c"
 		default:
 #line 20 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 20 "/home/martyn/Source/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		break;
-#line 4505 "tracker-turtle-reader.c"
+#line 4498 "tracker-turtle-reader.c"
 	}
 }
 

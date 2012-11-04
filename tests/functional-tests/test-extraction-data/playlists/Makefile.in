@@ -213,6 +213,8 @@ LIBGIF_CFLAGS = @LIBGIF_CFLAGS@
 LIBGIF_LIBS = @LIBGIF_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBGXPS_CFLAGS = @LIBGXPS_CFLAGS@
+LIBGXPS_LIBS = @LIBGXPS_LIBS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
@@ -423,12 +425,13 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-@HAVE_TOTEM_PL_PARSER_TRUE@playlisttestdir = $(datadir)/tracker-tests/test-extraction-data/playlists
-@HAVE_TOTEM_PL_PARSER_TRUE@playlisttest_DATA = \
-@HAVE_TOTEM_PL_PARSER_TRUE@	playlist-test-1.m3u                            \
-@HAVE_TOTEM_PL_PARSER_TRUE@	playlist-test-1.expected
+playlists = \
+	playlist-test-1.m3u \
+	playlist-test-1.expected
 
-@HAVE_TOTEM_PL_PARSER_TRUE@EXTRA_DIST = $(playlisttest_DATA)
+@HAVE_TOTEM_PL_PARSER_TRUE@playlisttestdir = $(datadir)/tracker-tests/test-extraction-data/playlists
+@HAVE_TOTEM_PL_PARSER_TRUE@playlisttest_DATA = $(playlists)
+EXTRA_DIST = $(playlists)
 all: all-am
 
 .SUFFIXES:

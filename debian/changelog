@@ -1,6 +1,8 @@
 tracker (0.14.4-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Remove 0001-evolution-plugin-include-missing-header.patch, merged
+    upstream.
 
  -- Michael Biebl <biebl@debian.org>  Sun, 04 Nov 2012 16:00:33 +0100
 

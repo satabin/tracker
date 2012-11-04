@@ -27,6 +27,7 @@ override_dh_auto_configure:
 		--enable-libvorbis \
 		--enable-libflac \
 		--enable-playlist \
+		--enable-libgxps \
 		--disable-network-manager \
 		--disable-gnome-keyring \
 		--disable-miner-rss \

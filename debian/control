@@ -41,6 +41,7 @@ Build-Depends: debhelper (>= 8.1.0~),
                dia,
                libunistring-dev,
                libgif-dev,
+               libgxps-dev,
                libgirepository1.0-dev (>= 0.10.7-1~),
                gobject-introspection (>= 0.10)
 Standards-Version: 3.9.3

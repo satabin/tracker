@@ -9,6 +9,8 @@ tracker (0.14.5-1) UNRELEASED; urgency=low
     .install file accordingly.
   * Enforce strict inter-package dependencies via shlibs.local.
   * Rename an internal symbol in libtracker-miner.
+  * For configure switches with auto detection, explicitly enable or disable
+    the feature for reliable build results in tainted build environments.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 07 Feb 2013 06:51:38 +0100
 

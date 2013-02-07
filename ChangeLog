@@ -1,3 +1,77 @@
+2013-02-06  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.14.5
+
+	tracker-extract-playlist: Support nie:title for the playlist
+	Fixed GB#692409, New: playlist extractor should index playlist title if
+	available
+
+	tracker-needle: Find documents (e.g. PDFs) when searching for creators/publishers
+	Fixes GB#692603, Search can not find pdf files using author names
+
+2013-02-06  Frank Lahm  <franklahm@gmail.com>
+
+	libtracker-common: Add replacement function for flock() on Solaris
+
+2013-02-06  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	miner-manager: plug some memleaks
+	https://bugzilla.gnome.org/show_bug.cgi?id=692210
+
+2013-02-06  Dominique Leuenberger  <dimstar@opensuse.org>
+
+	build: Port to libgee 0.8 (was 1.0)
+	Fixes GB#691807.
+
+2013-02-06  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract-playlist: Added nfo:MediaList (to existing nmm:PlayList)
+	Based on a patch from Trever Fischer.
+
+	Fixes GB#690170, Add nfo:MediaList type to .m3u playlist files
+
+	tracker-miner-fs, store: Add MeeGo keys to desktop files
+
+	build: Fixes build error when supplying nautilis extensions directory
+
+2013-02-06  Antoine Jacoutot  <ajacoutot@gnome.org>
+
+	tracker-monitor: add support for GKqueueDirectoryMonitor
+	kqueue(2) support for BSD systems was recently introduced in GLib. Make
+	tracker aware of this new backend.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=688371
+
+2013-02-06  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	build: don't build-depend on Dia
+	Currently, the gtk-doc generator code in Tracker has a build dependency
+	on the Dia application in order to generate some images for the
+	documentation; the dependency is not optimal, as Dia is not available
+	on all distributions and platforms.
+
+	This patch changes the build system to add a specific update-diagrams
+	make target to be ran from the ontology docs directory (which updates
+	the images), and adds the images themselves under version control.
+
+	Fixes GB#688287
+
+2012-12-26  Henrique P. Machado  <hpmachado@gnome.org>
+
+	Updated Brazilian Portuguese Translation
+
+2012-11-23  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2012-11-23  Christian Kirbach  <Christian.Kirbach@googlemail.com>
+
+	Update German translation
+
+2012-11-04  Michael Biebl  <biebl@debian.org>
+
+	Fix XPS configure help string
+
 2012-11-01  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.14.4

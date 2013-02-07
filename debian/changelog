@@ -5,6 +5,8 @@ tracker (0.14.5-1) UNRELEASED; urgency=low
     upstream.
   * Enable XPS support.
   * Build against libgee-0.8.
+  * tracker-gui no longer installs any icons in $pkgdatadir, update the
+    .install file accordingly.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 07 Feb 2013 06:51:38 +0100
 

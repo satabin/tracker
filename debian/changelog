@@ -4,6 +4,7 @@ tracker (0.14.5-1) UNRELEASED; urgency=low
   * Remove 0001-evolution-plugin-include-missing-header.patch, merged
     upstream.
   * Enable XPS support.
+  * Build against libgee-0.8.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 07 Feb 2013 06:51:38 +0100
 

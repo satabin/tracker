@@ -7,6 +7,7 @@ tracker (0.14.5-1) UNRELEASED; urgency=low
   * Build against libgee-0.8.
   * tracker-gui no longer installs any icons in $pkgdatadir, update the
     .install file accordingly.
+  * Enforce strict inter-package dependencies via shlibs.local.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 07 Feb 2013 06:51:38 +0100
 

@@ -16,7 +16,7 @@ libtracker-miner-0.14.so.0 libtracker-miner-0.14-0 #MINVER#
  tracker_file_notifier_new@Base 0.14.0
  tracker_file_notifier_start@Base 0.14.0
  tracker_file_notifier_stop@Base 0.14.0
- tracker_file_system_delete_files@Base 0.14.0
+ tracker_file_system_forget_files@Base 0.14.5
  tracker_file_system_get_file@Base 0.14.0
  tracker_file_system_get_property@Base 0.14.0
  tracker_file_system_get_type@Base 0.14.0

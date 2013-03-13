@@ -2,6 +2,10 @@ tracker (0.15.4-1) UNRELEASED; urgency=low
 
   * New upstream development release.
   * Track unstable releases for now.
+  * Update Build-Depends:
+    - Bump libglib2.0-dev to (>= 2.35.1).
+    - Bump libsqlite3-dev to (>= 3.7.9) for FTS4 content= support.
+    - Build against gstreamer 1.0.
 
  -- Michael Biebl <biebl@debian.org>  Wed, 13 Mar 2013 22:50:47 +0100
 

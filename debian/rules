@@ -34,7 +34,7 @@ override_dh_auto_configure:
 		--enable-gtk-doc \
 		--disable-unit-tests \
 		--disable-network-manager \
-		--disable-gnome-keyring \
+		--disable-libsecret \
 		--disable-miner-rss \
 		--disable-miner-flickr \
 		--disable-miner-evolution \

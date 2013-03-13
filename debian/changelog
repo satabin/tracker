@@ -9,6 +9,7 @@ tracker (0.15.4-1) UNRELEASED; urgency=low
   * Rename library packages for the API version bump 0.12 → 0.14.
   * Update symbols file for libtracker-miner-0.16-0.
   * List missing files on dh_install.
+  * Update configure flags for the gnome-keyring to libsecret change.
 
  -- Michael Biebl <biebl@debian.org>  Wed, 13 Mar 2013 22:50:47 +0100
 

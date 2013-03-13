@@ -1,4 +1,4 @@
-libtracker-miner-0.14.so.0 libtracker-miner-0.14-0 #MINVER#
+libtracker-miner-0.16.so.0 libtracker-miner-0.16-0 #MINVER#
  tracker_crawler_get_file_attributes@Base 0.14.0
  tracker_crawler_get_file_info@Base 0.14.0
  tracker_crawler_get_type@Base 0.8.0

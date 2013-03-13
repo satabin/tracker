@@ -1,4 +1,4 @@
-libtracker-extract-0.14.so.0 libtracker-extract-0.14-0 #MINVER#
+libtracker-extract-0.16.so.0 libtracker-extract-0.16-0 #MINVER#
  tracker_coalesce@Base 0.8.0
  tracker_coalesce_strip@Base 0.10.0
  tracker_date_format_to_iso8601@Base 0.8.0

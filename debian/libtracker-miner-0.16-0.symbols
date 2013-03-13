@@ -89,6 +89,8 @@ libtracker-miner-0.16.so.0 libtracker-miner-0.16-0 #MINVER#
  tracker_miner_manager_get_type@Base 0.8.0
  tracker_miner_manager_ignore_next_update@Base 0.8.0
  tracker_miner_manager_index_file@Base 0.10.0
+ tracker_miner_manager_index_file_async@Base 0.15.4
+ tracker_miner_manager_index_file_finish@Base 0.15.4
  tracker_miner_manager_is_active@Base 0.8.0
  tracker_miner_manager_is_paused@Base 0.8.0
  tracker_miner_manager_new@Base 0.8.0

@@ -163,6 +163,7 @@ read_toc (PopplerIndexIter  *index,
 			case POPPLER_ACTION_GOTO_REMOTE:
 			case POPPLER_ACTION_RENDITION:
 			case POPPLER_ACTION_OCG_STATE:
+			case POPPLER_ACTION_JAVASCRIPT:
 				/* Do nothing */
 				break;
 		}
@@ -574,8 +575,6 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 	gchar *contents = NULL;
 	gsize len;
 	struct stat st;
-
-	g_type_init ();
 
 	metadata = tracker_extract_info_get_metadata_builder (info);
 	preupdate = tracker_extract_info_get_preupdate_builder (info);

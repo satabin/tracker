@@ -12,15 +12,15 @@ AC_PREREQ([2.64])
 # if backwards compatibility has been broken,
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
-m4_define([tracker_minor_version], [14])
-m4_define([tracker_micro_version], [5])
-m4_define([tracker_interface_age], [5])
+m4_define([tracker_minor_version], [15])
+m4_define([tracker_micro_version], [4])
+m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
           [tracker_major_version.tracker_minor_version.tracker_micro_version])
 # This is the X.Y used in -llibtracker-FOO-X.Y
-m4_define([tracker_api_version], [0.14])
+m4_define([tracker_api_version], [0.16])
 
 # libtool version related macros
 m4_define([tracker_lt_release], [tracker_major_version.tracker_minor_version])
@@ -38,7 +38,7 @@ m4_define([tracker_lt_current_minus_age],
 # for Tracker.
 #
 # TRACKER_BINARY_VERSION=$TRACKER_MAJOR_VERSION.$TRACKER_MINOR_VERSION.$LT_CURRENT
-m4_define([tracker_binary_version], [0.14.0])
+m4_define([tracker_binary_version], [0.16.0])
 
 AC_INIT([tracker],
         [tracker_version],
@@ -162,7 +162,7 @@ PYTHON_REQUIRED=2.6
 
 # Library required versions
 DBUS_REQUIRED=1.3.1
-GLIB_REQUIRED=2.28.0
+GLIB_REQUIRED=2.35.1
 PANGO_REQUIRED=1.0.0
 GTK_REQUIRED=3.0.0
 LIBXML2_REQUIRED=2.6
@@ -192,18 +192,19 @@ CAMEL_REQUIRED=2.32.0
 LIBSTREAMANALYZER_REQUIRED=0.7.0
 GEE_REQUIRED=0.3
 TAGLIB_REQUIRED=1.6
-GNOME_KEYRING_REQUIRED=2.26
-LIBGRSS_REQUIRED=0.3
+LIBSECRET_REQUIRED=0.5
+LIBGRSS_REQUIRED=0.5
 REST_REQUIRED=0.6
 NETWORK_MANAGER_REQUIRED=0.8
 GSTREAMER_REQUIRED=0.10.31
-GUPNP_DLNA_REQUIRED=0.5
+GUPNP_DLNA_REQUIRED=0.9.4
 
 # 3.6.11 for sqlite_backup API
 # 3.6.16 to fix test failures
 # 3.6.17 for shared cache mode with virtual tables
 # 3.7.0 for WAL
-SQLITE_REQUIRED=3.7.0
+# 3.7.9 for FTS4 content= support
+SQLITE_REQUIRED=3.7.9
 
 # Needed to generate .gir files,
 # see http://live.gnome.org/GnomeGoals/AddGObjectIntrospectionSupport
@@ -438,7 +439,7 @@ fi
 
 # Check requirements for tracker-miner-rss
 TRACKER_MINER_RSS_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
-                            libgrss-0    >= $LIBGRSS_REQUIRED"
+                            libgrss-0.5  >= $LIBGRSS_REQUIRED"
 
 PKG_CHECK_MODULES(TRACKER_MINER_RSS, [$TRACKER_MINER_RSS_REQUIRED],
                   [have_tracker_miner_rss=yes],
@@ -548,7 +549,7 @@ AC_SUBST(GCOV_LIBS)
 ####################################################################
 # General VALAFLAGS/CFLAGS/LIBS
 ####################################################################
-BUILD_VALAFLAGS="-g --target-glib=2.26"
+BUILD_VALAFLAGS="-g --target-glib=2.34"
 BUILD_CFLAGS="${WARN_CFLAGS} ${GCOV_CFLAGS} -DG_LOG_DOMAIN=\\\"Tracker\\\" -DTRACKER_COMPILATION"
 BUILD_LIBS="${GCOV_LIBS}"
 
@@ -715,10 +716,38 @@ fi
 
 if test "x$have_tracker_fts" = "xyes"; then
    AC_DEFINE(HAVE_TRACKER_FTS, [1], [Define to 1 if tracker FTS is compiled])
+
+   OLD_CFLAGS="$CFLAGS"
+   OLD_LIBS="$LIBS"
+   CFLAGS="$SQLITE3_CFLAGS"
+   LIBS="$SQLITE3_LIBS"
+
+   AC_MSG_CHECKING(whether SQLite3 has required FTS features)
+   AC_RUN_IFELSE([AC_LANG_PROGRAM([[#include <sqlite3.h>]],
+                                  [[sqlite3 *db;
+                                    int rc;
+                                    rc = sqlite3_open(":memory:", &db);
+                                    if (rc!=SQLITE_OK) return -1;
+                                    rc = sqlite3_exec(db, "create table a(text)", 0, 0, 0);
+                                    if (rc!=SQLITE_OK) return -1;
+                                    rc = sqlite3_exec(db, "create virtual table t using fts4(content='a',text)", 0, 0, 0);
+                                    if (rc!=SQLITE_OK) return -1;]])],
+                     [have_builtin_fts4=yes],
+                     [have_builtin_fts4=no])
+   AC_MSG_RESULT($have_builtin_fts4)
+
+   CFLAGS="$OLD_CFLAGS"
+   LIBS="$OLD_LIBS"
+
+   if test "x$have_builtin_fts4" = "xyes" ; then
+      AC_DEFINE(HAVE_BUILTIN_FTS, [], [Defined if Sqlite has FTS4 compiled in])
+   fi
 else
    AC_DEFINE(HAVE_TRACKER_FTS, [0], [Define to 0 if tracker FTS is not compiled])
+   $have_builtin_fts4="disabled"
 fi
 
+AM_CONDITIONAL(HAVE_BUILTIN_FTS, test "$have_builtin_fts4" = "yes")
 AM_CONDITIONAL(HAVE_TRACKER_FTS, test "$have_tracker_fts" = "yes")
 
 ####################################################################
@@ -924,7 +953,7 @@ AM_CONDITIONAL(BUILD_LIBUNISTRING_PARSER, test "x$with_unicode_support" = "xlibu
 AM_CONDITIONAL(BUILD_LIBICU_PARSER, test "x$with_unicode_support" = "xlibicu")
 
 ##################################################################
-# Check for libtracker-miner: gnome-keyring for web miner details
+# Check for libtracker-miner: libsecet for web miner details
 ##################################################################
 
 AC_ARG_ENABLE(gnome_keyring,
@@ -932,27 +961,39 @@ AC_ARG_ENABLE(gnome_keyring,
                              [enable Gnome Keyring support to store credentials [[default=auto]]]),,
               [enable_gnome_keyring=auto])
 
-if test "x$enable_gnome_keyring" != "xno"; then
-   PKG_CHECK_MODULES(GNOME_KEYRING,
-                     [gnome-keyring-1 >= $GNOME_KEYRING_REQUIRED],
-                     [have_gnome_keyring=yes],
-                     [have_gnome_keyring=no])
+AC_ARG_ENABLE(libsecret,
+              AS_HELP_STRING([--enable-libsecret],
+                             [enable libsecret support to store login credentials [[default=auto]]]),,
+              [enable_libsecret=auto])
 
-   LIBTRACKER_MINER_CFLAGS="$LIBTRACKER_MINER_CFLAGS $GNOME_KEYRING_CFLAGS"
-   LIBTRACKER_MINER_LIBS="$LIBTRACKER_MINER_LIBS $GNOME_KEYRING_LIBS"
+if test "x$enable_gnome_keyring" != "xauto"; then
+   AC_MSG_WARN([The --enable-gnome-keyring option has been deprecated for --enable-libsecret])
 
-   if test "x$have_gnome_keyring" = "xyes"; then
-      AC_DEFINE(HAVE_GNOME_KEYRING, [], [Define if we have Gnome Keyring for password storage])
+   # Try to continue as normal
+   enable_libsecret="$enable_gnome_keyring"
+fi
+
+if test "x$enable_libsecret" != "xno"; then
+   PKG_CHECK_MODULES(LIBSECRET,
+                     [libsecret-unstable >= $LIBSECRET_REQUIRED],
+                     [have_libsecret=yes],
+                     [have_libsecret=no])
+
+   LIBTRACKER_MINER_CFLAGS="$LIBTRACKER_MINER_CFLAGS $LIBSECRET_CFLAGS"
+   LIBTRACKER_MINER_LIBS="$LIBTRACKER_MINER_LIBS $LIBSECRET_LIBS"
+
+   if test "x$have_libsecret" = "xyes"; then
+      AC_DEFINE(HAVE_LIBSECRET, [], [Define if we have libsecret for password storage])
    fi
 fi
 
-if test "x$enable_gnome_keyring" = "xyes"; then
-   if test "x$have_gnome_keyring" != "xyes"; then
-      AC_MSG_ERROR([Couldn't find Gnome Keyring >= $GNOME_KEYRING_REQUIRED.])
+if test "x$enable_libsecret" = "xyes"; then
+   if test "x$have_libsecret" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find libsecret >= $LIBSECRET_REQUIRED.])
    fi
 fi
 
-AM_CONDITIONAL(HAVE_GNOME_KEYRING, test "x$have_gnome_keyring" = "xyes")
+AM_CONDITIONAL(HAVE_LIBSECRET, test "x$have_libsecret" = "xyes")
 
 ##################################################################
 # Check for libtracker-miner: network-manager for web miners
@@ -1675,8 +1716,8 @@ AC_ARG_ENABLE(generic-media-extractor,
               [enable_generic_media_extractor=auto])
 
 PKG_CHECK_MODULES(GSTREAMER,
-                  [gstreamer-0.10 >= $GSTREAMER_REQUIRED
-                   gstreamer-tag-0.10 >= $GSTREAMER_REQUIRED],
+                  [gstreamer-1.0 >= $GSTREAMER_REQUIRED
+                   gstreamer-tag-1.0 >= $GSTREAMER_REQUIRED],
                   [have_libgstreamer=yes],
                   [have_libgstreamer=no])
 
@@ -1762,7 +1803,7 @@ else
         ;;
         "xdiscoverer")
            PKG_CHECK_MODULES(GSTREAMER_PBUTILS,
-                             [gstreamer-pbutils-0.10 >= $GSTREAMER_REQUIRED],
+                             [gstreamer-pbutils-1.0 >= $GSTREAMER_REQUIRED],
                              [have_gstreamer_pbutils=yes],
                              [have_gstreamer_pbutils=no])
            AC_SUBST(GSTREAMER_PBUTILS_CFLAGS)
@@ -1777,7 +1818,7 @@ else
         ;;
         "xgupnp-dlna")
            PKG_CHECK_MODULES(GUPNP_DLNA,
-                             [gupnp-dlna-1.0 >= $GUPNP_DLNA_REQUIRED],
+                             [gupnp-dlna-2.0 >= $GUPNP_DLNA_REQUIRED gupnp-dlna-gst-2.0 >= $GUPNP_DLNA_REQUIRED],
                              [have_gupnp_dlna=yes],
                              [have_gupnp_dlna=no])
            AC_SUBST(GUPNP_DLNA_CFLAGS)
@@ -2433,12 +2474,13 @@ Build Configuration:
 	Support for UPower:                     $have_upower
 	Support for Cyrillic languages (enca):  $have_enca
 	Support for network status detection:   $have_network_manager
+        Support for keyring data (libsecret):   $have_libsecret
 	Unicode support library:                $with_unicode_support
 
 Applications:
 
 	Build with Journal support:             $have_tracker_journal
-	Build with SQLite FTS support:          $have_tracker_fts
+	Build with SQLite FTS support:          $have_tracker_fts (built-in FTS: $have_builtin_fts4)
 
 	Build tracker-preferences:              $have_tracker_preferences
 	Build tracker-explorer:                 $have_tracker_explorer

@@ -138,6 +138,8 @@
     <keyword type="function" name="tracker_miner_manager_get_status ()" link="TrackerMinerManager.html#tracker-miner-manager-get-status" since="0.12"/>
     <keyword type="function" name="tracker_miner_manager_ignore_next_update ()" link="TrackerMinerManager.html#tracker-miner-manager-ignore-next-update" deprecated="0.12" since="0.8"/>
     <keyword type="function" name="tracker_miner_manager_index_file ()" link="TrackerMinerManager.html#tracker-miner-manager-index-file" since="0.10"/>
+    <keyword type="function" name="tracker_miner_manager_index_file_async ()" link="TrackerMinerManager.html#tracker-miner-manager-index-file-async" since="0.16"/>
+    <keyword type="function" name="tracker_miner_manager_index_file_finish ()" link="TrackerMinerManager.html#tracker-miner-manager-index-file-finish" since="0.16"/>
     <keyword type="function" name="tracker_miner_manager_is_active ()" link="TrackerMinerManager.html#tracker-miner-manager-is-active" since="0.8"/>
     <keyword type="function" name="tracker_miner_manager_is_paused ()" link="TrackerMinerManager.html#tracker-miner-manager-is-paused" since="0.8"/>
     <keyword type="function" name="tracker_miner_manager_new ()" link="TrackerMinerManager.html#tracker-miner-manager-new" since="0.8"/>

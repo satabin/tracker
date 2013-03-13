@@ -156,9 +156,10 @@ am__libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES_DIST =  \
 @HAVE_NETWORK_MANAGER_FALSE@am__objects_1 =  \
 @HAVE_NETWORK_MANAGER_FALSE@	tracker-network-provider-dummy.lo
 @HAVE_NETWORK_MANAGER_TRUE@am__objects_1 = tracker-network-provider-network-manager.lo
-@HAVE_GNOME_KEYRING_FALSE@am__objects_2 = tracker-password-provider-keyfile.lo
-@HAVE_GNOME_KEYRING_TRUE@am__objects_2 =  \
-@HAVE_GNOME_KEYRING_TRUE@	tracker-password-provider-gnome.lo
+@HAVE_LIBSECRET_FALSE@am__objects_2 =  \
+@HAVE_LIBSECRET_FALSE@	tracker-password-provider-keyfile.lo
+@HAVE_LIBSECRET_TRUE@am__objects_2 =  \
+@HAVE_LIBSECRET_TRUE@	tracker-password-provider-gnome.lo
 am__objects_3 = tracker-marshal.lo
 am__objects_4 =
 am__objects_5 = $(am__objects_3) $(am__objects_4) tracker-crawler.lo \
@@ -283,8 +284,6 @@ GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_MKENUMS = @GLIB_MKENUMS@
 GMSGFMT = @GMSGFMT@
 GMSGFMT_015 = @GMSGFMT_015@
-GNOME_KEYRING_CFLAGS = @GNOME_KEYRING_CFLAGS@
-GNOME_KEYRING_LIBS = @GNOME_KEYRING_LIBS@
 GRAPHVIZ_FDP = @GRAPHVIZ_FDP@
 GREP = @GREP@
 GSETTINGS_DISABLE_SCHEMAS_COMPILE = @GSETTINGS_DISABLE_SCHEMAS_COMPILE@
@@ -354,6 +353,8 @@ LIBOSINFO_LIBS = @LIBOSINFO_LIBS@
 LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
 LIBPNG_LIBS = @LIBPNG_LIBS@
 LIBS = @LIBS@
+LIBSECRET_CFLAGS = @LIBSECRET_CFLAGS@
+LIBSECRET_LIBS = @LIBSECRET_LIBS@
 LIBSTREAMANALYZER_CFLAGS = @LIBSTREAMANALYZER_CFLAGS@
 LIBSTREAMANALYZER_LIBS = @LIBSTREAMANALYZER_LIBS@
 LIBTIFF_CFLAGS = @LIBTIFF_CFLAGS@
@@ -663,8 +664,8 @@ libtracker_miner_@TRACKER_API_VERSION@_la_LIBADD = \
 	$(BUILD_LIBS)                                  \
 	$(LIBTRACKER_MINER_LIBS)
 
-@HAVE_GNOME_KEYRING_FALSE@password_provider_sources = tracker-password-provider-keyfile.c
-@HAVE_GNOME_KEYRING_TRUE@password_provider_sources = tracker-password-provider-gnome.c
+@HAVE_LIBSECRET_FALSE@password_provider_sources = tracker-password-provider-keyfile.c
+@HAVE_LIBSECRET_TRUE@password_provider_sources = tracker-password-provider-gnome.c
 @HAVE_NETWORK_MANAGER_FALSE@network_provider_sources = tracker-network-provider-dummy.c
 @HAVE_NETWORK_MANAGER_TRUE@network_provider_sources = tracker-network-provider-network-manager.c
 

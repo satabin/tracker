@@ -155,6 +155,8 @@
 <ANCHOR id="tracker-miner-manager-get-status" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-get-status">
 <ANCHOR id="tracker-miner-manager-ignore-next-update" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-ignore-next-update">
 <ANCHOR id="tracker-miner-manager-index-file" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-index-file">
+<ANCHOR id="tracker-miner-manager-index-file-async" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-index-file-async">
+<ANCHOR id="tracker-miner-manager-index-file-finish" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-index-file-finish">
 <ANCHOR id="tracker-miner-manager-is-active" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-is-active">
 <ANCHOR id="tracker-miner-manager-is-paused" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-is-paused">
 <ANCHOR id="tracker-miner-manager-new" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-new">
@@ -256,9 +258,11 @@
 <ANCHOR id="tracker-thumbnailer-send" href="libtracker-miner/libtracker-miner-Thumbnailer-management.html#tracker-thumbnailer-send">
 <ANCHOR id="tracker-thumbnailer-shutdown" href="libtracker-miner/libtracker-miner-Thumbnailer-management.html#tracker-thumbnailer-shutdown">
 <ANCHOR id="annotation-glossterm-out" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-out">
+<ANCHOR id="annotation-glossterm-scope async" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-scope async">
 <ANCHOR id="annotation-glossterm-allow-none" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-allow-none">
-<ANCHOR id="annotation-glossterm-element-type" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-element-type">
-<ANCHOR id="annotation-glossterm-in" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-in">
-<ANCHOR id="annotation-glossterm-transfer container" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-transfer container">
-<ANCHOR id="annotation-glossterm-transfer full" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-transfer full">
 <ANCHOR id="annotation-glossterm-transfer none" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-transfer none">
+<ANCHOR id="annotation-glossterm-element-type" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-element-type">
+<ANCHOR id="annotation-glossterm-transfer container" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-transfer container">
+<ANCHOR id="annotation-glossterm-in" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-in">
+<ANCHOR id="annotation-glossterm-transfer full" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-transfer full">
+<ANCHOR id="annotation-glossterm-out callee-allocates" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-out callee-allocates">

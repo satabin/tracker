@@ -46,6 +46,7 @@
 #include "tracker-db-manager.h"
 #include "tracker-db-interface-sqlite.h"
 #include "tracker-db-interface.h"
+#include "tracker-data-manager.h"
 
 /* ZLib buffer settings */
 #define ZLIB_BUF_SIZE                 8192
@@ -57,7 +58,7 @@
 #define TRACKER_DB_PAGE_SIZE_DONT_SET -1
 
 /* Set current database version we are working with */
-#define TRACKER_DB_VERSION_NOW        TRACKER_DB_VERSION_0_9_38
+#define TRACKER_DB_VERSION_NOW        TRACKER_DB_VERSION_0_15_2
 #define TRACKER_DB_VERSION_FILE       "db-version.txt"
 #define TRACKER_DB_LOCALE_FILE        "db-locale.txt"
 
@@ -97,7 +98,8 @@ typedef enum {
 	TRACKER_DB_VERSION_0_9_21,  /* Fix for NB#186055 */
 	TRACKER_DB_VERSION_0_9_24,  /* nmo:PhoneMessage class */
 	TRACKER_DB_VERSION_0_9_34,  /* ontology cache */
-	TRACKER_DB_VERSION_0_9_38   /* nie:url an inverse functional property */
+	TRACKER_DB_VERSION_0_9_38,  /* nie:url an inverse functional property */
+	TRACKER_DB_VERSION_0_15_2   /* fts4 */
 } TrackerDBVersion;
 
 typedef struct {
@@ -167,11 +169,7 @@ static GStaticPrivate        interface_data_key = G_STATIC_PRIVATE_INIT;
 #endif
 
 /* mutex used by singleton connection in libtracker-direct, not used by tracker-store */
-#if GLIB_CHECK_VERSION (2,31,0)
 static GMutex                global_mutex;
-#else
-static GStaticMutex          global_mutex = G_STATIC_MUTEX_INIT;
-#endif
 
 static TrackerDBInterface   *global_iface;
 
@@ -1522,8 +1520,7 @@ tracker_db_manager_get_db_interface (void)
 			return NULL;
 		}
 
-		tracker_db_interface_sqlite_fts_init (interface, FALSE);
-
+		tracker_data_manager_init_fts (interface, FALSE);
 
 		tracker_db_interface_set_max_stmt_cache_size (interface,
 		                                              TRACKER_DB_STATEMENT_CACHE_TYPE_SELECT,
@@ -1807,29 +1804,17 @@ tracker_db_manager_set_need_mtime_check (gboolean needed)
 void
 tracker_db_manager_lock (void)
 {
-#if GLIB_CHECK_VERSION (2,31,0)
 	g_mutex_lock (&global_mutex);
-#else
-	g_static_mutex_lock (&global_mutex);
-#endif
 }
 
 gboolean
 tracker_db_manager_trylock (void)
 {
-#if GLIB_CHECK_VERSION (2,31,0)
 	return g_mutex_trylock (&global_mutex);
-#else
-	return g_static_mutex_trylock (&global_mutex);
-#endif
 }
 
 void
 tracker_db_manager_unlock (void)
 {
-#if GLIB_CHECK_VERSION (2,31,0)
 	g_mutex_unlock (&global_mutex);
-#else
-	g_static_mutex_unlock (&global_mutex);
-#endif
 }

@@ -46,6 +46,9 @@ override_dh_auto_configure:
 		--disable-libcue \
 		--disable-qt
 
+override_dh_install:
+	dh_install -X.la --list-missing
+
 # Enforce tight shlibs dependencies
 override_dh_makeshlibs:
 	dh_makeshlibs -V \

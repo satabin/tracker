@@ -44,7 +44,8 @@
 #endif
 
 #if defined(GSTREAMER_BACKEND_GUPNP_DLNA)
-#include <libgupnp-dlna/gupnp-dlna-discoverer.h>
+#include <libgupnp-dlna/gupnp-dlna.h>
+#include <libgupnp-dlna/gupnp-dlna-gst-utils.h>
 #endif
 
 #include <gst/gst.h>
@@ -113,6 +114,9 @@ typedef struct {
 	guint                media_art_buffer_size;
 	const gchar         *media_art_buffer_mime;
 
+	GstSample      *sample;
+	GstMapInfo      info;
+
 #if defined(GSTREAMER_BACKEND_TAGREADBIN) || \
     defined(GSTREAMER_BACKEND_DECODEBIN2)
 	GstElement     *pipeline;
@@ -132,13 +136,12 @@ typedef struct {
 	GList          *streams;
 #endif
 
-#if defined(GSTREAMER_BACKEND_DISCOVERER)
+#if defined(GSTREAMER_BACKEND_DISCOVERER) || \
+    defined(GSTREAMER_BACKEND_GUPNP_DLNA)
 	GstDiscoverer  *discoverer;
 #endif
 
 #if defined(GSTREAMER_BACKEND_GUPNP_DLNA)
-	GUPnPDLNADiscoverer  *discoverer;
-	GUPnPDLNAInformation *dlna_info;
 	const gchar          *dlna_profile;
 	const gchar          *dlna_mime;
 #endif
@@ -407,24 +410,23 @@ get_embedded_cue_sheet_data (GstTagList *tag_list)
 static gboolean
 get_embedded_media_art (MetadataExtractor *extractor)
 {
-	const GValue *value;
+	gboolean have_sample;
 	guint lindex;
 
 	lindex = 0;
 
 	do {
-		value = gst_tag_list_get_value_index (extractor->tagcache, GST_TAG_IMAGE, lindex);
+		have_sample = gst_tag_list_get_sample_index (extractor->tagcache, GST_TAG_IMAGE, lindex, &extractor->sample);
 
-		if (value) {
+		if (have_sample) {
 			GstBuffer *buffer;
 			GstCaps *caps;
 			GstStructure *caps_struct;
 			gint type;
 
-			buffer = gst_value_get_buffer (value);
-			caps = gst_buffer_get_caps (buffer);
-			caps_struct = gst_caps_get_structure (buffer->caps, 0);
-
+			buffer = gst_sample_get_buffer (extractor->sample);
+			caps = gst_sample_get_caps (extractor->sample);
+			caps_struct = gst_caps_get_structure (caps, 0);
 			gst_structure_get_enum (caps_struct,
 			                        "image-type",
 			                        GST_TYPE_TAG_IMAGE_TYPE,
@@ -432,33 +434,38 @@ get_embedded_media_art (MetadataExtractor *extractor)
 
 			if (type == GST_TAG_IMAGE_TYPE_FRONT_COVER ||
 			    (type == GST_TAG_IMAGE_TYPE_UNDEFINED && extractor->media_art_buffer_size == 0)) {
-				extractor->media_art_buffer = buffer->data;
-				extractor->media_art_buffer_size = buffer->size;
+				if (!gst_buffer_map (buffer, &extractor->info, GST_MAP_READ))
+					return FALSE;
+
+				extractor->media_art_buffer = extractor->info.data;
+				extractor->media_art_buffer_size = extractor->info.size;
 				extractor->media_art_buffer_mime = gst_structure_get_name (caps_struct);
-				gst_caps_unref (caps);
 
 				return TRUE;
 			}
 
-			gst_caps_unref (caps);
-
 			lindex++;
 		}
-	} while (value);
 
-	value = gst_tag_list_get_value_index (extractor->tagcache, GST_TAG_PREVIEW_IMAGE, lindex);
+	} while (have_sample);
 
-	if (value) {
+	have_sample = gst_tag_list_get_sample_index (extractor->tagcache, GST_TAG_IMAGE, lindex, &extractor->sample);
+
+	if (have_sample) {
 		GstBuffer *buffer;
+		GstCaps *caps;
 		GstStructure *caps_struct;
 
-		buffer = gst_value_get_buffer (value);
-		caps_struct = gst_caps_get_structure (buffer->caps, 0);
+		buffer = gst_sample_get_buffer (extractor->sample);
+		caps = gst_sample_get_caps (extractor->sample);
+		caps_struct = gst_caps_get_structure (caps, 0);
 
-		extractor->media_art_buffer = buffer->data;
-		extractor->media_art_buffer_size = buffer->size;
+		if (!gst_buffer_map (buffer, &extractor->info, GST_MAP_READ))
+			return FALSE;
+
+		extractor->media_art_buffer = extractor->info.data;
+		extractor->media_art_buffer_size = extractor->info.size;
 		extractor->media_art_buffer_mime = gst_structure_get_name (caps_struct);
-
 
 		return TRUE;
 	}
@@ -1282,10 +1289,6 @@ discoverer_shutdown (MetadataExtractor *extractor)
 		gst_discoverer_stream_info_list_free (extractor->streams);
 	if (extractor->discoverer)
 		g_object_unref (extractor->discoverer);
-#if defined(GSTREAMER_BACKEND_GUPNP_DLNA)
-	if (extractor->dlna_info)
-		g_object_unref (extractor->dlna_info);
-#endif /* GSTREAMER_BACKEND_GUPNP_DLNA */
 }
 
 static gboolean
@@ -1309,43 +1312,6 @@ discoverer_init_and_run (MetadataExtractor *extractor,
 	extractor->has_video = FALSE;
 	extractor->has_audio = FALSE;
 
-#if defined(GSTREAMER_BACKEND_GUPNP_DLNA)
-	extractor->discoverer = gupnp_dlna_discoverer_new (5 * GST_SECOND, TRUE, FALSE);
-
-#if defined(GST_TYPE_DISCOVERER_FLAGS)
-	/* Tell the discoverer to use *only* Tagreadbin backend.
-	 *  See https://bugzilla.gnome.org/show_bug.cgi?id=656345
-	 */
-	g_debug ("Using Tagreadbin backend in the GUPnP-DLNA discoverer...");
-	g_object_set (extractor->discoverer,
-	              "flags", GST_DISCOVERER_FLAGS_EXTRACT_LIGHTWEIGHT,
-	              NULL);
-#endif
-
-	/* Uri is const, the API should be const, but it isn't and it
-	 * calls gst_discoverer_discover_uri()
-	 */
-	extractor->dlna_info = gupnp_dlna_discoverer_discover_uri_sync (extractor->discoverer,
-	                                                                uri,
-	                                                                &error);
-	if (error) {
-		g_warning ("Call to gupnp_dlna_discoverer_discover_uri_sync() failed: %s",
-		           error->message);
-		g_error_free (error);
-		return FALSE;
-	}
-
-	if (!extractor->dlna_info) {
-		g_warning ("No DLNA info discovered, bailing out");
-		return TRUE;
-	}
-
-	/* Get DLNA profile */
-	extractor->dlna_profile = gupnp_dlna_information_get_name (extractor->dlna_info);
-	extractor->dlna_mime = gupnp_dlna_information_get_mime (extractor->dlna_info);
-
-	info = (GstDiscovererInfo *) gupnp_dlna_information_get_info (extractor->dlna_info);
-#else  /* GSTREAMER_BACKEND_GUPNP_DLNA */
 	extractor->discoverer = gst_discoverer_new (5 * GST_SECOND, &error);
 	if (!extractor->discoverer) {
 		g_warning ("Couldn't create discoverer: %s",
@@ -1373,12 +1339,31 @@ discoverer_init_and_run (MetadataExtractor *extractor,
 		g_error_free (error);
 		return FALSE;
 	}
-#endif /* GSTREAMER_BACKEND_GUPNP_DLNA */
 
 	if (!info) {
 		g_warning ("Nothing discovered, bailing out");
 		return TRUE;
 	}
+
+#if defined(GSTREAMER_BACKEND_GUPNP_DLNA)
+	{
+		GUPnPDLNAProfile *profile;
+		GUPnPDLNAInformation *dlna_info;
+		GUPnPDLNAProfileGuesser *guesser;
+
+		dlna_info = gupnp_dlna_gst_utils_information_from_discoverer_info (info);
+		guesser = gupnp_dlna_profile_guesser_new (TRUE, FALSE);
+		profile = gupnp_dlna_profile_guesser_guess_profile_from_info (guesser, dlna_info);
+
+		if (profile) {
+			extractor->dlna_profile = gupnp_dlna_profile_get_name (profile);
+			extractor->dlna_mime = gupnp_dlna_profile_get_mime (profile);
+		}
+
+		g_object_unref (guesser);
+		g_object_unref (dlna_info);
+	}
+#endif
 
 	extractor->duration = gst_discoverer_info_get_duration (info) / GST_SECOND;
 
@@ -1961,6 +1946,7 @@ tracker_extract_gstreamer (const gchar          *uri,
                            const gchar          *graph)
 {
 	MetadataExtractor *extractor;
+	GstBuffer *buffer;
 	gchar *cue_sheet;
 	gboolean success;
 
@@ -1971,7 +1957,7 @@ tracker_extract_gstreamer (const gchar          *uri,
 
 	extractor = g_slice_new0 (MetadataExtractor);
 	extractor->mime = type;
-	extractor->tagcache = gst_tag_list_new ();
+	extractor->tagcache = gst_tag_list_new_empty ();
 	extractor->media_art_type = TRACKER_MEDIA_ART_NONE;
 
 	g_debug ("GStreamer backend in use:");
@@ -2024,7 +2010,11 @@ tracker_extract_gstreamer (const gchar          *uri,
 
 	g_free (extractor->media_art_artist);
 	g_free (extractor->media_art_title);
-	/* Embedded media art buffer is owned and freed by the GstTagList */
+	if (extractor->sample) {
+		buffer = gst_sample_get_buffer (extractor->sample);
+		gst_buffer_unmap (buffer, &extractor->info);
+		gst_sample_unref (extractor->sample);
+	}
 
 	gst_tag_list_free (extractor->tagcache);
 

@@ -197,6 +197,7 @@
 
 <refsect2 id='tracker-fulltextNoLimit'>
 <title>tracker:fulltextNoLimit</title>
+<para>tracker:fulltextNoLimit is deprecated, no word length limits are imposed on FTS</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>

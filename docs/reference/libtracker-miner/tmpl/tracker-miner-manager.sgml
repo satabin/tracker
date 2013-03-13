@@ -185,6 +185,29 @@ TrackerMinerManager
 @Returns: 
 
 
+<!-- ##### FUNCTION tracker_miner_manager_index_file_async ##### -->
+<para>
+
+</para>
+
+@manager: 
+@file: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION tracker_miner_manager_index_file_finish ##### -->
+<para>
+
+</para>
+
+@manager: 
+@result: 
+@error: 
+@Returns: 
+
+
 <!-- ##### FUNCTION tracker_miner_manager_is_active ##### -->
 <para>
 

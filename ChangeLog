@@ -1,40 +1,435 @@
+2013-03-12  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.15.4
+
+	tests/gvdb: Fixed static vs non-static compilation warnings
+
+	libtracker-miner: Fixed various introspection warnings
+
+	tracker-extract-pdf: Fixed warning for missing enum POPPLER_ACTION_JAVASCRIPT
+
+	libtracker-extract: Fixed annotation warnings for _module_manager_get_mimetype_handlers()
+
+	libtracker-extract: Fixed gtkdoc warnings for multiple tracker_getline()
+
+	libtracker-data: Fixed format not a string literal warnings
+
+	libtracker-data: Fixed FTS init nested extern declaration warning
+
+	all: Iradicate all instances of deprecated GStaticMutex
+
+	build: Use --target-glib=2.34 for StaticMutex->Mutex changes
+	Has to be a stable release, so we can't use 2.35.1 sadly :/
+	Upstream know about this and will update with a message to warn users
+
+2013-03-12  Dimitris Spingos  <dmtrs32@gmail.com>
+
+	Updated Greek translation
+
+2013-03-12  Martin Kampas  <martin.kampas+gnomebugs@ubedi.net>
+
+	libtracker-miner: Remove GFile from cache regardless of file/dir difference
+	This works recursively for directories
+
+	Part 2 of 2 for this bug:
+	https://bugzilla.gnome.org/show_bug.cgi?id=643388
+
+	libtracker-miner: Always query urn for add/update, metadata may already be in store
+	Part 1 of 2 for this bug:
+	https://bugzilla.gnome.org/show_bug.cgi?id=643388
+
+2013-03-08  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.15.3
+
+	tracker-extract: gsf_msole_metadata_read() --> gsf_doc_meta_data_read_from_msole()
+	Former API is deprecated
+
+	all: Remove use of g_type_init() now it's deprecated in GLib since 2.35.x
+
+	tracker-miner-rss: Use g_critical() instead of g_printerr() using the log pipeline
+
+	all: Improve start/stop logging for all processes
+	Now we have Starting/Stopping in the log_init/shutdown functions not just the
+	process and version.
+
+	We also only print the log filename if we're writing to a log file at all.
+
+	We now don't print to stdout that we're initializing either.
+
+	The TrackerConfigFile g_message() line about which file we're "monitoring" is
+	removed too, this was always the first line and quite redundant anyway now we
+	use gsettings.
+
+	libtracker-common: Don't log to file by default, only stdout/stderr
+	This is actually only useful for debugging anyway and can be switched on again
+	by starting tracker processes by setting the environment variable
+	TRACKER_USE_LOG_FILES before starting each process.
+
+	Log files can still be found in either ~/.xsession-errors,
+	~/.cache/gdm/session.log or systemd journals depending on the system.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=695444
+
+2013-03-07  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-miner-fs: Fixes not listening for config changes and acting on them
+	https://bugzilla.gnome.org/show_bug.cgi?id=693198
+
+	libtracker-miner: Fixed nasty stack corruption with TrackerIndexingTree filter rules
+
+2013-03-06  Christian Kirbach  <Christian.Kirbach@googlemail.com>
+
+	Updated German translation
+
+2013-03-05  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-fts: Removed unused variable and superfluous parameter in alter_table func
+
+2013-03-05  Jeremy Bicha  <jbicha@ubuntu.com>
+
+	tracker-miner-fs, store: Add Unity to desktop files
+	https://bugzilla.gnome.org/show_bug.cgi?id=695061
+
+2013-03-05  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	libtracker-miner: add an async version of tracker_miner_manager_index_file
+	tracker_miner_manager_index_file is synchronous. This commit adds an
+	asynchronous and cancellable version of the same function.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=695157
+
+	--
+
+	This also bumps the GLib requirement up to 2.35.1 from 2.28.0 for GTask use.
+	GLib 2.35.x should be available in Ubuntu Raring and Fedora 19.
+
+2013-03-01  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	libtracker-miner: don't crash when first indexing files out of /home
+	If tracker_miner_manager_index_file() is called with a path outside of
+	the home directory, we'll end up recursing up to the file system root,
+	to create the parent directory objects.
+
+	When the tree we're passed is the filesystem root, and the file is
+	exactly equal to it, we should return the tree root immediately, or
+	we'll crash later in the while loop.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=694783
+
+2013-02-26  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Fixed vala bindings for TrackerMinerFS
+	It's subclasses Tracker.Miner and GLib.Initable like TrackerMinerWeb
+
+2013-02-26  Dominique Leuenberger  <dimstar@opensuse.org>
+
+	libtracker-data: Make sure we return TRUE/FALSE on success or not for fts init
+	Fixes GB#693889, E: tracker no-return-in-nonvoid-function tracker-data-manager.c:361
+
+2013-02-26  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Fixed "progress" signal introspection
+	The 'remaining_time' (last argument) was missing from the intrspection data
+	exported.
+
+	Fixes GB#694146, org.freedesktop.Tracker1.Miner.Progress() - wrong number of arguments
+	introspected
+
+2013-02-26  Matthias Clasen  <mclasen@redhat.com>
+
+	Avoid a double-free in the png extractor
+	The software member of the exif data was getting freed twice. So
+	whenever you deal with a png that has this field set to a non-NULL
+	value, you get a segfault.
+	https://bugzilla.gnome.org/show_bug.cgi?id=660965
+
+2013-02-24  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2013-02-19  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2013-02-18  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2013-02-18  Alexandre Franke  <alexandre.franke@gmail.com>
+
+	Update French translation
+
+2013-02-17  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2013-02-17  Enrico Nicoletto  <liverig@gmail.com>
+
+	Updated Brazilian Portuguese translation
+
+2013-02-16  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2013-02-15  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-search: Added snippets and color to this tool! :)
+	Added --disable-fts, --disable-color --disable-snippets too.
+
+	Now all results are shown with snippets and in color by default.
+
+	Release 0.15.2
+
+	Merge branch 'fts4-fixes'
+
+2013-02-14  Martyn Russell  <martyn@lanedo.com>
+
+	ontology: Add a comment that tracker:fulltextNoLimit is now deprecated
+	Could not mark this as deprecated because it's not a class
+
+	libtracker-fts: Fix unit test ontologies, removed tracker:fulltextNoLimit
+
+	functional-tests: Removed tracker:fulltextNoLimit
+
+	libtracker-data: Removed tracker:fulltextNoLimit
+
+	tracker-sparql: Fixed documentation, removed tracker:fulltextNoLimit
+
+	ontology: Remove use of tracker:fulltextNoLimit now it's deprecated
+
+2013-02-14  Carlos Garnacho  <carlos@lanedo.com>
+
+	tests: tweak FTS tests to cope with the word length changes
+	This has caused some tests to return more results than before,
+	so add these extra results to the expected output, as the tests
+	still prove their point.
+
+	fts: Remove min word length limit from configuration
+	It isn't used anymore, so remove the dangling setting.
+
+2013-02-11  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'fts4'
+
+2013-02-08  Carlos Garnacho  <carlos@lanedo.com>
+
+	Bump database version
+	This is needed after the fts4 changes
+
 2013-02-06  Martyn Russell  <martyn@lanedo.com>
 
-	Release 0.14.5
+	libtracker-miner: Fixed GNOME password provider using libsecret
+	- "user" --> "username" for the attributes lookup
+	- Was checking for SecretItem != NULL to error up the stack
+
+	Thanks to Stef Walter for the help here.
+
+2013-02-05  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-info: Fixed memory leak where urn wasn't freed.
+
+	tracker-info: Fixed memory leak when using prefixes for shorthand properties
+	e.g. nie:url instead of fully qualified URLs
+
+	tracker-sparql: Support fts:offsets(?urn) with shorthand properties
+	e.g. nie:title:0 nid3:contentType:24 nid3:contentType:43
+
+2013-02-04  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-data: Use g_hash_table_unref() not _destroy()
+
+	libtracker-data: Use a g_message() for cases where FTS is disabled
+
+2013-02-04  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-needle: display snippet where available
+
+	Handle FTS queries more generically
+	FTS functions and other SQL functions like COUNT() don't
+	mix well, so handle it more generically by joining with the
+	FTS table at the outmost level, so those functions are handled
+	separately.
+
+	Use fts4 external content tables on Tracker FTS
+	FTS support on Tracker is now implemented using external content
+	support available in sqlite >= 3.7.9 FTS4.
+
+	FTS tables created this way fetch data from a single table/view,
+	for this purpose an intermediate view has been created to
+	interface with the FTS table. As this view is mainly queried by
+	ID (both when populating the FTS contents, and when querying
+	throught the FTS table), queries are fast enough on it.
+
+	As FTS indirectly points to the data on the real tables where tracker
+	data is stored, strings themselves are stored only once in the database,
+	so there is no impact in database size when compared to the previous
+	custom FTS code. Performance had little changes too from testing.
+
+	Detect at configure time whether FTS needs compiling
+	Recent sqlites (>3.7.9) with FTS support compiled have all
+	what Tracker requires to handle FTS, so only compile it
+	optionally if no FTS support was detected in the sqlite library.
+
+	Update FTS code
+
+	libtracker-data: Fix FTS initialization
+	Use a define that actually exists around tracker_fts_init(), which
+	also checked for the inverted value.
+
+	libtracker-data: Fix fts detection when constructing SQL
+	It would previously miss the FTS binding, depending on the order
+	of the clauses. so something like { ?u fts:match 'foo'; a nie:DataObject }
+	would return results whereas { ?u a nie:DataObject ; fts:match 'foo' }
+	didn't.
+
+	libtracker-fts: Fix reentrancy issues in the TrackerTokenizer
+	The internal TrackerParser must be per-cursor, as several cursors
+	may be opened simultaneously.
+
+	libtracker-data: Implement fts:snippet()
+	this function takes up to 3 optional parameters after the
+	object, the first 2 parameters are the starting/ending text
+	for the match (defaults to <b></b>), and the third one
+	modifies the ellipsis text (defaults to <b>...</b>)
+
+	libtracker-data: Perform FTS matching in subquery
+	The outer query will call the functions that require a full row
+	scan only with the elements returned by the inner query, so
+	it would perform better with OFFSET and LIMIT
+
+	fts: Respect max-words configuration setting
+
+	libtracker-data: Gather FTS changes to perform a single insert/update per ID
+
+	libtracker-data: remove useless FTS functions
+	commit/rollback should happen now with the rest of the
+	operations, and update_init() isn't necessary anymore.
+
+	libtracker-data: Cope with ontology changes in the FTS table
+	If a new property is with tracker:fulltextIndexed, we need to add
+	a new column for it in the FTS table.
+
+	libtracker-fts: Add a way to modify FTS table columns
+	As ALTER TABLE on virtual tables is only able to do renamings,
+	resort to creating a temporary table, and dump the old values
+	into the new table, which is then renamed.
+
+	libtracker-fts: Add tracker_offsets() sqlite function
+	This function takes the offsets() output and the FTS property
+	names in order to produce the output as expected by Tracker.
+	the fts:offsets() sparql function has been adapted to use it
+	underneath
+
+	libtracker-fts: Add the tracker_rank() sqlite function
+	This is now used in FTS searches to provide the rank based on
+	the matched columns and their respective property weight.
+
+	libtracker-data: Create several columns for FTS data
+	there is now one column per ontology property with FTS enabled,
+	the column name is that of the property.
+
+	libtracker-data: Add tracker_db_interface_sqlite_fts_delete_text()
+	This function removes from the FTS table the text from a resourceid/propid
+	pair.
+
+	libtracker-fts: Implement tokenizer FTS module using TrackerParser
+
+	libtracker-fts: Update to FTS4
+	The code isn't yet feature complete, but cleans up the tracker
+	integration with the FTS module, which means that fts3* files
+	are taken verbatim from sqlite, and are licenced as such.
+
+2013-02-03  Jens Georg  <mail@jensge.org>
+
+	tracker-extract: Port to new gupnp-dlna 2.0 API
+	GUPnP-DLNA 0.9/0.10 changed a lot internally and thus does not deliver a
+	GstDiscovererInfo anymore but instead has a new API that allows guessing the
+	profile from an existing GstDiscovererInfo, so most of the additional logic
+	can be dropped.
+
+	Fixes GB#691847, tracker-extract: Port to new gupnp-dlna API
+
+2013-02-02  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-extract-playlist: Support nie:title for the playlist
 	Fixed GB#692409, New: playlist extractor should index playlist title if
 	available
 
+2013-02-01  Martyn Russell  <martyn@lanedo.com>
+
 	tracker-needle: Find documents (e.g. PDFs) when searching for creators/publishers
 	Fixes GB#692603, Search can not find pdf files using author names
 
-2013-02-06  Frank Lahm  <franklahm@gmail.com>
+2013-01-24  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.15.1
+
+	libtracker-miner: Fix libsecret password provider get call using non-NULL GError
+
+2013-01-24  Frank Lahm  <franklahm@gmail.com>
 
 	libtracker-common: Add replacement function for flock() on Solaris
 
-2013-02-06  Cosimo Cecchi  <cosimoc@gnome.org>
+2013-01-21  Cosimo Cecchi  <cosimoc@gnome.org>
 
 	miner-manager: plug some memleaks
 	https://bugzilla.gnome.org/show_bug.cgi?id=692210
 
-2013-02-06  Dominique Leuenberger  <dimstar@opensuse.org>
+2013-01-21  Dominique Leuenberger  <dimstar@opensuse.org>
 
 	build: Port to libgee 0.8 (was 1.0)
 	Fixes GB#691807.
 
-2013-02-06  Martyn Russell  <martyn@lanedo.com>
+	cue-sheet: port to GStreamer 1.0.
+	Fixes GB#691804
+
+2013-01-03  Stef Walter  <stefw@gnome.org>
+
+	libtracker-miner: Migrate from libgnome-keyring to libsecret
+	See: https://live.gnome.org/GnomeGoals/LibsecretMigration
+
+	Fixes GB#679870, libsecret migrations
+
+2013-01-03  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-extract-playlist: Added nfo:MediaList (to existing nmm:PlayList)
 	Based on a patch from Trever Fischer.
 
 	Fixes GB#690170, Add nfo:MediaList type to .m3u playlist files
 
+2012-12-26  Henrique P. Machado  <hpmachado@gnome.org>
+
+	Updated Brazilian Portuguese Translation
+
+2012-12-14  Martyn Russell  <martyn@lanedo.com>
+
 	tracker-miner-fs, store: Add MeeGo keys to desktop files
+
+2012-12-12  Javier Jardón  <jjardon@gnome.org>
+
+	configure.ac: Bump tracker api version to 0.16
+	Note: all new libraries will have -0.16* in their names.
+
+2012-12-03  Martyn Russell  <martyn@lanedo.com>
 
 	build: Fixes build error when supplying nautilis extensions directory
 
-2013-02-06  Antoine Jacoutot  <ajacoutot@gnome.org>
+2012-11-28  Martyn Russell  <martyn@lanedo.com>
+
+	examples: Update async query example
+
+2012-11-23  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.15.0
+	Unstable release
+
+2012-11-23  Jens Georg  <mail@jensge.org>
+
+	build: Build against GStreamer 1.0-enabled gupnp-dlna
+	https://bugzilla.gnome.org/show_bug.cgi?id=688802
+
+2012-11-16  Antoine Jacoutot  <ajacoutot@gnome.org>
 
 	tracker-monitor: add support for GKqueueDirectoryMonitor
 	kqueue(2) support for BSD systems was recently introduced in GLib. Make
@@ -42,7 +437,11 @@
 
 	https://bugzilla.gnome.org/show_bug.cgi?id=688371
 
-2013-02-06  Cosimo Cecchi  <cosimoc@gnome.org>
+2012-11-15  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2012-11-15  Cosimo Cecchi  <cosimoc@gnome.org>
 
 	build: don't build-depend on Dia
 	Currently, the gtk-doc generator code in Tracker has a build dependency
@@ -56,15 +455,7 @@
 
 	Fixes GB#688287
 
-2012-12-26  Henrique P. Machado  <hpmachado@gnome.org>
-
-	Updated Brazilian Portuguese Translation
-
-2012-11-23  Marek Černocký  <marek@manet.cz>
-
-	Updated Czech translation
-
-2012-11-23  Christian Kirbach  <Christian.Kirbach@googlemail.com>
+2012-11-12  Christian Kirbach  <Christian.Kirbach@googlemail.com>
 
 	Update German translation
 
@@ -72,11 +463,7 @@
 
 	Fix XPS configure help string
 
-2012-11-01  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.14.4
-
-2012-11-01  Cosimo Cecchi  <cosimoc@gnome.org>
+2012-10-31  Cosimo Cecchi  <cosimoc@gnome.org>
 
 	tracker-extract: add a simple extractor for XPS
 	Fixes GB#687160
@@ -91,9 +478,11 @@
 	libtracker-extract: Fixed g_data_input_stream_read_upto() return value mem leak
 	Fixes GB#687134
 
+2012-10-30  Martyn Russell  <martyn@lanedo.com>
+
 	tracker-extract-pdf: Avoid leaving Zombie processes around
 
-2012-10-31  Мирослав Николић  <miroslavnikolic@rocketmail.com>
+2012-10-27  Мирослав Николић  <miroslavnikolic@rocketmail.com>
 
 	Updated Serbian translation
 
@@ -101,9 +490,15 @@
 
 	Updated Polish translation
 
-2012-10-24  Martyn Russell  <martyn@lanedo.com>
+2012-10-24  Dominique Leuenberger  <dimstar@opensuse.org>
 
-	Release 0.14.3
+	tracker-miner-rss: Support and require libgrss-0.5
+	Fixes GB#671751
+
+2012-10-24  Javier Jardón  <jjardon@gnome.org>
+
+	tracker-extract-gstreamer: Port discoverer backend to GStreamer 1.0
+	Fixes GB#680424
 
 2012-10-24  Julien Cristau  <jcristau@debian.org>
 
@@ -114,27 +509,27 @@
 
 	build: Add SQLite3 version check and warning for crashes with complex queries
 
-2012-10-24  Fran Diéguez  <fran.dieguez@mabishu.com>
+2012-10-20  Fran Diéguez  <fran.dieguez@mabishu.com>
 
 	Updated Galician translations
 
-2012-10-24  Aurimas Černius  <aurisc4@gmail.com>
+2012-10-19  Aurimas Černius  <aurisc4@gmail.com>
 
 	Updated Lithuanian translation
 
-2012-10-24  Matej Urbančič  <mateju@svn.gnome.org>
+2012-10-18  Matej Urbančič  <mateju@svn.gnome.org>
 
 	Updated Slovenian translation
 
-2012-10-24  Andika Triwidada  <andika@gmail.com>
+2012-10-17  Andika Triwidada  <andika@gmail.com>
 
 	Updated Indonesian translation
 
-2012-10-24  Daniel Mustieles  <daniel.mustieles@gmail.com>
+2012-10-17  Daniel Mustieles  <daniel.mustieles@gmail.com>
 
 	Updated Spanish translation
 
-2012-10-24  Martyn Russell  <martyn@lanedo.com>
+2012-10-17  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-needle: Update tooltip for category searching to mention FTS
 	Basically, it's not clear that this approach searches the content of files
@@ -149,22 +544,24 @@
 	tracker-info: Added --plain-text-content || -c option
 	To show nie:plainTextContent for resources. By default this is disabled.
 
+2012-10-11  Martyn Russell  <martyn@lanedo.com>
+
 	tracker-extract-playlist: Don't error when to_metadata hash table is NULL
 
 	tracker-extract-playlist: Log message for ignoring playlists with > 1k entries
 
-2012-10-24  Aleksander Morgado  <aleksander@lanedo.com>
+2012-10-09  Aleksander Morgado  <aleksander@lanedo.com>
 
 	build: test files should always be included in dist
 
 	build: include missing tiff files in dist
 
-2012-10-24  Colin Walters  <walters@verbum.org>
+2012-09-28  Colin Walters  <walters@verbum.org>
 
 	build: Note we don't support srcdir != builddir
 	This is presently due to the vapigen tool.
 
-2012-10-24  Martyn Russell  <martyn@lanedo.com>
+2012-09-20  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-extract: Fixed EXIF extractor due to changes by libexif
 	Seems libexif now appends " (Photographer) - [None] (Editor)", previously it
@@ -178,25 +575,35 @@
 
 	Fixes GB#628857
 
-2012-10-24  Chris Leonard  <cjl@laptop.org>
+2012-09-14  Chris Leonard  <cjl@laptop.org>
 
 	Updated British English translation
 
-2012-10-24  Marek Černocký  <marek@manet.cz>
+2012-09-10  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'pdf-timeout-fix'
+
+2012-09-06  Marek Černocký  <marek@manet.cz>
 
 	Updated Czech translation
 
-2012-10-24  Aurimas Černius  <aurisc4@gmail.com>
+2012-09-04  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2012-08-25  Aurimas Černius  <aurisc4@gmail.com>
 
 	Updated Lithuanian translation
 
-2012-10-24  Kjartan Maraas  <kmaraas@gnome.org>
+2012-08-23  Kjartan Maraas  <kmaraas@gnome.org>
 
 	Updated Norwegian bokmål translation
 
+2012-08-22  Kjartan Maraas  <kmaraas@gnome.org>
+
 	Updated Norwegian bokmål translation
 
-2012-10-24  Martyn Russell  <martyn@lanedo.com>
+2012-08-16  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-extract-pdf: Fix timeout situation with PDF extraction
 	The 10 second timeout was always being used for every PDF extraction because
@@ -209,7 +616,7 @@
 
 	This fixes GB#680897
 
-2012-10-24  Jürg Billeter  <j@bitron.ch>
+2012-08-14  Jürg Billeter  <j@bitron.ch>
 
 	tests: Remove unneeded parameter guard
 
@@ -219,12 +626,12 @@
 
 	libtracker-common: Consistently use long in get_memory_total
 
-2012-10-24  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+2012-07-31  Sam Thursfield  <sam.thursfield@codethink.co.uk>
 
 	tracker-extract-pdf: Fix crash if mmap() fails
 	Patch from Fedora: https://bugzilla.redhat.com/show_bug.cgi?id=751922
 
-2012-10-24  Jürg Billeter  <j@bitron.ch>
+2012-07-23  Jürg Billeter  <j@bitron.ch>
 
 	tracker-miner-fs: Ignore XDG directories set to $HOME
 	This prevents accidental recursive indexing of $HOME.
@@ -234,7 +641,7 @@
 	tracker-needle: Fix double free
 	Fixes GB#680350.
 
-2012-10-24  Alexandre Rostovtsev  <tetromino@gentoo.org>
+2012-07-21  Alexandre Rostovtsev  <tetromino@gentoo.org>
 
 	libtracker-fts: ICU cannot handle complex locale descriptions
 	ubrk_open expects the name of just a single locale (e.g. "en_US.UTF-8"),
@@ -246,17 +653,13 @@
 
 	Fixes GB#675660.
 
-2012-10-24  Fran Diéguez  <fran.dieguez@mabishu.com>
+2012-07-09  Fran Diéguez  <fran.dieguez@mabishu.com>
 
 	Updated Galician translations
 
-2012-10-24  Dimitris Spingos  <dmtrs32@gmail.com>
+2012-07-08  Dimitris Spingos  <dmtrs32@gmail.com>
 
 	Updated Greek translation
-
-2012-09-04  Piotr Drąg  <piotrdrag@gmail.com>
-
-	Updated Polish translation
 
 2012-07-05  Piotr Drąg  <piotrdrag@gmail.com>
 
@@ -264,7 +667,9 @@
 
 2012-07-05  Martyn Russell  <martyn@lanedo.com>
 
-	Release 0.14.2
+	Merge branch 'miner-fs-no-infinite-loops'
+
+2012-07-03  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-search: Fix man page so EXPRESSION is not directly linked to options
 	Fixes GB#679313
@@ -273,7 +678,7 @@
 
 	libtracker-miner: Don't conditionally unref blocker file if queue was set up
 
-2012-07-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+2012-07-03  Sam Thursfield  <sam.thursfield@codethink.co.uk>
 
 	libtracker-miner: Avoid stalling when blocking file is dropped due to errors
 
@@ -308,13 +713,15 @@
 	until sparql_buffer_task_finished_cb() has been called for the file
 	in question.
 
-2012-07-05  Andika Triwidada  <andika@gmail.com>
+2012-07-03  Andika Triwidada  <andika@gmail.com>
 
 	Updated Indonesian translation
 
+2012-07-01  Andika Triwidada  <andika@gmail.com>
+
 	Updated Indonesian translation
 
-2012-07-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+2012-06-27  Sam Thursfield  <sam.thursfield@codethink.co.uk>
 
 	miners/fs: Correctly remove failed extractions from queue
 	Correctly remove task from extraction queue if g_file_query_info_async()
@@ -324,128 +731,19 @@
 	in turn means that the miner may eventually stall due to the extraction
 	queue being full.
 
+2012-06-22  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
 	tracker-extract-gstreamer: Fix invalid pointer access
 	gst_tag_list_get_string() does not initialise the output pointer to
 	NULL if there is no value for that tag. In some cases, neither do we
 	which leads to invalid string pointers and the occasional segfault
 	when processing files with no tags.
 
+2012-06-18  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
 	functional-tests: Fix out-of-tree build
 
-2012-07-05  Matej Urbančič  <mateju@svn.gnome.org>
-
-	Updated Slovenian translation
-
-2012-07-05  Andika Triwidada  <andika@gmail.com>
-
-	Updated Indonesian translation
-
-2012-07-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
-
-	miners/fs: Remove unused property in Files miner
-	quark_directory_config_root was introduced here:
-
-	  daf0c383b5daf19cd4a27b5669cfd6db7f768b6f
-
-	but is no longer used anywhere.
-
-2012-07-05  Daniel Mustieles  <daniel.mustieles@gmail.com>
-
-	Updated Spanish translation
-
-2012-07-05  Alexandre Franke  <alexandre.franke@gmail.com>
-
-	Update French translation
-
-	Change wording to remove ambiguity and ease translation
-
-2012-07-05  Praveen Illa  <mail2ipn@gmail.com>
-
-	Added Telugu Translation
-
-	Updated Telugu Translation
-
-2012-07-05  Luca Ferretti  <lferrett@gnome.org>
-
-	l10n:Updated Italian translation
-
-2012-07-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
-
-	libtracker-miner: Keep GTimer objects around forever
-	Logic to create and destroy on demand was slightly broken, and for the
-	extra complexity we were only saving 48 bytes of memory.
-
-	Fixes GB#676437.
-
-2012-07-05  Martyn Russell  <martyn@lanedo.com>
-
-	nautilus: Fix build warnings
-
-	nautilus: Don't use g_print() use g_{debug|message}() to avoid xsession logging
-	Fixed GB#676516.
-
-2012-07-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
-
-	tracker-extract: 'initialized' flag was not being initialized
-
-2012-07-05  William Jon McCann  <jmccann@redhat.com>
-
-	Don't install an item to the nautilus context menu
-	https://bugzilla.gnome.org/show_bug.cgi?id=676514
-
-2012-07-05  Ville Skyttä  <ville.skytta@iki.fi>
-
-	tracker-sparql, tracker-store: Man page syntax fixes
-	Fixed GB#676213.
-
-2012-07-05  Christian Kirbach  <Christian.Kirbach@googlemail.com>
-
-	Updated German translation
-
-2012-07-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
-
-	libtracker-miner: Fix crash when USB removed during crawl
-	In tracker-file-notifier.c:indexing_tree_directory_removed() we don't
-	remove the directory from priv->pending_index_roots, unless it's the
-	current indexing root.
-
-	If it's a USB mountpoint, the GFile gets freed before we get around to
-	crawling it, so all hell breaks loose.
-
-	Fixes GB#676153.
-
-2012-07-05  Fran Diéguez  <fran.dieguez@mabishu.com>
-
-	Updated Galician translations
-
-	Updated Galician translations
-
-2012-07-05  Matej Urbančič  <mateju@svn.gnome.org>
-
-	Updated Slovenian translation
-
-2012-07-05  Marek Černocký  <marek@manet.cz>
-
-	Updated Czech translation
-
-	Updated Czech translation
-
-2012-07-05  Martyn Russell  <martyn@lanedo.com>
-
-	tracker-preferences: Sort the list contents for ignored patterns
-	Fixes GB#675431.
-
-2012-07-05  Antoine Jacoutot  <ajacoutot@gnome.org>
-
-	evolution plugin: include missing header
-	To prevent liborg-freedesktop-Tracker-evolution-plugin.so:
-	undefined symbol 'E_MAIL_BACKEND'
-	liborg-freedesktop-Tracker-evolution-plugin.so':
-	Cannot load specified object
-
-	https://bugzilla.gnome.org/show_bug.cgi?id=675437
-
-2012-07-05  Matej Urbančič  <mateju@svn.gnome.org>
+2012-06-16  Matej Urbančič  <mateju@svn.gnome.org>
 
 	Updated Slovenian translation
 
@@ -462,6 +760,29 @@
 
 	Fixes GB#676849
 
+2012-06-15  Andika Triwidada  <andika@gmail.com>
+
+	Updated Indonesian translation
+
+2012-06-14  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	miners/fs: Remove unused property in Files miner
+	quark_directory_config_root was introduced here:
+
+	  daf0c383b5daf19cd4a27b5669cfd6db7f768b6f
+
+	but is no longer used anywhere.
+
+2012-06-13  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2012-06-13  Alexandre Franke  <alexandre.franke@gmail.com>
+
+	Update French translation
+
+	Change wording to remove ambiguity and ease translation
+
 2012-06-11  Sam Thursfield  <sam.thursfield@codethink.co.uk>
 
 	libtracker-extract: Fix GCancellable deadlock
@@ -474,17 +795,103 @@
 
 	Fixes GB#676433.
 
+2012-06-05  Praveen Illa  <mail2ipn@gmail.com>
+
+	Added Telugu Translation
+
+	Updated Telugu Translation
+
+2012-06-02  Luca Ferretti  <lferrett@gnome.org>
+
+	l10n:Updated Italian translation
+
+2012-05-29  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	libtracker-miner: Keep GTimer objects around forever
+	Logic to create and destroy on demand was slightly broken, and for the
+	extra complexity we were only saving 48 bytes of memory.
+
+	Fixes GB#676437.
+
+2012-05-22  Martyn Russell  <martyn@lanedo.com>
+
+	nautilus: Fix build warnings
+
+	nautilus: Don't use g_print() use g_{debug|message}() to avoid xsession logging
+	Fixed GB#676516.
+
+2012-05-22  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	tracker-extract: 'initialized' flag was not being initialized
+
+2012-05-21  William Jon McCann  <jmccann@redhat.com>
+
+	Don't install an item to the nautilus context menu
+	https://bugzilla.gnome.org/show_bug.cgi?id=676514
+
+2012-05-21  Ville Skyttä  <ville.skytta@iki.fi>
+
+	tracker-sparql, tracker-store: Man page syntax fixes
+	Fixed GB#676213.
+
+2012-05-20  Christian Kirbach  <Christian.Kirbach@googlemail.com>
+
+	Updated German translation
+
+2012-05-17  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	libtracker-miner: Fix crash when USB removed during crawl
+	In tracker-file-notifier.c:indexing_tree_directory_removed() we don't
+	remove the directory from priv->pending_index_roots, unless it's the
+	current indexing root.
+
+	If it's a USB mountpoint, the GFile gets freed before we get around to
+	crawling it, so all hell breaks loose.
+
+	Fixes GB#676153.
+
 2012-05-11  Sam Thursfield  <sam.thursfield@codethink.co.uk>
 
 	tracker-extract: Fix compile of Qt media art backend
 
+2012-05-11  Fran Diéguez  <fran.dieguez@mabishu.com>
+
+	Updated Galician translations
+
+	Updated Galician translations
+
+2012-05-10  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2012-05-06  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+	Updated Czech translation
+
+2012-05-04  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-preferences: Sort the list contents for ignored patterns
+	Fixes GB#675431.
+
+2012-05-04  Antoine Jacoutot  <ajacoutot@gnome.org>
+
+	evolution plugin: include missing header
+	To prevent liborg-freedesktop-Tracker-evolution-plugin.so:
+	undefined symbol 'E_MAIL_BACKEND'
+	liborg-freedesktop-Tracker-evolution-plugin.so':
+	Cannot load specified object
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=675437
+
+2012-05-04  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
 2012-05-03  Piotr Drąg  <piotrdrag@gmail.com>
 
 	Updated Polish translation
-
-2012-05-03  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.14.1
 
 2012-05-03  Karl Relton  <karllinuxtest.relton@ntlworld.com>
 
@@ -492,15 +899,17 @@
 
 	tracker-extract: Support Libreoffice graphic/drawing files (*.odg)
 
-2012-05-03  Daniel Mustieles  <daniel.mustieles@gmail.com>
+2012-05-01  Daniel Mustieles  <daniel.mustieles@gmail.com>
 
 	Updated Spanish translation
 
-2012-05-03  Martyn Russell  <martyn@lanedo.com>
+2012-05-01  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-{common|sparql}: Set G_MESSAGES_DEBUG when verbosity > 2
 	Since glib 2.32, debug statements are not shown without this environment
 	variable being set.
+
+2012-04-30  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-extract: Added 'max-media-art-width' config option
 	Allows all media/album art to be disabled with a setting of -1 or resized to a
@@ -511,34 +920,52 @@
 	libtracker-miner: Don't abort() if none file:// URI themes are used
 	Was occuring with sftp:// mounts pulled in from GVFS.
 
-2012-05-03  Daniel Mustieles  <daniel.mustieles@gmail.com>
+2012-04-25  Daniel Mustieles  <daniel.mustieles@gmail.com>
 
 	Updated Spanish translation
 
-2012-05-03  Alexandre Franke  <alexandre.franke@gmail.com>
+2012-04-24  Alexandre Franke  <alexandre.franke@gmail.com>
 
 	Fix typo (missing 'not')
 
-2012-05-03  Jürg Billeter  <j@bitron.ch>
+2012-04-19  Jürg Billeter  <j@bitron.ch>
 
 	build: Remove obsolete check for dbus-binding-tool
+
+2012-04-18  Jürg Billeter  <j@bitron.ch>
 
 	tracker-miner-fs: Do not index non-eligible mount points on startup
 
 	tracker-miner-fs: Add tracker_miner_files_is_file_eligible
 	Logic moved from tracker-miner-files-index.c, no change in behavior.
 
-2012-05-03  Yinghua Wang  <wantinghard@gmail.com>
+2012-04-16  Yinghua Wang  <wantinghard@gmail.com>
 
 	update Simplified Chinese (zh_CN) translation
 
-2012-05-03  Martyn Russell  <martyn@lanedo.com>
+2012-04-09  Timo Jyrinki  <timo.jyrinki@iki.fi>
+
+	Updated Finnish translation by Jiri Grönroos.
+
+2012-04-03  Martyn Russell  <martyn@lanedo.com>
+
+	Revert "ontology: Added classes nmm:TVSeries and nmm:TVShow"
+	This reverts commit 7923c47e977cc40602c049fdc205efe37e711506.
+
+	Mistakenly committed this patch
 
 	libtracker-miner: Don't crash in _file_system_get_file() if node non-NULL
 	This occurred where parent_node was unset because of strange URI themes, e.g.
 	sftp://.
 
 	Fixes GB#672308.
+
+	ontology: Added classes nmm:TVSeries and nmm:TVShow
+	Inline with improvements upstream here:
+
+	  http://oscaf.sourceforge.net/nmm.html#nmm:TVSeries
+
+2012-04-02  Martyn Russell  <martyn@lanedo.com>
 
 	evolution: Fixed includes ... yet again
 	So I have this time put each include in separate sections. The logic was
@@ -556,20 +983,20 @@
 
 	Fixes GB#672415
 
-2012-05-03  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+2012-03-30  Sam Thursfield  <sam.thursfield@codethink.co.uk>
 
 	utils: Add tracker-sandbox to EXTRA_DIST
 	Also, fix whitespace errors.
 
-2012-05-03  Daniel Mustieles  <daniel.mustieles@gmail.com>
+2012-03-29  Daniel Mustieles  <daniel.mustieles@gmail.com>
 
 	Updated Spanish translation
 
-2012-05-03  Jiro Matsuzawa  <jmatsuzawa@src.gnome.org>
+2012-03-22  Jiro Matsuzawa  <jmatsuzawa@src.gnome.org>
 
 	[l10n] Update Japanese translation
 
-2012-05-03  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+2012-03-19  Sam Thursfield  <sam.thursfield@codethink.co.uk>
 
 	utils: Add tracker-sandbox
 	This script assists in running development versions of Tracker in
@@ -579,15 +1006,13 @@
 
 	tests: Fix build with GLib 2.28
 
-	autogen.sh: Error gracefully when valac is not installed
-
-2012-04-09  Timo Jyrinki  <timo.jyrinki@iki.fi>
-
-	Updated Finnish translation by Jiri Grönroos.
-
 2012-03-08  Piotr Drąg  <piotrdrag@gmail.com>
 
 	Updated Polish translation
+
+2012-03-08  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	autogen.sh: Error gracefully when valac is not installed
 
 2012-03-08  Martyn Russell  <martyn@lanedo.com>
 

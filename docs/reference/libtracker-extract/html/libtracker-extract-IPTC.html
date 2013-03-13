@@ -8,7 +8,7 @@
 <link rel="up" href="ch03.html" title="Common Embedded Support API">
 <link rel="prev" href="libtracker-extract-XMP.html" title="XMP">
 <link rel="next" href="libtracker-extract-Exif.html" title="Exif">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -46,13 +46,13 @@ Stable, unless otherwise indicated
 #include &lt;libtracker-extract/tracker-extract.h&gt;
 
                     <a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData">TrackerIptcData</a>;
-<a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData"><span class="returnvalue">TrackerIptcData</span></a> *   <a class="link" href="libtracker-extract-IPTC.html#tracker-iptc-new" title="tracker_iptc_new ()">tracker_iptc_new</a>                    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buffer</code></em>,
+<a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData"><span class="returnvalue">TrackerIptcData</span></a> *   <a class="link" href="libtracker-extract-IPTC.html#tracker-iptc-new" title="tracker_iptc_new ()">tracker_iptc_new</a>                    (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">gsize</span> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);
+                                                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-extract-IPTC.html#tracker-iptc-free" title="tracker_iptc_free ()">tracker_iptc_free</a>                   (<em class="parameter"><code><a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData"><span class="type">TrackerIptcData</span></a> *data</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-IPTC.html#tracker-iptc-read" title="tracker_iptc_read ()">tracker_iptc_read</a>                   (<em class="parameter"><code>const unsigned <span class="type">char</span> *buffer</code></em>,
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-IPTC.html#tracker-iptc-read" title="tracker_iptc_read ()">tracker_iptc_read</a>                   (<em class="parameter"><code>const unsigned <span class="type">char</span> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData"><span class="type">TrackerIptcData</span></a> *data</code></em>);
 </pre>
 </div>
@@ -120,51 +120,51 @@ Structure defining IPTC data.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.keywords"></a>keywords</code></em>;</span></p></td>
+<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.keywords"></a>keywords</code></em>;</span></p></td>
 <td>Keywords.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.date-created"></a>date_created</code></em>;</span></p></td>
+<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.date-created"></a>date_created</code></em>;</span></p></td>
 <td>Date created.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.byline"></a>byline</code></em>;</span></p></td>
+<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.byline"></a>byline</code></em>;</span></p></td>
 <td>Byline.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.credit"></a>credit</code></em>;</span></p></td>
+<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.credit"></a>credit</code></em>;</span></p></td>
 <td>Credits.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.copyright-notice"></a>copyright_notice</code></em>;</span></p></td>
+<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.copyright-notice"></a>copyright_notice</code></em>;</span></p></td>
 <td>Copyright.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.image-orientation"></a>image_orientation</code></em>;</span></p></td>
+<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.image-orientation"></a>image_orientation</code></em>;</span></p></td>
 <td>Image orientation.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.byline-title"></a>byline_title</code></em>;</span></p></td>
+<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.byline-title"></a>byline_title</code></em>;</span></p></td>
 <td>Byline title.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.city"></a>city</code></em>;</span></p></td>
+<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.city"></a>city</code></em>;</span></p></td>
 <td>City.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.state"></a>state</code></em>;</span></p></td>
+<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.state"></a>state</code></em>;</span></p></td>
 <td>State.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.sublocation"></a>sublocation</code></em>;</span></p></td>
+<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.sublocation"></a>sublocation</code></em>;</span></p></td>
 <td>Sublocation.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.country-name"></a>country_name</code></em>;</span></p></td>
+<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.country-name"></a>country_name</code></em>;</span></p></td>
 <td>Country.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.contact"></a>contact</code></em>;</span></p></td>
+<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerIptcData.contact"></a>contact</code></em>;</span></p></td>
 <td>Contact info.</td>
 </tr>
 </tbody>
@@ -173,9 +173,9 @@ Structure defining IPTC data.
 <hr>
 <div class="refsect2">
 <a name="tracker-iptc-new"></a><h3>tracker_iptc_new ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData"><span class="returnvalue">TrackerIptcData</span></a> *   tracker_iptc_new                    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buffer</code></em>,
+<pre class="programlisting"><a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData"><span class="returnvalue">TrackerIptcData</span></a> *   tracker_iptc_new                    (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">gsize</span> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);</pre>
 <p>
 This function takes <em class="parameter"><code>len</code></em> bytes of <em class="parameter"><code>buffer</code></em> and runs it through the
 IPTC library.
@@ -198,7 +198,7 @@ IPTC library.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a newly allocated <a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData"><span class="type">TrackerIptcData</span></a> struct if IPTC data was
-found, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> otherwise. Free the returned struct with
+found, <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> otherwise. Free the returned struct with
 <a class="link" href="libtracker-extract-IPTC.html#tracker-iptc-free" title="tracker_iptc_free ()"><code class="function">tracker_iptc_free()</code></a>.</td>
 </tr>
 </tbody>
@@ -210,7 +210,7 @@ found, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macro
 <a name="tracker-iptc-free"></a><h3>tracker_iptc_free ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_iptc_free                   (<em class="parameter"><code><a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData"><span class="type">TrackerIptcData</span></a> *data</code></em>);</pre>
 <p>
-Frees <em class="parameter"><code>data</code></em> and all <a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData"><span class="type">TrackerIptcData</span></a> members. <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> will produce a
+Frees <em class="parameter"><code>data</code></em> and all <a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData"><span class="type">TrackerIptcData</span></a> members. <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> will produce a
 a warning.
 </p>
 <div class="variablelist"><table border="0">
@@ -226,9 +226,9 @@ a warning.
 <hr>
 <div class="refsect2">
 <a name="tracker-iptc-read"></a><h3>tracker_iptc_read ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_iptc_read                   (<em class="parameter"><code>const unsigned <span class="type">char</span> *buffer</code></em>,
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_iptc_read                   (<em class="parameter"><code>const unsigned <span class="type">char</span> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData"><span class="type">TrackerIptcData</span></a> *data</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -261,8 +261,8 @@ data found in <em class="parameter"><code>uri</code></em>.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>data</code></em> was populated successfully, otherwise
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> is returned.</td>
+<a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>data</code></em> was populated successfully, otherwise
+<a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> is returned.</td>
 </tr>
 </tbody>
 </table></div>
@@ -272,6 +272,6 @@ data found in <em class="parameter"><code>uri</code></em>.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

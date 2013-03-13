@@ -1,4 +1,4 @@
-tracker (0.15.4-1) UNRELEASED; urgency=low
+tracker (0.15.4-1) experimental; urgency=low
 
   * New upstream development release.
   * Track unstable releases for now.
@@ -11,7 +11,7 @@ tracker (0.15.4-1) UNRELEASED; urgency=low
   * List missing files on dh_install.
   * Update configure flags for the gnome-keyring to libsecret change.
 
- -- Michael Biebl <biebl@debian.org>  Wed, 13 Mar 2013 22:50:47 +0100
+ -- Michael Biebl <biebl@debian.org>  Thu, 14 Mar 2013 00:26:02 +0100
 
 tracker (0.14.5-1) experimental; urgency=low
 

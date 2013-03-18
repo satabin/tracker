@@ -148,17 +148,17 @@ static void tracker_direct_connection_finalize (GObject* obj);
 TrackerDirectConnection* tracker_direct_connection_construct (GType object_type, GError** error) {
 	TrackerDirectConnection * self = NULL;
 	GError * _inner_error_ = NULL;
-#line 24 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 24 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	self = (TrackerDirectConnection*) tracker_sparql_connection_construct (object_type);
-#line 25 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 25 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	tracker_db_manager_lock ();
 #line 156 "tracker-direct.c"
 	{
 		gint _tmp0_;
 		gint _tmp7_;
-#line 28 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 28 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp0_ = tracker_direct_connection_use_count;
-#line 28 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 28 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (_tmp0_ == 0) {
 #line 164 "tracker-direct.c"
 			guint select_cache_size;
@@ -167,49 +167,49 @@ TrackerDirectConnection* tracker_direct_connection_construct (GType object_type,
 			gchar* env_cache_size;
 			const gchar* _tmp3_;
 			guint _tmp6_;
-#line 29 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 29 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			select_cache_size = (guint) 100;
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 30 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			_tmp1_ = g_getenv ("TRACKER_SPARQL_CACHE_SIZE");
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 30 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			_tmp2_ = g_strdup (_tmp1_);
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 30 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			env_cache_size = _tmp2_;
-#line 32 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 32 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			_tmp3_ = env_cache_size;
-#line 32 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 32 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (_tmp3_ != NULL) {
 #line 183 "tracker-direct.c"
 				const gchar* _tmp4_;
 				gint _tmp5_ = 0;
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 33 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				_tmp4_ = env_cache_size;
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 33 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				_tmp5_ = atoi (_tmp4_);
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 33 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				select_cache_size = (guint) _tmp5_;
 #line 192 "tracker-direct.c"
 			}
-#line 36 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 36 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			_tmp6_ = select_cache_size;
-#line 36 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 36 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			tracker_data_manager_init (TRACKER_DB_MANAGER_READONLY, NULL, NULL, FALSE, FALSE, _tmp6_, (guint) 0, NULL, NULL, NULL, &_inner_error_);
-#line 36 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 36 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (_inner_error_ != NULL) {
-#line 36 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 36 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				_g_free0 (env_cache_size);
 #line 202 "tracker-direct.c"
 				goto __catch1_g_error;
 			}
-#line 28 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 28 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			_g_free0 (env_cache_size);
 #line 207 "tracker-direct.c"
 		}
-#line 39 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 39 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp7_ = tracker_direct_connection_use_count;
-#line 39 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 39 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		tracker_direct_connection_use_count = _tmp7_ + 1;
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 40 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		self->priv->initialized = TRUE;
 #line 215 "tracker-direct.c"
 	}
@@ -220,58 +220,58 @@ TrackerDirectConnection* tracker_direct_connection_construct (GType object_type,
 		GError* _tmp8_;
 		const gchar* _tmp9_;
 		GError* _tmp10_;
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 27 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		e = _inner_error_;
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 27 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = NULL;
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 42 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp8_ = e;
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 42 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp9_ = _tmp8_->message;
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 42 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp10_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _tmp9_);
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 42 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = _tmp10_;
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 42 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (e);
 #line 238 "tracker-direct.c"
 		goto __finally1;
 	}
 	__finally1:
 	{
-#line 44 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 44 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		tracker_db_manager_unlock ();
 #line 245 "tracker-direct.c"
 	}
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 27 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (_inner_error_ != NULL) {
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 27 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 27 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_propagate_error (error, _inner_error_);
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 27 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			_g_object_unref0 (self);
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 27 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			return NULL;
 #line 257 "tracker-direct.c"
 		} else {
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 27 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 27 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_clear_error (&_inner_error_);
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 27 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			return NULL;
 #line 265 "tracker-direct.c"
 		}
 	}
-#line 24 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 24 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	return self;
 #line 270 "tracker-direct.c"
 }
 
 
 TrackerDirectConnection* tracker_direct_connection_new (GError** error) {
-#line 24 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 24 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	return tracker_direct_connection_construct (TRACKER_DIRECT_TYPE_CONNECTION, error);
 #line 277 "tracker-direct.c"
 }
@@ -280,9 +280,9 @@ TrackerDirectConnection* tracker_direct_connection_new (GError** error) {
 static TrackerSparqlCursor* tracker_direct_connection_query_unlocked (TrackerDirectConnection* self, const gchar* sparql, GCancellable* cancellable, GError** error) {
 	TrackerSparqlCursor* result = NULL;
 	GError * _inner_error_ = NULL;
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 68 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 68 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_return_val_if_fail (sparql != NULL, NULL);
 #line 288 "tracker-direct.c"
 	{
@@ -293,43 +293,43 @@ static TrackerSparqlCursor* tracker_direct_connection_query_unlocked (TrackerDir
 		TrackerDBCursor* _tmp3_ = NULL;
 		TrackerDBCursor* cursor;
 		TrackerDBCursor* _tmp4_;
-#line 70 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp0_ = sparql;
-#line 70 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp1_ = tracker_sparql_query_new (_tmp0_);
-#line 70 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		query_object = _tmp1_;
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 71 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp2_ = query_object;
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 71 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp3_ = tracker_sparql_query_execute_cursor (_tmp2_, TRUE, &_inner_error_);
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 71 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		cursor = _tmp3_;
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 71 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (_inner_error_ != NULL) {
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 71 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			_g_object_unref0 (query_object);
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 71 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
 #line 315 "tracker-direct.c"
 				goto __catch2_tracker_db_interface_error;
 			}
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 71 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (_inner_error_->domain == TRACKER_DATE_ERROR) {
 #line 320 "tracker-direct.c"
 				goto __catch2_tracker_date_error;
 			}
 			goto __finally2;
 		}
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 72 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp4_ = cursor;
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 72 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		tracker_sparql_cursor_set_connection ((TrackerSparqlCursor*) _tmp4_, (TrackerSparqlConnection*) self);
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		result = (TrackerSparqlCursor*) cursor;
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_object_unref0 (query_object);
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		return result;
 #line 335 "tracker-direct.c"
 	}
@@ -340,19 +340,19 @@ static TrackerSparqlCursor* tracker_direct_connection_query_unlocked (TrackerDir
 		GError* _tmp5_;
 		const gchar* _tmp6_;
 		GError* _tmp7_;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 69 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		e = _inner_error_;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 69 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = NULL;
-#line 75 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 75 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp5_ = e;
-#line 75 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 75 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp6_ = _tmp5_->message;
-#line 75 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 75 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp7_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _tmp6_);
-#line 75 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 75 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = _tmp7_;
-#line 75 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 75 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (e);
 #line 358 "tracker-direct.c"
 		goto __finally2;
@@ -364,37 +364,37 @@ static TrackerSparqlCursor* tracker_direct_connection_query_unlocked (TrackerDir
 		GError* _tmp8_;
 		const gchar* _tmp9_;
 		GError* _tmp10_;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 69 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		e = _inner_error_;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 69 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = NULL;
-#line 77 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 77 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp8_ = e;
-#line 77 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 77 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp9_ = _tmp8_->message;
-#line 77 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 77 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp10_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, _tmp9_);
-#line 77 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 77 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = _tmp10_;
-#line 77 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 77 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (e);
 #line 382 "tracker-direct.c"
 		goto __finally2;
 	}
 	__finally2:
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 69 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 69 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_propagate_error (error, _inner_error_);
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 69 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		return NULL;
 #line 392 "tracker-direct.c"
 	} else {
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 69 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 69 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_clear_error (&_inner_error_);
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 69 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		return NULL;
 #line 400 "tracker-direct.c"
 	}
@@ -405,11 +405,11 @@ static TrackerSparqlCursor* tracker_direct_connection_real_query (TrackerSparqlC
 	TrackerDirectConnection * self;
 	TrackerSparqlCursor* result = NULL;
 	GError * _inner_error_ = NULL;
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 81 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	self = (TrackerDirectConnection*) base;
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 81 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_return_val_if_fail (sparql != NULL, NULL);
-#line 82 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 82 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	tracker_db_manager_lock ();
 #line 415 "tracker-direct.c"
 	{
@@ -417,50 +417,50 @@ static TrackerSparqlCursor* tracker_direct_connection_real_query (TrackerSparqlC
 		GCancellable* _tmp1_;
 		TrackerSparqlCursor* _tmp2_ = NULL;
 		TrackerSparqlCursor* _tmp3_;
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 84 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp0_ = sparql;
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 84 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp1_ = cancellable;
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 84 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp2_ = tracker_direct_connection_query_unlocked (self, _tmp0_, _tmp1_, &_inner_error_);
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 84 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp3_ = _tmp2_;
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 84 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (_inner_error_ != NULL) {
 #line 431 "tracker-direct.c"
 			goto __finally3;
 		}
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 84 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		result = _tmp3_;
 #line 436 "tracker-direct.c"
 		{
-#line 86 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 86 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			tracker_db_manager_unlock ();
 #line 440 "tracker-direct.c"
 		}
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 84 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		return result;
 #line 444 "tracker-direct.c"
 	}
 	__finally3:
 	{
-#line 86 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 86 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		tracker_db_manager_unlock ();
 #line 450 "tracker-direct.c"
 	}
-#line 83 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 83 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_propagate_error (error, _inner_error_);
-#line 83 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		return NULL;
 #line 458 "tracker-direct.c"
 	} else {
-#line 83 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 83 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_clear_error (&_inner_error_);
-#line 83 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		return NULL;
 #line 466 "tracker-direct.c"
 	}
@@ -470,18 +470,18 @@ static TrackerSparqlCursor* tracker_direct_connection_real_query (TrackerSparqlC
 static void tracker_direct_connection_real_query_async_data_free (gpointer _data) {
 	TrackerDirectConnectionQueryAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_g_object_unref0 (_data_->result);
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_g_object_unref0 (_data_->self);
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_slice_free (TrackerDirectConnectionQueryAsyncData, _data_);
 #line 480 "tracker-direct.c"
 }
 
 
 static gpointer _g_object_ref0 (gpointer self) {
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	return self ? g_object_ref (self) : NULL;
 #line 487 "tracker-direct.c"
 }
@@ -495,35 +495,35 @@ static void tracker_direct_connection_real_query_async (TrackerSparqlConnection*
 	gchar* _tmp2_;
 	GCancellable* _tmp3_;
 	GCancellable* _tmp4_;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	self = (TrackerDirectConnection*) base;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_ = g_slice_new0 (TrackerDirectConnectionQueryAsyncData);
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_direct_connection_real_query_async);
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_direct_connection_real_query_async_data_free);
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->self = _tmp0_;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_tmp1_ = sparql;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_g_free0 (_data_->sparql);
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->sparql = _tmp2_;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_tmp3_ = cancellable;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->cancellable = _tmp4_;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	tracker_direct_connection_real_query_async_co (_data_);
 #line 529 "tracker-direct.c"
 }
@@ -532,28 +532,28 @@ static void tracker_direct_connection_real_query_async (TrackerSparqlConnection*
 static TrackerSparqlCursor* tracker_direct_connection_real_query_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerSparqlCursor* result;
 	TrackerDirectConnectionQueryAsyncData* _data_;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		return NULL;
 #line 540 "tracker-direct.c"
 	}
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	result = _data_->result;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->result = NULL;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	return result;
 #line 550 "tracker-direct.c"
 }
 
 
 static Block1Data* block1_data_ref (Block1Data* _data1_) {
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_atomic_int_inc (&_data1_->_ref_count_);
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	return _data1_;
 #line 559 "tracker-direct.c"
 }
@@ -562,19 +562,19 @@ static Block1Data* block1_data_ref (Block1Data* _data1_) {
 static void block1_data_unref (void * _userdata_) {
 	Block1Data* _data1_;
 	_data1_ = (Block1Data*) _userdata_;
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (g_atomic_int_dec_and_test (&_data1_->_ref_count_)) {
 #line 568 "tracker-direct.c"
 		TrackerDirectConnection * self;
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		self = _data1_->self;
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_free0 (_data1_->sparql);
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_object_unref0 (_data1_->cancellable);
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_object_unref0 (self);
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_slice_free (Block1Data, _data1_);
 #line 580 "tracker-direct.c"
 	}
@@ -582,9 +582,9 @@ static void block1_data_unref (void * _userdata_) {
 
 
 static Block2Data* block2_data_ref (Block2Data* _data2_) {
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_atomic_int_inc (&_data2_->_ref_count_);
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	return _data2_;
 #line 590 "tracker-direct.c"
 }
@@ -593,27 +593,27 @@ static Block2Data* block2_data_ref (Block2Data* _data2_) {
 static void block2_data_unref (void * _userdata_) {
 	Block2Data* _data2_;
 	_data2_ = (Block2Data*) _userdata_;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (g_atomic_int_dec_and_test (&_data2_->_ref_count_)) {
 #line 599 "tracker-direct.c"
 		TrackerDirectConnection * self;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		self = _data2_->_data1_->self;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_main_context_unref0 (_data2_->context);
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_object_unref0 (_data2_->_result_);
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (_data2_->dbus_error);
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (_data2_->io_error);
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (_data2_->sparql_error);
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		block1_data_unref (_data2_->_data1_);
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data2_->_data1_ = NULL;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_slice_free (Block2Data, _data2_);
 #line 619 "tracker-direct.c"
 	}
@@ -621,14 +621,14 @@ static void block2_data_unref (void * _userdata_) {
 
 
 static gpointer _g_main_context_ref0 (gpointer self) {
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 97 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	return self ? g_main_context_ref (self) : NULL;
 #line 627 "tracker-direct.c"
 }
 
 
 static gpointer _g_error_copy0 (gpointer self) {
-#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	return self ? g_error_copy (self) : NULL;
 #line 634 "tracker-direct.c"
 }
@@ -638,15 +638,15 @@ static gboolean __lambda3_ (Block2Data* _data2_) {
 	Block1Data* _data1_;
 	TrackerDirectConnection * self;
 	gboolean result = FALSE;
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 111 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data1_ = _data2_->_data1_;
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 111 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	self = _data1_->self;
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 112 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	tracker_direct_connection_real_query_async_co (_data1_->_async_data_);
-#line 113 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 113 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	result = FALSE;
-#line 113 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 113 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	return result;
 #line 652 "tracker-direct.c"
 }
@@ -655,7 +655,7 @@ static gboolean __lambda3_ (Block2Data* _data2_) {
 static gboolean ___lambda3__gsource_func (gpointer self) {
 	gboolean result;
 	result = __lambda3_ (self);
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 111 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	return result;
 #line 661 "tracker-direct.c"
 }
@@ -669,11 +669,11 @@ static gboolean ___lambda2_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 	GSource* source;
 	GMainContext* _tmp11_;
 	GError * _inner_error_ = NULL;
-#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 99 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data1_ = _data2_->_data1_;
-#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 99 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	self = _data1_->self;
-#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 99 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_return_val_if_fail (job != NULL, FALSE);
 #line 679 "tracker-direct.c"
 	{
@@ -681,42 +681,42 @@ static gboolean ___lambda2_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GCancellable* _tmp1_;
 		TrackerSparqlCursor* _tmp2_ = NULL;
 		TrackerSparqlCursor* _tmp3_;
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 101 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp0_ = _data1_->sparql;
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 101 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp1_ = _data1_->cancellable;
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 101 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp2_ = tracker_sparql_connection_query ((TrackerSparqlConnection*) self, _tmp0_, _tmp1_, &_inner_error_);
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 101 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp3_ = _tmp2_;
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 101 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (_inner_error_ != NULL) {
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 101 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (_inner_error_->domain == G_IO_ERROR) {
 #line 697 "tracker-direct.c"
 				goto __catch4_g_io_error;
 			}
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 101 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 #line 702 "tracker-direct.c"
 				goto __catch4_tracker_sparql_error;
 			}
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 101 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (_inner_error_->domain == G_DBUS_ERROR) {
 #line 707 "tracker-direct.c"
 				goto __catch4_g_dbus_error;
 			}
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 101 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 101 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_clear_error (&_inner_error_);
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 101 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			return FALSE;
 #line 716 "tracker-direct.c"
 		}
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 101 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_object_unref0 (_data2_->_result_);
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 101 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data2_->_result_ = _tmp3_;
 #line 722 "tracker-direct.c"
 	}
@@ -726,19 +726,19 @@ static gboolean ___lambda2_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_io = NULL;
 		GError* _tmp4_;
 		GError* _tmp5_;
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 100 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		e_io = _inner_error_;
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 100 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = NULL;
-#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp4_ = e_io;
-#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp5_ = _g_error_copy0 (_tmp4_);
-#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (_data2_->io_error);
-#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data2_->io_error = _tmp5_;
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 100 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (e_io);
 #line 744 "tracker-direct.c"
 	}
@@ -748,19 +748,19 @@ static gboolean ___lambda2_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_spql = NULL;
 		GError* _tmp6_;
 		GError* _tmp7_;
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 100 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		e_spql = _inner_error_;
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 100 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = NULL;
-#line 105 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 105 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp6_ = e_spql;
-#line 105 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 105 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp7_ = _g_error_copy0 (_tmp6_);
-#line 105 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 105 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (_data2_->sparql_error);
-#line 105 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 105 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data2_->sparql_error = _tmp7_;
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 100 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (e_spql);
 #line 766 "tracker-direct.c"
 	}
@@ -770,48 +770,48 @@ static gboolean ___lambda2_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_dbus = NULL;
 		GError* _tmp8_;
 		GError* _tmp9_;
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 100 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		e_dbus = _inner_error_;
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 100 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = NULL;
-#line 107 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp8_ = e_dbus;
-#line 107 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp9_ = _g_error_copy0 (_tmp8_);
-#line 107 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (_data2_->dbus_error);
-#line 107 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data2_->dbus_error = _tmp9_;
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 100 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (e_dbus);
 #line 788 "tracker-direct.c"
 	}
 	__finally4:
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 100 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (_inner_error_ != NULL) {
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 100 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 100 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_clear_error (&_inner_error_);
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 100 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		return FALSE;
 #line 799 "tracker-direct.c"
 	}
-#line 110 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 110 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_tmp10_ = g_idle_source_new ();
-#line 110 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 110 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	source = _tmp10_;
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 111 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_source_set_callback (source, ___lambda3__gsource_func, block2_data_ref (_data2_), block2_data_unref);
-#line 115 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 115 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_tmp11_ = _data2_->context;
-#line 115 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 115 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_source_attach (source, _tmp11_);
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 117 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	result = FALSE;
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 117 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_g_source_unref0 (source);
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 117 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	return result;
 #line 817 "tracker-direct.c"
 }
@@ -820,424 +820,424 @@ static gboolean ___lambda2_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 static gboolean ____lambda2__gio_scheduler_job_func (GIOSchedulerJob* job, GCancellable* cancellable, gpointer self) {
 	gboolean result;
 	result = ___lambda2_ (self, job);
-#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 99 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	return result;
 #line 826 "tracker-direct.c"
 }
 
 
 static gboolean tracker_direct_connection_real_query_async_co (TrackerDirectConnectionQueryAsyncData* _data_) {
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	switch (_data_->_state_) {
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		case 0:
 #line 835 "tracker-direct.c"
 		goto _state_0;
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		case 1:
 #line 839 "tracker-direct.c"
 		goto _state_1;
 		default:
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_assert_not_reached ();
 #line 844 "tracker-direct.c"
 	}
 	_state_0:
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_data1_ = g_slice_new0 (Block1Data);
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_data1_->_ref_count_ = 1;
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_data1_->self = g_object_ref (_data_->self);
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_tmp0_ = _data_->sparql;
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_g_free0 (_data_->_data1_->sparql);
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_data1_->sparql = _data_->_tmp0_;
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_tmp1_ = _data_->cancellable;
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_g_object_unref0 (_data_->_data1_->cancellable);
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_data1_->cancellable = _data_->_tmp1_;
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_data1_->_async_data_ = _data_;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_tmp2_ = FALSE;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_tmp2_ = tracker_db_manager_trylock ();
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (!_data_->_tmp2_) {
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_data2_ = g_slice_new0 (Block2Data);
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_data2_->_ref_count_ = 1;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_data2_->_data1_ = block1_data_ref (_data_->_data1_);
-#line 93 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 93 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_data2_->sparql_error = NULL;
-#line 94 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 94 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_data2_->io_error = NULL;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 95 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_data2_->dbus_error = NULL;
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 96 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_data2_->_result_ = NULL;
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 97 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_tmp3_ = NULL;
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 97 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_tmp3_ = g_main_context_get_thread_default ();
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 97 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_tmp4_ = _g_main_context_ref0 (_data_->_tmp3_);
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 97 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_data2_->context = _data_->_tmp4_;
-#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 99 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_io_scheduler_push_job (____lambda2__gio_scheduler_job_func, block2_data_ref (_data_->_data2_), block2_data_unref, G_PRIORITY_DEFAULT, NULL);
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_state_ = 1;
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		return FALSE;
 #line 901 "tracker-direct.c"
 		_state_1:
 		;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 121 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_tmp5_ = _data_->_data2_->sparql_error;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 121 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (_data_->_tmp5_ != NULL) {
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			_data_->_tmp6_ = _data_->_data2_->sparql_error;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			_data_->_tmp7_ = _g_error_copy0 (_data_->_tmp6_);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			_data_->_inner_error_ = _data_->_tmp7_;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				g_error_free (_data_->_inner_error_);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				block2_data_unref (_data_->_data2_);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				_data_->_data2_ = NULL;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				block1_data_unref (_data_->_data1_);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				_data_->_data1_ = NULL;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				if (_data_->_state_ == 0) {
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 932 "tracker-direct.c"
 				} else {
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_simple_async_result_complete (_data_->_async_result);
 #line 936 "tracker-direct.c"
 				}
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				g_object_unref (_data_->_async_result);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				return FALSE;
 #line 942 "tracker-direct.c"
 			} else {
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				block2_data_unref (_data_->_data2_);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				_data_->_data2_ = NULL;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				block1_data_unref (_data_->_data1_);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				_data_->_data1_ = NULL;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				g_clear_error (&_data_->_inner_error_);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				return FALSE;
 #line 958 "tracker-direct.c"
 			}
 		} else {
-#line 123 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 123 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			_data_->_tmp8_ = _data_->_data2_->io_error;
-#line 123 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 123 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (_data_->_tmp8_ != NULL) {
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				_data_->_tmp9_ = _data_->_data2_->io_error;
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				_data_->_tmp10_ = _g_error_copy0 (_data_->_tmp9_);
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				_data_->_inner_error_ = _data_->_tmp10_;
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_error_free (_data_->_inner_error_);
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					block2_data_unref (_data_->_data2_);
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					_data_->_data2_ = NULL;
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					block1_data_unref (_data_->_data1_);
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					_data_->_data1_ = NULL;
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					if (_data_->_state_ == 0) {
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 989 "tracker-direct.c"
 					} else {
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						g_simple_async_result_complete (_data_->_async_result);
 #line 993 "tracker-direct.c"
 					}
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_object_unref (_data_->_async_result);
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					return FALSE;
 #line 999 "tracker-direct.c"
 				} else {
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					block2_data_unref (_data_->_data2_);
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					_data_->_data2_ = NULL;
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					block1_data_unref (_data_->_data1_);
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					_data_->_data1_ = NULL;
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_clear_error (&_data_->_inner_error_);
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					return FALSE;
 #line 1015 "tracker-direct.c"
 				}
 			} else {
-#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 125 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				_data_->_tmp11_ = _data_->_data2_->dbus_error;
-#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 125 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 				if (_data_->_tmp11_ != NULL) {
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					_data_->_tmp12_ = _data_->_data2_->dbus_error;
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					_data_->_tmp13_ = _g_error_copy0 (_data_->_tmp12_);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					_data_->_inner_error_ = _data_->_tmp13_;
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						g_error_free (_data_->_inner_error_);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						block2_data_unref (_data_->_data2_);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						_data_->_data2_ = NULL;
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						block1_data_unref (_data_->_data1_);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						_data_->_data1_ = NULL;
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						if (_data_->_state_ == 0) {
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 							g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1046 "tracker-direct.c"
 						} else {
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 							g_simple_async_result_complete (_data_->_async_result);
 #line 1050 "tracker-direct.c"
 						}
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						g_object_unref (_data_->_async_result);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						return FALSE;
 #line 1056 "tracker-direct.c"
 					} else {
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						block2_data_unref (_data_->_data2_);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						_data_->_data2_ = NULL;
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						block1_data_unref (_data_->_data1_);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						_data_->_data1_ = NULL;
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						g_clear_error (&_data_->_inner_error_);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						return FALSE;
 #line 1072 "tracker-direct.c"
 					}
 				} else {
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 128 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					_data_->_tmp14_ = _data_->_data2_->_result_;
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 128 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					_data_->_tmp15_ = _g_object_ref0 (_data_->_tmp14_);
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 128 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					_data_->result = _data_->_tmp15_;
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 128 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					block2_data_unref (_data_->_data2_);
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 128 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					_data_->_data2_ = NULL;
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 128 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					block1_data_unref (_data_->_data1_);
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 128 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					_data_->_data1_ = NULL;
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 128 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					if (_data_->_state_ == 0) {
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 128 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1093 "tracker-direct.c"
 					} else {
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 128 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 						g_simple_async_result_complete (_data_->_async_result);
 #line 1097 "tracker-direct.c"
 					}
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 128 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_object_unref (_data_->_async_result);
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 128 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 					return FALSE;
 #line 1103 "tracker-direct.c"
 				}
 			}
 		}
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		block2_data_unref (_data_->_data2_);
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 91 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_data2_ = NULL;
 #line 1111 "tracker-direct.c"
 	}
 	{
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 132 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_tmp16_ = _data_->_data1_->sparql;
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 132 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_tmp17_ = _data_->_data1_->cancellable;
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 132 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_tmp18_ = NULL;
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 132 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_tmp18_ = tracker_direct_connection_query_unlocked (_data_->self, _data_->_tmp16_, _data_->_tmp17_, &_data_->_inner_error_);
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 132 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_tmp19_ = _data_->_tmp18_;
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 132 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (_data_->_inner_error_ != NULL) {
 #line 1126 "tracker-direct.c"
 			goto __finally5;
 		}
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 132 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->result = _data_->_tmp19_;
 #line 1131 "tracker-direct.c"
 		{
-#line 134 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			tracker_db_manager_unlock ();
 #line 1135 "tracker-direct.c"
 		}
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 132 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		block1_data_unref (_data_->_data1_);
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 132 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_data1_ = NULL;
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 132 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (_data_->_state_ == 0) {
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 132 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1145 "tracker-direct.c"
 		} else {
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 132 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 1149 "tracker-direct.c"
 		}
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 132 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_object_unref (_data_->_async_result);
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 132 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		return FALSE;
 #line 1155 "tracker-direct.c"
 	}
 	__finally5:
 	{
-#line 134 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		tracker_db_manager_unlock ();
 #line 1161 "tracker-direct.c"
 	}
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_error_free (_data_->_inner_error_);
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		block1_data_unref (_data_->_data1_);
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_data1_ = NULL;
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (_data_->_state_ == 0) {
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1177 "tracker-direct.c"
 		} else {
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 1181 "tracker-direct.c"
 		}
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_object_unref (_data_->_async_result);
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		return FALSE;
 #line 1187 "tracker-direct.c"
 	} else {
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		block1_data_unref (_data_->_data1_);
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_data_->_data1_ = NULL;
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_clear_error (&_data_->_inner_error_);
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		return FALSE;
 #line 1199 "tracker-direct.c"
 	}
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	block1_data_unref (_data_->_data1_);
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_data1_ = NULL;
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (_data_->_state_ == 0) {
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1209 "tracker-direct.c"
 	} else {
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1213 "tracker-direct.c"
 	}
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_object_unref (_data_->_async_result);
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	return FALSE;
 #line 1219 "tracker-direct.c"
 }
 
 
 static void tracker_direct_connection_class_init (TrackerDirectConnectionClass * klass) {
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	tracker_direct_connection_parent_class = g_type_class_peek_parent (klass);
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_type_class_add_private (klass, sizeof (TrackerDirectConnectionPrivate));
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query = tracker_direct_connection_real_query;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_async = tracker_direct_connection_real_query_async;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_finish = tracker_direct_connection_real_query_finish;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	G_OBJECT_CLASS (klass)->finalize = tracker_direct_connection_finalize;
 #line 1236 "tracker-direct.c"
 }
 
 
 static void tracker_direct_connection_instance_init (TrackerDirectConnection * self) {
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	self->priv = TRACKER_DIRECT_CONNECTION_GET_PRIVATE (self);
 #line 1243 "tracker-direct.c"
 }
@@ -1247,50 +1247,50 @@ static void tracker_direct_connection_finalize (GObject* obj) {
 	TrackerDirectConnection * self;
 	gboolean _tmp0_;
 	GError * _inner_error_ = NULL;
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TRACKER_DIRECT_TYPE_CONNECTION, TrackerDirectConnection);
-#line 49 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 49 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	_tmp0_ = self->priv->initialized;
-#line 49 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 49 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (!_tmp0_) {
 #line 1257 "tracker-direct.c"
 		goto _return;
 	}
-#line 55 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 55 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	tracker_db_manager_lock ();
 #line 1262 "tracker-direct.c"
 	{
 		gint _tmp1_;
 		gint _tmp2_;
-#line 58 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 58 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp1_ = tracker_direct_connection_use_count;
-#line 58 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 58 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		tracker_direct_connection_use_count = _tmp1_ - 1;
-#line 60 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 60 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp2_ = tracker_direct_connection_use_count;
-#line 60 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 60 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (_tmp2_ == 0) {
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 61 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 			tracker_data_manager_shutdown ();
 #line 1276 "tracker-direct.c"
 		}
 	}
 	__finally0:
 	{
-#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 64 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		tracker_db_manager_unlock ();
 #line 1283 "tracker-direct.c"
 	}
-#line 57 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 57 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (_inner_error_ != NULL) {
-#line 57 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 57 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 57 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 57 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_clear_error (&_inner_error_);
 #line 1291 "tracker-direct.c"
 	}
 	_return:
-#line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-direct/tracker-direct.vala"
 	G_OBJECT_CLASS (tracker_direct_connection_parent_class)->finalize (obj);
 #line 1296 "tracker-direct.c"
 }

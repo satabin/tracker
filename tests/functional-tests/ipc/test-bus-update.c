@@ -43,34 +43,34 @@ gint _vala_main (gchar** args, int args_length1) {
 		TestApp* app;
 		TestApp* _tmp5_;
 		gint _tmp6_ = 0;
-#line 8 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		_tmp0_ = tracker_bus_connection_new (&_inner_error_);
-#line 8 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		_tmp1_ = _tmp0_;
-#line 8 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		if (_inner_error_ != NULL) {
 #line 53 "test-bus-update.c"
 			goto __catch7_g_error;
 		}
-#line 8 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		_tmp2_ = _tmp1_;
-#line 8 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		_tmp3_ = test_app_new ((TrackerSparqlConnection*) _tmp2_);
-#line 8 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		_tmp4_ = _tmp3_;
-#line 8 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		_g_object_unref0 (_tmp2_);
-#line 8 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		app = _tmp4_;
-#line 10 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 10 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		_tmp5_ = app;
-#line 10 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 10 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		_tmp6_ = test_app_run (_tmp5_);
-#line 10 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 10 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		result = _tmp6_;
-#line 10 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 10 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		_g_object_unref0 (app);
-#line 10 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 10 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		return result;
 #line 76 "test-bus-update.c"
 	}
@@ -80,39 +80,39 @@ gint _vala_main (gchar** args, int args_length1) {
 		GError* e = NULL;
 		GError* _tmp7_;
 		const gchar* _tmp8_;
-#line 7 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 7 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		e = _inner_error_;
-#line 7 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 7 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		_inner_error_ = NULL;
-#line 12 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 12 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		_tmp7_ = e;
-#line 12 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 12 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		_tmp8_ = _tmp7_->message;
-#line 12 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 12 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		g_warning ("test-bus-update.vala:12: Couldn't perform test: %s", _tmp8_);
-#line 13 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 13 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		result = 1;
-#line 13 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 13 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		_g_error_free0 (e);
-#line 13 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 13 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 		return result;
 #line 100 "test-bus-update.c"
 	}
 	__finally7:
-#line 7 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 7 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 	g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 7 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 7 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 	g_clear_error (&_inner_error_);
-#line 7 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 7 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 	return 0;
 #line 109 "test-bus-update.c"
 }
 
 
 int main (int argc, char ** argv) {
-#line 4 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 4 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 	g_type_init ();
-#line 4 "/home/martyn/Source/checkout/gnome/tracker/tests/functional-tests/ipc/test-bus-update.vala"
+#line 4 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-update.vala"
 	return _vala_main (argv, argc);
 #line 118 "test-bus-update.c"
 }

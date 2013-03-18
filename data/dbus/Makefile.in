@@ -72,7 +72,6 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 @HAVE_MAEMO_TRUE@@HAVE_TRACKER_MINER_FS_TRUE@am__append_2 = org.freedesktop.Tracker1.Miner.Userguides.service
 @HAVE_TRACKER_MINER_EVOLUTION_TRUE@am__append_3 = org.freedesktop.Tracker1.Miner.EMails.service
 @HAVE_TRACKER_MINER_RSS_TRUE@am__append_4 = org.freedesktop.Tracker1.Miner.RSS.service
-@HAVE_TRACKER_MINER_FLICKR_TRUE@am__append_5 = org.freedesktop.Tracker1.Miner.Flickr.service
 subdir = data/dbus
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -344,8 +343,6 @@ TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
 TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
 TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
-TRACKER_EXPLORER_CFLAGS = @TRACKER_EXPLORER_CFLAGS@
-TRACKER_EXPLORER_LIBS = @TRACKER_EXPLORER_LIBS@
 TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
 TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
 TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
@@ -357,8 +354,6 @@ TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
 TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
 TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
 TRACKER_MINER_FIREFOX_INSTALL_DIR = @TRACKER_MINER_FIREFOX_INSTALL_DIR@
-TRACKER_MINER_FLICKR_CFLAGS = @TRACKER_MINER_FLICKR_CFLAGS@
-TRACKER_MINER_FLICKR_LIBS = @TRACKER_MINER_FLICKR_LIBS@
 TRACKER_MINER_FS_CFLAGS = @TRACKER_MINER_FS_CFLAGS@
 TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
@@ -374,8 +369,6 @@ TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
 TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
 TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
-TRACKER_SEARCH_BAR_CFLAGS = @TRACKER_SEARCH_BAR_CFLAGS@
-TRACKER_SEARCH_BAR_LIBS = @TRACKER_SEARCH_BAR_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
 TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
 TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
@@ -478,7 +471,6 @@ service_in_files = \
 	org.freedesktop.Tracker1.Miner.EMails.service.in \
 	org.freedesktop.Tracker1.Miner.Files.service.in \
 	org.freedesktop.Tracker1.Miner.Userguides.service.in \
-	org.freedesktop.Tracker1.Miner.Flickr.service.in \
 	org.freedesktop.Tracker1.Miner.RSS.service.in  \
 	org.freedesktop.Tracker1.Extract.service.in \
 	org.freedesktop.Tracker1.Writeback.service.in
@@ -489,8 +481,7 @@ servicedir = $(DBUS_SERVICES_DIR)
 service_DATA = org.freedesktop.Tracker1.service \
 	org.freedesktop.Tracker1.Extract.service \
 	org.freedesktop.Tracker1.Writeback.service $(am__append_1) \
-	$(am__append_2) $(am__append_3) $(am__append_4) \
-	$(am__append_5)
+	$(am__append_2) $(am__append_3) $(am__append_4)
 EXTRA_DIST = \
 	$(service_in_files) \
 	$(config_DATA) \

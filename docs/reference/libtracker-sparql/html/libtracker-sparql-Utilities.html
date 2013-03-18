@@ -44,11 +44,11 @@ Stable, unless otherwise indicated
 <pre class="synopsis">
 #include &lt;tracker-sparql.h&gt;
 
-<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-get-uuid-urn" title="tracker_sparql_get_uuid_urn ()">tracker_sparql_get_uuid_urn</a>         (<em class="parameter"><code><span class="type">void</span></code></em>);
-<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-string" title="tracker_sparql_escape_string ()">tracker_sparql_escape_string</a>        (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *literal</code></em>);
-<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-printf" title="tracker_sparql_escape_uri_printf ()">tracker_sparql_escape_uri_printf</a>    (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-get-uuid-urn" title="tracker_sparql_get_uuid_urn ()">tracker_sparql_get_uuid_urn</a>         (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-string" title="tracker_sparql_escape_string ()">tracker_sparql_escape_string</a>        (<em class="parameter"><code>const <span class="type">gchar</span> *literal</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-printf" title="tracker_sparql_escape_uri_printf ()">tracker_sparql_escape_uri_printf</a>    (<em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-vprintf" title="tracker_sparql_escape_uri_vprintf ()">tracker_sparql_escape_uri_vprintf</a>   (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-vprintf" title="tracker_sparql_escape_uri_vprintf ()">tracker_sparql_escape_uri_vprintf</a>   (<em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code><span class="type">va_list</span> args</code></em>);
 </pre>
 </div>
@@ -66,7 +66,7 @@ The libtracker-sparql utilities help in the creation of proper SPARQL queries.
 <a name="libtracker-sparql-Utilities.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="tracker-sparql-get-uuid-urn"></a><h3>tracker_sparql_get_uuid_urn ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_sparql_get_uuid_urn         (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_sparql_get_uuid_urn         (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Generates a unique universal identifier to be used for urns
 when inserting SPARQL into the database. The string returned is
@@ -78,7 +78,7 @@ in lower case and has the format "urn:uuid:%s" where
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a newly-allocated string. The returned string should
-be freed with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed.</td>
+be freed with <code class="function">g_free()</code> when no longer needed.</td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 0.10</p>
@@ -86,7 +86,7 @@ be freed with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="
 <hr>
 <div class="refsect2">
 <a name="tracker-sparql-escape-string"></a><h3>tracker_sparql_escape_string ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_sparql_escape_string        (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *literal</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_sparql_escape_string        (<em class="parameter"><code>const <span class="type">gchar</span> *literal</code></em>);</pre>
 <p>
 Escapes a string so that it can be used in a SPARQL query.
 </p>
@@ -100,7 +100,7 @@ Escapes a string so that it can be used in a SPARQL query.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a newly-allocated string with the escaped version of <em class="parameter"><code>literal</code></em>.
-The returned string should be freed with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed.</td>
+The returned string should be freed with <code class="function">g_free()</code> when no longer needed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -109,7 +109,7 @@ The returned string should be freed with <a href="../glib/glib-Memory-Allocation
 <hr>
 <div class="refsect2">
 <a name="tracker-sparql-escape-uri-printf"></a><h3>tracker_sparql_escape_uri_printf ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_sparql_escape_uri_printf    (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_sparql_escape_uri_printf    (<em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 Calls <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-vprintf" title="tracker_sparql_escape_uri_vprintf ()"><code class="function">tracker_sparql_escape_uri_vprintf()</code></a> with the @... supplied.
@@ -120,7 +120,7 @@ Calls <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-esca
 <tr>
 <td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
 <td>a standard <code class="function">printf()</code> format string, but notice
-string precision pitfalls documented in <a href="../glib/glib-String-Utility-Functions.html#g-strdup-printf"><code class="function">g_strdup_printf()</code></a>
+string precision pitfalls documented in <code class="function">g_strdup_printf()</code>
 </td>
 </tr>
 <tr>
@@ -130,7 +130,7 @@ string precision pitfalls documented in <a href="../glib/glib-String-Utility-Fun
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a newly-allocated string holding the result.The returned string
-should be freed with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed.</td>
+should be freed with <code class="function">g_free()</code> when no longer needed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -139,7 +139,7 @@ should be freed with <a href="../glib/glib-Memory-Allocation.html#g-free"><code 
 <hr>
 <div class="refsect2">
 <a name="tracker-sparql-escape-uri-vprintf"></a><h3>tracker_sparql_escape_uri_vprintf ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_sparql_escape_uri_vprintf   (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_sparql_escape_uri_vprintf   (<em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code><span class="type">va_list</span> args</code></em>);</pre>
 <p>
 Similar to the standard C <code class="function">vsprintf()</code> function but safer, since it
@@ -147,7 +147,7 @@ calculates the maximum space required and allocates memory to hold
 the result.
 </p>
 <p>
-The result is escaped using <a href="../glib/glib-URI-Functions.html#g-uri-escape-string"><code class="function">g_uri_escape_string()</code></a>.
+The result is escaped using <code class="function">g_uri_escape_string()</code>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -155,7 +155,7 @@ The result is escaped using <a href="../glib/glib-URI-Functions.html#g-uri-escap
 <tr>
 <td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
 <td>a standard <code class="function">printf()</code> format string, but notice
-string precision pitfalls documented in <a href="../glib/glib-String-Utility-Functions.html#g-strdup-printf"><code class="function">g_strdup_printf()</code></a>
+string precision pitfalls documented in <code class="function">g_strdup_printf()</code>
 </td>
 </tr>
 <tr>
@@ -165,7 +165,7 @@ string precision pitfalls documented in <a href="../glib/glib-String-Utility-Fun
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a newly-allocated string holding the result. The returned string
-should be freed with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed.</td>
+should be freed with <code class="function">g_free()</code> when no longer needed.</td>
 </tr>
 </tbody>
 </table></div>

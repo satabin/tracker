@@ -1,3 +1,91 @@
+2013-03-18  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.16.0
+
+	functional-tests: Do not use su - meego when running tracker-control
+
+2013-03-17  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-control: Use g_settings_sync() to make sure all settings are stored
+	--set-log-verbosity was not always working as expected
+
+2013-03-16  Aurimas Černius  <aurisc4@gmail.com>
+
+	Updated Lithuanian translation
+
+2013-03-15  Martyn Russell  <martyn@lanedo.com>
+
+	src/miners/flickr: Removed
+	This is going to eventually end up in the GNOME Photos application most likely
+	and this was discussed as part of this thread:
+	https://mail.gnome.org/archives/tracker-list/2013-March/msg00007.html
+
+	utils/ontology/qname-test: Removed, unused
+
+	utils/services: Renamed to utils/ontologies
+	Less ambiguous
+
+	utils/data-generators/barnum: Removed
+	This was unused. See original discussion here:
+	https://mail.gnome.org/archives/tracker-list/2013-March/msg00007.html
+
+	utils/data-generators/deprecated: Removed
+	Completely unused.
+	https://mail.gnome.org/archives/tracker-list/2013-March/msg00007.html
+
+	utils/webhistory: Removed
+	This was unmaintained and unused. See original discussion here:
+	https://mail.gnome.org/archives/tracker-list/2013-March/msg00007.html
+
+	utils/lyrics: Removed
+	This was unmaintained and unused. See original discussion here:
+	https://mail.gnome.org/archives/tracker-list/2013-March/msg00007.html
+
+	utils/playlists: Removed
+	This was unmaintained and unused. See original discussion here:
+	https://mail.gnome.org/archives/tracker-list/2013-March/msg00007.html
+
+	tracker-search-bar: Removed
+	This was unmaintained and unused. See original discussion here:
+	https://mail.gnome.org/archives/tracker-list/2013-March/msg00007.html
+
+	tracker-explorer: Removed
+	This was unmaintained and unused. See original discussion here:
+	https://mail.gnome.org/archives/tracker-list/2013-March/msg00007.html
+
+2013-03-14  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'media-art-enhancements-2'
+
+2013-03-14  Dominique Leuenberger  <dimstar@opensuse.org>
+
+	tracker-extract: Add support for giflib 5.
+	https://bugzilla.gnome.org/show_bug.cgi?id=695769
+
+2013-03-13  Martyn Russell  <martyn@lanedo.com>
+
+	thunderbird: Fix libraries we expect to find and connect to
+	Was 0.12/0.14, now 0.14/0.16
+
+	firefox: Fix libraries we expect to find and connect to
+	Was 0.12/0.14, now 0.14/0.16
+
+	thunderbird: Fixed plugin location which has changed
+
+	firefox: Fixed plugin location which has changed
+
+2013-03-13  Carlos Garnacho  <carlos@lanedo.com>
+
+	libtracker-miner: Dispose regular files from the filesystem cache on monitor events
+	Regular files gotten through monitor events persisted in the filesystem cache
+	after those events were processed, whereas on other situations TrackerFileNotifier
+	just keeps directories to remain cached and disposes all regular files, so make
+	behavior on monitor events respect that.
+
+2013-03-13  Мирослав Николић  <miroslavnikolic@rocketmail.com>
+
+	Updated Serbian translation
+
 2013-03-12  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.15.4
@@ -1092,6 +1180,15 @@
 	Crash was occurring on OpenBSD.
 
 	Fixes GB#669546.
+
+2012-02-14  Sam Thursfield  <ssssam@gmail.com>
+
+	Rename tracker_media_art_process_external_images()
+	New name: tracker_media_art_find_by_artist_and_title()
+
+	Rename media art queue functions
+
+	Rename remaining albumart function to media_art
 
 2012-02-13  Zeeshan Ali (Khattak)  <zeeshanak@gnome.org>
 

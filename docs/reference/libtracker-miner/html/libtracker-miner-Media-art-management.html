@@ -40,9 +40,6 @@
 <pre class="synopsis">
 #include &lt;libtracker-miner/tracker-media-art.h&gt;
 
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-miner-Media-art-management.html#tracker-media-art-execute-queue" title="tracker_media_art_execute_queue ()">tracker_media_art_execute_queue</a>     (<em class="parameter"><code><a href="../libtracker-sparql/TrackerSparqlConnection.html"><span class="type">TrackerSparqlConnection</span></a> *connection</code></em>);
-<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-miner-Media-art-management.html#tracker-media-art-queue-removal" title="tracker_media_art_queue_removal ()">tracker_media_art_queue_removal</a>     (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
-                                                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *mime_type</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -53,41 +50,6 @@ This is a convenience API using D-Bus to talk to the media management service.
 </div>
 <div class="refsect1">
 <a name="libtracker-miner-Media-art-management.details"></a><h2>Details</h2>
-<div class="refsect2">
-<a name="tracker-media-art-execute-queue"></a><h3>tracker_media_art_execute_queue ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_media_art_execute_queue     (<em class="parameter"><code><a href="../libtracker-sparql/TrackerSparqlConnection.html"><span class="type">TrackerSparqlConnection</span></a> *connection</code></em>);</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="tracker-media-art-queue-removal"></a><h3>tracker_media_art_queue_removal ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_media_art_queue_removal     (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
-                                                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *mime_type</code></em>);</pre>
-<p>
-Adds a new request to tell the media art subsystem that <em class="parameter"><code>uri</code></em> was removed.
-Stored requests can be processed with <a class="link" href="libtracker-miner-Media-art-management.html#tracker-media-art-execute-queue" title="tracker_media_art_execute_queue ()"><code class="function">tracker_media_art_execute_queue()</code></a>.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
-<td>URI of the file</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>mime_type</code></em> :</span></p></td>
-<td>mime-type of the file</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if successfully stored to be reported, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><span class="type">FALSE</span></a> otherwise.</td>
-</tr>
-</tbody>
-</table></div>
-<p class="since">Since 0.10.4</p>
-</div>
 </div>
 </div>
 <div class="footer">

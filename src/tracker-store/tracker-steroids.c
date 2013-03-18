@@ -492,22 +492,22 @@ static const GDBusInterfaceVTable _tracker_steroids_dbus_interface_vtable = {tra
 static void tracker_steroids_query_data_free (gpointer _data) {
 	TrackerSteroidsQueryData* _data_;
 	_data_ = _data;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->query);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->result = (_vala_array_free (_data_->result, _data_->result_length1, (GDestroyNotify) g_free), NULL);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_slice_free (TrackerSteroidsQueryData, _data_);
 #line 506 "tracker-steroids.c"
 }
 
 
 static gpointer _g_object_ref0 (gpointer self) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return self ? g_object_ref (self) : NULL;
 #line 513 "tracker-steroids.c"
 }
@@ -522,41 +522,41 @@ void tracker_steroids_query (TrackerSteroids* self, const char* sender, const gc
 	gchar* _tmp4_;
 	GUnixOutputStream* _tmp5_;
 	GUnixOutputStream* _tmp6_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = g_slice_new0 (TrackerSteroidsQueryData);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_steroids_query);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_steroids_query_data_free);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->self = _tmp0_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp1_ = sender;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->sender = _tmp2_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp3_ = query;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp4_ = g_strdup (_tmp3_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->query);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->query = _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp5_ = output_stream;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp6_ = _g_object_ref0 (_tmp5_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->output_stream);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->output_stream = _tmp6_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_query_co (_data_);
 #line 562 "tracker-steroids.c"
 }
@@ -565,30 +565,30 @@ void tracker_steroids_query (TrackerSteroids* self, const char* sender, const gc
 gchar** tracker_steroids_query_finish (TrackerSteroids* self, GAsyncResult* _res_, int* result_length1, GError** error) {
 	gchar** result;
 	TrackerSteroidsQueryData* _data_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		return NULL;
 #line 573 "tracker-steroids.c"
 	}
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	result = _data_->result;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	*result_length1 = _data_->result_length1;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->result = NULL;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return result;
 #line 585 "tracker-steroids.c"
 }
 
 
 static Block5Data* block5_data_ref (Block5Data* _data5_) {
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_atomic_int_inc (&_data5_->_ref_count_);
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return _data5_;
 #line 594 "tracker-steroids.c"
 }
@@ -597,17 +597,17 @@ static Block5Data* block5_data_ref (Block5Data* _data5_) {
 static void block5_data_unref (void * _userdata_) {
 	Block5Data* _data5_;
 	_data5_ = (Block5Data*) _userdata_;
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (g_atomic_int_dec_and_test (&_data5_->_ref_count_)) {
 #line 603 "tracker-steroids.c"
 		TrackerSteroids * self;
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		self = _data5_->self;
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_g_object_unref0 (_data5_->output_stream);
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_g_object_unref0 (self);
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_slice_free (Block5Data, _data5_);
 #line 613 "tracker-steroids.c"
 	}
@@ -615,9 +615,9 @@ static void block5_data_unref (void * _userdata_) {
 
 
 static Block6Data* block6_data_ref (Block6Data* _data6_) {
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_atomic_int_inc (&_data6_->_ref_count_);
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return _data6_;
 #line 623 "tracker-steroids.c"
 }
@@ -626,19 +626,19 @@ static Block6Data* block6_data_ref (Block6Data* _data6_) {
 static void block6_data_unref (void * _userdata_) {
 	Block6Data* _data6_;
 	_data6_ = (Block6Data*) _userdata_;
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (g_atomic_int_dec_and_test (&_data6_->_ref_count_)) {
 #line 632 "tracker-steroids.c"
 		TrackerSteroids * self;
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		self = _data6_->_data5_->self;
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data6_->variable_names = (_vala_array_free (_data6_->variable_names, _data6_->variable_names_length1, (GDestroyNotify) g_free), NULL);
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		block5_data_unref (_data6_->_data5_);
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data6_->_data5_ = NULL;
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_slice_free (Block6Data, _data6_);
 #line 644 "tracker-steroids.c"
 	}
@@ -677,91 +677,91 @@ static void ___lambda7_ (Block6Data* _data6_, TrackerDBCursor* cursor, GError** 
 	gint _tmp15_;
 	gchar** _tmp16_ = NULL;
 	GError * _inner_error_ = NULL;
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data5_ = _data6_->_data5_;
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	self = _data5_->self;
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_return_if_fail (cursor != NULL);
-#line 34 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 34 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp0_ = _data5_->output_stream;
-#line 34 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 34 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp1_ = (GBufferedOutputStream*) g_buffered_output_stream_new_sized ((GOutputStream*) _tmp0_, (gsize) TRACKER_STEROIDS_BUFFER_SIZE);
-#line 34 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 34 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp2_ = _tmp1_;
-#line 34 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 34 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp3_ = g_data_output_stream_new ((GOutputStream*) _tmp2_);
-#line 34 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 34 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp4_ = _tmp3_;
-#line 34 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 34 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_tmp2_);
-#line 34 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 34 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	data_output_stream = _tmp4_;
-#line 35 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 35 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp5_ = data_output_stream;
-#line 35 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 35 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_data_output_stream_set_byte_order (_tmp5_, G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN);
-#line 37 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp6_ = cursor;
-#line 37 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp7_ = tracker_sparql_cursor_get_n_columns ((TrackerSparqlCursor*) _tmp6_);
-#line 37 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp8_ = _tmp7_;
-#line 37 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	n_columns = _tmp8_;
-#line 39 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 39 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp9_ = n_columns;
-#line 39 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 39 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp10_ = g_new0 (gint, _tmp9_);
-#line 39 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 39 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	column_sizes = _tmp10_;
-#line 39 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 39 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	column_sizes_length1 = _tmp9_;
-#line 39 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 39 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_column_sizes_size_ = column_sizes_length1;
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 40 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp11_ = n_columns;
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 40 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp12_ = g_new0 (gint, _tmp11_);
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 40 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	column_offsets = _tmp12_;
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 40 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	column_offsets_length1 = _tmp11_;
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 40 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_column_offsets_size_ = column_offsets_length1;
-#line 41 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 41 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp13_ = n_columns;
-#line 41 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 41 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp14_ = g_new0 (gchar*, _tmp13_ + 1);
-#line 41 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 41 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	column_data = _tmp14_;
-#line 41 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 41 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	column_data_length1 = _tmp13_;
-#line 41 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 41 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_column_data_size_ = column_data_length1;
-#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 43 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp15_ = n_columns;
-#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 43 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp16_ = g_new0 (gchar*, _tmp15_ + 1);
-#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 43 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data6_->variable_names = (_vala_array_free (_data6_->variable_names, _data6_->variable_names_length1, (GDestroyNotify) g_free), NULL);
-#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 43 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data6_->variable_names = _tmp16_;
-#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 43 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data6_->variable_names_length1 = _tmp15_;
-#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 43 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data6_->_variable_names_size_ = _data6_->variable_names_length1;
 #line 755 "tracker-steroids.c"
 	{
 		gint i;
-#line 44 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		i = 0;
 #line 760 "tracker-steroids.c"
 		{
 			gboolean _tmp17_;
-#line 44 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_tmp17_ = TRUE;
-#line 44 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			while (TRUE) {
 #line 767 "tracker-steroids.c"
 				gboolean _tmp18_;
@@ -773,51 +773,51 @@ static void ___lambda7_ (Block6Data* _data6_, TrackerDBCursor* cursor, GError** 
 				const gchar* _tmp25_ = NULL;
 				gchar* _tmp26_;
 				gchar* _tmp27_;
-#line 44 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_tmp18_ = _tmp17_;
-#line 44 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				if (!_tmp18_) {
 #line 781 "tracker-steroids.c"
 					gint _tmp19_;
-#line 44 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp19_ = i;
-#line 44 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					i = _tmp19_ + 1;
 #line 787 "tracker-steroids.c"
 				}
-#line 44 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_tmp17_ = FALSE;
-#line 44 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_tmp20_ = i;
-#line 44 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_tmp21_ = n_columns;
-#line 44 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				if (!(_tmp20_ < _tmp21_)) {
-#line 44 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					break;
 #line 799 "tracker-steroids.c"
 				}
-#line 45 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 45 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_tmp22_ = i;
-#line 45 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 45 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_tmp23_ = cursor;
-#line 45 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 45 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_tmp24_ = i;
-#line 45 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 45 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_tmp25_ = tracker_sparql_cursor_get_variable_name ((TrackerSparqlCursor*) _tmp23_, _tmp24_);
-#line 45 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 45 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_tmp26_ = g_strdup (_tmp25_);
-#line 45 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 45 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_g_free0 (_data6_->variable_names[_tmp22_]);
-#line 45 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 45 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data6_->variable_names[_tmp22_] = _tmp26_;
-#line 45 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 45 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_tmp27_ = _data6_->variable_names[_tmp22_];
 #line 817 "tracker-steroids.c"
 			}
 		}
 	}
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 48 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	while (TRUE) {
 #line 823 "tracker-steroids.c"
 		TrackerDBCursor* _tmp28_;
@@ -826,47 +826,47 @@ static void ___lambda7_ (Block6Data* _data6_, TrackerDBCursor* cursor, GError** 
 		gint last_offset;
 		GDataOutputStream* _tmp61_;
 		gint _tmp62_;
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 48 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_tmp28_ = cursor;
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 48 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_tmp29_ = tracker_sparql_cursor_next ((TrackerSparqlCursor*) _tmp28_, NULL, &_inner_error_);
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 48 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_tmp30_ = _tmp29_;
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 48 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_inner_error_ != NULL) {
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 48 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_propagate_error (error, _inner_error_);
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 48 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			column_data = (_vala_array_free (column_data, column_data_length1, (GDestroyNotify) g_free), NULL);
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 48 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			column_offsets = (g_free (column_offsets), NULL);
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 48 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			column_sizes = (g_free (column_sizes), NULL);
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 48 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_object_unref0 (data_output_stream);
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 48 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			return;
 #line 850 "tracker-steroids.c"
 		}
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 48 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (!_tmp30_) {
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 48 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			break;
 #line 856 "tracker-steroids.c"
 		}
-#line 49 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 49 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		last_offset = -1;
 #line 860 "tracker-steroids.c"
 		{
 			gint i;
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			i = 0;
 #line 865 "tracker-steroids.c"
 			{
 				gboolean _tmp31_;
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_tmp31_ = TRUE;
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				while (TRUE) {
 #line 872 "tracker-steroids.c"
 					gboolean _tmp32_;
@@ -899,148 +899,148 @@ static void ___lambda7_ (Block6Data* _data6_, TrackerDBCursor* cursor, GError** 
 					gint _tmp58_;
 					gint _tmp59_;
 					gint _tmp60_;
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp32_ = _tmp31_;
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (!_tmp32_) {
 #line 907 "tracker-steroids.c"
 						gint _tmp33_;
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp33_ = i;
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						i = _tmp33_ + 1;
 #line 913 "tracker-steroids.c"
 					}
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp31_ = FALSE;
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp34_ = i;
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp35_ = n_columns;
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (!(_tmp34_ < _tmp35_)) {
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						break;
 #line 925 "tracker-steroids.c"
 					}
-#line 52 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 52 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp36_ = cursor;
-#line 52 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 52 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp37_ = i;
-#line 52 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 52 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp38_ = tracker_sparql_cursor_get_string ((TrackerSparqlCursor*) _tmp36_, _tmp37_, NULL);
-#line 52 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 52 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					str = _tmp38_;
-#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 54 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp40_ = str;
-#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 54 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (_tmp40_ != NULL) {
 #line 939 "tracker-steroids.c"
 						const gchar* _tmp41_;
 						gint _tmp42_;
 						gint _tmp43_;
-#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 54 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp41_ = str;
-#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 54 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp42_ = strlen (_tmp41_);
-#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 54 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp43_ = _tmp42_;
-#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 54 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp39_ = _tmp43_;
 #line 951 "tracker-steroids.c"
 					} else {
-#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 54 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp39_ = 0;
 #line 955 "tracker-steroids.c"
 					}
-#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 54 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp44_ = column_sizes;
-#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 54 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp44__length1 = column_sizes_length1;
-#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 54 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp45_ = i;
-#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 54 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp46_ = _tmp39_;
-#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 54 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp44_[_tmp45_] = _tmp46_;
-#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 54 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp47_ = _tmp44_[_tmp45_];
-#line 55 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 55 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp48_ = column_data;
-#line 55 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 55 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp48__length1 = column_data_length1;
-#line 55 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 55 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp49_ = i;
-#line 55 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 55 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp50_ = str;
-#line 55 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 55 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp51_ = g_strdup (_tmp50_);
-#line 55 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 55 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_g_free0 (_tmp48_[_tmp49_]);
-#line 55 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 55 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp48_[_tmp49_] = _tmp51_;
-#line 55 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 55 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp52_ = _tmp48_[_tmp49_];
-#line 57 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 57 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp53_ = last_offset;
-#line 57 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 57 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp54_ = column_sizes;
-#line 57 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 57 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp54__length1 = column_sizes_length1;
-#line 57 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 57 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp55_ = i;
-#line 57 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 57 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp56_ = _tmp54_[_tmp55_];
-#line 57 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 57 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					last_offset = _tmp53_ + (_tmp56_ + 1);
-#line 58 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 58 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp57_ = column_offsets;
-#line 58 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 58 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp57__length1 = column_offsets_length1;
-#line 58 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 58 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp58_ = i;
-#line 58 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 58 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp59_ = last_offset;
-#line 58 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 58 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp57_[_tmp58_] = _tmp59_;
-#line 58 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 58 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp60_ = _tmp57_[_tmp58_];
 #line 1009 "tracker-steroids.c"
 				}
 			}
 		}
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_tmp61_ = data_output_stream;
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_tmp62_ = n_columns;
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_data_output_stream_put_int32 (_tmp61_, (gint32) _tmp62_, NULL, &_inner_error_);
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_inner_error_ != NULL) {
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_propagate_error (error, _inner_error_);
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			column_data = (_vala_array_free (column_data, column_data_length1, (GDestroyNotify) g_free), NULL);
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			column_offsets = (g_free (column_offsets), NULL);
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			column_sizes = (g_free (column_sizes), NULL);
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_object_unref0 (data_output_stream);
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			return;
 #line 1033 "tracker-steroids.c"
 		}
 		{
 			gint i;
-#line 63 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 63 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			i = 0;
 #line 1039 "tracker-steroids.c"
 			{
 				gboolean _tmp63_;
-#line 63 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 63 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_tmp63_ = TRUE;
-#line 63 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 63 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				while (TRUE) {
 #line 1046 "tracker-steroids.c"
 					gboolean _tmp64_;
@@ -1050,53 +1050,53 @@ static void ___lambda7_ (Block6Data* _data6_, TrackerDBCursor* cursor, GError** 
 					TrackerDBCursor* _tmp69_;
 					gint _tmp70_;
 					TrackerSparqlValueType _tmp71_ = 0;
-#line 63 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 63 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp64_ = _tmp63_;
-#line 63 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 63 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (!_tmp64_) {
 #line 1058 "tracker-steroids.c"
 						gint _tmp65_;
-#line 63 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 63 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp65_ = i;
-#line 63 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 63 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						i = _tmp65_ + 1;
 #line 1064 "tracker-steroids.c"
 					}
-#line 63 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 63 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp63_ = FALSE;
-#line 63 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 63 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp66_ = i;
-#line 63 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 63 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp67_ = n_columns;
-#line 63 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 63 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (!(_tmp66_ < _tmp67_)) {
-#line 63 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 63 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						break;
 #line 1076 "tracker-steroids.c"
 					}
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp68_ = data_output_stream;
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp69_ = cursor;
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp70_ = i;
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp71_ = tracker_sparql_cursor_get_value_type ((TrackerSparqlCursor*) _tmp69_, _tmp70_);
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					g_data_output_stream_put_int32 (_tmp68_, (gint32) ((gint) _tmp71_), NULL, &_inner_error_);
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (_inner_error_ != NULL) {
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						g_propagate_error (error, _inner_error_);
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						column_data = (_vala_array_free (column_data, column_data_length1, (GDestroyNotify) g_free), NULL);
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						column_offsets = (g_free (column_offsets), NULL);
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						column_sizes = (g_free (column_sizes), NULL);
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_g_object_unref0 (data_output_stream);
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						return;
 #line 1102 "tracker-steroids.c"
 					}
@@ -1105,14 +1105,14 @@ static void ___lambda7_ (Block6Data* _data6_, TrackerDBCursor* cursor, GError** 
 		}
 		{
 			gint i;
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			i = 0;
 #line 1111 "tracker-steroids.c"
 			{
 				gboolean _tmp72_;
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_tmp72_ = TRUE;
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				while (TRUE) {
 #line 1118 "tracker-steroids.c"
 					gboolean _tmp73_;
@@ -1123,55 +1123,55 @@ static void ___lambda7_ (Block6Data* _data6_, TrackerDBCursor* cursor, GError** 
 					gint _tmp78__length1;
 					gint _tmp79_;
 					gint _tmp80_;
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp73_ = _tmp72_;
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (!_tmp73_) {
 #line 1131 "tracker-steroids.c"
 						gint _tmp74_;
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp74_ = i;
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						i = _tmp74_ + 1;
 #line 1137 "tracker-steroids.c"
 					}
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp72_ = FALSE;
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp75_ = i;
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp76_ = n_columns;
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (!(_tmp75_ < _tmp76_)) {
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						break;
 #line 1149 "tracker-steroids.c"
 					}
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp77_ = data_output_stream;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp78_ = column_offsets;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp78__length1 = column_offsets_length1;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp79_ = i;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp80_ = _tmp78_[_tmp79_];
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					g_data_output_stream_put_int32 (_tmp77_, (gint32) _tmp80_, NULL, &_inner_error_);
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (_inner_error_ != NULL) {
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						g_propagate_error (error, _inner_error_);
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						column_data = (_vala_array_free (column_data, column_data_length1, (GDestroyNotify) g_free), NULL);
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						column_offsets = (g_free (column_offsets), NULL);
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						column_sizes = (g_free (column_sizes), NULL);
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_g_object_unref0 (data_output_stream);
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						return;
 #line 1177 "tracker-steroids.c"
 					}
@@ -1180,14 +1180,14 @@ static void ___lambda7_ (Block6Data* _data6_, TrackerDBCursor* cursor, GError** 
 		}
 		{
 			gint i;
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 72 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			i = 0;
 #line 1186 "tracker-steroids.c"
 			{
 				gboolean _tmp81_;
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 72 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_tmp81_ = TRUE;
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 72 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				while (TRUE) {
 #line 1193 "tracker-steroids.c"
 					gboolean _tmp82_;
@@ -1201,100 +1201,100 @@ static void ___lambda7_ (Block6Data* _data6_, TrackerDBCursor* cursor, GError** 
 					GDataOutputStream* _tmp93_;
 					const gchar* _tmp94_;
 					GDataOutputStream* _tmp95_;
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 72 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp82_ = _tmp81_;
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 72 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (!_tmp82_) {
 #line 1209 "tracker-steroids.c"
 						gint _tmp83_;
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 72 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp83_ = i;
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 72 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						i = _tmp83_ + 1;
 #line 1215 "tracker-steroids.c"
 					}
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 72 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp81_ = FALSE;
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 72 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp84_ = i;
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 72 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp85_ = n_columns;
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 72 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (!(_tmp84_ < _tmp85_)) {
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 72 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						break;
 #line 1227 "tracker-steroids.c"
 					}
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp87_ = column_data;
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp87__length1 = column_data_length1;
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp88_ = i;
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp89_ = _tmp87_[_tmp88_];
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (_tmp89_ != NULL) {
 #line 1239 "tracker-steroids.c"
 						gchar** _tmp90_;
 						gint _tmp90__length1;
 						gint _tmp91_;
 						const gchar* _tmp92_;
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp90_ = column_data;
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp90__length1 = column_data_length1;
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp91_ = i;
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp92_ = _tmp90_[_tmp91_];
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp86_ = _tmp92_;
 #line 1254 "tracker-steroids.c"
 					} else {
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_tmp86_ = "";
 #line 1258 "tracker-steroids.c"
 					}
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp93_ = data_output_stream;
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp94_ = _tmp86_;
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					g_data_output_stream_put_string (_tmp93_, _tmp94_, NULL, &_inner_error_);
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (_inner_error_ != NULL) {
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						g_propagate_error (error, _inner_error_);
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						column_data = (_vala_array_free (column_data, column_data_length1, (GDestroyNotify) g_free), NULL);
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						column_offsets = (g_free (column_offsets), NULL);
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						column_sizes = (g_free (column_sizes), NULL);
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_g_object_unref0 (data_output_stream);
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						return;
 #line 1280 "tracker-steroids.c"
 					}
-#line 74 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_tmp95_ = data_output_stream;
-#line 74 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					g_data_output_stream_put_byte (_tmp95_, (guint8) 0, NULL, &_inner_error_);
-#line 74 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (_inner_error_ != NULL) {
-#line 74 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						g_propagate_error (error, _inner_error_);
-#line 74 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						column_data = (_vala_array_free (column_data, column_data_length1, (GDestroyNotify) g_free), NULL);
-#line 74 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						column_offsets = (g_free (column_offsets), NULL);
-#line 74 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						column_sizes = (g_free (column_sizes), NULL);
-#line 74 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_g_object_unref0 (data_output_stream);
-#line 74 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						return;
 #line 1300 "tracker-steroids.c"
 					}
@@ -1302,20 +1302,20 @@ static void ___lambda7_ (Block6Data* _data6_, TrackerDBCursor* cursor, GError** 
 			}
 		}
 	}
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	column_data = (_vala_array_free (column_data, column_data_length1, (GDestroyNotify) g_free), NULL);
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	column_offsets = (g_free (column_offsets), NULL);
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	column_sizes = (g_free (column_sizes), NULL);
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (data_output_stream);
 #line 1314 "tracker-steroids.c"
 }
 
 
 static void ____lambda7__tracker_store_sparql_query_in_thread (TrackerDBCursor* cursor, gpointer self, GError** error) {
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	___lambda7_ (self, cursor, error);
 #line 1321 "tracker-steroids.c"
 }
@@ -1323,13 +1323,13 @@ static void ____lambda7__tracker_store_sparql_query_in_thread (TrackerDBCursor* 
 
 static void tracker_steroids_query_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSteroidsQueryData* _data_;
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = _user_data_;
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_source_object_ = source_object;
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_res_ = _res_;
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_query_co (_data_);
 #line 1335 "tracker-steroids.c"
 }
@@ -1338,232 +1338,232 @@ static void tracker_steroids_query_ready (GObject* source_object, GAsyncResult* 
 static gchar** _vala_array_dup1 (gchar** self, int length) {
 	gchar** result;
 	int i;
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	result = g_new0 (gchar*, length + 1);
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	for (i = 0; i < length; i++) {
 #line 1346 "tracker-steroids.c"
 		gchar* _tmp0_;
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_tmp0_ = g_strdup (self[i]);
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		result[i] = _tmp0_;
 #line 1352 "tracker-steroids.c"
 	}
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return result;
 #line 1356 "tracker-steroids.c"
 }
 
 
 static gpointer _g_error_copy0 (gpointer self) {
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return self ? g_error_copy (self) : NULL;
 #line 1363 "tracker-steroids.c"
 }
 
 
 static gboolean tracker_steroids_query_co (TrackerSteroidsQueryData* _data_) {
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	switch (_data_->_state_) {
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 0:
 #line 1372 "tracker-steroids.c"
 		goto _state_0;
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 1:
 #line 1376 "tracker-steroids.c"
 		goto _state_1;
 		default:
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_assert_not_reached ();
 #line 1381 "tracker-steroids.c"
 	}
 	_state_0:
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_data5_ = g_slice_new0 (Block5Data);
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_data5_->_ref_count_ = 1;
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_data5_->self = g_object_ref (_data_->self);
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp0_ = _data_->output_stream;
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->_data5_->output_stream);
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_data5_->output_stream = _data_->_tmp0_;
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_data5_->_async_data_ = _data_;
-#line 28 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 28 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp1_ = _data_->sender;
-#line 28 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 28 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp2_ = NULL;
-#line 28 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 28 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp2_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp1_, "Steroids.Query", NULL);
-#line 28 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 28 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->request = _data_->_tmp2_;
-#line 29 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 29 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp3_ = _data_->query;
-#line 29 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 29 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_dbus_request_debug (_data_->request, "query: %s", _data_->_tmp3_, NULL);
 #line 1410 "tracker-steroids.c"
 	{
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_data6_ = g_slice_new0 (Block6Data);
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_data6_->_ref_count_ = 1;
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_data6_->_data5_ = block5_data_ref (_data_->_data5_);
-#line 31 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_data6_->variable_names = NULL;
-#line 31 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_data6_->variable_names_length1 = 0;
-#line 31 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_data6_->_variable_names_size_ = _data_->_data6_->variable_names_length1;
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp4_ = _data_->query;
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp5_ = _data_->sender;
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_state_ = 1;
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		tracker_store_sparql_query (_data_->_tmp4_, TRACKER_STORE_PRIORITY_HIGH, ____lambda7__tracker_store_sparql_query_in_thread, _data_->_data6_, (const gchar*) _data_->_tmp5_, tracker_steroids_query_ready, _data_);
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		return FALSE;
 #line 1434 "tracker-steroids.c"
 		_state_1:
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		tracker_store_sparql_query_finish (_data_->_res_, &_data_->_inner_error_);
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			block6_data_unref (_data_->_data6_);
-#line 33 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_data6_ = NULL;
 #line 1444 "tracker-steroids.c"
 			goto __catch13_g_error;
 		}
-#line 79 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 79 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		tracker_dbus_request_end (_data_->request, NULL);
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp6_ = (_data_->_data6_->variable_names != NULL) ? _vala_array_dup1 (_data_->_data6_->variable_names, _data_->_data6_->variable_names_length1) : ((gpointer) _data_->_data6_->variable_names);
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp6__length1 = _data_->_data6_->variable_names_length1;
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp7_ = _data_->_tmp6_;
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp7__length1 = _data_->_tmp6__length1;
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->result_length1 = _data_->_tmp7__length1;
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->result = _data_->_tmp7_;
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		block6_data_unref (_data_->_data6_);
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_data6_ = NULL;
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		block5_data_unref (_data_->_data5_);
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_data5_ = NULL;
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_data_->_state_ == 0) {
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1473 "tracker-steroids.c"
 		} else {
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 1477 "tracker-steroids.c"
 		}
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_object_unref (_data_->_async_result);
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		return FALSE;
 #line 1483 "tracker-steroids.c"
 	}
 	goto __finally13;
 	__catch13_g_error:
 	{
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->e = _data_->_inner_error_;
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_inner_error_ = NULL;
-#line 83 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 83 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp8_ = _data_->e;
-#line 83 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 83 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		tracker_dbus_request_end (_data_->request, _data_->_tmp8_);
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 84 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp9_ = _data_->e;
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 84 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_data_->_tmp9_->domain == TRACKER_SPARQL_ERROR) {
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp10_ = _data_->e;
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp11_ = _g_error_copy0 (_data_->_tmp10_);
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_inner_error_ = _data_->_tmp11_;
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_error_free0 (_data_->e);
 #line 1508 "tracker-steroids.c"
 			goto __finally13;
 		} else {
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp12_ = _data_->e;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp13_ = _data_->_tmp12_->message;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp14_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp13_);
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_inner_error_ = _data_->_tmp14_;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_error_free0 (_data_->e);
 #line 1521 "tracker-steroids.c"
 			goto __finally13;
 		}
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_g_error_free0 (_data_->e);
 #line 1526 "tracker-steroids.c"
 	}
 	__finally13:
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_error_free (_data_->_inner_error_);
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	block5_data_unref (_data_->_data5_);
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_data5_ = NULL;
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_state_ == 0) {
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1541 "tracker-steroids.c"
 	} else {
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1545 "tracker-steroids.c"
 	}
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_object_unref (_data_->_async_result);
-#line 30 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 30 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	block5_data_unref (_data_->_data5_);
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_data5_ = NULL;
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_state_ == 0) {
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1559 "tracker-steroids.c"
 	} else {
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1563 "tracker-steroids.c"
 	}
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_object_unref (_data_->_async_result);
-#line 27 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
 #line 1569 "tracker-steroids.c"
 }
@@ -1572,15 +1572,15 @@ static gboolean tracker_steroids_query_co (TrackerSteroidsQueryData* _data_) {
 static void tracker_steroids_update_internal_data_free (gpointer _data) {
 	TrackerSteroidsUpdateInternalData* _data_;
 	_data_ = _data;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->input_stream);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_variant_unref0 (_data_->result);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_slice_free (TrackerSteroidsUpdateInternalData, _data_);
 #line 1586 "tracker-steroids.c"
 }
@@ -1595,41 +1595,41 @@ static void tracker_steroids_update_internal (TrackerSteroids* self, const char*
 	gboolean _tmp4_;
 	GUnixInputStream* _tmp5_;
 	GUnixInputStream* _tmp6_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = g_slice_new0 (TrackerSteroidsUpdateInternalData);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_steroids_update_internal);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_steroids_update_internal_data_free);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->self = _tmp0_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp1_ = sender;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->sender = _tmp2_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp3_ = priority;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->priority = _tmp3_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp4_ = blank;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->blank = _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp5_ = input_stream;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp6_ = _g_object_ref0 (_tmp5_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->input_stream);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->input_stream = _tmp6_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_update_internal_co (_data_);
 #line 1635 "tracker-steroids.c"
 }
@@ -1638,19 +1638,19 @@ static void tracker_steroids_update_internal (TrackerSteroids* self, const char*
 static GVariant* tracker_steroids_update_internal_finish (TrackerSteroids* self, GAsyncResult* _res_, GError** error) {
 	GVariant* result;
 	TrackerSteroidsUpdateInternalData* _data_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		return NULL;
 #line 1646 "tracker-steroids.c"
 	}
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	result = _data_->result;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->result = NULL;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return result;
 #line 1656 "tracker-steroids.c"
 }
@@ -1658,305 +1658,305 @@ static GVariant* tracker_steroids_update_internal_finish (TrackerSteroids* self,
 
 static void tracker_steroids_update_internal_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSteroidsUpdateInternalData* _data_;
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = _user_data_;
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_source_object_ = source_object;
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_res_ = _res_;
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_update_internal_co (_data_);
 #line 1670 "tracker-steroids.c"
 }
 
 
 static gboolean tracker_steroids_update_internal_co (TrackerSteroidsUpdateInternalData* _data_) {
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	switch (_data_->_state_) {
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 0:
 #line 1679 "tracker-steroids.c"
 		goto _state_0;
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 1:
 #line 1683 "tracker-steroids.c"
 		goto _state_1;
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 2:
 #line 1687 "tracker-steroids.c"
 		goto _state_2;
 		default:
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_assert_not_reached ();
 #line 1692 "tracker-steroids.c"
 	}
 	_state_0:
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp1_ = _data_->priority;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_tmp1_ != TRACKER_STORE_PRIORITY_HIGH) {
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp0_ = "Batch";
 #line 1701 "tracker-steroids.c"
 	} else {
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp0_ = "";
 #line 1705 "tracker-steroids.c"
 	}
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 96 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp3_ = _data_->blank;
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 96 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_tmp3_) {
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 96 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp2_ = "Blank";
 #line 1713 "tracker-steroids.c"
 	} else {
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 96 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp2_ = "";
 #line 1717 "tracker-steroids.c"
 	}
-#line 93 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 93 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp4_ = _data_->sender;
-#line 93 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 93 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp5_ = _data_->_tmp0_;
-#line 93 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 93 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp6_ = _data_->_tmp2_;
-#line 93 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 93 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp7_ = NULL;
-#line 93 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 93 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp7_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp4_, "Steroids.%sUpdate%s", _data_->_tmp5_, _data_->_tmp6_, NULL);
-#line 93 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 93 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->request = _data_->_tmp7_;
 #line 1731 "tracker-steroids.c"
 	{
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 100 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp8_ = _data_->input_stream;
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 100 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp9_ = g_data_input_stream_new ((GInputStream*) _data_->_tmp8_);
-#line 100 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 100 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->data_input_stream = _data_->_tmp9_;
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 101 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp10_ = _data_->data_input_stream;
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 101 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_buffered_input_stream_set_buffer_size ((GBufferedInputStream*) _data_->_tmp10_, (gsize) TRACKER_STEROIDS_BUFFER_SIZE);
-#line 102 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 102 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp11_ = _data_->data_input_stream;
-#line 102 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 102 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_data_input_stream_set_byte_order (_data_->_tmp11_, G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN);
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 104 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp12_ = _data_->data_input_stream;
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 104 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp13_ = 0;
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 104 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp13_ = g_data_input_stream_read_int32 (_data_->_tmp12_, NULL, &_data_->_inner_error_);
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 104 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->query_size = (gint) _data_->_tmp13_;
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 104 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 104 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_object_unref0 (_data_->data_input_stream);
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 104 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			if (g_error_matches (_data_->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
 #line 1761 "tracker-steroids.c"
 				goto __catch14_tracker_db_no_space;
 			}
 			goto __catch14_g_error;
 		}
-#line 107 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 107 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp14_ = _data_->query_size;
-#line 107 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 107 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp15_ = NULL;
-#line 107 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 107 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp15_ = g_new0 (guint8, _data_->_tmp14_ + 1);
-#line 107 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 107 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->query = _data_->_tmp15_;
-#line 107 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 107 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->query_length1 = _data_->_tmp14_ + 1;
-#line 107 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 107 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_query_size_ = _data_->query_length1;
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp16_ = _data_->data_input_stream;
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp17_ = _data_->query;
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp17__length1 = _data_->query_length1;
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp18_ = _data_->query_size;
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp19_ = 0UL;
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_input_stream_read_all ((GInputStream*) _data_->_tmp16_, (void*) (_data_->_tmp17_ + 0), (gsize) (_data_->_tmp18_ - 0), &_data_->_tmp19_, NULL, &_data_->_inner_error_);
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->bytes_read = _data_->_tmp19_;
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->query = (g_free (_data_->query), NULL);
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_object_unref0 (_data_->data_input_stream);
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			if (g_error_matches (_data_->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
 #line 1800 "tracker-steroids.c"
 				goto __catch14_tracker_db_no_space;
 			}
 			goto __catch14_g_error;
 		}
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 111 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_g_object_unref0 (_data_->data_input_stream);
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 111 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->data_input_stream = NULL;
-#line 113 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 113 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp20_ = _data_->request;
-#line 113 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 113 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp21_ = _data_->query;
-#line 113 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 113 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp21__length1 = _data_->query_length1;
-#line 113 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 113 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		tracker_dbus_request_debug (_data_->_tmp20_, "query: %s", (const gchar*) _data_->_tmp21_, NULL);
-#line 115 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 115 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp22_ = _data_->blank;
-#line 115 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 115 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (!_data_->_tmp22_) {
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp23_ = _data_->query;
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp23__length1 = _data_->query_length1;
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp24_ = _data_->priority;
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp25_ = _data_->sender;
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_state_ = 1;
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			tracker_store_sparql_update ((const gchar*) _data_->_tmp23_, _data_->_tmp24_, (const gchar*) _data_->_tmp25_, tracker_steroids_update_internal_ready, _data_);
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			return FALSE;
 #line 1835 "tracker-steroids.c"
 			_state_1:
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			tracker_store_sparql_update_finish (_data_->_res_, &_data_->_inner_error_);
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			if (_data_->_inner_error_ != NULL) {
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->query = (g_free (_data_->query), NULL);
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_g_object_unref0 (_data_->data_input_stream);
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				if (g_error_matches (_data_->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
 #line 1847 "tracker-steroids.c"
 					goto __catch14_tracker_db_no_space;
 				}
 				goto __catch14_g_error;
 			}
-#line 118 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 118 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp26_ = _data_->request;
-#line 118 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 118 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			tracker_dbus_request_end (_data_->_tmp26_, NULL);
-#line 120 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->result = NULL;
-#line 120 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->query = (g_free (_data_->query), NULL);
-#line 120 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_object_unref0 (_data_->data_input_stream);
-#line 120 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			if (_data_->_state_ == 0) {
-#line 120 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1866 "tracker-steroids.c"
 			} else {
-#line 120 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 1870 "tracker-steroids.c"
 			}
-#line 120 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_object_unref (_data_->_async_result);
-#line 120 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			return FALSE;
 #line 1876 "tracker-steroids.c"
 		} else {
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp27_ = _data_->query;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp27__length1 = _data_->query_length1;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp28_ = _data_->priority;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp29_ = _data_->sender;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_state_ = 2;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			tracker_store_sparql_update_blank ((const gchar*) _data_->_tmp27_, _data_->_tmp28_, (const gchar*) _data_->_tmp29_, tracker_steroids_update_internal_ready, _data_);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			return FALSE;
 #line 1892 "tracker-steroids.c"
 			_state_2:
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp30_ = NULL;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp30_ = tracker_store_sparql_update_blank_finish (_data_->_res_, &_data_->_inner_error_);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->variant = _data_->_tmp30_;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			if (_data_->_inner_error_ != NULL) {
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->query = (g_free (_data_->query), NULL);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_g_object_unref0 (_data_->data_input_stream);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				if (g_error_matches (_data_->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
 #line 1908 "tracker-steroids.c"
 					goto __catch14_tracker_db_no_space;
 				}
 				goto __catch14_g_error;
 			}
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 124 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp31_ = _data_->request;
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 124 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			tracker_dbus_request_end (_data_->_tmp31_, NULL);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 126 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->result = _data_->variant;
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 126 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->query = (g_free (_data_->query), NULL);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 126 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_object_unref0 (_data_->data_input_stream);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 126 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			if (_data_->_state_ == 0) {
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 126 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1927 "tracker-steroids.c"
 			} else {
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 126 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 1931 "tracker-steroids.c"
 			}
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 126 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_object_unref (_data_->_async_result);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 126 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			return FALSE;
 #line 1937 "tracker-steroids.c"
 		}
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->query = (g_free (_data_->query), NULL);
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_g_object_unref0 (_data_->data_input_stream);
 #line 1943 "tracker-steroids.c"
 	}
 	goto __finally14;
 	__catch14_tracker_db_no_space:
 	{
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->ie = _data_->_inner_error_;
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_inner_error_ = NULL;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 129 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp32_ = _data_->ie;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 129 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp33_ = _data_->_tmp32_->message;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 129 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp34_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, _data_->_tmp33_);
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 129 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_inner_error_ = _data_->_tmp34_;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 129 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_g_error_free0 (_data_->ie);
 #line 1962 "tracker-steroids.c"
 		goto __finally14;
@@ -1964,80 +1964,80 @@ static gboolean tracker_steroids_update_internal_co (TrackerSteroidsUpdateIntern
 	goto __finally14;
 	__catch14_g_error:
 	{
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->e = _data_->_inner_error_;
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_inner_error_ = NULL;
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp35_ = _data_->request;
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp36_ = _data_->e;
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		tracker_dbus_request_end (_data_->_tmp35_, _data_->_tmp36_);
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 132 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp37_ = _data_->e;
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 132 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_data_->_tmp37_->domain == TRACKER_SPARQL_ERROR) {
-#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 133 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp38_ = _data_->e;
-#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 133 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp39_ = _g_error_copy0 (_data_->_tmp38_);
-#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 133 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_inner_error_ = _data_->_tmp39_;
-#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 133 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_error_free0 (_data_->e);
 #line 1990 "tracker-steroids.c"
 			goto __finally14;
 		} else {
-#line 135 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 135 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp40_ = _data_->e;
-#line 135 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 135 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp41_ = _data_->_tmp40_->message;
-#line 135 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 135 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp42_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp41_);
-#line 135 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 135 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_inner_error_ = _data_->_tmp42_;
-#line 135 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 135 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_error_free0 (_data_->e);
 #line 2003 "tracker-steroids.c"
 			goto __finally14;
 		}
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_g_error_free0 (_data_->e);
 #line 2008 "tracker-steroids.c"
 	}
 	__finally14:
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_error_free (_data_->_inner_error_);
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_state_ == 0) {
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2019 "tracker-steroids.c"
 	} else {
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 2023 "tracker-steroids.c"
 	}
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_object_unref (_data_->_async_result);
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_state_ == 0) {
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2033 "tracker-steroids.c"
 	} else {
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 2037 "tracker-steroids.c"
 	}
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_object_unref (_data_->_async_result);
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
 #line 2043 "tracker-steroids.c"
 }
@@ -2046,13 +2046,13 @@ static gboolean tracker_steroids_update_internal_co (TrackerSteroidsUpdateIntern
 static void tracker_steroids_update_data_free (gpointer _data) {
 	TrackerSteroidsUpdateData* _data_;
 	_data_ = _data;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->input_stream);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_slice_free (TrackerSteroidsUpdateData, _data_);
 #line 2058 "tracker-steroids.c"
 }
@@ -2065,33 +2065,33 @@ void tracker_steroids_update (TrackerSteroids* self, const char* sender, GUnixIn
 	char* _tmp2_;
 	GUnixInputStream* _tmp3_;
 	GUnixInputStream* _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = g_slice_new0 (TrackerSteroidsUpdateData);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_steroids_update);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_steroids_update_data_free);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->self = _tmp0_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp1_ = sender;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->sender = _tmp2_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp3_ = input_stream;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->input_stream);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->input_stream = _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_update_co (_data_);
 #line 2097 "tracker-steroids.c"
 }
@@ -2099,13 +2099,13 @@ void tracker_steroids_update (TrackerSteroids* self, const char* sender, GUnixIn
 
 void tracker_steroids_update_finish (TrackerSteroids* self, GAsyncResult* _res_, GError** error) {
 	TrackerSteroidsUpdateData* _data_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		return;
 #line 2107 "tracker-steroids.c"
 	}
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
 #line 2111 "tracker-steroids.c"
 }
@@ -2113,90 +2113,90 @@ void tracker_steroids_update_finish (TrackerSteroids* self, GAsyncResult* _res_,
 
 static void tracker_steroids_update_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSteroidsUpdateData* _data_;
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = _user_data_;
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_source_object_ = source_object;
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_res_ = _res_;
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_update_co (_data_);
 #line 2125 "tracker-steroids.c"
 }
 
 
 static gboolean tracker_steroids_update_co (TrackerSteroidsUpdateData* _data_) {
-#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	switch (_data_->_state_) {
-#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 0:
 #line 2134 "tracker-steroids.c"
 		goto _state_0;
-#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 1:
 #line 2138 "tracker-steroids.c"
 		goto _state_1;
 		default:
-#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_assert_not_reached ();
 #line 2143 "tracker-steroids.c"
 	}
 	_state_0:
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp0_ = _data_->sender;
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp1_ = _data_->input_stream;
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_state_ = 1;
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_update_internal (_data_->self, _data_->_tmp0_, TRACKER_STORE_PRIORITY_HIGH, FALSE, _data_->_tmp1_, tracker_steroids_update_ready, _data_);
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
 #line 2156 "tracker-steroids.c"
 	_state_1:
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp2_ = NULL;
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp2_ = tracker_steroids_update_internal_finish (_data_->self, _data_->_res_, &_data_->_inner_error_);
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp3_ = _data_->_tmp2_;
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_variant_unref0 (_data_->_tmp3_);
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_error_free (_data_->_inner_error_);
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_data_->_state_ == 0) {
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2176 "tracker-steroids.c"
 		} else {
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 2180 "tracker-steroids.c"
 		}
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_object_unref (_data_->_async_result);
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		return FALSE;
 #line 2186 "tracker-steroids.c"
 	}
-#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_state_ == 0) {
-#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2192 "tracker-steroids.c"
 	} else {
-#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 2196 "tracker-steroids.c"
 	}
-#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_object_unref (_data_->_async_result);
-#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
 #line 2202 "tracker-steroids.c"
 }
@@ -2205,13 +2205,13 @@ static gboolean tracker_steroids_update_co (TrackerSteroidsUpdateData* _data_) {
 static void tracker_steroids_batch_update_data_free (gpointer _data) {
 	TrackerSteroidsBatchUpdateData* _data_;
 	_data_ = _data;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->input_stream);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_slice_free (TrackerSteroidsBatchUpdateData, _data_);
 #line 2217 "tracker-steroids.c"
 }
@@ -2224,33 +2224,33 @@ void tracker_steroids_batch_update (TrackerSteroids* self, const char* sender, G
 	char* _tmp2_;
 	GUnixInputStream* _tmp3_;
 	GUnixInputStream* _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = g_slice_new0 (TrackerSteroidsBatchUpdateData);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_steroids_batch_update);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_steroids_batch_update_data_free);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->self = _tmp0_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp1_ = sender;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->sender = _tmp2_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp3_ = input_stream;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->input_stream);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->input_stream = _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_batch_update_co (_data_);
 #line 2256 "tracker-steroids.c"
 }
@@ -2258,13 +2258,13 @@ void tracker_steroids_batch_update (TrackerSteroids* self, const char* sender, G
 
 void tracker_steroids_batch_update_finish (TrackerSteroids* self, GAsyncResult* _res_, GError** error) {
 	TrackerSteroidsBatchUpdateData* _data_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		return;
 #line 2266 "tracker-steroids.c"
 	}
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
 #line 2270 "tracker-steroids.c"
 }
@@ -2272,90 +2272,90 @@ void tracker_steroids_batch_update_finish (TrackerSteroids* self, GAsyncResult* 
 
 static void tracker_steroids_batch_update_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSteroidsBatchUpdateData* _data_;
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = _user_data_;
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_source_object_ = source_object;
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_res_ = _res_;
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_batch_update_co (_data_);
 #line 2284 "tracker-steroids.c"
 }
 
 
 static gboolean tracker_steroids_batch_update_co (TrackerSteroidsBatchUpdateData* _data_) {
-#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 144 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	switch (_data_->_state_) {
-#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 144 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 0:
 #line 2293 "tracker-steroids.c"
 		goto _state_0;
-#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 144 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 1:
 #line 2297 "tracker-steroids.c"
 		goto _state_1;
 		default:
-#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 144 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_assert_not_reached ();
 #line 2302 "tracker-steroids.c"
 	}
 	_state_0:
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp0_ = _data_->sender;
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp1_ = _data_->input_stream;
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_state_ = 1;
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_update_internal (_data_->self, _data_->_tmp0_, TRACKER_STORE_PRIORITY_LOW, FALSE, _data_->_tmp1_, tracker_steroids_batch_update_ready, _data_);
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
 #line 2315 "tracker-steroids.c"
 	_state_1:
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp2_ = NULL;
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp2_ = tracker_steroids_update_internal_finish (_data_->self, _data_->_res_, &_data_->_inner_error_);
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp3_ = _data_->_tmp2_;
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_variant_unref0 (_data_->_tmp3_);
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_error_free (_data_->_inner_error_);
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_data_->_state_ == 0) {
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2335 "tracker-steroids.c"
 		} else {
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 2339 "tracker-steroids.c"
 		}
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_object_unref (_data_->_async_result);
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		return FALSE;
 #line 2345 "tracker-steroids.c"
 	}
-#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 144 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_state_ == 0) {
-#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 144 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2351 "tracker-steroids.c"
 	} else {
-#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 144 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 2355 "tracker-steroids.c"
 	}
-#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 144 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_object_unref (_data_->_async_result);
-#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 144 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
 #line 2361 "tracker-steroids.c"
 }
@@ -2364,15 +2364,15 @@ static gboolean tracker_steroids_batch_update_co (TrackerSteroidsBatchUpdateData
 static void tracker_steroids_update_blank_data_free (gpointer _data) {
 	TrackerSteroidsUpdateBlankData* _data_;
 	_data_ = _data;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->input_stream);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_variant_unref0 (_data_->result);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_slice_free (TrackerSteroidsUpdateBlankData, _data_);
 #line 2378 "tracker-steroids.c"
 }
@@ -2385,33 +2385,33 @@ void tracker_steroids_update_blank (TrackerSteroids* self, const char* sender, G
 	char* _tmp2_;
 	GUnixInputStream* _tmp3_;
 	GUnixInputStream* _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = g_slice_new0 (TrackerSteroidsUpdateBlankData);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_steroids_update_blank);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_steroids_update_blank_data_free);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->self = _tmp0_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp1_ = sender;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->sender = _tmp2_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp3_ = input_stream;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->input_stream);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->input_stream = _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_update_blank_co (_data_);
 #line 2417 "tracker-steroids.c"
 }
@@ -2420,19 +2420,19 @@ void tracker_steroids_update_blank (TrackerSteroids* self, const char* sender, G
 GVariant* tracker_steroids_update_blank_finish (TrackerSteroids* self, GAsyncResult* _res_, GError** error) {
 	GVariant* result;
 	TrackerSteroidsUpdateBlankData* _data_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		return NULL;
 #line 2428 "tracker-steroids.c"
 	}
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	result = _data_->result;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->result = NULL;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return result;
 #line 2438 "tracker-steroids.c"
 }
@@ -2440,104 +2440,104 @@ GVariant* tracker_steroids_update_blank_finish (TrackerSteroids* self, GAsyncRes
 
 static void tracker_steroids_update_blank_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSteroidsUpdateBlankData* _data_;
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = _user_data_;
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_source_object_ = source_object;
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_res_ = _res_;
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_update_blank_co (_data_);
 #line 2452 "tracker-steroids.c"
 }
 
 
 static gboolean tracker_steroids_update_blank_co (TrackerSteroidsUpdateBlankData* _data_) {
-#line 149 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	switch (_data_->_state_) {
-#line 149 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 0:
 #line 2461 "tracker-steroids.c"
 		goto _state_0;
-#line 149 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 1:
 #line 2465 "tracker-steroids.c"
 		goto _state_1;
 		default:
-#line 149 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_assert_not_reached ();
 #line 2470 "tracker-steroids.c"
 	}
 	_state_0:
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp0_ = _data_->sender;
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp1_ = _data_->input_stream;
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_state_ = 1;
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_update_internal (_data_->self, _data_->_tmp0_, TRACKER_STORE_PRIORITY_HIGH, TRUE, _data_->_tmp1_, tracker_steroids_update_blank_ready, _data_);
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
 #line 2483 "tracker-steroids.c"
 	_state_1:
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp2_ = NULL;
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp2_ = tracker_steroids_update_internal_finish (_data_->self, _data_->_res_, &_data_->_inner_error_);
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp3_ = _data_->_tmp2_;
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_error_free (_data_->_inner_error_);
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_data_->_state_ == 0) {
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2501 "tracker-steroids.c"
 		} else {
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 2505 "tracker-steroids.c"
 		}
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_object_unref (_data_->_async_result);
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		return FALSE;
 #line 2511 "tracker-steroids.c"
 	}
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->result = _data_->_tmp3_;
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_state_ == 0) {
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2519 "tracker-steroids.c"
 	} else {
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 2523 "tracker-steroids.c"
 	}
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_object_unref (_data_->_async_result);
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
-#line 149 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_state_ == 0) {
-#line 149 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2533 "tracker-steroids.c"
 	} else {
-#line 149 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 2537 "tracker-steroids.c"
 	}
-#line 149 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_object_unref (_data_->_async_result);
-#line 149 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
 #line 2543 "tracker-steroids.c"
 }
@@ -2546,15 +2546,15 @@ static gboolean tracker_steroids_update_blank_co (TrackerSteroidsUpdateBlankData
 static void tracker_steroids_batch_update_blank_data_free (gpointer _data) {
 	TrackerSteroidsBatchUpdateBlankData* _data_;
 	_data_ = _data;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->input_stream);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_variant_unref0 (_data_->result);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_slice_free (TrackerSteroidsBatchUpdateBlankData, _data_);
 #line 2560 "tracker-steroids.c"
 }
@@ -2567,33 +2567,33 @@ void tracker_steroids_batch_update_blank (TrackerSteroids* self, const char* sen
 	char* _tmp2_;
 	GUnixInputStream* _tmp3_;
 	GUnixInputStream* _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = g_slice_new0 (TrackerSteroidsBatchUpdateBlankData);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_steroids_batch_update_blank);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_steroids_batch_update_blank_data_free);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->self = _tmp0_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp1_ = sender;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->sender = _tmp2_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp3_ = input_stream;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->input_stream);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->input_stream = _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_batch_update_blank_co (_data_);
 #line 2599 "tracker-steroids.c"
 }
@@ -2602,19 +2602,19 @@ void tracker_steroids_batch_update_blank (TrackerSteroids* self, const char* sen
 GVariant* tracker_steroids_batch_update_blank_finish (TrackerSteroids* self, GAsyncResult* _res_, GError** error) {
 	GVariant* result;
 	TrackerSteroidsBatchUpdateBlankData* _data_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		return NULL;
 #line 2610 "tracker-steroids.c"
 	}
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	result = _data_->result;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->result = NULL;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return result;
 #line 2620 "tracker-steroids.c"
 }
@@ -2622,104 +2622,104 @@ GVariant* tracker_steroids_batch_update_blank_finish (TrackerSteroids* self, GAs
 
 static void tracker_steroids_batch_update_blank_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSteroidsBatchUpdateBlankData* _data_;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = _user_data_;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_source_object_ = source_object;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_res_ = _res_;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_batch_update_blank_co (_data_);
 #line 2634 "tracker-steroids.c"
 }
 
 
 static gboolean tracker_steroids_batch_update_blank_co (TrackerSteroidsBatchUpdateBlankData* _data_) {
-#line 154 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 154 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	switch (_data_->_state_) {
-#line 154 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 154 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 0:
 #line 2643 "tracker-steroids.c"
 		goto _state_0;
-#line 154 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 154 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 1:
 #line 2647 "tracker-steroids.c"
 		goto _state_1;
 		default:
-#line 154 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 154 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_assert_not_reached ();
 #line 2652 "tracker-steroids.c"
 	}
 	_state_0:
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp0_ = _data_->sender;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp1_ = _data_->input_stream;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_state_ = 1;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_update_internal (_data_->self, _data_->_tmp0_, TRACKER_STORE_PRIORITY_LOW, TRUE, _data_->_tmp1_, tracker_steroids_batch_update_blank_ready, _data_);
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
 #line 2665 "tracker-steroids.c"
 	_state_1:
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp2_ = NULL;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp2_ = tracker_steroids_update_internal_finish (_data_->self, _data_->_res_, &_data_->_inner_error_);
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp3_ = _data_->_tmp2_;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_error_free (_data_->_inner_error_);
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_data_->_state_ == 0) {
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2683 "tracker-steroids.c"
 		} else {
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 2687 "tracker-steroids.c"
 		}
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_object_unref (_data_->_async_result);
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		return FALSE;
 #line 2693 "tracker-steroids.c"
 	}
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->result = _data_->_tmp3_;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_state_ == 0) {
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2701 "tracker-steroids.c"
 	} else {
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 2705 "tracker-steroids.c"
 	}
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_object_unref (_data_->_async_result);
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
-#line 154 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 154 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_state_ == 0) {
-#line 154 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 154 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2715 "tracker-steroids.c"
 	} else {
-#line 154 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 154 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 2719 "tracker-steroids.c"
 	}
-#line 154 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 154 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_object_unref (_data_->_async_result);
-#line 154 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 154 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
 #line 2725 "tracker-steroids.c"
 }
@@ -2728,15 +2728,15 @@ static gboolean tracker_steroids_batch_update_blank_co (TrackerSteroidsBatchUpda
 static void tracker_steroids_update_array_data_free (gpointer _data) {
 	TrackerSteroidsUpdateArrayData* _data_;
 	_data_ = _data;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->input_stream);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_variant_unref0 (_data_->result);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_slice_free (TrackerSteroidsUpdateArrayData, _data_);
 #line 2742 "tracker-steroids.c"
 }
@@ -2749,33 +2749,33 @@ void tracker_steroids_update_array (TrackerSteroids* self, const char* sender, G
 	char* _tmp2_;
 	GUnixInputStream* _tmp3_;
 	GUnixInputStream* _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = g_slice_new0 (TrackerSteroidsUpdateArrayData);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_steroids_update_array);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_steroids_update_array_data_free);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->self = _tmp0_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp1_ = sender;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->sender = _tmp2_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp3_ = input_stream;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_g_object_unref0 (_data_->input_stream);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->input_stream = _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_update_array_co (_data_);
 #line 2781 "tracker-steroids.c"
 }
@@ -2784,19 +2784,19 @@ void tracker_steroids_update_array (TrackerSteroids* self, const char* sender, G
 GVariant* tracker_steroids_update_array_finish (TrackerSteroids* self, GAsyncResult* _res_, GError** error) {
 	GVariant* result;
 	TrackerSteroidsUpdateArrayData* _data_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		return NULL;
 #line 2792 "tracker-steroids.c"
 	}
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	result = _data_->result;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->result = NULL;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return result;
 #line 2802 "tracker-steroids.c"
 }
@@ -2804,585 +2804,585 @@ GVariant* tracker_steroids_update_array_finish (TrackerSteroids* self, GAsyncRes
 
 static void tracker_steroids_update_array_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSteroidsUpdateArrayData* _data_;
-#line 192 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_ = _user_data_;
-#line 192 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_source_object_ = source_object;
-#line 192 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_res_ = _res_;
-#line 192 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_update_array_co (_data_);
 #line 2816 "tracker-steroids.c"
 }
 
 
 static gboolean tracker_steroids_update_array_co (TrackerSteroidsUpdateArrayData* _data_) {
-#line 159 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	switch (_data_->_state_) {
-#line 159 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 0:
 #line 2825 "tracker-steroids.c"
 		goto _state_0;
-#line 159 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 1:
 #line 2829 "tracker-steroids.c"
 		goto _state_1;
-#line 159 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		case 2:
 #line 2833 "tracker-steroids.c"
 		goto _state_2;
 		default:
-#line 159 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_assert_not_reached ();
 #line 2838 "tracker-steroids.c"
 	}
 	_state_0:
-#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 160 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp0_ = _data_->sender;
-#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 160 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp1_ = NULL;
-#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 160 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->_tmp1_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp0_, "Steroids.UpdateArray", NULL);
-#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 160 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	_data_->request = _data_->_tmp1_;
 #line 2849 "tracker-steroids.c"
 	{
-#line 162 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 162 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp2_ = _data_->input_stream;
-#line 162 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 162 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp3_ = g_data_input_stream_new ((GInputStream*) _data_->_tmp2_);
-#line 162 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 162 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->data_input_stream = _data_->_tmp3_;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 163 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp4_ = _data_->data_input_stream;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 163 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_buffered_input_stream_set_buffer_size ((GBufferedInputStream*) _data_->_tmp4_, (gsize) TRACKER_STEROIDS_BUFFER_SIZE);
-#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 164 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp5_ = _data_->data_input_stream;
-#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 164 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_data_input_stream_set_byte_order (_data_->_tmp5_, G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN);
-#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 166 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp6_ = _data_->data_input_stream;
-#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 166 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp7_ = 0;
-#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 166 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp7_ = g_data_input_stream_read_int32 (_data_->_tmp6_, NULL, &_data_->_inner_error_);
-#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 166 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->query_count = (gint) _data_->_tmp7_;
-#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 166 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 166 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_object_unref0 (_data_->data_input_stream);
 #line 2877 "tracker-steroids.c"
 			goto __catch15_g_error;
 		}
-#line 168 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 168 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp8_ = g_string_new ("");
-#line 168 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 168 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->combined_query = _data_->_tmp8_;
-#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 169 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp9_ = _data_->query_count;
-#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 169 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp10_ = NULL;
-#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 169 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp10_ = g_new0 (gchar*, _data_->_tmp9_ + 1);
-#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 169 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->query_array = _data_->_tmp10_;
-#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 169 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->query_array_length1 = _data_->_tmp9_;
-#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 169 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_query_array_size_ = _data_->query_array_length1;
 #line 2896 "tracker-steroids.c"
 		{
-#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 172 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->i = 0;
-#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 172 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp11_ = TRUE;
-#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 172 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			while (TRUE) {
-#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 172 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp12_ = _data_->_tmp11_;
-#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 172 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				if (!_data_->_tmp12_) {
-#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 172 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp13_ = _data_->i;
-#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 172 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->i = _data_->_tmp13_ + 1;
 #line 2912 "tracker-steroids.c"
 				}
-#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 172 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp11_ = FALSE;
-#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 172 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp14_ = _data_->i;
-#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 172 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp15_ = _data_->query_count;
-#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 172 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				if (!(_data_->_tmp14_ < _data_->_tmp15_)) {
-#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 172 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					break;
 #line 2924 "tracker-steroids.c"
 				}
-#line 175 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 175 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp16_ = _data_->data_input_stream;
-#line 175 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 175 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp17_ = 0;
-#line 175 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 175 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp17_ = g_data_input_stream_read_int32 (_data_->_tmp16_, NULL, &_data_->_inner_error_);
-#line 175 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 175 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->query_size = (gint) _data_->_tmp17_;
-#line 175 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 175 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				if (_data_->_inner_error_ != NULL) {
-#line 175 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 175 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->query_array = (_vala_array_free (_data_->query_array, _data_->query_array_length1, (GDestroyNotify) g_free), NULL);
-#line 175 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 175 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_g_string_free0 (_data_->combined_query);
-#line 175 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 175 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_g_object_unref0 (_data_->data_input_stream);
 #line 2942 "tracker-steroids.c"
 					goto __catch15_g_error;
 				}
-#line 178 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 178 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp18_ = _data_->query_array;
-#line 178 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 178 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp18__length1 = _data_->query_array_length1;
-#line 178 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 178 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp19_ = _data_->i;
-#line 178 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 178 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp20_ = _data_->query_size;
-#line 178 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 178 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp21_ = NULL;
-#line 178 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 178 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp21_ = g_new0 (guint8, _data_->_tmp20_ + 1);
-#line 178 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 178 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_g_free0 (_data_->_tmp18_[_data_->_tmp19_]);
-#line 178 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 178 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp18_[_data_->_tmp19_] = (gchar*) _data_->_tmp21_;
-#line 178 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 178 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp22_ = _data_->_tmp18_[_data_->_tmp19_];
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp23_ = _data_->data_input_stream;
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp24_ = _data_->query_array;
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp24__length1 = _data_->query_array_length1;
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp25_ = _data_->i;
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp26_ = _data_->_tmp24_[_data_->_tmp25_];
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp27_ = _data_->query_size;
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp28_ = 0UL;
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				g_input_stream_read_all ((GInputStream*) _data_->_tmp23_, (void*) (((guint8*) _data_->_tmp26_) + 0), (gsize) (_data_->_tmp27_ - 0), &_data_->_tmp28_, NULL, &_data_->_inner_error_);
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->bytes_read = _data_->_tmp28_;
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				if (_data_->_inner_error_ != NULL) {
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->query_array = (_vala_array_free (_data_->query_array, _data_->query_array_length1, (GDestroyNotify) g_free), NULL);
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_g_string_free0 (_data_->combined_query);
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_g_object_unref0 (_data_->data_input_stream);
 #line 2989 "tracker-steroids.c"
 					goto __catch15_g_error;
 				}
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp29_ = _data_->request;
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp30_ = _data_->query_array;
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp30__length1 = _data_->query_array_length1;
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp31_ = _data_->i;
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp32_ = _data_->_tmp30_[_data_->_tmp31_];
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				tracker_dbus_request_debug (_data_->_tmp29_, "query: %s", _data_->_tmp32_, NULL);
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp33_ = _data_->combined_query;
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp34_ = _data_->query_array;
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp34__length1 = _data_->query_array_length1;
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp35_ = _data_->i;
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp36_ = _data_->_tmp34_[_data_->_tmp35_];
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				g_string_append (_data_->_tmp33_, _data_->_tmp36_);
 #line 3016 "tracker-steroids.c"
 			}
 		}
-#line 186 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 186 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_g_object_unref0 (_data_->data_input_stream);
-#line 186 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 186 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->data_input_stream = NULL;
-#line 188 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 188 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp37_ = g_variant_builder_new ((const GVariantType*) "as");
-#line 188 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 188 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->builder = _data_->_tmp37_;
 #line 3027 "tracker-steroids.c"
 		{
-#line 192 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp38_ = _data_->combined_query;
-#line 192 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp39_ = _data_->_tmp38_->str;
-#line 192 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp40_ = _data_->sender;
-#line 192 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_state_ = 1;
-#line 192 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			tracker_store_sparql_update (_data_->_tmp39_, TRACKER_STORE_PRIORITY_LOW, (const gchar*) _data_->_tmp40_, tracker_steroids_update_array_ready, _data_);
-#line 192 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			return FALSE;
 #line 3041 "tracker-steroids.c"
 			_state_1:
-#line 192 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			tracker_store_sparql_update_finish (_data_->_res_, &_data_->_inner_error_);
-#line 192 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			if (_data_->_inner_error_ != NULL) {
 #line 3047 "tracker-steroids.c"
 				goto __catch16_g_error;
 			}
 			{
-#line 195 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 195 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->i = 0;
-#line 195 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 195 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp41_ = TRUE;
-#line 195 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 195 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				while (TRUE) {
-#line 195 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 195 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp42_ = _data_->_tmp41_;
-#line 195 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 195 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (!_data_->_tmp42_) {
-#line 195 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 195 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_data_->_tmp43_ = _data_->i;
-#line 195 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 195 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						_data_->i = _data_->_tmp43_ + 1;
 #line 3065 "tracker-steroids.c"
 					}
-#line 195 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 195 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp41_ = FALSE;
-#line 195 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 195 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp44_ = _data_->i;
-#line 195 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 195 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp45_ = _data_->query_count;
-#line 195 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 195 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (!(_data_->_tmp44_ < _data_->_tmp45_)) {
-#line 195 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 195 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 						break;
 #line 3077 "tracker-steroids.c"
 					}
-#line 196 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 196 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp46_ = _data_->builder;
-#line 196 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 196 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					g_variant_builder_add (_data_->_tmp46_, "s", "", NULL);
-#line 197 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 197 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp47_ = _data_->builder;
-#line 197 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 197 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					g_variant_builder_add (_data_->_tmp47_, "s", "", NULL);
 #line 3087 "tracker-steroids.c"
 				}
 			}
-#line 200 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 200 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp48_ = _data_->request;
-#line 200 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 200 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			tracker_dbus_request_end (_data_->_tmp48_, NULL);
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp49_ = _data_->builder;
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp50_ = NULL;
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp50_ = g_variant_builder_end (_data_->_tmp49_);
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_variant_ref_sink (_data_->_tmp50_);
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->result = _data_->_tmp50_;
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_variant_builder_unref0 (_data_->builder);
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->query_array = (_vala_array_free (_data_->query_array, _data_->query_array_length1, (GDestroyNotify) g_free), NULL);
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_string_free0 (_data_->combined_query);
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_object_unref0 (_data_->data_input_stream);
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			if (_data_->_state_ == 0) {
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 3116 "tracker-steroids.c"
 			} else {
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 3120 "tracker-steroids.c"
 			}
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_object_unref (_data_->_async_result);
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			return FALSE;
 #line 3126 "tracker-steroids.c"
 		}
 		goto __finally16;
 		__catch16_g_error:
 		{
-#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_inner_error_ = NULL;
-#line 205 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 205 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_string_free0 (_data_->combined_query);
-#line 205 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 205 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->combined_query = NULL;
 #line 3139 "tracker-steroids.c"
 		}
 		__finally16:
-#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_variant_builder_unref0 (_data_->builder);
-#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->query_array = (_vala_array_free (_data_->query_array, _data_->query_array_length1, (GDestroyNotify) g_free), NULL);
-#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_string_free0 (_data_->combined_query);
-#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_object_unref0 (_data_->data_input_stream);
 #line 3152 "tracker-steroids.c"
 			goto __catch15_g_error;
 		}
 		{
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->i = 0;
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp51_ = TRUE;
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			while (TRUE) {
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp52_ = _data_->_tmp51_;
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				if (!_data_->_tmp52_) {
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp53_ = _data_->i;
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->i = _data_->_tmp53_ + 1;
 #line 3170 "tracker-steroids.c"
 				}
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp51_ = FALSE;
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp54_ = _data_->i;
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp55_ = _data_->query_count;
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				if (!(_data_->_tmp54_ < _data_->_tmp55_)) {
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					break;
 #line 3182 "tracker-steroids.c"
 				}
-#line 210 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 210 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp56_ = _data_->request;
-#line 210 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 210 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp57_ = _data_->query_array;
-#line 210 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 210 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp57__length1 = _data_->query_array_length1;
-#line 210 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 210 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp58_ = _data_->i;
-#line 210 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 210 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				_data_->_tmp59_ = _data_->_tmp57_[_data_->_tmp58_];
-#line 210 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 210 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				tracker_dbus_request_debug (_data_->_tmp56_, "query: %s", _data_->_tmp59_, NULL);
 #line 3196 "tracker-steroids.c"
 				{
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 213 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp60_ = _data_->query_array;
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 213 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp60__length1 = _data_->query_array_length1;
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 213 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp61_ = _data_->i;
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 213 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp62_ = _data_->_tmp60_[_data_->_tmp61_];
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 213 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp63_ = _data_->sender;
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 213 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_state_ = 2;
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 213 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					tracker_store_sparql_update (_data_->_tmp62_, TRACKER_STORE_PRIORITY_LOW, (const gchar*) _data_->_tmp63_, tracker_steroids_update_array_ready, _data_);
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 213 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					return FALSE;
 #line 3214 "tracker-steroids.c"
 					_state_2:
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 213 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					tracker_store_sparql_update_finish (_data_->_res_, &_data_->_inner_error_);
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 213 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					if (_data_->_inner_error_ != NULL) {
 #line 3220 "tracker-steroids.c"
 						goto __catch17_g_error;
 					}
-#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 214 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp64_ = _data_->builder;
-#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 214 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					g_variant_builder_add (_data_->_tmp64_, "s", "", NULL);
-#line 215 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 215 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp65_ = _data_->builder;
-#line 215 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 215 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					g_variant_builder_add (_data_->_tmp65_, "s", "", NULL);
 #line 3231 "tracker-steroids.c"
 				}
 				goto __finally17;
 				__catch17_g_error:
 				{
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->e1 = _data_->_inner_error_;
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_inner_error_ = NULL;
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 217 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp66_ = _data_->builder;
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 217 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					g_variant_builder_add (_data_->_tmp66_, "s", "org.freedesktop.Tracker1.SparqlError.Internal", NULL);
-#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 218 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp67_ = _data_->builder;
-#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 218 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp68_ = _data_->e1;
-#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 218 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->_tmp69_ = _data_->_tmp68_->message;
-#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 218 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					g_variant_builder_add (_data_->_tmp67_, "s", _data_->_tmp69_, NULL);
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_g_error_free0 (_data_->e1);
 #line 3254 "tracker-steroids.c"
 				}
 				__finally17:
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 				if (_data_->_inner_error_ != NULL) {
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_g_variant_builder_unref0 (_data_->builder);
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_data_->query_array = (_vala_array_free (_data_->query_array, _data_->query_array_length1, (GDestroyNotify) g_free), NULL);
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_g_string_free0 (_data_->combined_query);
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 					_g_object_unref0 (_data_->data_input_stream);
 #line 3267 "tracker-steroids.c"
 					goto __catch15_g_error;
 				}
 			}
 		}
-#line 223 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 223 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp70_ = _data_->request;
-#line 223 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 223 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		tracker_dbus_request_end (_data_->_tmp70_, NULL);
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp71_ = _data_->builder;
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp72_ = NULL;
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp72_ = g_variant_builder_end (_data_->_tmp71_);
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_variant_ref_sink (_data_->_tmp72_);
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->result = _data_->_tmp72_;
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_g_variant_builder_unref0 (_data_->builder);
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->query_array = (_vala_array_free (_data_->query_array, _data_->query_array_length1, (GDestroyNotify) g_free), NULL);
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_g_string_free0 (_data_->combined_query);
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_g_object_unref0 (_data_->data_input_stream);
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_data_->_state_ == 0) {
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 3298 "tracker-steroids.c"
 		} else {
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 3302 "tracker-steroids.c"
 		}
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_object_unref (_data_->_async_result);
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		return FALSE;
 #line 3308 "tracker-steroids.c"
 	}
 	goto __finally15;
 	__catch15_g_error:
 	{
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->e = _data_->_inner_error_;
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_inner_error_ = NULL;
-#line 227 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 227 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp73_ = _data_->request;
-#line 227 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 227 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp74_ = _data_->e;
-#line 227 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 227 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		tracker_dbus_request_end (_data_->_tmp73_, _data_->_tmp74_);
-#line 228 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 228 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_data_->_tmp75_ = _data_->e;
-#line 228 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 228 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		if (_data_->_tmp75_->domain == TRACKER_SPARQL_ERROR) {
-#line 229 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 229 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp76_ = _data_->e;
-#line 229 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 229 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp77_ = _g_error_copy0 (_data_->_tmp76_);
-#line 229 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 229 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_inner_error_ = _data_->_tmp77_;
-#line 229 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 229 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_error_free0 (_data_->e);
 #line 3335 "tracker-steroids.c"
 			goto __finally15;
 		} else {
-#line 231 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 231 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp78_ = _data_->e;
-#line 231 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 231 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp79_ = _data_->_tmp78_->message;
-#line 231 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 231 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_tmp80_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp79_);
-#line 231 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 231 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_data_->_inner_error_ = _data_->_tmp80_;
-#line 231 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 231 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 			_g_error_free0 (_data_->e);
 #line 3348 "tracker-steroids.c"
 			goto __finally15;
 		}
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		_g_error_free0 (_data_->e);
 #line 3353 "tracker-steroids.c"
 	}
 	__finally15:
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_error_free (_data_->_inner_error_);
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_state_ == 0) {
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 3364 "tracker-steroids.c"
 	} else {
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 3368 "tracker-steroids.c"
 	}
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_object_unref (_data_->_async_result);
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
-#line 159 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	if (_data_->_state_ == 0) {
-#line 159 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 3378 "tracker-steroids.c"
 	} else {
-#line 159 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 3382 "tracker-steroids.c"
 	}
-#line 159 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	g_object_unref (_data_->_async_result);
-#line 159 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return FALSE;
 #line 3388 "tracker-steroids.c"
 }
@@ -3390,23 +3390,23 @@ static gboolean tracker_steroids_update_array_co (TrackerSteroidsUpdateArrayData
 
 TrackerSteroids* tracker_steroids_construct (GType object_type) {
 	TrackerSteroids * self = NULL;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	self = (TrackerSteroids*) g_object_new (object_type, NULL);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return self;
 #line 3398 "tracker-steroids.c"
 }
 
 
 TrackerSteroids* tracker_steroids_new (void) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	return tracker_steroids_construct (TRACKER_TYPE_STEROIDS);
 #line 3405 "tracker-steroids.c"
 }
 
 
 static void tracker_steroids_class_init (TrackerSteroidsClass * klass) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-steroids.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-steroids.vala"
 	tracker_steroids_parent_class = g_type_class_peek_parent (klass);
 #line 3412 "tracker-steroids.c"
 }

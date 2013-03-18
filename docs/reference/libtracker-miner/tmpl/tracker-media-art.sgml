@@ -22,21 +22,3 @@ tracker-media-art
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### FUNCTION tracker_media_art_execute_queue ##### -->
-<para>
-
-</para>
-
-@connection: 
-
-
-<!-- ##### FUNCTION tracker_media_art_queue_removal ##### -->
-<para>
-
-</para>
-
-@uri: 
-@mime_type: 
-@Returns: 
-
-

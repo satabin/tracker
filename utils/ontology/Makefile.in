@@ -25,7 +25,6 @@
 # full-report: like test-report: with -m perf and -m slow
 #
 
-
 VPATH = @srcdir@
 am__make_dryrun = \
   { \
@@ -64,8 +63,8 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
-libexec_PROGRAMS = tracker-search-bar$(EXEEXT)
-subdir = src/tracker-search-bar
+noinst_PROGRAMS = ontology-validator$(EXEEXT) data-validator$(EXEEXT)
+subdir = utils/ontology
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
 	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/iconv.m4 \
@@ -84,26 +83,27 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__installdirs = "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(appletdir)" \
-	"$(DESTDIR)$(servicedir)" "$(DESTDIR)$(uidir)"
-PROGRAMS = $(libexec_PROGRAMS)
-am_tracker_search_bar_OBJECTS =  \
-	tracker_search_bar-tracker-applet.$(OBJEXT) \
-	tracker_search_bar-tracker-aligned-window.$(OBJEXT) \
-	tracker_search_bar-tracker-results-window.$(OBJEXT) \
-	tracker_search_bar-tracker-utils.$(OBJEXT)
-tracker_search_bar_OBJECTS = $(am_tracker_search_bar_OBJECTS)
+PROGRAMS = $(noinst_PROGRAMS)
+am_data_validator_OBJECTS = data-validator.$(OBJEXT)
+data_validator_OBJECTS = $(am_data_validator_OBJECTS)
+data_validator_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
-tracker_search_bar_DEPENDENCIES = $(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+data_validator_DEPENDENCIES =  \
+	$(top_builddir)/src/libtracker-data/libtracker-data.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
-tracker_search_bar_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
-	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(tracker_search_bar_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
+am_ontology_validator_OBJECTS = ontology-validator.$(OBJEXT)
+ontology_validator_OBJECTS = $(am_ontology_validator_OBJECTS)
+ontology_validator_LDADD = $(LDADD)
+ontology_validator_DEPENDENCIES =  \
+	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -130,41 +130,13 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_@AM_V@)
 am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(tracker_search_bar_SOURCES)
-DIST_SOURCES = $(tracker_search_bar_SOURCES)
+SOURCES = $(data_validator_SOURCES) $(ontology_validator_SOURCES)
+DIST_SOURCES = $(data_validator_SOURCES) $(ontology_validator_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
-am__vpath_adj = case $$p in \
-    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-    *) f=$$p;; \
-  esac;
-am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
-am__install_max = 40
-am__nobase_strip_setup = \
-  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
-am__nobase_strip = \
-  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
-am__nobase_list = $(am__nobase_strip_setup); \
-  for p in $$list; do echo "$$p $$p"; done | \
-  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
-  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
-    if (++n[$$2] == $(am__install_max)) \
-      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
-    END { for (dir in files) print dir, files[dir] }'
-am__base_list = \
-  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
-  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__uninstall_files_from_dir = { \
-  test -z "$$files" \
-    || { test ! -d "$$dir" && test ! -f "$$dir" && test ! -r "$$dir"; } \
-    || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
-         $(am__cd) "$$dir" && rm -f $$files; }; \
-  }
-DATA = $(applet_DATA) $(service_DATA) $(ui_DATA)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -377,8 +349,6 @@ TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
 TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
 TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
-TRACKER_EXPLORER_CFLAGS = @TRACKER_EXPLORER_CFLAGS@
-TRACKER_EXPLORER_LIBS = @TRACKER_EXPLORER_LIBS@
 TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
 TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
 TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
@@ -390,8 +360,6 @@ TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
 TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
 TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
 TRACKER_MINER_FIREFOX_INSTALL_DIR = @TRACKER_MINER_FIREFOX_INSTALL_DIR@
-TRACKER_MINER_FLICKR_CFLAGS = @TRACKER_MINER_FLICKR_CFLAGS@
-TRACKER_MINER_FLICKR_LIBS = @TRACKER_MINER_FLICKR_LIBS@
 TRACKER_MINER_FS_CFLAGS = @TRACKER_MINER_FS_CFLAGS@
 TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
@@ -407,8 +375,6 @@ TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
 TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
 TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
-TRACKER_SEARCH_BAR_CFLAGS = @TRACKER_SEARCH_BAR_CFLAGS@
-TRACKER_SEARCH_BAR_LIBS = @TRACKER_SEARCH_BAR_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
 TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
 TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
@@ -489,62 +455,22 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-tracker_search_bar_SOURCES = \
-	tracker-applet.c                               \
-	tracker-applet.h                               \
-	tracker-aligned-window.c                       \
-	tracker-aligned-window.h                       \
-	tracker-results-window.c                       \
-	tracker-results-window.h                       \
-	tracker-utils.c                                \
-	tracker-utils.h
-
-
-# -DMENU_UI_DIR=\""$(xmluidir)"\"
-tracker_search_bar_CFLAGS = \
+AM_CPPFLAGS = \
 	$(BUILD_CFLAGS)                                \
 	-I$(top_srcdir)/src                            \
 	-I$(top_builddir)/src                          \
-	-DPKGDATADIR=\""$(pkgdatadir)"\"               \
-	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-	$(TRACKER_SEARCH_BAR_CFLAGS)
+	-DTOP_SRCDIR=\"$(top_srcdir)\"                 \
+	$(LIBTRACKER_DATA_CFLAGS)
 
-tracker_search_bar_LDADD = \
-	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+LDADD = \
+	$(top_builddir)/src/libtracker-data/libtracker-data.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(BUILD_LIBS)                                  \
-	$(TRACKER_SEARCH_BAR_LIBS)
+	$(LIBTRACKER_DATA_LIBS)
 
-
-# Panel applet
-appletdir = $(datadir)/gnome-panel/4.0/applets
-applet_in_files = org.gnome.panel.SearchBar.panel-applet.in
-applet_DATA = $(applet_in_files:.panel-applet.in=.panel-applet)
-
-# Applet UIs and menu
-uidir = $(pkgdatadir)
-ui_DATA = \
-	tracker-search-bar.ui                         \
-	tracker-search-bar-menu.xml
-
-
-# DBus service file
-servicedir = $(datadir)/dbus-1/services
-service_in_files = org.gnome.panel.applet.SearchBarFactory.service.in
-service_DATA = $(service_in_files:.service.in=.service)
-
-# Distribution details
-EXTRA_DIST = \
-	org.gnome.panel.SearchBar.panel-applet.in.in \
-	$(applet_DATA) \
-	$(ui_DATA) \
-	$(service_in_files)
-
-CLEANFILES = \
-	$(applet_DATA) \
-	$(applet_DATA).in \
-	$(service_DATA)
-
+ontology_validator_SOURCES = ontology-validator.c
+data_validator_SOURCES = data-validator.c
 all: all-am
 
 .SUFFIXES:
@@ -558,9 +484,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/tracker-search-bar/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu utils/ontology/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu src/tracker-search-bar/Makefile
+	  $(AUTOMAKE) --gnu utils/ontology/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -580,55 +506,21 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
-install-libexecPROGRAMS: $(libexec_PROGRAMS)
-	@$(NORMAL_INSTALL)
-	@list='$(libexec_PROGRAMS)'; test -n "$(libexecdir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(libexecdir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(libexecdir)" || exit 1; \
-	fi; \
-	for p in $$list; do echo "$$p $$p"; done | \
-	sed 's/$(EXEEXT)$$//' | \
-	while read p p1; do if test -f $$p || test -f $$p1; \
-	  then echo "$$p"; echo "$$p"; else :; fi; \
-	done | \
-	sed -e 'p;s,.*/,,;n;h' -e 's|.*|.|' \
-	    -e 'p;x;s,.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/' | \
-	sed 'N;N;N;s,\n, ,g' | \
-	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1 } \
-	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
-	    if ($$2 == $$4) files[d] = files[d] " " $$1; \
-	    else { print "f", $$3 "/" $$4, $$1; } } \
-	  END { for (d in files) print "f", d, files[d] }' | \
-	while read type dir files; do \
-	    if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
-	    test -z "$$files" || { \
-	    echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(libexecdir)$$dir'"; \
-	    $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(libexecdir)$$dir" || exit $$?; \
-	    } \
-	; done
 
-uninstall-libexecPROGRAMS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libexec_PROGRAMS)'; test -n "$(libexecdir)" || list=; \
-	files=`for p in $$list; do echo "$$p"; done | \
-	  sed -e 'h;s,^.*/,,;s/$(EXEEXT)$$//;$(transform)' \
-	      -e 's/$$/$(EXEEXT)/' `; \
-	test -n "$$list" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(libexecdir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(libexecdir)" && rm -f $$files
-
-clean-libexecPROGRAMS:
-	@list='$(libexec_PROGRAMS)'; test -n "$$list" || exit 0; \
+clean-noinstPROGRAMS:
+	@list='$(noinst_PROGRAMS)'; test -n "$$list" || exit 0; \
 	echo " rm -f" $$list; \
 	rm -f $$list || exit $$?; \
 	test -n "$(EXEEXT)" || exit 0; \
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
-tracker-search-bar$(EXEEXT): $(tracker_search_bar_OBJECTS) $(tracker_search_bar_DEPENDENCIES) $(EXTRA_tracker_search_bar_DEPENDENCIES) 
-	@rm -f tracker-search-bar$(EXEEXT)
-	$(AM_V_CCLD)$(tracker_search_bar_LINK) $(tracker_search_bar_OBJECTS) $(tracker_search_bar_LDADD) $(LIBS)
+data-validator$(EXEEXT): $(data_validator_OBJECTS) $(data_validator_DEPENDENCIES) $(EXTRA_data_validator_DEPENDENCIES) 
+	@rm -f data-validator$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(data_validator_OBJECTS) $(data_validator_LDADD) $(LIBS)
+ontology-validator$(EXEEXT): $(ontology_validator_OBJECTS) $(ontology_validator_DEPENDENCIES) $(EXTRA_ontology_validator_DEPENDENCIES) 
+	@rm -f ontology-validator$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ontology_validator_OBJECTS) $(ontology_validator_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -636,10 +528,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_search_bar-tracker-aligned-window.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_search_bar-tracker-applet.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_search_bar-tracker-results-window.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_search_bar-tracker-utils.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/data-validator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ontology-validator.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -662,130 +552,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
-tracker_search_bar-tracker-applet.o: tracker-applet.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -MT tracker_search_bar-tracker-applet.o -MD -MP -MF $(DEPDIR)/tracker_search_bar-tracker-applet.Tpo -c -o tracker_search_bar-tracker-applet.o `test -f 'tracker-applet.c' || echo '$(srcdir)/'`tracker-applet.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_bar-tracker-applet.Tpo $(DEPDIR)/tracker_search_bar-tracker-applet.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-applet.c' object='tracker_search_bar-tracker-applet.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -c -o tracker_search_bar-tracker-applet.o `test -f 'tracker-applet.c' || echo '$(srcdir)/'`tracker-applet.c
-
-tracker_search_bar-tracker-applet.obj: tracker-applet.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -MT tracker_search_bar-tracker-applet.obj -MD -MP -MF $(DEPDIR)/tracker_search_bar-tracker-applet.Tpo -c -o tracker_search_bar-tracker-applet.obj `if test -f 'tracker-applet.c'; then $(CYGPATH_W) 'tracker-applet.c'; else $(CYGPATH_W) '$(srcdir)/tracker-applet.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_bar-tracker-applet.Tpo $(DEPDIR)/tracker_search_bar-tracker-applet.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-applet.c' object='tracker_search_bar-tracker-applet.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -c -o tracker_search_bar-tracker-applet.obj `if test -f 'tracker-applet.c'; then $(CYGPATH_W) 'tracker-applet.c'; else $(CYGPATH_W) '$(srcdir)/tracker-applet.c'; fi`
-
-tracker_search_bar-tracker-aligned-window.o: tracker-aligned-window.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -MT tracker_search_bar-tracker-aligned-window.o -MD -MP -MF $(DEPDIR)/tracker_search_bar-tracker-aligned-window.Tpo -c -o tracker_search_bar-tracker-aligned-window.o `test -f 'tracker-aligned-window.c' || echo '$(srcdir)/'`tracker-aligned-window.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_bar-tracker-aligned-window.Tpo $(DEPDIR)/tracker_search_bar-tracker-aligned-window.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-aligned-window.c' object='tracker_search_bar-tracker-aligned-window.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -c -o tracker_search_bar-tracker-aligned-window.o `test -f 'tracker-aligned-window.c' || echo '$(srcdir)/'`tracker-aligned-window.c
-
-tracker_search_bar-tracker-aligned-window.obj: tracker-aligned-window.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -MT tracker_search_bar-tracker-aligned-window.obj -MD -MP -MF $(DEPDIR)/tracker_search_bar-tracker-aligned-window.Tpo -c -o tracker_search_bar-tracker-aligned-window.obj `if test -f 'tracker-aligned-window.c'; then $(CYGPATH_W) 'tracker-aligned-window.c'; else $(CYGPATH_W) '$(srcdir)/tracker-aligned-window.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_bar-tracker-aligned-window.Tpo $(DEPDIR)/tracker_search_bar-tracker-aligned-window.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-aligned-window.c' object='tracker_search_bar-tracker-aligned-window.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -c -o tracker_search_bar-tracker-aligned-window.obj `if test -f 'tracker-aligned-window.c'; then $(CYGPATH_W) 'tracker-aligned-window.c'; else $(CYGPATH_W) '$(srcdir)/tracker-aligned-window.c'; fi`
-
-tracker_search_bar-tracker-results-window.o: tracker-results-window.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -MT tracker_search_bar-tracker-results-window.o -MD -MP -MF $(DEPDIR)/tracker_search_bar-tracker-results-window.Tpo -c -o tracker_search_bar-tracker-results-window.o `test -f 'tracker-results-window.c' || echo '$(srcdir)/'`tracker-results-window.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_bar-tracker-results-window.Tpo $(DEPDIR)/tracker_search_bar-tracker-results-window.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-results-window.c' object='tracker_search_bar-tracker-results-window.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -c -o tracker_search_bar-tracker-results-window.o `test -f 'tracker-results-window.c' || echo '$(srcdir)/'`tracker-results-window.c
-
-tracker_search_bar-tracker-results-window.obj: tracker-results-window.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -MT tracker_search_bar-tracker-results-window.obj -MD -MP -MF $(DEPDIR)/tracker_search_bar-tracker-results-window.Tpo -c -o tracker_search_bar-tracker-results-window.obj `if test -f 'tracker-results-window.c'; then $(CYGPATH_W) 'tracker-results-window.c'; else $(CYGPATH_W) '$(srcdir)/tracker-results-window.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_bar-tracker-results-window.Tpo $(DEPDIR)/tracker_search_bar-tracker-results-window.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-results-window.c' object='tracker_search_bar-tracker-results-window.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -c -o tracker_search_bar-tracker-results-window.obj `if test -f 'tracker-results-window.c'; then $(CYGPATH_W) 'tracker-results-window.c'; else $(CYGPATH_W) '$(srcdir)/tracker-results-window.c'; fi`
-
-tracker_search_bar-tracker-utils.o: tracker-utils.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -MT tracker_search_bar-tracker-utils.o -MD -MP -MF $(DEPDIR)/tracker_search_bar-tracker-utils.Tpo -c -o tracker_search_bar-tracker-utils.o `test -f 'tracker-utils.c' || echo '$(srcdir)/'`tracker-utils.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_bar-tracker-utils.Tpo $(DEPDIR)/tracker_search_bar-tracker-utils.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-utils.c' object='tracker_search_bar-tracker-utils.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -c -o tracker_search_bar-tracker-utils.o `test -f 'tracker-utils.c' || echo '$(srcdir)/'`tracker-utils.c
-
-tracker_search_bar-tracker-utils.obj: tracker-utils.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -MT tracker_search_bar-tracker-utils.obj -MD -MP -MF $(DEPDIR)/tracker_search_bar-tracker-utils.Tpo -c -o tracker_search_bar-tracker-utils.obj `if test -f 'tracker-utils.c'; then $(CYGPATH_W) 'tracker-utils.c'; else $(CYGPATH_W) '$(srcdir)/tracker-utils.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_bar-tracker-utils.Tpo $(DEPDIR)/tracker_search_bar-tracker-utils.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-utils.c' object='tracker_search_bar-tracker-utils.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_bar_CFLAGS) $(CFLAGS) -c -o tracker_search_bar-tracker-utils.obj `if test -f 'tracker-utils.c'; then $(CYGPATH_W) 'tracker-utils.c'; else $(CYGPATH_W) '$(srcdir)/tracker-utils.c'; fi`
-
 mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
 	-rm -rf .libs _libs
-install-appletDATA: $(applet_DATA)
-	@$(NORMAL_INSTALL)
-	@list='$(applet_DATA)'; test -n "$(appletdir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(appletdir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(appletdir)" || exit 1; \
-	fi; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(appletdir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(appletdir)" || exit $$?; \
-	done
-
-uninstall-appletDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(applet_DATA)'; test -n "$(appletdir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(appletdir)'; $(am__uninstall_files_from_dir)
-install-serviceDATA: $(service_DATA)
-	@$(NORMAL_INSTALL)
-	@list='$(service_DATA)'; test -n "$(servicedir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(servicedir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(servicedir)" || exit 1; \
-	fi; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(servicedir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(servicedir)" || exit $$?; \
-	done
-
-uninstall-serviceDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(service_DATA)'; test -n "$(servicedir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(servicedir)'; $(am__uninstall_files_from_dir)
-install-uiDATA: $(ui_DATA)
-	@$(NORMAL_INSTALL)
-	@list='$(ui_DATA)'; test -n "$(uidir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(uidir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(uidir)" || exit 1; \
-	fi; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(uidir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(uidir)" || exit $$?; \
-	done
-
-uninstall-uiDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(ui_DATA)'; test -n "$(uidir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(uidir)'; $(am__uninstall_files_from_dir)
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -872,11 +643,8 @@ distdir: $(DISTFILES)
 check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) check-local
 check: check-am
-all-am: Makefile $(PROGRAMS) $(DATA)
+all-am: Makefile $(PROGRAMS)
 installdirs:
-	for dir in "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(appletdir)" "$(DESTDIR)$(servicedir)" "$(DESTDIR)$(uidir)"; do \
-	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
-	done
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -899,7 +667,6 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
-	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -910,7 +677,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-libexecPROGRAMS clean-libtool \
+clean-am: clean-generic clean-libtool clean-noinstPROGRAMS \
 	mostlyclean-am
 
 distclean: distclean-am
@@ -931,13 +698,13 @@ info: info-am
 
 info-am:
 
-install-data-am: install-appletDATA install-serviceDATA install-uiDATA
+install-data-am:
 
 install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am: install-libexecPROGRAMS
+install-exec-am:
 
 install-html: install-html-am
 
@@ -977,27 +744,23 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-appletDATA uninstall-libexecPROGRAMS \
-	uninstall-serviceDATA uninstall-uiDATA
+uninstall-am:
 
 .MAKE: check-am install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-am check-local clean \
-	clean-generic clean-libexecPROGRAMS clean-libtool ctags \
+	clean-generic clean-libtool clean-noinstPROGRAMS ctags \
 	distclean distclean-compile distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-appletDATA \
-	install-data install-data-am install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-libexecPROGRAMS \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-serviceDATA install-strip install-uiDATA \
-	installcheck installcheck-am installdirs maintainer-clean \
+	html-am info info-am install install-am install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-appletDATA \
-	uninstall-libexecPROGRAMS uninstall-serviceDATA \
-	uninstall-uiDATA
+	tags uninstall uninstall-am
 
 
 ### testing rules
@@ -1048,21 +811,6 @@ test-report perf-report full-report:	${TEST_PROGS}
 .PHONY: test test-report perf-report full-report
 # run make test as part of make check
 check-local: test
-
-$(applet_in_files): $(applet_in_files).in Makefile
-	$(AM_V_GEN)sed                                 \
-	  -e "s|\@LIBEXECDIR\@|$(libexecdir)|"         \
-	  -e "s|\@VERSION\@|$(PACKAGE_VERSION)|"       \
-	  $< > $@
-
-%.panel-applet: %.panel-applet.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*po) ; $(INTLTOOL_MERGE) $(top_srcdir)/po $< $@ -d -u -c $(top_builddir)/po/.intltool-merge-cache
-
-org.gnome.panel.applet.SearchBarFactory.service: $(service_in_files)
-	$(AM_V_GEN)sed                                \
-	  -e "s|\@LIBEXECDIR\@|$(libexecdir)|"        \
-	  $< > $@
-
-@INTLTOOL_SCHEMAS_RULE@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

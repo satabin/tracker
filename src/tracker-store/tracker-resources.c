@@ -402,7 +402,7 @@ static const GDBusInterfaceInfo _tracker_resources_dbus_interface_info = {-1, "o
 static const GDBusInterfaceVTable _tracker_resources_dbus_interface_vtable = {tracker_resources_dbus_interface_method_call, tracker_resources_dbus_interface_get_property, tracker_resources_dbus_interface_set_property};
 
 static gpointer _g_object_ref0 (gpointer self) {
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return self ? g_object_ref (self) : NULL;
 #line 408 "tracker-resources.c"
 }
@@ -412,26 +412,26 @@ TrackerResources* tracker_resources_construct (GType object_type, GDBusConnectio
 	TrackerResources * self = NULL;
 	GDBusConnection* _tmp0_;
 	GDBusConnection* _tmp1_;
-#line 60 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 60 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_val_if_fail (connection != NULL, NULL);
-#line 60 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 60 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	self = (TrackerResources*) g_object_new (object_type, NULL);
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = connection;
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_object_unref0 (self->priv->connection);
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	self->priv->connection = _tmp1_;
-#line 60 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 60 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return self;
 #line 430 "tracker-resources.c"
 }
 
 
 TrackerResources* tracker_resources_new (GDBusConnection* connection) {
-#line 60 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 60 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return tracker_resources_construct (TRACKER_TYPE_RESOURCES, connection);
 #line 437 "tracker-resources.c"
 }
@@ -440,13 +440,13 @@ TrackerResources* tracker_resources_new (GDBusConnection* connection) {
 static void tracker_resources_load_data_free (gpointer _data) {
 	TrackerResourcesLoadData* _data_;
 	_data_ = _data;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->uri);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_object_unref0 (_data_->self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_slice_free (TrackerResourcesLoadData, _data_);
 #line 452 "tracker-resources.c"
 }
@@ -459,33 +459,33 @@ void tracker_resources_load (TrackerResources* self, const char* sender, const g
 	char* _tmp2_;
 	const gchar* _tmp3_;
 	gchar* _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = g_slice_new0 (TrackerResourcesLoadData);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_resources_load);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_resources_load_data_free);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->self = _tmp0_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = sender;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->sender = _tmp2_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp3_ = uri;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = g_strdup (_tmp3_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->uri);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->uri = _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_load_co (_data_);
 #line 491 "tracker-resources.c"
 }
@@ -493,13 +493,13 @@ void tracker_resources_load (TrackerResources* self, const char* sender, const g
 
 void tracker_resources_load_finish (TrackerResources* self, GAsyncResult* _res_, GError** error) {
 	TrackerResourcesLoadData* _data_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return;
 #line 501 "tracker-resources.c"
 	}
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
 #line 505 "tracker-resources.c"
 }
@@ -507,107 +507,107 @@ void tracker_resources_load_finish (TrackerResources* self, GAsyncResult* _res_,
 
 static void tracker_resources_load_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerResourcesLoadData* _data_;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = _user_data_;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_source_object_ = source_object;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_res_ = _res_;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_load_co (_data_);
 #line 519 "tracker-resources.c"
 }
 
 
 static gpointer _g_error_copy0 (gpointer self) {
-#line 77 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 77 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return self ? g_error_copy (self) : NULL;
 #line 526 "tracker-resources.c"
 }
 
 
 static gboolean tracker_resources_load_co (TrackerResourcesLoadData* _data_) {
-#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 64 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	switch (_data_->_state_) {
-#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 64 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		case 0:
 #line 535 "tracker-resources.c"
 		goto _state_0;
-#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 64 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		case 1:
 #line 539 "tracker-resources.c"
 		goto _state_1;
 		default:
-#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 64 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_assert_not_reached ();
 #line 544 "tracker-resources.c"
 	}
 	_state_0:
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp0_ = _data_->sender;
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp1_ = _data_->uri;
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp2_ = NULL;
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp2_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp0_, "Resources.Load (uri: '%s')", _data_->_tmp1_, NULL);
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->request = _data_->_tmp2_;
 #line 557 "tracker-resources.c"
 	{
-#line 67 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp3_ = _data_->uri;
-#line 67 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp4_ = NULL;
-#line 67 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp4_ = g_file_new_for_uri (_data_->_tmp3_);
-#line 67 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->file = _data_->_tmp4_;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp5_ = _data_->sender;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_state_ = 1;
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_store_queue_turtle_import (_data_->file, (const gchar*) _data_->_tmp5_, tracker_resources_load_ready, _data_);
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
 #line 575 "tracker-resources.c"
 		_state_1:
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_store_queue_turtle_import_finish (_data_->_res_, &_data_->_inner_error_);
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_g_object_unref0 (_data_->file);
-#line 69 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			if (g_error_matches (_data_->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
 #line 585 "tracker-resources.c"
 				goto __catch8_tracker_db_no_space;
 			}
 			goto __catch8_g_error;
 		}
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 71 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_dbus_request_end (_data_->request, NULL);
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_object_unref0 (_data_->file);
 #line 594 "tracker-resources.c"
 	}
 	goto __finally8;
 	__catch8_tracker_db_no_space:
 	{
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->ie = _data_->_inner_error_;
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp6_ = _data_->ie;
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp7_ = _data_->_tmp6_->message;
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp8_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, _data_->_tmp7_);
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = _data_->_tmp8_;
-#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->ie);
 #line 613 "tracker-resources.c"
 		goto __finally8;
@@ -615,82 +615,82 @@ static gboolean tracker_resources_load_co (TrackerResourcesLoadData* _data_) {
 	goto __finally8;
 	__catch8_g_error:
 	{
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->e = _data_->_inner_error_;
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 75 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp9_ = _data_->e;
-#line 75 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_dbus_request_end (_data_->request, _data_->_tmp9_);
-#line 76 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 76 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp10_ = _data_->e;
-#line 76 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 76 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_tmp10_->domain == TRACKER_SPARQL_ERROR) {
-#line 77 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 77 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp11_ = _data_->e;
-#line 77 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 77 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp12_ = _g_error_copy0 (_data_->_tmp11_);
-#line 77 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 77 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_inner_error_ = _data_->_tmp12_;
-#line 77 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 77 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_g_error_free0 (_data_->e);
 #line 639 "tracker-resources.c"
 			goto __finally8;
 		} else {
-#line 79 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 79 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp13_ = _data_->e;
-#line 79 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 79 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp14_ = _data_->_tmp13_->message;
-#line 79 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 79 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp15_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp14_);
-#line 79 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 79 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_inner_error_ = _data_->_tmp15_;
-#line 79 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 79 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_g_error_free0 (_data_->e);
 #line 652 "tracker-resources.c"
 			goto __finally8;
 		}
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->e);
 #line 657 "tracker-resources.c"
 	}
 	__finally8:
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_error_free (_data_->_inner_error_);
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_state_ == 0) {
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 670 "tracker-resources.c"
 		} else {
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 674 "tracker-resources.c"
 		}
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_object_unref (_data_->_async_result);
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
 #line 680 "tracker-resources.c"
 	}
-#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 64 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_data_->_state_ == 0) {
-#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 64 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 686 "tracker-resources.c"
 	} else {
-#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 64 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 690 "tracker-resources.c"
 	}
-#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 64 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_object_unref (_data_->_async_result);
-#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 64 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return FALSE;
 #line 696 "tracker-resources.c"
 }
@@ -699,15 +699,15 @@ static gboolean tracker_resources_load_co (TrackerResourcesLoadData* _data_) {
 static void tracker_resources_sparql_query_data_free (gpointer _data) {
 	TrackerResourcesSparqlQueryData* _data_;
 	_data_ = _data;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->query);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_variant_unref0 (_data_->result);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_object_unref0 (_data_->self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_slice_free (TrackerResourcesSparqlQueryData, _data_);
 #line 713 "tracker-resources.c"
 }
@@ -720,33 +720,33 @@ void tracker_resources_sparql_query (TrackerResources* self, const char* sender,
 	char* _tmp2_;
 	const gchar* _tmp3_;
 	gchar* _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = g_slice_new0 (TrackerResourcesSparqlQueryData);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_resources_sparql_query);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_resources_sparql_query_data_free);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->self = _tmp0_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = sender;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->sender = _tmp2_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp3_ = query;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = g_strdup (_tmp3_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->query);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->query = _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_sparql_query_co (_data_);
 #line 752 "tracker-resources.c"
 }
@@ -755,28 +755,28 @@ void tracker_resources_sparql_query (TrackerResources* self, const char* sender,
 GVariant* tracker_resources_sparql_query_finish (TrackerResources* self, GAsyncResult* _res_, GError** error) {
 	GVariant* result;
 	TrackerResourcesSparqlQueryData* _data_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return NULL;
 #line 763 "tracker-resources.c"
 	}
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	result = _data_->result;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->result = NULL;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return result;
 #line 773 "tracker-resources.c"
 }
 
 
 static Block3Data* block3_data_ref (Block3Data* _data3_) {
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_atomic_int_inc (&_data3_->_ref_count_);
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return _data3_;
 #line 782 "tracker-resources.c"
 }
@@ -785,17 +785,17 @@ static Block3Data* block3_data_ref (Block3Data* _data3_) {
 static void block3_data_unref (void * _userdata_) {
 	Block3Data* _data3_;
 	_data3_ = (Block3Data*) _userdata_;
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (g_atomic_int_dec_and_test (&_data3_->_ref_count_)) {
 #line 791 "tracker-resources.c"
 		TrackerResources * self;
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		self = _data3_->self;
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_variant_builder_unref0 (_data3_->builder);
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_object_unref0 (self);
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_slice_free (Block3Data, _data3_);
 #line 801 "tracker-resources.c"
 	}
@@ -805,11 +805,11 @@ static void block3_data_unref (void * _userdata_) {
 static void ___lambda4_ (Block3Data* _data3_, TrackerDBCursor* cursor, GError** error) {
 	TrackerResources * self;
 	GError * _inner_error_ = NULL;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	self = _data3_->self;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (cursor != NULL);
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	while (TRUE) {
 #line 815 "tracker-resources.c"
 		TrackerDBCursor* _tmp0_;
@@ -817,41 +817,41 @@ static void ___lambda4_ (Block3Data* _data3_, TrackerDBCursor* cursor, GError** 
 		gboolean _tmp2_;
 		GVariantBuilder* _tmp3_;
 		GVariantBuilder* _tmp17_;
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp0_ = cursor;
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp1_ = tracker_sparql_cursor_next ((TrackerSparqlCursor*) _tmp0_, NULL, &_inner_error_);
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp2_ = _tmp1_;
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_inner_error_ != NULL) {
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_propagate_error (error, _inner_error_);
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			return;
 #line 833 "tracker-resources.c"
 		}
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (!_tmp2_) {
-#line 92 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			break;
 #line 839 "tracker-resources.c"
 		}
-#line 93 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 93 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp3_ = _data3_->builder;
-#line 93 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 93 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_variant_builder_open (_tmp3_, (const GVariantType*) "as");
 #line 845 "tracker-resources.c"
 		{
 			gint i;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			i = 0;
 #line 850 "tracker-resources.c"
 			{
 				gboolean _tmp4_;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 				_tmp4_ = TRUE;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 				while (TRUE) {
 #line 857 "tracker-resources.c"
 					gboolean _tmp5_;
@@ -866,63 +866,63 @@ static void ___lambda4_ (Block3Data* _data3_, TrackerDBCursor* cursor, GError** 
 					const gchar* _tmp14_;
 					GVariantBuilder* _tmp15_;
 					const gchar* _tmp16_;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp5_ = _tmp4_;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					if (!_tmp5_) {
 #line 874 "tracker-resources.c"
 						gint _tmp6_;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp6_ = i;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						i = _tmp6_ + 1;
 #line 880 "tracker-resources.c"
 					}
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp4_ = FALSE;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp7_ = i;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp8_ = cursor;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp9_ = tracker_sparql_cursor_get_n_columns ((TrackerSparqlCursor*) _tmp8_);
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp10_ = _tmp9_;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					if (!(_tmp7_ < _tmp10_)) {
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						break;
 #line 896 "tracker-resources.c"
 					}
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 96 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp11_ = cursor;
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 96 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp12_ = i;
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 96 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp13_ = tracker_sparql_cursor_get_string ((TrackerSparqlCursor*) _tmp11_, _tmp12_, NULL);
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 96 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					str = _tmp13_;
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp14_ = str;
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					if (_tmp14_ == NULL) {
-#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 99 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						str = "";
 #line 912 "tracker-resources.c"
 					}
-#line 102 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 102 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp15_ = _data3_->builder;
-#line 102 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 102 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp16_ = str;
-#line 102 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 102 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					g_variant_builder_add (_tmp15_, "s", _tmp16_, NULL);
 #line 920 "tracker-resources.c"
 				}
 			}
 		}
-#line 105 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 105 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp17_ = _data3_->builder;
-#line 105 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 105 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_variant_builder_close (_tmp17_);
 #line 928 "tracker-resources.c"
 	}
@@ -930,7 +930,7 @@ static void ___lambda4_ (Block3Data* _data3_, TrackerDBCursor* cursor, GError** 
 
 
 static void ____lambda4__tracker_store_sparql_query_in_thread (TrackerDBCursor* cursor, gpointer self, GError** error) {
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	___lambda4_ (self, cursor, error);
 #line 936 "tracker-resources.c"
 }
@@ -938,218 +938,218 @@ static void ____lambda4__tracker_store_sparql_query_in_thread (TrackerDBCursor* 
 
 static void tracker_resources_sparql_query_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerResourcesSparqlQueryData* _data_;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = _user_data_;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_source_object_ = source_object;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_res_ = _res_;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_sparql_query_co (_data_);
 #line 950 "tracker-resources.c"
 }
 
 
 static gboolean tracker_resources_sparql_query_co (TrackerResourcesSparqlQueryData* _data_) {
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	switch (_data_->_state_) {
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		case 0:
 #line 959 "tracker-resources.c"
 		goto _state_0;
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		case 1:
 #line 963 "tracker-resources.c"
 		goto _state_1;
 		default:
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_assert_not_reached ();
 #line 968 "tracker-resources.c"
 	}
 	_state_0:
-#line 86 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 86 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp0_ = _data_->sender;
-#line 86 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 86 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp1_ = NULL;
-#line 86 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 86 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp1_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp0_, "Resources.SparqlQuery", NULL);
-#line 86 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 86 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->request = _data_->_tmp1_;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp2_ = _data_->request;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp3_ = _data_->query;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_dbus_request_debug (_data_->_tmp2_, "query: %s", _data_->_tmp3_, NULL);
 #line 985 "tracker-resources.c"
 	{
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_data3_ = g_slice_new0 (Block3Data);
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_data3_->_ref_count_ = 1;
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_data3_->self = g_object_ref (_data_->self);
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 89 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp4_ = g_variant_builder_new ((const GVariantType*) "aas");
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 89 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_data3_->builder = _data_->_tmp4_;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp5_ = _data_->query;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp6_ = _data_->sender;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_state_ = 1;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_store_sparql_query (_data_->_tmp5_, TRACKER_STORE_PRIORITY_HIGH, ____lambda4__tracker_store_sparql_query_in_thread, _data_->_data3_, (const gchar*) _data_->_tmp6_, tracker_resources_sparql_query_ready, _data_);
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
 #line 1007 "tracker-resources.c"
 		_state_1:
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_store_sparql_query_finish (_data_->_res_, &_data_->_inner_error_);
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			block3_data_unref (_data_->_data3_);
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_data3_ = NULL;
 #line 1017 "tracker-resources.c"
 			goto __catch9_g_error;
 		}
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp7_ = _data_->_data3_->builder;
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp8_ = NULL;
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp8_ = g_variant_builder_end (_data_->_tmp7_);
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_variant_ref_sink (_data_->_tmp8_);
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_result_ = _data_->_tmp8_;
-#line 110 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 110 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp9_ = _data_->_result_;
-#line 110 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 110 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp10_ = 0UL;
-#line 110 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 110 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp10_ = g_variant_get_size (_data_->_tmp9_);
-#line 110 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 110 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_tmp10_ > ((gsize) TRACKER_RESOURCES_DBUS_ARBITRARY_MAX_MSG_SIZE)) {
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 111 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp11_ = g_error_new_literal (G_DBUS_ERROR, G_DBUS_ERROR_FAILED, "result set of the query is too large");
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 111 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_inner_error_ = _data_->_tmp11_;
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 111 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_g_variant_unref0 (_data_->_result_);
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 111 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			block3_data_unref (_data_->_data3_);
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 111 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_data3_ = NULL;
 #line 1048 "tracker-resources.c"
 			goto __catch9_g_error;
 		}
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 114 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp12_ = _data_->request;
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 114 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_dbus_request_end (_data_->_tmp12_, NULL);
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->result = _data_->_result_;
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		block3_data_unref (_data_->_data3_);
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_data3_ = NULL;
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_state_ == 0) {
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1065 "tracker-resources.c"
 		} else {
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 1069 "tracker-resources.c"
 		}
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_object_unref (_data_->_async_result);
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
 #line 1075 "tracker-resources.c"
 	}
 	goto __finally9;
 	__catch9_g_error:
 	{
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->e = _data_->_inner_error_;
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 118 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 118 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp13_ = _data_->request;
-#line 118 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 118 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp14_ = _data_->e;
-#line 118 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 118 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_dbus_request_end (_data_->_tmp13_, _data_->_tmp14_);
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 119 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp15_ = _data_->e;
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 119 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_tmp15_->domain == TRACKER_SPARQL_ERROR) {
-#line 120 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp16_ = _data_->e;
-#line 120 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp17_ = _g_error_copy0 (_data_->_tmp16_);
-#line 120 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_inner_error_ = _data_->_tmp17_;
-#line 120 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_g_error_free0 (_data_->e);
 #line 1102 "tracker-resources.c"
 			goto __finally9;
 		} else {
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp18_ = _data_->e;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp19_ = _data_->_tmp18_->message;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp20_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp19_);
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_inner_error_ = _data_->_tmp20_;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_g_error_free0 (_data_->e);
 #line 1115 "tracker-resources.c"
 			goto __finally9;
 		}
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->e);
 #line 1120 "tracker-resources.c"
 	}
 	__finally9:
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_error_free (_data_->_inner_error_);
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_data_->_state_ == 0) {
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1131 "tracker-resources.c"
 	} else {
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1135 "tracker-resources.c"
 	}
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_object_unref (_data_->_async_result);
-#line 88 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return FALSE;
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_data_->_state_ == 0) {
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1145 "tracker-resources.c"
 	} else {
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1149 "tracker-resources.c"
 	}
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_object_unref (_data_->_async_result);
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return FALSE;
 #line 1155 "tracker-resources.c"
 }
@@ -1158,13 +1158,13 @@ static gboolean tracker_resources_sparql_query_co (TrackerResourcesSparqlQueryDa
 static void tracker_resources_sparql_update_data_free (gpointer _data) {
 	TrackerResourcesSparqlUpdateData* _data_;
 	_data_ = _data;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->update);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_object_unref0 (_data_->self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_slice_free (TrackerResourcesSparqlUpdateData, _data_);
 #line 1170 "tracker-resources.c"
 }
@@ -1177,33 +1177,33 @@ void tracker_resources_sparql_update (TrackerResources* self, const char* sender
 	char* _tmp2_;
 	const gchar* _tmp3_;
 	gchar* _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = g_slice_new0 (TrackerResourcesSparqlUpdateData);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_resources_sparql_update);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_resources_sparql_update_data_free);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->self = _tmp0_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = sender;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->sender = _tmp2_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp3_ = update;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = g_strdup (_tmp3_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->update);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->update = _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_sparql_update_co (_data_);
 #line 1209 "tracker-resources.c"
 }
@@ -1211,13 +1211,13 @@ void tracker_resources_sparql_update (TrackerResources* self, const char* sender
 
 void tracker_resources_sparql_update_finish (TrackerResources* self, GAsyncResult* _res_, GError** error) {
 	TrackerResourcesSparqlUpdateData* _data_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return;
 #line 1219 "tracker-resources.c"
 	}
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
 #line 1223 "tracker-resources.c"
 }
@@ -1225,92 +1225,92 @@ void tracker_resources_sparql_update_finish (TrackerResources* self, GAsyncResul
 
 static void tracker_resources_sparql_update_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerResourcesSparqlUpdateData* _data_;
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = _user_data_;
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_source_object_ = source_object;
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_res_ = _res_;
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_sparql_update_co (_data_);
 #line 1237 "tracker-resources.c"
 }
 
 
 static gboolean tracker_resources_sparql_update_co (TrackerResourcesSparqlUpdateData* _data_) {
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 127 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	switch (_data_->_state_) {
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 127 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		case 0:
 #line 1246 "tracker-resources.c"
 		goto _state_0;
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 127 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		case 1:
 #line 1250 "tracker-resources.c"
 		goto _state_1;
 		default:
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 127 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_assert_not_reached ();
 #line 1255 "tracker-resources.c"
 	}
 	_state_0:
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 128 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp0_ = _data_->sender;
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 128 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp1_ = NULL;
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 128 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp1_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp0_, "Resources.SparqlUpdate", NULL);
-#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 128 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->request = _data_->_tmp1_;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 129 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp2_ = _data_->update;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 129 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_dbus_request_debug (_data_->request, "query: %s", _data_->_tmp2_, NULL);
 #line 1270 "tracker-resources.c"
 	{
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp3_ = _data_->update;
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp4_ = _data_->sender;
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_state_ = 1;
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_store_sparql_update (_data_->_tmp3_, TRACKER_STORE_PRIORITY_HIGH, (const gchar*) _data_->_tmp4_, tracker_resources_sparql_update_ready, _data_);
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
 #line 1282 "tracker-resources.c"
 		_state_1:
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_store_sparql_update_finish (_data_->_res_, &_data_->_inner_error_);
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			if (g_error_matches (_data_->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
 #line 1290 "tracker-resources.c"
 				goto __catch10_tracker_db_no_space;
 			}
 			goto __catch10_g_error;
 		}
-#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 133 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_dbus_request_end (_data_->request, NULL);
 #line 1297 "tracker-resources.c"
 	}
 	goto __finally10;
 	__catch10_tracker_db_no_space:
 	{
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->ie = _data_->_inner_error_;
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 135 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 135 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp5_ = _data_->ie;
-#line 135 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 135 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp6_ = _data_->_tmp5_->message;
-#line 135 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 135 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp7_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, _data_->_tmp6_);
-#line 135 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 135 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = _data_->_tmp7_;
-#line 135 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 135 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->ie);
 #line 1316 "tracker-resources.c"
 		goto __finally10;
@@ -1318,82 +1318,82 @@ static gboolean tracker_resources_sparql_update_co (TrackerResourcesSparqlUpdate
 	goto __finally10;
 	__catch10_g_error:
 	{
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->e = _data_->_inner_error_;
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 137 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 137 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp8_ = _data_->e;
-#line 137 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 137 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_dbus_request_end (_data_->request, _data_->_tmp8_);
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 138 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp9_ = _data_->e;
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 138 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_tmp9_->domain == TRACKER_SPARQL_ERROR) {
-#line 139 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 139 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp10_ = _data_->e;
-#line 139 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 139 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp11_ = _g_error_copy0 (_data_->_tmp10_);
-#line 139 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 139 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_inner_error_ = _data_->_tmp11_;
-#line 139 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 139 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_g_error_free0 (_data_->e);
 #line 1342 "tracker-resources.c"
 			goto __finally10;
 		} else {
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp12_ = _data_->e;
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp13_ = _data_->_tmp12_->message;
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp14_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp13_);
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_inner_error_ = _data_->_tmp14_;
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_g_error_free0 (_data_->e);
 #line 1355 "tracker-resources.c"
 			goto __finally10;
 		}
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->e);
 #line 1360 "tracker-resources.c"
 	}
 	__finally10:
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_error_free (_data_->_inner_error_);
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_state_ == 0) {
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1373 "tracker-resources.c"
 		} else {
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 1377 "tracker-resources.c"
 		}
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_object_unref (_data_->_async_result);
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
 #line 1383 "tracker-resources.c"
 	}
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 127 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_data_->_state_ == 0) {
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 127 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1389 "tracker-resources.c"
 	} else {
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 127 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1393 "tracker-resources.c"
 	}
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 127 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_object_unref (_data_->_async_result);
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 127 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return FALSE;
 #line 1399 "tracker-resources.c"
 }
@@ -1402,15 +1402,15 @@ static gboolean tracker_resources_sparql_update_co (TrackerResourcesSparqlUpdate
 static void tracker_resources_sparql_update_blank_data_free (gpointer _data) {
 	TrackerResourcesSparqlUpdateBlankData* _data_;
 	_data_ = _data;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->update);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_variant_unref0 (_data_->result);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_object_unref0 (_data_->self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_slice_free (TrackerResourcesSparqlUpdateBlankData, _data_);
 #line 1416 "tracker-resources.c"
 }
@@ -1423,33 +1423,33 @@ void tracker_resources_sparql_update_blank (TrackerResources* self, const char* 
 	char* _tmp2_;
 	const gchar* _tmp3_;
 	gchar* _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = g_slice_new0 (TrackerResourcesSparqlUpdateBlankData);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_resources_sparql_update_blank);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_resources_sparql_update_blank_data_free);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->self = _tmp0_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = sender;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->sender = _tmp2_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp3_ = update;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = g_strdup (_tmp3_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->update);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->update = _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_sparql_update_blank_co (_data_);
 #line 1455 "tracker-resources.c"
 }
@@ -1458,19 +1458,19 @@ void tracker_resources_sparql_update_blank (TrackerResources* self, const char* 
 GVariant* tracker_resources_sparql_update_blank_finish (TrackerResources* self, GAsyncResult* _res_, GError** error) {
 	GVariant* result;
 	TrackerResourcesSparqlUpdateBlankData* _data_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return NULL;
 #line 1466 "tracker-resources.c"
 	}
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	result = _data_->result;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->result = NULL;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return result;
 #line 1476 "tracker-resources.c"
 }
@@ -1478,116 +1478,116 @@ GVariant* tracker_resources_sparql_update_blank_finish (TrackerResources* self, 
 
 static void tracker_resources_sparql_update_blank_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerResourcesSparqlUpdateBlankData* _data_;
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = _user_data_;
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_source_object_ = source_object;
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_res_ = _res_;
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_sparql_update_blank_co (_data_);
 #line 1490 "tracker-resources.c"
 }
 
 
 static gboolean tracker_resources_sparql_update_blank_co (TrackerResourcesSparqlUpdateBlankData* _data_) {
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 147 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	switch (_data_->_state_) {
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 147 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		case 0:
 #line 1499 "tracker-resources.c"
 		goto _state_0;
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 147 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		case 1:
 #line 1503 "tracker-resources.c"
 		goto _state_1;
 		default:
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 147 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_assert_not_reached ();
 #line 1508 "tracker-resources.c"
 	}
 	_state_0:
-#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 148 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp0_ = _data_->sender;
-#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 148 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp1_ = NULL;
-#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 148 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp1_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp0_, "Resources.SparqlUpdateBlank", NULL);
-#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 148 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->request = _data_->_tmp1_;
-#line 149 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp2_ = _data_->request;
-#line 149 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp3_ = _data_->update;
-#line 149 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_dbus_request_debug (_data_->_tmp2_, "query: %s", _data_->_tmp3_, NULL);
 #line 1525 "tracker-resources.c"
 	{
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp4_ = _data_->update;
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp5_ = _data_->sender;
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_state_ = 1;
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_store_sparql_update_blank (_data_->_tmp4_, TRACKER_STORE_PRIORITY_HIGH, (const gchar*) _data_->_tmp5_, tracker_resources_sparql_update_blank_ready, _data_);
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
 #line 1537 "tracker-resources.c"
 		_state_1:
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp6_ = NULL;
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp6_ = tracker_store_sparql_update_blank_finish (_data_->_res_, &_data_->_inner_error_);
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->variant = _data_->_tmp6_;
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			if (g_error_matches (_data_->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
 #line 1549 "tracker-resources.c"
 				goto __catch11_tracker_db_no_space;
 			}
 			goto __catch11_g_error;
 		}
-#line 153 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 153 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp7_ = _data_->request;
-#line 153 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 153 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_dbus_request_end (_data_->_tmp7_, NULL);
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->result = _data_->variant;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_state_ == 0) {
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1564 "tracker-resources.c"
 		} else {
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 1568 "tracker-resources.c"
 		}
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_object_unref (_data_->_async_result);
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
 #line 1574 "tracker-resources.c"
 	}
 	goto __finally11;
 	__catch11_tracker_db_no_space:
 	{
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->ie = _data_->_inner_error_;
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 157 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp8_ = _data_->ie;
-#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 157 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp9_ = _data_->_tmp8_->message;
-#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 157 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp10_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, _data_->_tmp9_);
-#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 157 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = _data_->_tmp10_;
-#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 157 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->ie);
 #line 1593 "tracker-resources.c"
 		goto __finally11;
@@ -1595,80 +1595,80 @@ static gboolean tracker_resources_sparql_update_blank_co (TrackerResourcesSparql
 	goto __finally11;
 	__catch11_g_error:
 	{
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->e = _data_->_inner_error_;
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 159 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp11_ = _data_->request;
-#line 159 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp12_ = _data_->e;
-#line 159 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_dbus_request_end (_data_->_tmp11_, _data_->_tmp12_);
-#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 160 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp13_ = _data_->e;
-#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 160 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_tmp13_->domain == TRACKER_SPARQL_ERROR) {
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp14_ = _data_->e;
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp15_ = _g_error_copy0 (_data_->_tmp14_);
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_inner_error_ = _data_->_tmp15_;
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_g_error_free0 (_data_->e);
 #line 1621 "tracker-resources.c"
 			goto __finally11;
 		} else {
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 163 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp16_ = _data_->e;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 163 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp17_ = _data_->_tmp16_->message;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 163 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp18_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp17_);
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 163 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_inner_error_ = _data_->_tmp18_;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 163 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_g_error_free0 (_data_->e);
 #line 1634 "tracker-resources.c"
 			goto __finally11;
 		}
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->e);
 #line 1639 "tracker-resources.c"
 	}
 	__finally11:
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_error_free (_data_->_inner_error_);
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_data_->_state_ == 0) {
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1650 "tracker-resources.c"
 	} else {
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1654 "tracker-resources.c"
 	}
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_object_unref (_data_->_async_result);
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 150 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return FALSE;
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 147 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_data_->_state_ == 0) {
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 147 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1664 "tracker-resources.c"
 	} else {
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 147 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1668 "tracker-resources.c"
 	}
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 147 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_object_unref (_data_->_async_result);
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 147 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return FALSE;
 #line 1674 "tracker-resources.c"
 }
@@ -1678,21 +1678,21 @@ void tracker_resources_sync (TrackerResources* self, const char* sender) {
 	const char* _tmp0_;
 	TrackerDBusRequest* _tmp1_ = NULL;
 	TrackerDBusRequest* request;
-#line 168 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 168 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 168 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 168 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (sender != NULL);
-#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 169 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = sender;
-#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 169 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = tracker_dbus_request_begin ((const gchar*) _tmp0_, "Resources.Sync", NULL);
-#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 169 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	request = _tmp1_;
-#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 172 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_store_wal_checkpoint ();
-#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 174 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_data_sync ();
-#line 176 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 176 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_dbus_request_end (request, NULL);
 #line 1698 "tracker-resources.c"
 }
@@ -1701,13 +1701,13 @@ void tracker_resources_sync (TrackerResources* self, const char* sender) {
 static void tracker_resources_batch_sparql_update_data_free (gpointer _data) {
 	TrackerResourcesBatchSparqlUpdateData* _data_;
 	_data_ = _data;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->update);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_object_unref0 (_data_->self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_slice_free (TrackerResourcesBatchSparqlUpdateData, _data_);
 #line 1713 "tracker-resources.c"
 }
@@ -1720,33 +1720,33 @@ void tracker_resources_batch_sparql_update (TrackerResources* self, const char* 
 	char* _tmp2_;
 	const gchar* _tmp3_;
 	gchar* _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = g_slice_new0 (TrackerResourcesBatchSparqlUpdateData);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_resources_batch_sparql_update);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_resources_batch_sparql_update_data_free);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->self = _tmp0_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = sender;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->sender = _tmp2_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp3_ = update;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = g_strdup (_tmp3_);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_free0 (_data_->update);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->update = _tmp4_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_batch_sparql_update_co (_data_);
 #line 1752 "tracker-resources.c"
 }
@@ -1754,13 +1754,13 @@ void tracker_resources_batch_sparql_update (TrackerResources* self, const char* 
 
 void tracker_resources_batch_sparql_update_finish (TrackerResources* self, GAsyncResult* _res_, GError** error) {
 	TrackerResourcesBatchSparqlUpdateData* _data_;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return;
 #line 1762 "tracker-resources.c"
 	}
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
 #line 1766 "tracker-resources.c"
 }
@@ -1768,92 +1768,92 @@ void tracker_resources_batch_sparql_update_finish (TrackerResources* self, GAsyn
 
 static void tracker_resources_batch_sparql_update_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerResourcesBatchSparqlUpdateData* _data_;
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = _user_data_;
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_source_object_ = source_object;
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_res_ = _res_;
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_batch_sparql_update_co (_data_);
 #line 1780 "tracker-resources.c"
 }
 
 
 static gboolean tracker_resources_batch_sparql_update_co (TrackerResourcesBatchSparqlUpdateData* _data_) {
-#line 179 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 179 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	switch (_data_->_state_) {
-#line 179 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 179 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		case 0:
 #line 1789 "tracker-resources.c"
 		goto _state_0;
-#line 179 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 179 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		case 1:
 #line 1793 "tracker-resources.c"
 		goto _state_1;
 		default:
-#line 179 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 179 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_assert_not_reached ();
 #line 1798 "tracker-resources.c"
 	}
 	_state_0:
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp0_ = _data_->sender;
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp1_ = NULL;
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp1_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp0_, "Resources.BatchSparqlUpdate", NULL);
-#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->request = _data_->_tmp1_;
-#line 181 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 181 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp2_ = _data_->update;
-#line 181 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 181 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_dbus_request_debug (_data_->request, "query: %s", _data_->_tmp2_, NULL);
 #line 1813 "tracker-resources.c"
 	{
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp3_ = _data_->update;
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp4_ = _data_->sender;
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_state_ = 1;
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_store_sparql_update (_data_->_tmp3_, TRACKER_STORE_PRIORITY_LOW, (const gchar*) _data_->_tmp4_, tracker_resources_batch_sparql_update_ready, _data_);
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
 #line 1825 "tracker-resources.c"
 		_state_1:
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_store_sparql_update_finish (_data_->_res_, &_data_->_inner_error_);
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			if (g_error_matches (_data_->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
 #line 1833 "tracker-resources.c"
 				goto __catch12_tracker_db_no_space;
 			}
 			goto __catch12_g_error;
 		}
-#line 185 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 185 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_dbus_request_end (_data_->request, NULL);
 #line 1840 "tracker-resources.c"
 	}
 	goto __finally12;
 	__catch12_tracker_db_no_space:
 	{
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->ie = _data_->_inner_error_;
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 187 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp5_ = _data_->ie;
-#line 187 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp6_ = _data_->_tmp5_->message;
-#line 187 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp7_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, _data_->_tmp6_);
-#line 187 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = _data_->_tmp7_;
-#line 187 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->ie);
 #line 1859 "tracker-resources.c"
 		goto __finally12;
@@ -1861,98 +1861,98 @@ static gboolean tracker_resources_batch_sparql_update_co (TrackerResourcesBatchS
 	goto __finally12;
 	__catch12_g_error:
 	{
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->e = _data_->_inner_error_;
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 189 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 189 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp8_ = _data_->e;
-#line 189 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 189 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_dbus_request_end (_data_->request, _data_->_tmp8_);
-#line 190 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 190 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp9_ = _data_->e;
-#line 190 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 190 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_tmp9_->domain == TRACKER_SPARQL_ERROR) {
-#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp10_ = _data_->e;
-#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp11_ = _g_error_copy0 (_data_->_tmp10_);
-#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_inner_error_ = _data_->_tmp11_;
-#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_g_error_free0 (_data_->e);
 #line 1885 "tracker-resources.c"
 			goto __finally12;
 		} else {
-#line 193 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 193 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp12_ = _data_->e;
-#line 193 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 193 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp13_ = _data_->_tmp12_->message;
-#line 193 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 193 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp14_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp13_);
-#line 193 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 193 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_inner_error_ = _data_->_tmp14_;
-#line 193 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 193 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_g_error_free0 (_data_->e);
 #line 1898 "tracker-resources.c"
 			goto __finally12;
 		}
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->e);
 #line 1903 "tracker-resources.c"
 	}
 	__finally12:
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_error_free (_data_->_inner_error_);
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_state_ == 0) {
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1916 "tracker-resources.c"
 		} else {
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 1920 "tracker-resources.c"
 		}
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_object_unref (_data_->_async_result);
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
 #line 1926 "tracker-resources.c"
 	}
-#line 179 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 179 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_data_->_state_ == 0) {
-#line 179 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 179 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1932 "tracker-resources.c"
 	} else {
-#line 179 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 179 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1936 "tracker-resources.c"
 	}
-#line 179 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 179 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_object_unref (_data_->_async_result);
-#line 179 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 179 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return FALSE;
 #line 1942 "tracker-resources.c"
 }
 
 
 void tracker_resources_batch_commit (TrackerResources* self) {
-#line 198 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 198 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
 #line 1949 "tracker-resources.c"
 }
 
 
 static Block4Data* block4_data_ref (Block4Data* _data4_) {
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_atomic_int_inc (&_data4_->_ref_count_);
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return _data4_;
 #line 1958 "tracker-resources.c"
 }
@@ -1961,17 +1961,17 @@ static Block4Data* block4_data_ref (Block4Data* _data4_) {
 static void block4_data_unref (void * _userdata_) {
 	Block4Data* _data4_;
 	_data4_ = (Block4Data*) _userdata_;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (g_atomic_int_dec_and_test (&_data4_->_ref_count_)) {
 #line 1967 "tracker-resources.c"
 		TrackerResources * self;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		self = _data4_->self;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_variant_builder_unref0 (_data4_->builder);
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_object_unref0 (self);
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_slice_free (Block4Data, _data4_);
 #line 1977 "tracker-resources.c"
 	}
@@ -1985,26 +1985,26 @@ static void ___lambda5_ (Block4Data* _data4_, gint graph_id, gint subject_id, gi
 	gint _tmp2_;
 	gint _tmp3_;
 	gint _tmp4_;
-#line 205 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 205 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	self = _data4_->self;
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 206 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = _data4_->builder;
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 206 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = graph_id;
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 206 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = subject_id;
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 206 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp3_ = pred_id;
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 206 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = object_id;
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 206 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_variant_builder_add (_tmp0_, "(iiii)", _tmp1_, _tmp2_, _tmp3_, _tmp4_, NULL);
 #line 2003 "tracker-resources.c"
 }
 
 
 static void ____lambda5__tracker_events_foreach (gint graph_id, gint subject_id, gint pred_id, gint object_id, gpointer self) {
-#line 205 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 205 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	___lambda5_ (self, graph_id, subject_id, pred_id, object_id);
 #line 2010 "tracker-resources.c"
 }
@@ -2017,26 +2017,26 @@ static void ___lambda6_ (Block4Data* _data4_, gint graph_id, gint subject_id, gi
 	gint _tmp2_;
 	gint _tmp3_;
 	gint _tmp4_;
-#line 211 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 211 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	self = _data4_->self;
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = _data4_->builder;
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = graph_id;
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = subject_id;
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp3_ = pred_id;
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = object_id;
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_variant_builder_add (_tmp0_, "(iiii)", _tmp1_, _tmp2_, _tmp3_, _tmp4_, NULL);
 #line 2035 "tracker-resources.c"
 }
 
 
 static void ____lambda6__tracker_events_foreach (gint graph_id, gint subject_id, gint pred_id, gint object_id, gpointer self) {
-#line 211 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 211 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	___lambda6_ (self, graph_id, subject_id, pred_id, object_id);
 #line 2042 "tracker-resources.c"
 }
@@ -2048,33 +2048,33 @@ static gboolean tracker_resources_emit_graph_updated (TrackerResources* self, Tr
 	TrackerClass* _tmp1_;
 	gboolean _tmp2_ = FALSE;
 	gboolean _tmp5_;
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_val_if_fail (self != NULL, FALSE);
-#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_val_if_fail (cl != NULL, FALSE);
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = cl;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = tracker_class_has_insert_events (_tmp1_);
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_tmp2_) {
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp0_ = TRUE;
 #line 2064 "tracker-resources.c"
 	} else {
 		TrackerClass* _tmp3_;
 		gboolean _tmp4_ = FALSE;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp3_ = cl;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp4_ = tracker_class_has_delete_events (_tmp3_);
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp0_ = _tmp4_;
 #line 2074 "tracker-resources.c"
 	}
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp5_ = _tmp0_;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_tmp5_) {
 #line 2080 "tracker-resources.c"
 		Block4Data* _data4_;
@@ -2094,86 +2094,86 @@ static gboolean tracker_resources_emit_graph_updated (TrackerResources* self, Tr
 		GVariant* _tmp17_;
 		GVariant* _tmp18_;
 		TrackerClass* _tmp19_;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data4_ = g_slice_new0 (Block4Data);
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data4_->_ref_count_ = 1;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data4_->self = g_object_ref (self);
-#line 204 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 204 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp6_ = g_variant_builder_new ((const GVariantType*) "a(iiii)");
-#line 204 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 204 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data4_->builder = _tmp6_;
-#line 205 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 205 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp7_ = cl;
-#line 205 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 205 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_class_foreach_delete_event (_tmp7_, ____lambda5__tracker_events_foreach, _data4_);
-#line 208 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 208 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp8_ = _data4_->builder;
-#line 208 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 208 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp9_ = g_variant_builder_end (_tmp8_);
-#line 208 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 208 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_variant_ref_sink (_tmp9_);
-#line 208 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 208 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		deletes = _tmp9_;
-#line 210 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 210 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp10_ = g_variant_builder_new ((const GVariantType*) "a(iiii)");
-#line 210 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 210 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_variant_builder_unref0 (_data4_->builder);
-#line 210 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 210 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data4_->builder = _tmp10_;
-#line 211 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 211 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp11_ = cl;
-#line 211 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 211 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_class_foreach_insert_event (_tmp11_, ____lambda6__tracker_events_foreach, _data4_);
-#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 214 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp12_ = _data4_->builder;
-#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 214 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp13_ = g_variant_builder_end (_tmp12_);
-#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 214 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_variant_ref_sink (_tmp13_);
-#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 214 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		inserts = _tmp13_;
-#line 216 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 216 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp14_ = cl;
-#line 216 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 216 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp15_ = tracker_class_get_uri (_tmp14_);
-#line 216 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 216 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp16_ = _tmp15_;
-#line 216 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 216 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp17_ = deletes;
-#line 216 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 216 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp18_ = inserts;
-#line 216 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 216 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_signal_emit_by_name (self, "graph-updated", _tmp16_, _tmp17_, _tmp18_);
-#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 218 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp19_ = cl;
-#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 218 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_class_reset_ready_events (_tmp19_);
-#line 220 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 220 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		result = TRUE;
-#line 220 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 220 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_variant_unref0 (inserts);
-#line 220 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 220 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_variant_unref0 (deletes);
-#line 220 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 220 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		block4_data_unref (_data4_);
-#line 220 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 220 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_data4_ = NULL;
-#line 220 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 220 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		return result;
 #line 2166 "tracker-resources.c"
 	}
-#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 222 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	result = FALSE;
-#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 222 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return result;
 #line 2172 "tracker-resources.c"
 }
 
 
 static gpointer _g_hash_table_ref0 (gpointer self) {
-#line 234 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 234 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return self ? g_hash_table_ref (self) : NULL;
 #line 2179 "tracker-resources.c"
 }
@@ -2187,9 +2187,9 @@ static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 	GHashTable* _tmp5_;
 	GHashTable* writebacks;
 	GHashTable* _tmp6_;
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_val_if_fail (self != NULL, FALSE);
-#line 226 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 226 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = tracker_events_get_classes (&_tmp0_);
 #line 2195 "tracker-resources.c"
 	{
@@ -2197,43 +2197,43 @@ static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 		gint cl_collection_length1 = 0;
 		gint _cl_collection_size_ = 0;
 		gint cl_it = 0;
-#line 226 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 226 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		cl_collection = _tmp1_;
-#line 226 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 226 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		cl_collection_length1 = _tmp0_;
-#line 226 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 226 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		for (cl_it = 0; cl_it < _tmp0_; cl_it = cl_it + 1) {
 #line 2207 "tracker-resources.c"
 			TrackerClass* _tmp2_;
 			TrackerClass* cl = NULL;
-#line 226 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 226 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp2_ = _g_object_ref0 (cl_collection[cl_it]);
-#line 226 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 226 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			cl = _tmp2_;
 #line 2214 "tracker-resources.c"
 			{
 				TrackerClass* _tmp3_;
-#line 227 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 227 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 				_tmp3_ = cl;
-#line 227 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 227 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 				tracker_resources_emit_graph_updated (self, _tmp3_);
-#line 226 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 226 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 				_g_object_unref0 (cl);
 #line 2223 "tracker-resources.c"
 			}
 		}
 	}
-#line 231 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 231 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_events_get_total (TRUE);
-#line 234 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 234 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = tracker_writeback_get_ready ();
-#line 234 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 234 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp5_ = _g_hash_table_ref0 (_tmp4_);
-#line 234 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 234 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	writebacks = _tmp5_;
-#line 236 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 236 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp6_ = writebacks;
-#line 236 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 236 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_tmp6_ != NULL) {
 #line 2239 "tracker-resources.c"
 		GVariantBuilder* _tmp7_;
@@ -2245,15 +2245,15 @@ static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 		GVariantBuilder* _tmp28_;
 		GVariant* _tmp29_ = NULL;
 		GVariant* _tmp30_;
-#line 237 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 237 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp7_ = g_variant_builder_new ((const GVariantType*) "a{iai}");
-#line 237 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 237 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		builder = _tmp7_;
-#line 239 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 239 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp8_ = writebacks;
-#line 239 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 239 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_hash_table_iter_init (&wb_iter, _tmp8_);
-#line 243 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 243 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		while (TRUE) {
 #line 2259 "tracker-resources.c"
 			gconstpointer _tmp9_ = NULL;
@@ -2265,43 +2265,43 @@ static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 			GVariantBuilder* _tmp15_;
 			GVariantBuilder* _tmp26_;
 			GVariantBuilder* _tmp27_;
-#line 243 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 243 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp11_ = g_hash_table_iter_next (&wb_iter, &_tmp9_, &_tmp10_);
-#line 243 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 243 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			subject_id = _tmp9_;
-#line 243 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 243 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			types = _tmp10_;
-#line 243 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 243 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			if (!_tmp11_) {
-#line 243 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 243 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 				break;
 #line 2279 "tracker-resources.c"
 			}
-#line 244 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 244 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp12_ = builder;
-#line 244 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 244 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_variant_builder_open (_tmp12_, (const GVariantType*) "{iai}");
-#line 246 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 246 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp13_ = builder;
-#line 246 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 246 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp14_ = subject_id;
-#line 246 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 246 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_variant_builder_add (_tmp13_, "i", _tmp14_, NULL);
-#line 248 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 248 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp15_ = builder;
-#line 248 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 248 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_variant_builder_open (_tmp15_, (const GVariantType*) "ai");
 #line 2295 "tracker-resources.c"
 			{
 				gint i;
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 				i = 0;
 #line 2300 "tracker-resources.c"
 				{
 					gboolean _tmp16_;
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp16_ = TRUE;
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 					while (TRUE) {
 #line 2307 "tracker-resources.c"
 						gboolean _tmp17_;
@@ -2312,83 +2312,83 @@ static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 						GArray* _tmp23_;
 						gint _tmp24_;
 						gint _tmp25_ = 0;
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp17_ = _tmp16_;
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						if (!_tmp17_) {
 #line 2320 "tracker-resources.c"
 							gint _tmp18_;
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 							_tmp18_ = i;
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 							i = _tmp18_ + 1;
 #line 2326 "tracker-resources.c"
 						}
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp16_ = FALSE;
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp19_ = i;
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp20_ = types;
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp21_ = _tmp20_->len;
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						if (!(((guint) _tmp19_) < _tmp21_)) {
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 							break;
 #line 2340 "tracker-resources.c"
 						}
-#line 250 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 250 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp22_ = builder;
-#line 250 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 250 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp23_ = types;
-#line 250 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 250 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp24_ = i;
-#line 250 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 250 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp25_ = g_array_index (_tmp23_, gint, (guint) _tmp24_);
-#line 250 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 250 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 						g_variant_builder_add (_tmp22_, "i", _tmp25_, NULL);
 #line 2352 "tracker-resources.c"
 					}
 				}
 			}
-#line 252 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 252 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp26_ = builder;
-#line 252 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 252 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_variant_builder_close (_tmp26_);
-#line 254 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 254 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp27_ = builder;
-#line 254 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 254 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_variant_builder_close (_tmp27_);
 #line 2364 "tracker-resources.c"
 		}
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 257 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp28_ = builder;
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 257 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp29_ = g_variant_builder_end (_tmp28_);
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 257 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_variant_ref_sink (_tmp29_);
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 257 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp30_ = _tmp29_;
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 257 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_signal_emit_by_name (self, "writeback", _tmp30_);
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 257 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_variant_unref0 (_tmp30_);
-#line 236 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 236 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_g_variant_builder_unref0 (builder);
 #line 2380 "tracker-resources.c"
 	}
-#line 260 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 260 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_writeback_reset_ready ();
-#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 262 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	self->priv->regular_commit_pending = FALSE;
-#line 263 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 263 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	self->priv->signal_timeout = (guint) 0;
-#line 264 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 264 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	result = FALSE;
-#line 264 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 264 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_hash_table_unref0 (writebacks);
-#line 264 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 264 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return result;
 #line 2394 "tracker-resources.c"
 }
@@ -2397,7 +2397,7 @@ static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 static gboolean _tracker_resources_on_emit_signals_gsource_func (gpointer self) {
 	gboolean result;
 	result = tracker_resources_on_emit_signals (self);
-#line 296 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 296 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	return result;
 #line 2403 "tracker-resources.c"
 }
@@ -2411,9 +2411,9 @@ static void tracker_resources_on_statements_committed (TrackerResources* self, T
 	gboolean _tmp8_ = FALSE;
 	gboolean _tmp9_;
 	gboolean _tmp11_;
-#line 267 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 267 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 270 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 270 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = tracker_events_get_classes (&_tmp0_);
 #line 2419 "tracker-resources.c"
 	{
@@ -2421,107 +2421,107 @@ static void tracker_resources_on_statements_committed (TrackerResources* self, T
 		gint cl_collection_length1 = 0;
 		gint _cl_collection_size_ = 0;
 		gint cl_it = 0;
-#line 270 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 270 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		cl_collection = _tmp1_;
-#line 270 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 270 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		cl_collection_length1 = _tmp0_;
-#line 270 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 270 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		for (cl_it = 0; cl_it < _tmp0_; cl_it = cl_it + 1) {
 #line 2431 "tracker-resources.c"
 			TrackerClass* _tmp2_;
 			TrackerClass* cl = NULL;
-#line 270 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 270 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp2_ = _g_object_ref0 (cl_collection[cl_it]);
-#line 270 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 270 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			cl = _tmp2_;
 #line 2438 "tracker-resources.c"
 			{
 				TrackerClass* _tmp3_;
-#line 271 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 271 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 				_tmp3_ = cl;
-#line 271 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 271 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 				tracker_class_transact_events (_tmp3_);
-#line 270 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 270 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 				_g_object_unref0 (cl);
 #line 2447 "tracker-resources.c"
 			}
 		}
 	}
-#line 274 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 274 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = self->priv->regular_commit_pending;
-#line 274 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 274 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (!_tmp4_) {
 #line 2455 "tracker-resources.c"
 		guint _tmp5_;
-#line 283 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 283 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp5_ = self->priv->signal_timeout;
-#line 283 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 283 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_tmp5_ != ((guint) 0)) {
 #line 2461 "tracker-resources.c"
 			guint _tmp6_;
-#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 284 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp6_ = self->priv->signal_timeout;
-#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 284 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_source_remove (_tmp6_);
-#line 285 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 285 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			self->priv->signal_timeout = (guint) 0;
 #line 2469 "tracker-resources.c"
 		}
 	}
-#line 289 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 289 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp7_ = commit_type;
-#line 289 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 289 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_tmp7_ == TRACKER_DATA_COMMIT_REGULAR) {
-#line 290 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 290 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		self->priv->regular_commit_pending = TRUE;
 #line 2478 "tracker-resources.c"
 	}
-#line 293 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 293 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp9_ = self->priv->regular_commit_pending;
-#line 293 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 293 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_tmp9_) {
-#line 293 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 293 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp8_ = TRUE;
 #line 2486 "tracker-resources.c"
 	} else {
 		TrackerDataCommitType _tmp10_;
-#line 293 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 293 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp10_ = commit_type;
-#line 293 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 293 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp8_ = _tmp10_ == TRACKER_DATA_COMMIT_BATCH_LAST;
 #line 2493 "tracker-resources.c"
 	}
-#line 293 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 293 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp11_ = _tmp8_;
-#line 293 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 293 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_tmp11_) {
 #line 2499 "tracker-resources.c"
 		guint _tmp12_;
-#line 295 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 295 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp12_ = self->priv->signal_timeout;
-#line 295 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 295 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_tmp12_ == ((guint) 0)) {
 #line 2505 "tracker-resources.c"
 			guint _tmp13_ = 0U;
-#line 296 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 296 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp13_ = g_timeout_add_full (G_PRIORITY_DEFAULT, (guint) (TRACKER_RESOURCES_SIGNALS_SECONDS_PER_EMIT * 1000), _tracker_resources_on_emit_signals_gsource_func, g_object_ref (self), g_object_unref);
-#line 296 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 296 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			self->priv->signal_timeout = _tmp13_;
 #line 2511 "tracker-resources.c"
 		}
 	}
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 301 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_writeback_transact ();
 #line 2516 "tracker-resources.c"
 }
 
 
 static void tracker_resources_on_statements_rolled_back (TrackerResources* self, TrackerDataCommitType commit_type) {
-#line 304 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 304 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 305 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 305 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_events_reset_pending ();
-#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 306 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_writeback_reset_pending ();
 #line 2527 "tracker-resources.c"
 }
@@ -2529,29 +2529,29 @@ static void tracker_resources_on_statements_rolled_back (TrackerResources* self,
 
 static void tracker_resources_check_graph_updated_signal (TrackerResources* self) {
 	guint _tmp0_ = 0U;
-#line 309 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 309 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 311 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 311 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = tracker_events_get_total (FALSE);
-#line 311 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 311 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_tmp0_ > ((guint) TRACKER_RESOURCES_GRAPH_UPDATED_IMMEDIATE_EMIT_AT)) {
 #line 2539 "tracker-resources.c"
 		guint _tmp1_;
-#line 315 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 315 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp1_ = self->priv->signal_timeout;
-#line 315 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 315 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		if (_tmp1_ != ((guint) 0)) {
 #line 2545 "tracker-resources.c"
 			guint _tmp2_;
-#line 316 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 316 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp2_ = self->priv->signal_timeout;
-#line 316 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 316 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			g_source_remove (_tmp2_);
-#line 317 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 317 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 			self->priv->signal_timeout = (guint) 0;
 #line 2553 "tracker-resources.c"
 		}
-#line 321 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 321 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_resources_on_emit_signals (self);
 #line 2557 "tracker-resources.c"
 	}
@@ -2574,47 +2574,47 @@ static void tracker_resources_on_statement_inserted (TrackerResources* self, gin
 	gint _tmp12_;
 	const gchar* _tmp13_;
 	GPtrArray* _tmp14_;
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 325 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 325 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (subject != NULL);
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 325 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (rdf_types != NULL);
-#line 326 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 326 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = graph_id;
-#line 326 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 326 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = subject_id;
-#line 326 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 326 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = subject;
-#line 326 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 326 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp3_ = pred_id;
-#line 326 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 326 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = object_id;
-#line 326 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 326 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp5_ = object;
-#line 326 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 326 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp6_ = rdf_types;
-#line 326 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 326 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_events_add_insert (_tmp0_, _tmp1_, _tmp2_, _tmp3_, _tmp4_, _tmp5_, _tmp6_);
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 327 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp7_ = graph_id;
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 327 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp8_ = graph;
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 327 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp9_ = subject_id;
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 327 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp10_ = subject;
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 327 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp11_ = pred_id;
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 327 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp12_ = object_id;
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 327 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp13_ = object;
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 327 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp14_ = rdf_types;
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 327 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_writeback_check (_tmp7_, _tmp8_, _tmp9_, _tmp10_, _tmp11_, _tmp12_, _tmp13_, _tmp14_);
-#line 328 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 328 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_check_graph_updated_signal (self);
 #line 2620 "tracker-resources.c"
 }
@@ -2636,90 +2636,90 @@ static void tracker_resources_on_statement_deleted (TrackerResources* self, gint
 	gint _tmp12_;
 	const gchar* _tmp13_;
 	GPtrArray* _tmp14_;
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 331 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 331 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (subject != NULL);
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 331 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (rdf_types != NULL);
-#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 332 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = graph_id;
-#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 332 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = subject_id;
-#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 332 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = subject;
-#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 332 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp3_ = pred_id;
-#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 332 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = object_id;
-#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 332 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp5_ = object;
-#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 332 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp6_ = rdf_types;
-#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 332 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_events_add_delete (_tmp0_, _tmp1_, _tmp2_, _tmp3_, _tmp4_, _tmp5_, _tmp6_);
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 333 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp7_ = graph_id;
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 333 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp8_ = graph;
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 333 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp9_ = subject_id;
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 333 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp10_ = subject;
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 333 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp11_ = pred_id;
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 333 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp12_ = object_id;
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 333 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp13_ = object;
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 333 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp14_ = rdf_types;
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 333 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_writeback_check (_tmp7_, _tmp8_, _tmp9_, _tmp10_, _tmp11_, _tmp12_, _tmp13_, _tmp14_);
-#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 334 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_check_graph_updated_signal (self);
 #line 2682 "tracker-resources.c"
 }
 
 
 static void _tracker_resources_on_statement_inserted_tracker_statement_callback (gint graph_id, const gchar* graph, gint subject_id, const gchar* subject, gint predicate_id, gint object_id, const gchar* object, GPtrArray* rdf_types, gpointer self) {
-#line 339 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 339 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_on_statement_inserted (self, graph_id, graph, subject_id, subject, predicate_id, object_id, object, rdf_types);
 #line 2689 "tracker-resources.c"
 }
 
 
 static void _tracker_resources_on_statement_deleted_tracker_statement_callback (gint graph_id, const gchar* graph, gint subject_id, const gchar* subject, gint predicate_id, gint object_id, const gchar* object, GPtrArray* rdf_types, gpointer self) {
-#line 340 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 340 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_on_statement_deleted (self, graph_id, graph, subject_id, subject, predicate_id, object_id, object, rdf_types);
 #line 2696 "tracker-resources.c"
 }
 
 
 static void _tracker_resources_on_statements_committed_tracker_commit_callback (TrackerDataCommitType commit_type, gpointer self) {
-#line 341 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 341 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_on_statements_committed (self, commit_type);
 #line 2703 "tracker-resources.c"
 }
 
 
 static void _tracker_resources_on_statements_rolled_back_tracker_commit_callback (TrackerDataCommitType commit_type, gpointer self) {
-#line 342 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 342 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_on_statements_rolled_back (self, commit_type);
 #line 2710 "tracker-resources.c"
 }
 
 
 void tracker_resources_enable_signals (TrackerResources* self) {
-#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 338 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 339 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 339 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_data_add_insert_statement_callback (_tracker_resources_on_statement_inserted_tracker_statement_callback, self);
-#line 340 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 340 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_data_add_delete_statement_callback (_tracker_resources_on_statement_deleted_tracker_statement_callback, self);
-#line 341 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 341 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_data_add_commit_statement_callback (_tracker_resources_on_statements_committed_tracker_commit_callback, self);
-#line 342 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 342 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_data_add_rollback_statement_callback (_tracker_resources_on_statements_rolled_back_tracker_commit_callback, self);
 #line 2725 "tracker-resources.c"
 }
@@ -2727,25 +2727,25 @@ void tracker_resources_enable_signals (TrackerResources* self) {
 
 void tracker_resources_disable_signals (TrackerResources* self) {
 	guint _tmp0_;
-#line 346 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 346 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 347 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 347 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_data_remove_insert_statement_callback (_tracker_resources_on_statement_inserted_tracker_statement_callback, self);
-#line 348 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 348 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_data_remove_delete_statement_callback (_tracker_resources_on_statement_deleted_tracker_statement_callback, self);
-#line 349 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 349 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_data_remove_commit_statement_callback (_tracker_resources_on_statements_committed_tracker_commit_callback, self);
-#line 350 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 350 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_data_remove_rollback_statement_callback (_tracker_resources_on_statements_rolled_back_tracker_commit_callback, self);
-#line 352 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 352 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = self->priv->signal_timeout;
-#line 352 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 352 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (_tmp0_ != ((guint) 0)) {
 #line 2745 "tracker-resources.c"
 		guint _tmp1_;
-#line 353 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 353 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp1_ = self->priv->signal_timeout;
-#line 353 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 353 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		g_source_remove (_tmp1_);
 #line 2751 "tracker-resources.c"
 	}
@@ -2754,13 +2754,13 @@ void tracker_resources_disable_signals (TrackerResources* self) {
 
 void tracker_resources_unreg_batches (TrackerResources* self, const gchar* old_owner) {
 	const gchar* _tmp0_;
-#line 362 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 362 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 362 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 362 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (old_owner != NULL);
-#line 363 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 363 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = old_owner;
-#line 363 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 363 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_store_unreg_batches (_tmp0_);
 #line 2766 "tracker-resources.c"
 }
@@ -2773,25 +2773,25 @@ static void g_cclosure_user_marshal_VOID__VARIANT (GClosure * closure, GValue * 
 	register gpointer data1;
 	register gpointer data2;
 	cc = (GCClosure *) closure;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (n_param_values == 2);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (G_CCLOSURE_SWAP_DATA (closure)) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		data1 = closure->data;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		data2 = param_values->data[0].v_pointer;
 #line 2785 "tracker-resources.c"
 	} else {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		data1 = param_values->data[0].v_pointer;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		data2 = closure->data;
 #line 2791 "tracker-resources.c"
 	}
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	callback = (GMarshalFunc_VOID__VARIANT) (marshal_data ? marshal_data : cc->callback);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	callback (data1, g_value_get_variant (param_values + 1), data2);
 #line 2797 "tracker-resources.c"
 }
@@ -2804,47 +2804,47 @@ static void g_cclosure_user_marshal_VOID__STRING_VARIANT_VARIANT (GClosure * clo
 	register gpointer data1;
 	register gpointer data2;
 	cc = (GCClosure *) closure;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (n_param_values == 4);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	if (G_CCLOSURE_SWAP_DATA (closure)) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		data1 = closure->data;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		data2 = param_values->data[0].v_pointer;
 #line 2816 "tracker-resources.c"
 	} else {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		data1 = param_values->data[0].v_pointer;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 		data2 = closure->data;
 #line 2822 "tracker-resources.c"
 	}
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	callback = (GMarshalFunc_VOID__STRING_VARIANT_VARIANT) (marshal_data ? marshal_data : cc->callback);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	callback (data1, g_value_get_string (param_values + 1), g_value_get_variant (param_values + 2), g_value_get_variant (param_values + 3), data2);
 #line 2828 "tracker-resources.c"
 }
 
 
 static void tracker_resources_class_init (TrackerResourcesClass * klass) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_parent_class = g_type_class_peek_parent (klass);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_type_class_add_private (klass, sizeof (TrackerResourcesPrivate));
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	G_OBJECT_CLASS (klass)->finalize = tracker_resources_finalize;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_signal_new ("writeback", TRACKER_TYPE_RESOURCES, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_user_marshal_VOID__VARIANT, G_TYPE_NONE, 1, G_TYPE_VARIANT);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	g_signal_new ("graph_updated", TRACKER_TYPE_RESOURCES, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_user_marshal_VOID__STRING_VARIANT_VARIANT, G_TYPE_NONE, 3, G_TYPE_STRING, G_TYPE_VARIANT, G_TYPE_VARIANT);
 #line 2843 "tracker-resources.c"
 }
 
 
 static void tracker_resources_instance_init (TrackerResources * self) {
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	self->priv = TRACKER_RESOURCES_GET_PRIVATE (self);
 #line 2850 "tracker-resources.c"
 }
@@ -2852,13 +2852,13 @@ static void tracker_resources_instance_init (TrackerResources * self) {
 
 static void tracker_resources_finalize (GObject* obj) {
 	TrackerResources * self;
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TRACKER_TYPE_RESOURCES, TrackerResources);
-#line 358 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 358 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_disable_signals (self);
-#line 53 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 53 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	_g_object_unref0 (self->priv->connection);
-#line 22 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-resources.vala"
 	G_OBJECT_CLASS (tracker_resources_parent_class)->finalize (obj);
 #line 2864 "tracker-resources.c"
 }

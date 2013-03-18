@@ -12,8 +12,8 @@ AC_PREREQ([2.64])
 # if backwards compatibility has been broken,
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
-m4_define([tracker_minor_version], [15])
-m4_define([tracker_micro_version], [4])
+m4_define([tracker_minor_version], [16])
+m4_define([tracker_micro_version], [0])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -280,17 +280,6 @@ TRACKER_CONTROL_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
 
 PKG_CHECK_MODULES(TRACKER_CONTROL, [$TRACKER_CONTROL_REQUIRED])
 
-# Check requirements for tracker-explorer
-TRACKER_EXPLORER_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
-                           gio-unix-2.0 >= $GLIB_REQUIRED
-                           gmodule-2.0  >= $GLIB_REQUIRED
-                           gtk+-3.0     >= $GTK_REQUIRED
-			   gee-0.8      >= $GEE_REQUIRED"
-
-PKG_CHECK_MODULES(TRACKER_EXPLORER, [$TRACKER_EXPLORER_REQUIRED],
-                  [have_tracker_explorer=yes],
-                  [have_tracker_explorer=no])
-
 TRACKER_RESDUMP_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
                           gee-0.8      >= $GEE_REQUIRED"
 
@@ -445,16 +434,6 @@ PKG_CHECK_MODULES(TRACKER_MINER_RSS, [$TRACKER_MINER_RSS_REQUIRED],
                   [have_tracker_miner_rss=yes],
                   [have_tracker_miner_rss=no])
 
-# Check requirements for tracker-miner-flickr
-TRACKER_MINER_FLICKR_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
-                               rest-0.7     >= $REST_REQUIRED"
-
-PKG_CHECK_MODULES(TRACKER_MINER_FLICKR, [$TRACKER_MINER_FLICKR_REQUIRED],
-                  [have_tracker_miner_flickr=yes],
-                  [have_tracker_miner_flickr=no])
-
-TRACKER_MINER_FLICKR_LIBS="$TRACKER_MINER_FLICKR_LIBS -lz -lm"
-
 # Check requirements for tracker-utils
 TRACKER_UTILS_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
                         gio-unix-2.0 >= $GLIB_REQUIRED"
@@ -480,20 +459,6 @@ TRACKER_PREFERENCES_REQUIRED="glib-2.0       >= $GLIB_REQUIRED
 PKG_CHECK_MODULES(TRACKER_PREFERENCES, [$TRACKER_PREFERENCES_REQUIRED],
                   [have_tracker_preferences=yes],
                   [have_tracker_preferences=no])
-
-# Check requirements for tracker-search-bar
-TRACKER_SEARCH_BAR_REQUIRED="glib-2.0       >= $GLIB_REQUIRED
-                             gio-unix-2.0   >= $GLIB_REQUIRED
-                             gmodule-2.0    >= $GLIB_REQUIRED
-                             gtk+-3.0       >= $GTK_REQUIRED
-                             gdk-pixbuf-2.0 >= $GDKPIXBUF_REQUIRED
-                             pango          >= $PANGO_REQUIRED
-			     gee-0.8        >= $GEE_REQUIRED
-                             libpanelapplet-4.0"
-
-PKG_CHECK_MODULES(TRACKER_SEARCH_BAR, [$TRACKER_SEARCH_BAR_REQUIRED],
-                  [have_tracker_search_bar=yes],
-                  [have_tracker_search_bar=no])
 
 # Check requirements for Nautilus extension
 TRACKER_NAUTILUS_EXTENSION_REQUIRED="libnautilus-extension"
@@ -1185,29 +1150,6 @@ fi
 AM_CONDITIONAL(HAVE_TRACKER_MINER_FS, test "x$have_tracker_miner_fs" = "xyes")
 
 ##################################################################
-# Check for tracker-miner-flickr
-##################################################################
-
-AC_ARG_ENABLE(miner_flickr,
-              AS_HELP_STRING([--enable-miner-flickr],
-                             [enable Flickr miner [[default=auto]]]),,
-                             [enable_tracker_miner_flickr=auto])
-
-enable_tracker_miner_flickr=$enable_miner_flickr
-
-if test "x$enable_tracker_miner_flickr" = "xyes"; then
-   if test "x$have_tracker_miner_flickr" != "xyes"; then
-      AC_MSG_ERROR([Couldn't find tracker-miner-flickr dependencies ($TRACKER_MINER_FLICKR_REQUIRED).])
-   fi
-else
-   if test "x$enable_tracker_miner_flickr" = "xno"; then
-      have_tracker_miner_flickr="no  (disabled)"
-   fi
-fi
-
-AM_CONDITIONAL(HAVE_TRACKER_MINER_FLICKR, test "x$have_tracker_miner_flickr" = "xyes")
-
-##################################################################
 # Check for tracker-miner-rss
 ##################################################################
 
@@ -1297,13 +1239,13 @@ else
 fi
 
 if test "x$have_tracker_miner_thunderbird" = "xyes"; then
-
    AC_ARG_WITH([thunderbird_plugin_dir],
                AS_HELP_STRING([--with-thunderbird-plugin-dir],
                               [path to Thunderbird plugin directory]))
    if test "x$with_thunderbird_plugin_dir" = "x" ; then
       # This is a symlinked to $prefix/share/xul-ext
-      tracker_miner_thunderbird_install_dir="${prefix}/lib/thunderbird-${thunderbird_version}/extensions"
+      # This was ${prefix}/lib/thunderbird-${thunderbird_version}/extensions
+      tracker_miner_thunderbird_install_dir="${prefix}/lib/thunderbird-addons/extensions"
    else
       tracker_miner_thunderbird_install_dir="$with_thunderbird_plugin_dir"
    fi
@@ -1347,7 +1289,8 @@ if test "x$have_tracker_miner_firefox" = "xyes"; then
                               [path to Firefox plugin directory]))
    if test "x$with_firefox_plugin_dir" = "x" ; then
       # This is a symlinked to $prefix/share/xul-ext
-      tracker_miner_firefox_install_dir="${prefix}/lib/firefox-${firefox_version}/extensions"
+      # This was ${prefix}/lib/firefox-${firefox_version}/extensions
+      tracker_miner_firefox_install_dir="${prefix}/lib/firefox-addons/extensions"
    else
       tracker_miner_firefox_install_dir="$with_firefox_plugin_dir"
    fi
@@ -1426,27 +1369,6 @@ fi
 
 AM_CONDITIONAL(HAVE_TAGLIB, test "x$have_taglib" = "xyes")
 
-#################################################################
-# Check for tracker-search-bar
-##################################################################
-
-AC_ARG_ENABLE([tracker-search-bar],
-              AS_HELP_STRING([--enable-tracker-search-bar],
-                             [enable tracker-search-bar[[default=auto]]]),,
-              [enable_tracker_search_bar=auto])
-
-if test "x$enable_tracker_search_bar" = "xyes" ; then
-   if test "x$have_tracker_search_bar" != "xyes"; then
-      AC_MSG_ERROR([Couldn't find tracker-search-bar dependencies ($TRACKER_SEARCH_BAR_REQUIRED).])
-   fi
-else
-   if test "x$enable_tracker_search_bar" = "xno"; then
-      have_tracker_search_bar="no  (disabled)"
-   fi
-fi
-
-AM_CONDITIONAL(HAVE_TRACKER_SEARCH_BAR, test "$have_tracker_search_bar" = "yes")
-
 ##################################################################
 # Check for tracker-needle
 ##################################################################
@@ -1500,27 +1422,6 @@ else
 fi
 
 AM_CONDITIONAL(HAVE_TRACKER_PREFERENCES, test "$have_tracker_preferences" = "yes")
-
-##################################################################
-# Check for tracker-explorer
-##################################################################
-
-AC_ARG_ENABLE([tracker-explorer],
-              AS_HELP_STRING([--enable-tracker-explorer],
-                             [enable tracker-explorer[[default=auto]]]),,
-              [enable_tracker_explorer=auto])
-
-if test "x$enable_tracker_explorer" = "xyes" ; then
-   if test "x$have_tracker_explorer" != "xyes"; then
-      AC_MSG_ERROR([Couldn't find tracker-explorer dependencies ($TRACKER_EXPLORER_REQUIRED).])
-   fi
-else
-   if test "x$enable_tracker_explorer" = "xno"; then
-      have_tracker_explorer="no  (disabled)"
-   fi
-fi
-
-AM_CONDITIONAL(HAVE_TRACKER_EXPLORER, test "$have_tracker_explorer" = "yes")
 
 ##################################################################
 # Check for tracker-resdump
@@ -2339,14 +2240,11 @@ AC_CONFIG_FILES([
 	src/miners/Makefile
 	src/miners/fs/Makefile
 	src/miners/rss/Makefile
-	src/miners/flickr/Makefile
 	src/tracker-store/Makefile
 	src/tracker-control/Makefile
 	src/tracker-extract/Makefile
 	src/tracker-preferences/Makefile
 	src/tracker-preferences/tracker-preferences.desktop.in
-	src/tracker-search-bar/Makefile
-	src/tracker-explorer/Makefile
 	src/tracker-needle/Makefile
 	src/tracker-needle/tracker-needle.desktop.in
 	src/tracker-utils/Makefile
@@ -2438,9 +2336,7 @@ AC_CONFIG_FILES([
 	tests/tracker-writeback/Makefile
 	utils/Makefile
 	utils/gtk-sparql/Makefile
-	utils/lyrics/Makefile
-	utils/playlists/Makefile
-	utils/services/Makefile
+	utils/ontology/Makefile
 	utils/data-generators/Makefile
 	utils/data-generators/cc/Makefile
 	utils/mtp/Makefile
@@ -2483,9 +2379,7 @@ Applications:
 	Build with SQLite FTS support:          $have_tracker_fts (built-in FTS: $have_builtin_fts4)
 
 	Build tracker-preferences:              $have_tracker_preferences
-	Build tracker-explorer:                 $have_tracker_explorer
 	Build tracker-needle:                   $have_tracker_needle
-	Build tracker-search-bar:               $have_tracker_search_bar
 
 Metadata Extractors:
 
@@ -2517,7 +2411,6 @@ Data Miners:
 	Evolution:                              $have_tracker_miner_evolution ($tracker_miner_evolution_install_dir)
         Thunderbird:                            $have_tracker_miner_thunderbird ($tracker_miner_thunderbird_install_dir)
         FireFox:                                $have_tracker_miner_firefox ($tracker_miner_firefox_install_dir)
-	Flickr:                                 $have_tracker_miner_flickr
 
 Plugins:
 

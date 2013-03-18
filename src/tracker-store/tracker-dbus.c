@@ -196,11 +196,11 @@ static gboolean tracker_dbus_dbus_register_service (const gchar* name) {
 	gboolean result = FALSE;
 	const gchar* _tmp0_;
 	GError * _inner_error_ = NULL;
-#line 38 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 38 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_return_val_if_fail (name != NULL, FALSE);
-#line 39 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 39 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp0_ = name;
-#line 39 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 39 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_message ("Registering D-Bus service...\n  Name:'%s'", _tmp0_);
 #line 206 "tracker-dbus.c"
 	{
@@ -214,56 +214,56 @@ static gboolean tracker_dbus_dbus_register_service (const gchar* name) {
 		guint _result_ = 0U;
 		GVariant* _tmp7_;
 		guint _tmp8_;
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 42 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp1_ = tracker_dbus_connection;
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 42 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp2_ = name;
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 42 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp3_ = g_variant_new ("(su)", _tmp2_, 1 << 2, NULL);
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 42 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_variant_ref_sink (_tmp3_);
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 42 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp4_ = _tmp3_;
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 42 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp5_ = g_dbus_connection_call_sync (_tmp1_, "org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus", "RequestName", _tmp4_, (const GVariantType*) "(u)", 0, -1, NULL, &_inner_error_);
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 42 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp6_ = _tmp5_;
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 42 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_g_variant_unref0 (_tmp4_);
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 42 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		reply = _tmp6_;
-#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 42 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		if (_inner_error_ != NULL) {
 #line 238 "tracker-dbus.c"
 			goto __catch2_g_error;
 		}
-#line 50 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 50 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp7_ = reply;
-#line 50 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 50 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_variant_get (_tmp7_, "(u)", &_result_, NULL);
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp8_ = _result_;
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		if (_tmp8_ != ((guint) 1)) {
 #line 249 "tracker-dbus.c"
 			const gchar* _tmp9_;
-#line 52 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 52 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			_tmp9_ = name;
-#line 52 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 52 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			g_critical ("D-Bus service name:'%s' is already taken, " "perhaps the daemon is already running?", _tmp9_);
-#line 55 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 55 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			result = FALSE;
-#line 55 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 55 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			_g_variant_unref0 (reply);
-#line 55 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 55 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			return result;
 #line 261 "tracker-dbus.c"
 		}
-#line 58 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 58 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = TRUE;
-#line 58 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 58 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_g_variant_unref0 (reply);
-#line 58 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 58 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 269 "tracker-dbus.c"
 	}
@@ -274,32 +274,32 @@ static gboolean tracker_dbus_dbus_register_service (const gchar* name) {
 		const gchar* _tmp10_;
 		GError* _tmp11_;
 		const gchar* _tmp12_;
-#line 41 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 41 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		e = _inner_error_;
-#line 41 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 41 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_inner_error_ = NULL;
-#line 60 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 60 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp10_ = name;
-#line 60 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 60 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp11_ = e;
-#line 60 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 60 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp12_ = _tmp11_->message;
-#line 60 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 60 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_critical ("Could not aquire name:'%s', %s", _tmp10_, _tmp12_);
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = FALSE;
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_g_error_free0 (e);
-#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 296 "tracker-dbus.c"
 	}
 	__finally2:
-#line 41 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 41 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 41 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 41 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_clear_error (&_inner_error_);
-#line 41 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 41 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return FALSE;
 #line 305 "tracker-dbus.c"
 }
@@ -307,17 +307,17 @@ static gboolean tracker_dbus_dbus_register_service (const gchar* name) {
 
 static guint _vala_g_dbus_connection_register_object (GType type, void* object, GDBusConnection* connection, const gchar* path, GError** error) {
 	void *func;
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 71 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	func = g_type_get_qdata (type, g_quark_from_static_string ("vala-dbus-register-object"));
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 71 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (!func) {
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 71 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED, "The specified type does not support D-Bus registration");
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 71 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return 0;
 #line 319 "tracker-dbus.c"
 	}
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 71 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return ((guint (*) (void *, GDBusConnection *, const gchar *, GError **)) func) (object, connection, path, error);
 #line 323 "tracker-dbus.c"
 }
@@ -328,19 +328,19 @@ static guint tracker_dbus_register_object (GType t_type, GBoxedCopyFunc t_dup_fu
 	const gchar* _tmp0_;
 	const gchar* _tmp1_ = NULL;
 	GError * _inner_error_ = NULL;
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_return_val_if_fail (lconnection != NULL, 0U);
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_return_val_if_fail (path != NULL, 0U);
-#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_message ("Registering D-Bus object...");
-#line 67 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp0_ = path;
-#line 67 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_message ("  Path:'%s'", _tmp0_);
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp1_ = g_type_name (t_type);
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_message ("  Type:'%s'", _tmp1_);
 #line 346 "tracker-dbus.c"
 	{
@@ -349,24 +349,24 @@ static guint tracker_dbus_register_object (GType t_type, GBoxedCopyFunc t_dup_fu
 		gconstpointer _tmp4_;
 		guint _tmp5_ = 0U;
 		guint id;
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 71 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp2_ = lconnection;
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 71 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp3_ = path;
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 71 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp4_ = object;
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 71 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp5_ = _vala_g_dbus_connection_register_object (t_type, _tmp4_, _tmp2_, _tmp3_, &_inner_error_);
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 71 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		id = _tmp5_;
-#line 71 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 71 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		if (_inner_error_ != NULL) {
 #line 365 "tracker-dbus.c"
 			goto __catch3_g_error;
 		}
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 72 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = id;
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 72 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 372 "tracker-dbus.c"
 	}
@@ -376,30 +376,30 @@ static guint tracker_dbus_register_object (GType t_type, GBoxedCopyFunc t_dup_fu
 		GError* e = NULL;
 		GError* _tmp6_;
 		const gchar* _tmp7_;
-#line 70 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 70 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		e = _inner_error_;
-#line 70 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 70 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_inner_error_ = NULL;
-#line 74 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp6_ = e;
-#line 74 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp7_ = _tmp6_->message;
-#line 74 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_critical ("Could not register D-Bus object: %s", _tmp7_);
-#line 75 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = (guint) 0;
-#line 75 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_g_error_free0 (e);
-#line 75 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 396 "tracker-dbus.c"
 	}
 	__finally3:
-#line 70 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 70 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 70 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 70 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_clear_error (&_inner_error_);
-#line 70 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 70 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return 0U;
 #line 405 "tracker-dbus.c"
 }
@@ -408,19 +408,19 @@ static guint tracker_dbus_register_object (GType t_type, GBoxedCopyFunc t_dup_fu
 gboolean tracker_dbus_register_names (void) {
 	gboolean result = FALSE;
 	gboolean _tmp0_ = FALSE;
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp0_ = tracker_dbus_dbus_register_service (TRACKER_DBUS_SERVICE);
-#line 81 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (!_tmp0_) {
-#line 82 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 82 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = FALSE;
-#line 82 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 82 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 420 "tracker-dbus.c"
 	}
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	result = TRUE;
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return result;
 #line 426 "tracker-dbus.c"
 }
@@ -430,31 +430,31 @@ gboolean tracker_dbus_init (void) {
 	gboolean result = FALSE;
 	GDBusConnection* _tmp0_;
 	GError * _inner_error_ = NULL;
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 90 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp0_ = tracker_dbus_connection;
-#line 90 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 90 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp0_ != NULL) {
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = TRUE;
-#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 442 "tracker-dbus.c"
 	}
 	{
 		GDBusConnection* _tmp1_ = NULL;
 		GDBusConnection* _tmp2_;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp1_ = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &_inner_error_);
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp2_ = _tmp1_;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		if (_inner_error_ != NULL) {
 #line 453 "tracker-dbus.c"
 			goto __catch4_g_error;
 		}
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_g_object_unref0 (tracker_dbus_connection);
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		tracker_dbus_connection = _tmp2_;
 #line 460 "tracker-dbus.c"
 	}
@@ -464,38 +464,38 @@ gboolean tracker_dbus_init (void) {
 		GError* e = NULL;
 		GError* _tmp3_;
 		const gchar* _tmp4_;
-#line 94 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 94 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		e = _inner_error_;
-#line 94 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 94 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_inner_error_ = NULL;
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp3_ = e;
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp4_ = _tmp3_->message;
-#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 97 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_critical ("Could not connect to the D-Bus session bus, %s", _tmp4_);
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 98 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = FALSE;
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 98 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_g_error_free0 (e);
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 98 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 484 "tracker-dbus.c"
 	}
 	__finally4:
-#line 94 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 94 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_inner_error_ != NULL) {
-#line 94 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 94 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 94 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 94 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_clear_error (&_inner_error_);
-#line 94 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 94 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return FALSE;
 #line 495 "tracker-dbus.c"
 	}
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 101 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	result = TRUE;
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 101 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return result;
 #line 501 "tracker-dbus.c"
 }
@@ -509,50 +509,50 @@ static void tracker_dbus_name_owner_changed_cb (GDBusConnection* connection, con
 	gboolean _tmp1_ = FALSE;
 	const gchar* _tmp2_;
 	gboolean _tmp4_;
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 104 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_return_if_fail (connection != NULL);
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 104 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_return_if_fail (sender_name != NULL);
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 104 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_return_if_fail (object_path != NULL);
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 104 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_return_if_fail (interface_name != NULL);
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 104 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_return_if_fail (signal_name != NULL);
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 104 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_return_if_fail (parameters != NULL);
-#line 107 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 107 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp0_ = parameters;
-#line 107 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 107 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_variant_get (_tmp0_, "(&s&s&s)", &name, &old_owner, &new_owner, NULL);
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp2_ = old_owner;
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (g_strcmp0 (_tmp2_, "") != 0) {
 #line 533 "tracker-dbus.c"
 		const gchar* _tmp3_;
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp3_ = new_owner;
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp1_ = g_strcmp0 (_tmp3_, "") == 0;
 #line 539 "tracker-dbus.c"
 	} else {
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp1_ = FALSE;
 #line 543 "tracker-dbus.c"
 	}
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp4_ = _tmp1_;
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp4_) {
 #line 549 "tracker-dbus.c"
 		TrackerResources* _tmp5_;
 		const gchar* _tmp6_;
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 111 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp5_ = tracker_dbus_resources;
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 111 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp6_ = old_owner;
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 111 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		tracker_resources_unreg_batches (_tmp5_, _tmp6_);
 #line 558 "tracker-dbus.c"
 	}
@@ -561,25 +561,25 @@ static void tracker_dbus_name_owner_changed_cb (GDBusConnection* connection, con
 
 static void tracker_dbus_set_available (gboolean available) {
 	gboolean _tmp0_;
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp0_ = available;
-#line 116 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp0_) {
 #line 569 "tracker-dbus.c"
 		guint _tmp1_;
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 117 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp1_ = tracker_dbus_resources_id;
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 117 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		if (_tmp1_ == ((guint) 0)) {
-#line 118 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 118 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			tracker_dbus_register_objects ();
 #line 577 "tracker-dbus.c"
 		}
 	} else {
 		guint _tmp2_;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 121 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp2_ = tracker_dbus_resources_id;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 121 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		if (_tmp2_ != ((guint) 0)) {
 #line 585 "tracker-dbus.c"
 			GDBusConnection* _tmp3_;
@@ -588,37 +588,37 @@ static void tracker_dbus_set_available (gboolean available) {
 			guint _tmp6_;
 			GDBusConnection* _tmp7_;
 			guint _tmp8_;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			_tmp3_ = tracker_dbus_connection;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			_tmp4_ = tracker_dbus_name_owner_changed_id;
-#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			g_dbus_connection_signal_unsubscribe (_tmp3_, _tmp4_);
-#line 123 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 123 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			tracker_dbus_name_owner_changed_id = (guint) 0;
-#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 125 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			_tmp5_ = tracker_dbus_connection;
-#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 125 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			_tmp6_ = tracker_dbus_resources_id;
-#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 125 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			g_dbus_connection_unregister_object (_tmp5_, _tmp6_);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 126 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			_g_object_unref0 (tracker_dbus_resources);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 126 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			tracker_dbus_resources = NULL;
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 127 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			tracker_dbus_resources_id = (guint) 0;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 129 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			_tmp7_ = tracker_dbus_connection;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 129 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			_tmp8_ = tracker_dbus_steroids_id;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 129 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			g_dbus_connection_unregister_object (_tmp7_, _tmp8_);
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			_g_object_unref0 (tracker_dbus_steroids);
-#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			tracker_dbus_steroids = NULL;
-#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			tracker_dbus_steroids_id = (guint) 0;
 #line 624 "tracker-dbus.c"
 		}
@@ -629,60 +629,60 @@ static void tracker_dbus_set_available (gboolean available) {
 void tracker_dbus_shutdown (void) {
 	TrackerBackup* _tmp0_;
 	TrackerStatus* _tmp3_;
-#line 137 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 137 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	tracker_dbus_set_available (FALSE);
-#line 139 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 139 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp0_ = tracker_dbus_backup;
-#line 139 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 139 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp0_ != NULL) {
 #line 639 "tracker-dbus.c"
 		GDBusConnection* _tmp1_;
 		guint _tmp2_;
-#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp1_ = tracker_dbus_connection;
-#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp2_ = tracker_dbus_backup_id;
-#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_dbus_connection_unregister_object (_tmp1_, _tmp2_);
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_g_object_unref0 (tracker_dbus_backup);
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		tracker_dbus_backup = NULL;
-#line 142 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 142 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		tracker_dbus_backup_id = (guint) 0;
 #line 654 "tracker-dbus.c"
 	}
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp3_ = tracker_dbus_notifier;
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 145 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp3_ != NULL) {
 #line 660 "tracker-dbus.c"
 		GDBusConnection* _tmp4_;
 		guint _tmp5_;
-#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 146 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp4_ = tracker_dbus_connection;
-#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 146 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp5_ = tracker_dbus_notifier_id;
-#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 146 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_dbus_connection_unregister_object (_tmp4_, _tmp5_);
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 147 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_g_object_unref0 (tracker_dbus_notifier);
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 147 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		tracker_dbus_notifier = NULL;
-#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 148 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		tracker_dbus_notifier_id = (guint) 0;
 #line 675 "tracker-dbus.c"
 	}
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_g_object_unref0 (tracker_dbus_connection);
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	tracker_dbus_connection = NULL;
 #line 681 "tracker-dbus.c"
 }
 
 
 static gpointer _g_object_ref0 (gpointer self) {
-#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 169 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return self ? g_object_ref (self) : NULL;
 #line 688 "tracker-dbus.c"
 }
@@ -698,58 +698,58 @@ TrackerStatus* tracker_dbus_register_notifier (void) {
 	guint _tmp5_ = 0U;
 	TrackerStatus* _tmp6_;
 	TrackerStatus* _tmp7_;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp0_ = tracker_dbus_connection;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp0_ == NULL) {
-#line 156 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 156 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_critical ("D-Bus support must be initialized before registering objects!");
-#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 157 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = NULL;
-#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 157 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 712 "tracker-dbus.c"
 	}
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp1_ = tracker_status_new ();
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_g_object_unref0 (tracker_dbus_notifier);
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	tracker_dbus_notifier = _tmp1_;
-#line 162 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 162 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp2_ = tracker_dbus_notifier;
-#line 162 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 162 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp2_ == NULL) {
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 163 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_critical ("Could not create TrackerStatus object to register");
-#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 164 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = NULL;
-#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 164 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 730 "tracker-dbus.c"
 	}
-#line 167 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 167 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp3_ = tracker_dbus_connection;
-#line 167 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 167 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp4_ = tracker_dbus_notifier;
-#line 167 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 167 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp5_ = tracker_dbus_register_object (TRACKER_TYPE_STATUS, (GBoxedCopyFunc) g_object_ref, g_object_unref, _tmp3_, _tmp4_, TRACKER_STATUS_PATH);
-#line 167 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 167 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	tracker_dbus_notifier_id = _tmp5_;
-#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 169 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp6_ = tracker_dbus_notifier;
-#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 169 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp7_ = _g_object_ref0 (_tmp6_);
-#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 169 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	result = _tmp7_;
-#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 169 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return result;
 #line 748 "tracker-dbus.c"
 }
 
 
 static void _tracker_dbus_name_owner_changed_cb_gd_bus_signal_callback (GDBusConnection* connection, const gchar* sender_name, const gchar* object_path, const gchar* interface_name, const gchar* signal_name, GVariant* parameters, gpointer self) {
-#line 196 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 196 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	tracker_dbus_name_owner_changed_cb (connection, sender_name, object_path, interface_name, signal_name, parameters);
 #line 755 "tracker-dbus.c"
 }
@@ -777,107 +777,107 @@ gboolean tracker_dbus_register_objects (void) {
 	TrackerSteroids* _tmp17_;
 	guint _tmp18_ = 0U;
 	TrackerBackup* _tmp19_;
-#line 175 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 175 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp0_ = tracker_dbus_connection;
-#line 175 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 175 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp0_ == NULL) {
-#line 176 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 176 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_critical ("D-Bus support must be initialized before registering objects!");
-#line 177 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 177 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = FALSE;
-#line 177 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 177 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 791 "tracker-dbus.c"
 	}
-#line 181 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 181 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp1_ = tracker_statistics_new ();
-#line 181 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 181 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_g_object_unref0 (tracker_dbus_statistics);
-#line 181 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 181 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	tracker_dbus_statistics = _tmp1_;
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp2_ = tracker_dbus_statistics;
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 182 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp2_ == NULL) {
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_critical ("Could not create TrackerStatistics object to register");
-#line 184 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 184 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = FALSE;
-#line 184 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 184 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 809 "tracker-dbus.c"
 	}
-#line 187 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 187 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp3_ = tracker_dbus_connection;
-#line 187 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 187 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp4_ = tracker_dbus_statistics;
-#line 187 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 187 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp5_ = tracker_dbus_register_object (TRACKER_TYPE_STATISTICS, (GBoxedCopyFunc) g_object_ref, g_object_unref, _tmp3_, _tmp4_, TRACKER_STATISTICS_PATH);
-#line 187 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 187 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	tracker_dbus_statistics_id = _tmp5_;
-#line 190 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 190 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp6_ = tracker_dbus_connection;
-#line 190 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 190 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp7_ = tracker_resources_new (_tmp6_);
-#line 190 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 190 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_g_object_unref0 (tracker_dbus_resources);
-#line 190 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 190 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	tracker_dbus_resources = _tmp7_;
-#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp8_ = tracker_dbus_resources;
-#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp8_ == NULL) {
-#line 192 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_critical ("Could not create TrackerResources object to register");
-#line 193 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 193 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = FALSE;
-#line 193 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 193 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 837 "tracker-dbus.c"
 	}
-#line 196 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 196 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp9_ = tracker_dbus_connection;
-#line 196 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 196 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp10_ = g_dbus_connection_signal_subscribe (_tmp9_, "org.freedesktop.DBus", "org.freedesktop.DBus", "NameOwnerChanged", "/org/freedesktop/DBus", NULL, 0, _tracker_dbus_name_owner_changed_cb_gd_bus_signal_callback, NULL, NULL);
-#line 196 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 196 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	tracker_dbus_name_owner_changed_id = _tmp10_;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp11_ = tracker_dbus_connection;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp12_ = tracker_dbus_resources;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp13_ = tracker_dbus_register_object (TRACKER_TYPE_RESOURCES, (GBoxedCopyFunc) g_object_ref, g_object_unref, _tmp11_, _tmp12_, TRACKER_RESOURCES_PATH);
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	tracker_dbus_resources_id = _tmp13_;
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 206 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp14_ = tracker_steroids_new ();
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 206 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_g_object_unref0 (tracker_dbus_steroids);
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 206 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	tracker_dbus_steroids = _tmp14_;
-#line 207 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 207 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp15_ = tracker_dbus_steroids;
-#line 207 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 207 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp15_ == NULL) {
-#line 208 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 208 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_critical ("Could not create TrackerSteroids object to register");
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = FALSE;
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 209 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 869 "tracker-dbus.c"
 	}
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp16_ = tracker_dbus_connection;
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp17_ = tracker_dbus_steroids;
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp18_ = tracker_dbus_register_object (TRACKER_TYPE_STEROIDS, (GBoxedCopyFunc) g_object_ref, g_object_unref, _tmp16_, _tmp17_, TRACKER_STEROIDS_PATH);
-#line 212 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	tracker_dbus_steroids_id = _tmp18_;
-#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 214 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp19_ = tracker_dbus_backup;
-#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 214 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp19_ == NULL) {
 #line 883 "tracker-dbus.c"
 		TrackerBackup* _tmp20_;
@@ -885,37 +885,37 @@ gboolean tracker_dbus_register_objects (void) {
 		GDBusConnection* _tmp22_;
 		TrackerBackup* _tmp23_;
 		guint _tmp24_ = 0U;
-#line 216 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 216 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp20_ = tracker_backup_new ();
-#line 216 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 216 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_g_object_unref0 (tracker_dbus_backup);
-#line 216 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 216 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		tracker_dbus_backup = _tmp20_;
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 217 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp21_ = tracker_dbus_backup;
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 217 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		if (_tmp21_ == NULL) {
-#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 218 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			g_critical ("Could not create TrackerBackup object to register");
-#line 219 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 219 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			result = FALSE;
-#line 219 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 219 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			return result;
 #line 905 "tracker-dbus.c"
 		}
-#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 222 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp22_ = tracker_dbus_connection;
-#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 222 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp23_ = tracker_dbus_backup;
-#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 222 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp24_ = tracker_dbus_register_object (TRACKER_TYPE_BACKUP, (GBoxedCopyFunc) g_object_ref, g_object_unref, _tmp22_, _tmp23_, TRACKER_BACKUP_PATH);
-#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 222 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		tracker_dbus_backup_id = _tmp24_;
 #line 915 "tracker-dbus.c"
 	}
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	result = TRUE;
-#line 225 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 225 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return result;
 #line 921 "tracker-dbus.c"
 }
@@ -925,25 +925,25 @@ gboolean tracker_dbus_register_prepare_class_signal (void) {
 	gboolean result = FALSE;
 	TrackerResources* _tmp0_;
 	TrackerResources* _tmp1_;
-#line 229 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 229 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp0_ = tracker_dbus_resources;
-#line 229 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 229 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp0_ == NULL) {
-#line 230 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 230 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_message ("Error during initialization, Resources DBus object not available");
-#line 231 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 231 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = FALSE;
-#line 231 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 231 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 939 "tracker-dbus.c"
 	}
-#line 234 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 234 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp1_ = tracker_dbus_resources;
-#line 234 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 234 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	tracker_resources_enable_signals (_tmp1_);
-#line 236 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 236 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	result = TRUE;
-#line 236 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 236 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return result;
 #line 949 "tracker-dbus.c"
 }
@@ -955,77 +955,77 @@ GObject* tracker_dbus_get_object (GType type) {
 	GType _tmp3_;
 	GType _tmp6_;
 	GType _tmp9_;
-#line 240 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 240 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp0_ = type;
-#line 240 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 240 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp0_ == TRACKER_TYPE_RESOURCES) {
 #line 963 "tracker-dbus.c"
 		TrackerResources* _tmp1_;
 		GObject* _tmp2_;
-#line 241 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 241 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp1_ = tracker_dbus_resources;
-#line 241 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 241 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp2_ = _g_object_ref0 ((GObject*) _tmp1_);
-#line 241 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 241 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = _tmp2_;
-#line 241 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 241 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 974 "tracker-dbus.c"
 	}
-#line 244 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 244 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp3_ = type;
-#line 244 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 244 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp3_ == TRACKER_TYPE_STEROIDS) {
 #line 980 "tracker-dbus.c"
 		TrackerSteroids* _tmp4_;
 		GObject* _tmp5_;
-#line 245 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 245 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp4_ = tracker_dbus_steroids;
-#line 245 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 245 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp5_ = _g_object_ref0 ((GObject*) _tmp4_);
-#line 245 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 245 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = _tmp5_;
-#line 245 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 245 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 991 "tracker-dbus.c"
 	}
-#line 248 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 248 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp6_ = type;
-#line 248 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 248 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp6_ == TRACKER_TYPE_STATUS) {
 #line 997 "tracker-dbus.c"
 		TrackerStatus* _tmp7_;
 		GObject* _tmp8_;
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp7_ = tracker_dbus_notifier;
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp8_ = _g_object_ref0 ((GObject*) _tmp7_);
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = _tmp8_;
-#line 249 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 249 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 1008 "tracker-dbus.c"
 	}
-#line 252 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 252 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	_tmp9_ = type;
-#line 252 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 252 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (_tmp9_ == TRACKER_TYPE_BACKUP) {
 #line 1014 "tracker-dbus.c"
 		TrackerBackup* _tmp10_;
 		GObject* _tmp11_;
-#line 253 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 253 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp10_ = tracker_dbus_backup;
-#line 253 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 253 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		_tmp11_ = _g_object_ref0 ((GObject*) _tmp10_);
-#line 253 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 253 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		result = _tmp11_;
-#line 253 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 253 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return result;
 #line 1025 "tracker-dbus.c"
 	}
-#line 256 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 256 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	result = NULL;
-#line 256 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 256 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return result;
 #line 1031 "tracker-dbus.c"
 }
@@ -1033,32 +1033,32 @@ GObject* tracker_dbus_get_object (GType type) {
 
 TrackerDBus* tracker_dbus_construct (GType object_type) {
 	TrackerDBus* self = NULL;
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	self = (TrackerDBus*) g_type_create_instance (object_type);
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return self;
 #line 1041 "tracker-dbus.c"
 }
 
 
 TrackerDBus* tracker_dbus_new (void) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return tracker_dbus_construct (TRACKER_TYPE_DBUS);
 #line 1048 "tracker-dbus.c"
 }
 
 
 static void tracker_value_dbus_init (GValue* value) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	value->data[0].v_pointer = NULL;
 #line 1055 "tracker-dbus.c"
 }
 
 
 static void tracker_value_dbus_free_value (GValue* value) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (value->data[0].v_pointer) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		tracker_dbus_unref (value->data[0].v_pointer);
 #line 1064 "tracker-dbus.c"
 	}
@@ -1066,13 +1066,13 @@ static void tracker_value_dbus_free_value (GValue* value) {
 
 
 static void tracker_value_dbus_copy_value (const GValue* src_value, GValue* dest_value) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (src_value->data[0].v_pointer) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		dest_value->data[0].v_pointer = tracker_dbus_ref (src_value->data[0].v_pointer);
 #line 1074 "tracker-dbus.c"
 	} else {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		dest_value->data[0].v_pointer = NULL;
 #line 1078 "tracker-dbus.c"
 	}
@@ -1080,37 +1080,37 @@ static void tracker_value_dbus_copy_value (const GValue* src_value, GValue* dest
 
 
 static gpointer tracker_value_dbus_peek_pointer (const GValue* value) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return value->data[0].v_pointer;
 #line 1086 "tracker-dbus.c"
 }
 
 
 static gchar* tracker_value_dbus_collect_value (GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (collect_values[0].v_pointer) {
 #line 1093 "tracker-dbus.c"
 		TrackerDBus* object;
 		object = collect_values[0].v_pointer;
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		if (object->parent_instance.g_class == NULL) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			return g_strconcat ("invalid unclassed object pointer for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
 #line 1100 "tracker-dbus.c"
 		} else if (!g_value_type_compatible (G_TYPE_FROM_INSTANCE (object), G_VALUE_TYPE (value))) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 			return g_strconcat ("invalid object type `", g_type_name (G_TYPE_FROM_INSTANCE (object)), "' for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
 #line 1104 "tracker-dbus.c"
 		}
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		value->data[0].v_pointer = tracker_dbus_ref (object);
 #line 1108 "tracker-dbus.c"
 	} else {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		value->data[0].v_pointer = NULL;
 #line 1112 "tracker-dbus.c"
 	}
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return NULL;
 #line 1116 "tracker-dbus.c"
 }
@@ -1119,27 +1119,27 @@ static gchar* tracker_value_dbus_collect_value (GValue* value, guint n_collect_v
 static gchar* tracker_value_dbus_lcopy_value (const GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
 	TrackerDBus** object_p;
 	object_p = collect_values[0].v_pointer;
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (!object_p) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
 #line 1127 "tracker-dbus.c"
 	}
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (!value->data[0].v_pointer) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		*object_p = NULL;
 #line 1133 "tracker-dbus.c"
 	} else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		*object_p = value->data[0].v_pointer;
 #line 1137 "tracker-dbus.c"
 	} else {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		*object_p = tracker_dbus_ref (value->data[0].v_pointer);
 #line 1141 "tracker-dbus.c"
 	}
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return NULL;
 #line 1145 "tracker-dbus.c"
 }
@@ -1147,22 +1147,22 @@ static gchar* tracker_value_dbus_lcopy_value (const GValue* value, guint n_colle
 
 GParamSpec* tracker_param_spec_dbus (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags) {
 	TrackerParamSpecDBus* spec;
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_return_val_if_fail (g_type_is_a (object_type, TRACKER_TYPE_DBUS), NULL);
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	spec = g_param_spec_internal (G_TYPE_PARAM_OBJECT, name, nick, blurb, flags);
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	G_PARAM_SPEC (spec)->value_type = object_type;
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return G_PARAM_SPEC (spec);
 #line 1159 "tracker-dbus.c"
 }
 
 
 gpointer tracker_value_get_dbus (const GValue* value) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_return_val_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_TYPE_DBUS), NULL);
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return value->data[0].v_pointer;
 #line 1168 "tracker-dbus.c"
 }
@@ -1170,29 +1170,29 @@ gpointer tracker_value_get_dbus (const GValue* value) {
 
 void tracker_value_set_dbus (GValue* value, gpointer v_object) {
 	TrackerDBus* old;
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_return_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_TYPE_DBUS));
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	old = value->data[0].v_pointer;
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (v_object) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_return_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (v_object, TRACKER_TYPE_DBUS));
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		value->data[0].v_pointer = v_object;
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		tracker_dbus_ref (value->data[0].v_pointer);
 #line 1188 "tracker-dbus.c"
 	} else {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		value->data[0].v_pointer = NULL;
 #line 1192 "tracker-dbus.c"
 	}
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (old) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		tracker_dbus_unref (old);
 #line 1198 "tracker-dbus.c"
 	}
@@ -1201,27 +1201,27 @@ void tracker_value_set_dbus (GValue* value, gpointer v_object) {
 
 void tracker_value_take_dbus (GValue* value, gpointer v_object) {
 	TrackerDBus* old;
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_return_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_TYPE_DBUS));
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	old = value->data[0].v_pointer;
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (v_object) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_return_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (v_object, TRACKER_TYPE_DBUS));
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		value->data[0].v_pointer = v_object;
 #line 1217 "tracker-dbus.c"
 	} else {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		value->data[0].v_pointer = NULL;
 #line 1221 "tracker-dbus.c"
 	}
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (old) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		tracker_dbus_unref (old);
 #line 1227 "tracker-dbus.c"
 	}
@@ -1229,16 +1229,16 @@ void tracker_value_take_dbus (GValue* value, gpointer v_object) {
 
 
 static void tracker_dbus_class_init (TrackerDBusClass * klass) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	tracker_dbus_parent_class = g_type_class_peek_parent (klass);
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	TRACKER_DBUS_CLASS (klass)->finalize = tracker_dbus_finalize;
 #line 1237 "tracker-dbus.c"
 }
 
 
 static void tracker_dbus_instance_init (TrackerDBus * self) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	self->ref_count = 1;
 #line 1244 "tracker-dbus.c"
 }
@@ -1246,7 +1246,7 @@ static void tracker_dbus_instance_init (TrackerDBus * self) {
 
 static void tracker_dbus_finalize (TrackerDBus* obj) {
 	TrackerDBus * self;
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TRACKER_TYPE_DBUS, TrackerDBus);
 #line 1252 "tracker-dbus.c"
 }
@@ -1269,9 +1269,9 @@ GType tracker_dbus_get_type (void) {
 gpointer tracker_dbus_ref (gpointer instance) {
 	TrackerDBus* self;
 	self = instance;
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	g_atomic_int_inc (&self->ref_count);
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	return instance;
 #line 1277 "tracker-dbus.c"
 }
@@ -1280,11 +1280,11 @@ gpointer tracker_dbus_ref (gpointer instance) {
 void tracker_dbus_unref (gpointer instance) {
 	TrackerDBus* self;
 	self = instance;
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 	if (g_atomic_int_dec_and_test (&self->ref_count)) {
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		TRACKER_DBUS_GET_CLASS (self)->finalize (self);
-#line 21 "/home/martyn/Source/checkout/gnome/tracker/src/tracker-store/tracker-dbus.vala"
+#line 21 "/home/martyn/Source/tracker/src/tracker-store/tracker-dbus.vala"
 		g_type_free_instance ((GTypeInstance *) self);
 #line 1290 "tracker-dbus.c"
 	}

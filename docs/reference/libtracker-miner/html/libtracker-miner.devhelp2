@@ -185,8 +185,6 @@
     <keyword type="function" name="tracker_storage_get_type_for_uuid ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-get-type-for-uuid" since="0.10"/>
     <keyword type="function" name="tracker_storage_get_uuid_for_file ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-get-uuid-for-file" since="0.8"/>
     <keyword type="function" name="tracker_storage_new ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-new" since="0.8"/>
-    <keyword type="function" name="tracker_media_art_execute_queue ()" link="libtracker-miner-Media-art-management.html#tracker-media-art-execute-queue"/>
-    <keyword type="function" name="tracker_media_art_queue_removal ()" link="libtracker-miner-Media-art-management.html#tracker-media-art-queue-removal" since="0.10.4"/>
     <keyword type="function" name="tracker_thumbnailer_cleanup ()" link="libtracker-miner-Thumbnailer-management.html#tracker-thumbnailer-cleanup" since="0.8"/>
     <keyword type="function" name="tracker_thumbnailer_init ()" link="libtracker-miner-Thumbnailer-management.html#tracker-thumbnailer-init" since="0.8"/>
     <keyword type="function" name="tracker_thumbnailer_move_add ()" link="libtracker-miner-Thumbnailer-management.html#tracker-thumbnailer-move-add" since="0.8"/>

@@ -43,19 +43,19 @@
 struct              <a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage">TrackerStorage</a>;
 struct              <a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorageClass" title="struct TrackerStorageClass">TrackerStorageClass</a>;
 enum                <a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorageType" title="enum TrackerStorageType">TrackerStorageType</a>;
-<a href="../glib/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *            <a class="link" href="libtracker-miner-TrackerStorage.html#tracker-storage-get-device-roots" title="tracker_storage_get_device_roots ()">tracker_storage_get_device_roots</a>    (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
+<span class="returnvalue">GSList</span> *            <a class="link" href="libtracker-miner-TrackerStorage.html#tracker-storage-get-device-roots" title="tracker_storage_get_device_roots ()">tracker_storage_get_device_roots</a>    (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorageType" title="enum TrackerStorageType"><span class="type">TrackerStorageType</span></a> type</code></em>,
-                                                         <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> exact_match</code></em>);
-<a href="../glib/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *            <a class="link" href="libtracker-miner-TrackerStorage.html#tracker-storage-get-device-uuids" title="tracker_storage_get_device_uuids ()">tracker_storage_get_device_uuids</a>    (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> exact_match</code></em>);
+<span class="returnvalue">GSList</span> *            <a class="link" href="libtracker-miner-TrackerStorage.html#tracker-storage-get-device-uuids" title="tracker_storage_get_device_uuids ()">tracker_storage_get_device_uuids</a>    (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorageType" title="enum TrackerStorageType"><span class="type">TrackerStorageType</span></a> type</code></em>,
-                                                         <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> exact_match</code></em>);
-const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libtracker-miner-TrackerStorage.html#tracker-storage-get-mount-point-for-uuid" title="tracker_storage_get_mount_point_for_uuid ()">tracker_storage_get_mount_point_for_uuid</a>
+                                                         <em class="parameter"><code><span class="type">gboolean</span> exact_match</code></em>);
+const <span class="returnvalue">gchar</span> *       <a class="link" href="libtracker-miner-TrackerStorage.html#tracker-storage-get-mount-point-for-uuid" title="tracker_storage_get_mount_point_for_uuid ()">tracker_storage_get_mount_point_for_uuid</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
-                                                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uuid</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uuid</code></em>);
 <a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorageType" title="enum TrackerStorageType"><span class="returnvalue">TrackerStorageType</span></a>  <a class="link" href="libtracker-miner-TrackerStorage.html#tracker-storage-get-type-for-uuid" title="tracker_storage_get_type_for_uuid ()">tracker_storage_get_type_for_uuid</a>   (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
-                                                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uuid</code></em>);
-const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libtracker-miner-TrackerStorage.html#tracker-storage-get-uuid-for-file" title="tracker_storage_get_uuid_for_file ()">tracker_storage_get_uuid_for_file</a>   (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
-                                                         <em class="parameter"><code><a href="../gio/GFile.html"><span class="type">GFile</span></a> *file</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uuid</code></em>);
+const <span class="returnvalue">gchar</span> *       <a class="link" href="libtracker-miner-TrackerStorage.html#tracker-storage-get-uuid-for-file" title="tracker_storage_get_uuid_for_file ()">tracker_storage_get_uuid_for_file</a>   (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
+                                                         <em class="parameter"><code><span class="type">GFile</span> *file</code></em>);
 <a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="returnvalue">TrackerStorage</span></a> *    <a class="link" href="libtracker-miner-TrackerStorage.html#tracker-storage-new" title="tracker_storage_new ()">tracker_storage_new</a>                 (<em class="parameter"><code><span class="type">void</span></code></em>);
 </pre>
 </div>
@@ -64,7 +64,7 @@ const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gc
 <p>
 This API is a convenience to to be able to keep track of volumes
 which are mounted and also the type of removable media available.
-The API is built upon the top of GIO's <a href="../gio/GMount.html"><span class="type">GMount</span></a>, <a href="../gio/GDrive.html"><span class="type">GDrive</span></a> and <a href="../gio/GVolume.html"><span class="type">GVolume</span></a> API.
+The API is built upon the top of GIO's <span class="type">GMount</span>, <span class="type">GDrive</span> and <span class="type">GVolume</span> API.
 </p>
 </div>
 <div class="refsect1">
@@ -81,7 +81,7 @@ A storage API for using mount points and devices
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><a href="../gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> <em class="structfield"><code><a name="TrackerStorage.parent"></a>parent</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">GObject</span> <em class="structfield"><code><a name="TrackerStorage.parent"></a>parent</code></em>;</span></p></td>
 <td>parent object</td>
 </tr></tbody>
 </table></div>
@@ -99,7 +99,7 @@ A storage class for <a class="link" href="libtracker-miner-TrackerStorage.html#T
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><a href="../gobject/gobject-The-Base-Object-Type.html#GObjectClass"><span class="type">GObjectClass</span></a> <em class="structfield"><code><a name="TrackerStorageClass.parent-class"></a>parent_class</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">GObjectClass</span> <em class="structfield"><code><a name="TrackerStorageClass.parent-class"></a>parent_class</code></em>;</span></p></td>
 <td>parent object class</td>
 </tr></tbody>
 </table></div>
@@ -135,9 +135,9 @@ Flags specifying properties of the type of storage.
 <hr>
 <div class="refsect2">
 <a name="tracker-storage-get-device-roots"></a><h3>tracker_storage_get_device_roots ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *            tracker_storage_get_device_roots    (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
+<pre class="programlisting"><span class="returnvalue">GSList</span> *            tracker_storage_get_device_roots    (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorageType" title="enum TrackerStorageType"><span class="type">TrackerStorageType</span></a> type</code></em>,
-                                                         <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> exact_match</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gboolean</span> exact_match</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -157,10 +157,10 @@ Flags specifying properties of the type of storage.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a href="../glib/glib-Singly-Linked-Lists.html#GSList"><span class="type">GSList</span></a> of strings
+<td>a <span class="type">GSList</span> of strings
 containing the root directories for devices with <em class="parameter"><code>type</code></em> based on
-<em class="parameter"><code>exact_match</code></em>. Each element must be freed using <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> and the
-list itself through <a href="../glib/glib-Singly-Linked-Lists.html#g-slist-free"><code class="function">g_slist_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8]</span>
+<em class="parameter"><code>exact_match</code></em>. Each element must be freed using <code class="function">g_free()</code> and the
+list itself through <code class="function">g_slist_free()</code>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8]</span>
 </td>
 </tr>
 </tbody>
@@ -170,9 +170,9 @@ list itself through <a href="../glib/glib-Singly-Linked-Lists.html#g-slist-free"
 <hr>
 <div class="refsect2">
 <a name="tracker-storage-get-device-uuids"></a><h3>tracker_storage_get_device_uuids ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *            tracker_storage_get_device_uuids    (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
+<pre class="programlisting"><span class="returnvalue">GSList</span> *            tracker_storage_get_device_uuids    (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorageType" title="enum TrackerStorageType"><span class="type">TrackerStorageType</span></a> type</code></em>,
-                                                         <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> exact_match</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gboolean</span> exact_match</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -192,10 +192,10 @@ list itself through <a href="../glib/glib-Singly-Linked-Lists.html#g-slist-free"
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a href="../glib/glib-Singly-Linked-Lists.html#GSList"><span class="type">GSList</span></a> of
+<td>a <span class="type">GSList</span> of
 strings containing the UUID for devices with <em class="parameter"><code>type</code></em> based
-on <em class="parameter"><code>exact_match</code></em>. Each element must be freed using <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>
-and the list itself through <a href="../glib/glib-Singly-Linked-Lists.html#g-slist-free"><code class="function">g_slist_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8]</span>
+on <em class="parameter"><code>exact_match</code></em>. Each element must be freed using <code class="function">g_free()</code>
+and the list itself through <code class="function">g_slist_free()</code>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8]</span>
 </td>
 </tr>
 </tbody>
@@ -205,9 +205,9 @@ and the list itself through <a href="../glib/glib-Singly-Linked-Lists.html#g-sli
 <hr>
 <div class="refsect2">
 <a name="tracker-storage-get-mount-point-for-uuid"></a><h3>tracker_storage_get_mount_point_for_uuid ()</h3>
-<pre class="programlisting">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       tracker_storage_get_mount_point_for_uuid
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *       tracker_storage_get_mount_point_for_uuid
                                                         (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
-                                                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uuid</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uuid</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -218,7 +218,7 @@ and the list itself through <a href="../glib/glib-Singly-Linked-Lists.html#g-sli
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>uuid</code></em> :</span></p></td>
-<td>A string pointer to the UUID for the <a href="../gio/GVolume.html"><code class="literal">GVolume</code></a>.</td>
+<td>A string pointer to the UUID for the <code class="literal">GVolume</code>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -232,7 +232,7 @@ and the list itself through <a href="../glib/glib-Singly-Linked-Lists.html#g-sli
 <div class="refsect2">
 <a name="tracker-storage-get-type-for-uuid"></a><h3>tracker_storage_get_type_for_uuid ()</h3>
 <pre class="programlisting"><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorageType" title="enum TrackerStorageType"><span class="returnvalue">TrackerStorageType</span></a>  tracker_storage_get_type_for_uuid   (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
-                                                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uuid</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uuid</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -243,7 +243,7 @@ and the list itself through <a href="../glib/glib-Singly-Linked-Lists.html#g-sli
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>uuid</code></em> :</span></p></td>
-<td>A string pointer to the UUID for the <a href="../gio/GVolume.html"><code class="literal">GVolume</code></a>.</td>
+<td>A string pointer to the UUID for the <code class="literal">GVolume</code>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -256,8 +256,8 @@ and the list itself through <a href="../glib/glib-Singly-Linked-Lists.html#g-sli
 <hr>
 <div class="refsect2">
 <a name="tracker-storage-get-uuid-for-file"></a><h3>tracker_storage_get_uuid_for_file ()</h3>
-<pre class="programlisting">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       tracker_storage_get_uuid_for_file   (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
-                                                         <em class="parameter"><code><a href="../gio/GFile.html"><span class="type">GFile</span></a> *file</code></em>);</pre>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *       tracker_storage_get_uuid_for_file   (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerStorage.html#TrackerStorage" title="struct TrackerStorage"><span class="type">TrackerStorage</span></a> *storage</code></em>,
+                                                         <em class="parameter"><code><span class="type">GFile</span> *file</code></em>);</pre>
 <p>
 Returns the UUID of the removable device for <em class="parameter"><code>file</code></em>
 </p>

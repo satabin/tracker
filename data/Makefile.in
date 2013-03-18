@@ -66,7 +66,6 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/tracker-sparql.pc.in $(top_srcdir)/Makefile.decl
 @HAVE_TRACKER_MINER_FS_TRUE@am__append_1 = tracker-miner-fs.desktop
 @HAVE_TRACKER_MINER_RSS_TRUE@am__append_2 = tracker-miner-rss.desktop
-@HAVE_TRACKER_MINER_FLICKR_TRUE@am__append_3 = tracker-miner-flickr.desktop
 subdir = data
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -380,8 +379,6 @@ TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
 TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
 TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
-TRACKER_EXPLORER_CFLAGS = @TRACKER_EXPLORER_CFLAGS@
-TRACKER_EXPLORER_LIBS = @TRACKER_EXPLORER_LIBS@
 TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
 TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
 TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
@@ -393,8 +390,6 @@ TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
 TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
 TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
 TRACKER_MINER_FIREFOX_INSTALL_DIR = @TRACKER_MINER_FIREFOX_INSTALL_DIR@
-TRACKER_MINER_FLICKR_CFLAGS = @TRACKER_MINER_FLICKR_CFLAGS@
-TRACKER_MINER_FLICKR_LIBS = @TRACKER_MINER_FLICKR_LIBS@
 TRACKER_MINER_FS_CFLAGS = @TRACKER_MINER_FS_CFLAGS@
 TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
@@ -410,8 +405,6 @@ TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
 TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
 TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
-TRACKER_SEARCH_BAR_CFLAGS = @TRACKER_SEARCH_BAR_CFLAGS@
-TRACKER_SEARCH_BAR_LIBS = @TRACKER_SEARCH_BAR_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
 TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
 TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
@@ -496,7 +489,6 @@ SUBDIRS = dbus languages icons ontologies miners gschemas
 desktop_in_in_files = \
 	tracker-store.desktop.in.in                    \
 	tracker-miner-fs.desktop.in.in                 \
-	tracker-miner-flickr.desktop.in.in             \
 	tracker-miner-rss.desktop.in.in
 
 
@@ -504,14 +496,12 @@ desktop_in_in_files = \
 desktop_in_files = \
 	tracker-store.desktop.in                       \
 	tracker-miner-fs.desktop.in                    \
-	tracker-miner-flickr.desktop.in                \
 	tracker-miner-rss.desktop.in
 
 
 # Third we choose what we want installed based on config
 autostartdir = $(sysconfdir)/xdg/autostart
-autostart_DATA = tracker-store.desktop $(am__append_1) $(am__append_2) \
-	$(am__append_3)
+autostart_DATA = tracker-store.desktop $(am__append_1) $(am__append_2)
 
 # Set up pkg-config .pc files for exported libraries
 pkgconfigdir = $(libdir)/pkgconfig
@@ -989,10 +979,6 @@ tracker-store.desktop.in: tracker-store.desktop.in.in
 
 tracker-miner-fs.desktop.in: tracker-miner-fs.desktop.in.in
 	@sed -e "s|@libexecdir[@]|${libexecdir}|"      \
-	     -e "s|@VERSION[@]|${VERSION}|" $< > $@
-
-tracker-miner-flickr.desktop.in: tracker-miner-flickr.desktop.in.in
-	@$(SED) -e "s|@libexecdir[@]|${libexecdir}|"   \
 	     -e "s|@VERSION[@]|${VERSION}|" $< > $@
 
 tracker-miner-rss.desktop.in: tracker-miner-rss.desktop.in.in

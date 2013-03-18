@@ -45,13 +45,13 @@ Stable, unless otherwise indicated
 #include &lt;libtracker-extract/tracker-extract.h&gt;
 
                     <a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData">TrackerExifData</a>;
-<a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="returnvalue">TrackerExifData</span></a> *   <a class="link" href="libtracker-extract-Exif.html#tracker-exif-new" title="tracker_exif_new ()">tracker_exif_new</a>                    (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buffer</code></em>,
+<a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="returnvalue">TrackerExifData</span></a> *   <a class="link" href="libtracker-extract-Exif.html#tracker-exif-new" title="tracker_exif_new ()">tracker_exif_new</a>                    (<em class="parameter"><code>const <span class="type">guchar</span> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-extract-Exif.html#tracker-exif-free" title="tracker_exif_free ()">tracker_exif_free</a>                   (<em class="parameter"><code><a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> *data</code></em>);
-<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-Exif.html#tracker-exif-read" title="tracker_exif_read ()">tracker_exif_read</a>                   (<em class="parameter"><code>const unsigned <span class="type">char</span> *buffer</code></em>,
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-extract-Exif.html#tracker-exif-read" title="tracker_exif_read ()">tracker_exif_read</a>                   (<em class="parameter"><code>const unsigned <span class="type">char</span> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> *data</code></em>);
 </pre>
 </div>
@@ -113,115 +113,115 @@ Structure defining EXIF data.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.y-dimension"></a>y_dimension</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.y-dimension"></a>y_dimension</code></em>;</span></p></td>
 <td>Y dimension.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.x-dimension"></a>x_dimension</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.x-dimension"></a>x_dimension</code></em>;</span></p></td>
 <td>X dimension.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.image-width"></a>image_width</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.image-width"></a>image_width</code></em>;</span></p></td>
 <td>Image width.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.document-name"></a>document_name</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.document-name"></a>document_name</code></em>;</span></p></td>
 <td>Document name.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.time"></a>time</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.time"></a>time</code></em>;</span></p></td>
 <td>Time.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.time-original"></a>time_original</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.time-original"></a>time_original</code></em>;</span></p></td>
 <td>Original time.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.artist"></a>artist</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.artist"></a>artist</code></em>;</span></p></td>
 <td>Artist.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.user-comment"></a>user_comment</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.user-comment"></a>user_comment</code></em>;</span></p></td>
 <td>User-provided comment.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.description"></a>description</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.description"></a>description</code></em>;</span></p></td>
 <td>Description.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.make"></a>make</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.make"></a>make</code></em>;</span></p></td>
 <td>Make info.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.model"></a>model</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.model"></a>model</code></em>;</span></p></td>
 <td>Model info.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.orientation"></a>orientation</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.orientation"></a>orientation</code></em>;</span></p></td>
 <td>Orientation.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.exposure-time"></a>exposure_time</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.exposure-time"></a>exposure_time</code></em>;</span></p></td>
 <td>Exposure time.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.fnumber"></a>fnumber</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.fnumber"></a>fnumber</code></em>;</span></p></td>
 <td>Focal ratio</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.flash"></a>flash</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.flash"></a>flash</code></em>;</span></p></td>
 <td>Flash info.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.focal-length"></a>focal_length</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.focal-length"></a>focal_length</code></em>;</span></p></td>
 <td>Focal length.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.iso-speed-ratings"></a>iso_speed_ratings</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.iso-speed-ratings"></a>iso_speed_ratings</code></em>;</span></p></td>
 <td>ISO speed ratings.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.metering-mode"></a>metering_mode</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.metering-mode"></a>metering_mode</code></em>;</span></p></td>
 <td>Metering mode.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.white-balance"></a>white_balance</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.white-balance"></a>white_balance</code></em>;</span></p></td>
 <td>White balance.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.copyright"></a>copyright</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.copyright"></a>copyright</code></em>;</span></p></td>
 <td>Copyright.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.software"></a>software</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.software"></a>software</code></em>;</span></p></td>
 <td>Software used.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.x-resolution"></a>x_resolution</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.x-resolution"></a>x_resolution</code></em>;</span></p></td>
 <td>Horizontal resolution.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.y-resolution"></a>y_resolution</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.y-resolution"></a>y_resolution</code></em>;</span></p></td>
 <td>Vertical resolution.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="TrackerExifData.resolution-unit"></a>resolution_unit</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gint</span> <em class="structfield"><code><a name="TrackerExifData.resolution-unit"></a>resolution_unit</code></em>;</span></p></td>
 <td>Resolution units.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.gps-altitude"></a>gps_altitude</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.gps-altitude"></a>gps_altitude</code></em>;</span></p></td>
 <td>GPS altitude.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.gps-latitude"></a>gps_latitude</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.gps-latitude"></a>gps_latitude</code></em>;</span></p></td>
 <td>GPS latitude.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.gps-longitude"></a>gps_longitude</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.gps-longitude"></a>gps_longitude</code></em>;</span></p></td>
 <td>GPS longitude.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExifData.gps-direction"></a>gps_direction</code></em>;</span></p></td>
+<td><p><span class="term"><span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExifData.gps-direction"></a>gps_direction</code></em>;</span></p></td>
 <td>GPS direction information.</td>
 </tr>
 </tbody>
@@ -230,9 +230,9 @@ Structure defining EXIF data.
 <hr>
 <div class="refsect2">
 <a name="tracker-exif-new"></a><h3>tracker_exif_new ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="returnvalue">TrackerExifData</span></a> *   tracker_exif_new                    (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buffer</code></em>,
+<pre class="programlisting"><a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="returnvalue">TrackerExifData</span></a> *   tracker_exif_new                    (<em class="parameter"><code>const <span class="type">guchar</span> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);</pre>
 <p>
 This function takes <em class="parameter"><code>len</code></em> bytes of <em class="parameter"><code>buffer</code></em> and runs it through the
 EXIF library.
@@ -255,7 +255,7 @@ EXIF library.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a newly allocated <a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> struct if EXIF data was
-found, <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> otherwise. Free the returned struct with <a class="link" href="libtracker-extract-Exif.html#tracker-exif-free" title="tracker_exif_free ()"><code class="function">tracker_exif_free()</code></a>.</td>
+found, <a href="/opt/gnome/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> otherwise. Free the returned struct with <a class="link" href="libtracker-extract-Exif.html#tracker-exif-free" title="tracker_exif_free ()"><code class="function">tracker_exif_free()</code></a>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -266,7 +266,7 @@ found, <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="litera
 <a name="tracker-exif-free"></a><h3>tracker_exif_free ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_exif_free                   (<em class="parameter"><code><a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> *data</code></em>);</pre>
 <p>
-Frees <em class="parameter"><code>data</code></em> and all <a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> members. <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> will produce a
+Frees <em class="parameter"><code>data</code></em> and all <a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> members. <a href="/opt/gnome/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> will produce a
 a warning.
 </p>
 <div class="variablelist"><table border="0">
@@ -282,9 +282,9 @@ a warning.
 <hr>
 <div class="refsect2">
 <a name="tracker-exif-read"></a><h3>tracker_exif_read ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_exif_read                   (<em class="parameter"><code>const unsigned <span class="type">char</span> *buffer</code></em>,
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_exif_read                   (<em class="parameter"><code>const unsigned <span class="type">char</span> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> *data</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -317,8 +317,8 @@ data found in <em class="parameter"><code>uri</code></em>.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>data</code></em> was populated successfully, otherwise
-<a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> is returned.</td>
+<code class="literal">TRUE</code> if the <em class="parameter"><code>data</code></em> was populated successfully, otherwise
+<code class="literal">FALSE</code> is returned.</td>
 </tr>
 </tbody>
 </table></div>

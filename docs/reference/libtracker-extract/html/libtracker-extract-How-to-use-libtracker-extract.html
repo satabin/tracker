@@ -44,7 +44,7 @@ Stable, unless otherwise indicated
 <pre class="synopsis">
 #include &lt;libtracker-extract/tracker-extract.h&gt;
 
-<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#tracker-extract-get-metadata" title="tracker_extract_get_metadata ()">tracker_extract_get_metadata</a>        (<em class="parameter"><code><a class="link" href="libtracker-extract-TrackerExtractInfo.html#TrackerExtractInfo" title="TrackerExtractInfo"><span class="type">TrackerExtractInfo</span></a> *info</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#tracker-extract-get-metadata" title="tracker_extract_get_metadata ()">tracker_extract_get_metadata</a>        (<em class="parameter"><code><a class="link" href="libtracker-extract-TrackerExtractInfo.html#TrackerExtractInfo" title="TrackerExtractInfo"><span class="type">TrackerExtractInfo</span></a> *info</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -63,7 +63,7 @@ do that.
 <p>
 </p>
 <div class="example">
-<a name="idp5999360"></a><p class="title"><b>Example 1. Basic extractor example</b></p>
+<a name="idp6461136"></a><p class="title"><b>Example 1. Basic extractor example</b></p>
 <div class="example-contents">
 An example of how to write an extractor to retrieve PNG embedded
 metadata.
@@ -110,7 +110,7 @@ NOTE: This example has changed subtly since 0.10. For details see
 <a name="libtracker-extract-How-to-use-libtracker-extract.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="tracker-extract-get-metadata"></a><h3>tracker_extract_get_metadata ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_extract_get_metadata        (<em class="parameter"><code><a class="link" href="libtracker-extract-TrackerExtractInfo.html#TrackerExtractInfo" title="TrackerExtractInfo"><span class="type">TrackerExtractInfo</span></a> *info</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_extract_get_metadata        (<em class="parameter"><code><a class="link" href="libtracker-extract-TrackerExtractInfo.html#TrackerExtractInfo" title="TrackerExtractInfo"><span class="type">TrackerExtractInfo</span></a> *info</code></em>);</pre>
 <p>
 This function must be provided by ALL extractors. This is merely
 the declaration of the function which must be written by each
@@ -158,7 +158,7 @@ MIME type of the file being extracted.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the extraction succeeded, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</td>
+<code class="literal">TRUE</code> if the extraction succeeded, <code class="literal">FALSE</code> otherwise.</td>
 </tr>
 </tbody>
 </table></div>

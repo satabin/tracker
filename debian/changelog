@@ -7,6 +7,7 @@ tracker (0.16.0-1) UNRELEASED; urgency=low
     - Remove tracker-search-bar from tracker-gui package.
     - Drop tracker-explorer binary package.
     - Remove obsolete configure flags.
+  * Drop old Breaks against rygel-tracker, no longer necessary.
 
  -- Michael Biebl <biebl@debian.org>  Mon, 18 Mar 2013 19:05:16 +0100
 

@@ -59,7 +59,6 @@ Recommends: tracker-utils,
             tracker-gui,
             tracker-miner-fs,
 #            tracker-miner-evolution
-Breaks: rygel-tracker (<< 0.5)
 Description: metadata database, indexer and search tool
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,

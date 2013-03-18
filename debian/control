@@ -29,7 +29,6 @@ Build-Depends: debhelper (>= 8.1.0~),
                libxml2-dev (>= 2.6),
                libupower-glib-dev (>= 0.9.0),
                libnautilus-extension-dev (>= 3.0),
-               libpanel-applet-4-dev,
                libenca-dev (>= 1.9),
                libiptcdata0-dev,
                uuid-dev,
@@ -265,23 +264,8 @@ Replaces: tracker-search-tool (<< 0.8.1-1),
 Description: metadata database, indexer and search tool - GNOME frontends
  Included in this package:
   * tracker-needle: standard search tool
-  * tracker-search-bar: search applet for the GNOME panel
   * tracker-preferences: preferences editor
   * nautilus-extension: nautilus extension for tag editing
- .
- Tracker is an advanced framework for first class objects with associated
- metadata and tags. It provides a one stop solution for all metadata, tags,
- shared object databases, search tools and indexing.
-
-Package: tracker-explorer
-Architecture: any
-Section: gnome
-Depends: ${shlibs:Depends},
-         ${misc:Depends},
-         tracker (= ${binary:Version})
-Description: metadata database, indexer and search tool - developer tool
- This package includes a graphical tool that allows developers to query the
- tracker database for object properties and relationships.
  .
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,

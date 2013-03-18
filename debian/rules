@@ -13,8 +13,6 @@ override_dh_auto_configure:
 		--enable-generic-media-extractor=gstreamer \
 		--enable-tracker-fts \
 		--enable-upower \
-		--enable-tracker-explorer \
-		--enable-tracker-search-bar \
 		--enable-tracker-needle \
 		--enable-tracker-preferences \
 		--enable-nautilus-extension \
@@ -36,7 +34,6 @@ override_dh_auto_configure:
 		--disable-network-manager \
 		--disable-libsecret \
 		--disable-miner-rss \
-		--disable-miner-flickr \
 		--disable-miner-evolution \
 		--disable-miner-thunderbird \
 		--disable-miner-firefox \

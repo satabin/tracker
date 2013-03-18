@@ -1,6 +1,12 @@
 tracker (0.16.0-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * It's spring cleaning time. Upstream has removed the gnome-panel search
+    bar, tracker-explorer and the flickr miner:
+    - Drop Build-Depends on libpanel-applet-4-dev.
+    - Remove tracker-search-bar from tracker-gui package.
+    - Drop tracker-explorer binary package.
+    - Remove obsolete configure flags.
 
  -- Michael Biebl <biebl@debian.org>  Mon, 18 Mar 2013 19:05:16 +0100
 

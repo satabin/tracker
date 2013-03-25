@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 %:
-	dh $@
+	dh $@ --with gir
 
 export LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed -Wl,-Bsymbolic
 
@@ -52,10 +52,6 @@ override_dh_makeshlibs:
 		-X/usr/lib/tracker-0.16/ \
 		-X/usr/lib/evolution/ \
 		-X/usr/lib/nautilus/
-
-override_dh_shlibdeps:
-	dh_shlibdeps
-	dh_girepository
 
 override_dh_strip:
 	dh_strip --dbg-package=tracker-dbg

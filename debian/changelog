@@ -1,8 +1,9 @@
-tracker (0.16.0-3) UNRELEASED; urgency=low
+tracker (0.16.1-1) UNRELEASED; urgency=low
 
+  * New upstream release.
   * Use gir dh addon instead of calling dh_girepository manually.
 
- -- Michael Biebl <biebl@debian.org>  Tue, 26 Mar 2013 00:16:03 +0100
+ -- Michael Biebl <biebl@debian.org>  Wed, 01 May 2013 14:29:42 +0200
 
 tracker (0.16.0-2) experimental; urgency=low
 

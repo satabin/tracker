@@ -124,14 +124,6 @@
     <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_WHERE" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-WHERE:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_EMBEDDED_INSERT" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-EMBEDDED-INSERT:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_GRAPH" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-GRAPH:CAPS"/>
-    <keyword type="constant" name="TRACKER_SPARQL_ERROR_PARSE" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-PARSE:CAPS"/>
-    <keyword type="constant" name="TRACKER_SPARQL_ERROR_UNKNOWN_CLASS" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-UNKNOWN-CLASS:CAPS"/>
-    <keyword type="constant" name="TRACKER_SPARQL_ERROR_UNKNOWN_PROPERTY" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-UNKNOWN-PROPERTY:CAPS"/>
-    <keyword type="constant" name="TRACKER_SPARQL_ERROR_TYPE" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-TYPE:CAPS"/>
-    <keyword type="constant" name="TRACKER_SPARQL_ERROR_CONSTRAINT" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-CONSTRAINT:CAPS"/>
-    <keyword type="constant" name="TRACKER_SPARQL_ERROR_NO_SPACE" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-NO-SPACE:CAPS"/>
-    <keyword type="constant" name="TRACKER_SPARQL_ERROR_INTERNAL" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-INTERNAL:CAPS"/>
-    <keyword type="constant" name="TRACKER_SPARQL_ERROR_UNSUPPORTED" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-UNSUPPORTED:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_UNBOUND" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-UNBOUND:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_URI" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-URI:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_STRING" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-STRING:CAPS"/>

@@ -8,7 +8,7 @@
 <link rel="up" href="ch02.html" title="Base abstract miner classes">
 <link rel="prev" href="TrackerMiner.html" title="TrackerMiner">
 <link rel="next" href="ch03.html" title="Miner classes for file system">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -47,16 +47,16 @@ typedef             <a class="link" href="libtracker-miner-TrackerMinerWeb.html#
                     <a class="link" href="libtracker-miner-TrackerMinerWeb.html#TrackerMinerWebClass" title="TrackerMinerWebClass">TrackerMinerWebClass</a>;
 enum                <a class="link" href="libtracker-miner-TrackerMinerWeb.html#TrackerMinerWebError" title="enum TrackerMinerWebError">TrackerMinerWebError</a>;
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-associate" title="tracker_miner_web_associate ()">tracker_miner_web_associate</a>         (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerMinerWeb.html#TrackerMinerWeb" title="TrackerMinerWeb"><span class="type">TrackerMinerWeb</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><span class="type">GHashTable</span> *association_data</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a> *association_data</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-authenticate" title="tracker_miner_web_authenticate ()">tracker_miner_web_authenticate</a>      (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerMinerWeb.html#TrackerMinerWeb" title="TrackerMinerWeb"><span class="type">TrackerMinerWeb</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-dissociate" title="tracker_miner_web_dissociate ()">tracker_miner_web_dissociate</a>        (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerMinerWeb.html#TrackerMinerWeb" title="TrackerMinerWeb"><span class="type">TrackerMinerWeb</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
-<span class="returnvalue">GQuark</span>              <a class="link" href="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-error-quark" title="tracker_miner_web_error_quark ()">tracker_miner_web_error_quark</a>       (<em class="parameter"><code><span class="type">void</span></code></em>);
-<span class="returnvalue">GHashTable</span> *        <a class="link" href="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-get-association-data" title="tracker_miner_web_get_association_data ()">tracker_miner_web_get_association_data</a>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              <a class="link" href="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-error-quark" title="tracker_miner_web_error_quark ()">tracker_miner_web_error_quark</a>       (<em class="parameter"><code><span class="type">void</span></code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="returnvalue">GHashTable</span></a> *        <a class="link" href="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-get-association-data" title="tracker_miner_web_get_association_data ()">tracker_miner_web_get_association_data</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerMinerWeb.html#TrackerMinerWeb" title="TrackerMinerWeb"><span class="type">TrackerMinerWeb</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -121,9 +121,9 @@ service.
 </pre>
 <p>
 For the <em class="parameter"><code>authenticate</code></em> function, a username/password can be used and
-this should return an empty <code class="literal">GHashTable</code>. If the authentication is
+this should return an empty <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><code class="literal">GHashTable</code></a>. If the authentication is
 based on a token, the following keys <span class="emphasis"><em>must</em></span> be
-returned in the <code class="literal">GHashTable</code>:
+returned in the <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><code class="literal">GHashTable</code></a>:
 </p>
 <p>
 </p>
@@ -179,7 +179,7 @@ based authentication, the following keys must be defined:
 <p>
 </p>
 <p>
-In the case of a token based authentication, the <code class="literal">GHashTable</code> can be
+In the case of a token based authentication, the <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><code class="literal">GHashTable</code></a> can be
 ignored since it will be empty.
 </p>
 <p>
@@ -278,8 +278,8 @@ retrieve the relevant information. See <code class="classname">TrackerPasswordPr
 <div class="refsect2">
 <a name="tracker-miner-web-associate"></a><h3>tracker_miner_web_associate ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_miner_web_associate         (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerMinerWeb.html#TrackerMinerWeb" title="TrackerMinerWeb"><span class="type">TrackerMinerWeb</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><span class="type">GHashTable</span> *association_data</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a> *association_data</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Asks <em class="parameter"><code>miner</code></em> to associate with a remote service using
 <em class="parameter"><code>association_data</code></em>. To know what data to put into <em class="parameter"><code>association_data</code></em>,
@@ -299,12 +299,12 @@ On failure <em class="parameter"><code>error</code></em> will be set.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>association_data</code></em> :</span></p></td>
-<td>a <code class="literal">GHashTable</code> with the data to use for
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><code class="literal">GHashTable</code></a> with the data to use for
 associating with a remote service.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>return location for errors. <span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+<td>return location for errors. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym> callee-allocates][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
@@ -315,7 +315,7 @@ associating with a remote service.</td>
 <div class="refsect2">
 <a name="tracker-miner-web-authenticate"></a><h3>tracker_miner_web_authenticate ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_miner_web_authenticate      (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerMinerWeb.html#TrackerMinerWeb" title="TrackerMinerWeb"><span class="type">TrackerMinerWeb</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Asks <em class="parameter"><code>miner</code></em> to authenticate with a remote service. On failure
 <em class="parameter"><code>error</code></em> will be set.
@@ -330,7 +330,7 @@ Asks <em class="parameter"><code>miner</code></em> to authenticate with a remote
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>return location for errors. <span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+<td>return location for errors. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym> callee-allocates][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
@@ -341,7 +341,7 @@ Asks <em class="parameter"><code>miner</code></em> to authenticate with a remote
 <div class="refsect2">
 <a name="tracker-miner-web-dissociate"></a><h3>tracker_miner_web_dissociate ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_miner_web_dissociate        (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerMinerWeb.html#TrackerMinerWeb" title="TrackerMinerWeb"><span class="type">TrackerMinerWeb</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Asks <em class="parameter"><code>miner</code></em> to dissociate from a remote service. At this point, the
 miner should stop storing any credentials or sensitive information
@@ -360,7 +360,7 @@ On failure <em class="parameter"><code>error</code></em> will be set.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>return location for errors. <span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+<td>return location for errors. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym> callee-allocates][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
@@ -370,12 +370,12 @@ On failure <em class="parameter"><code>error</code></em> will be set.
 <hr>
 <div class="refsect2">
 <a name="tracker-miner-web-error-quark"></a><h3>tracker_miner_web_error_quark ()</h3>
-<pre class="programlisting"><span class="returnvalue">GQuark</span>              tracker_miner_web_error_quark       (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              tracker_miner_web_error_quark       (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the <span class="type">GQuark</span> used to identify miner web errors in GError
+<td>the <a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="type">GQuark</span></a> used to identify miner web errors in GError
 structures.</td>
 </tr></tbody>
 </table></div>
@@ -384,12 +384,12 @@ structures.</td>
 <hr>
 <div class="refsect2">
 <a name="tracker-miner-web-get-association-data"></a><h3>tracker_miner_web_get_association_data ()</h3>
-<pre class="programlisting"><span class="returnvalue">GHashTable</span> *        tracker_miner_web_get_association_data
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="returnvalue">GHashTable</span></a> *        tracker_miner_web_get_association_data
                                                         (<em class="parameter"><code><a class="link" href="libtracker-miner-TrackerMinerWeb.html#TrackerMinerWeb" title="TrackerMinerWeb"><span class="type">TrackerMinerWeb</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Asks <em class="parameter"><code>miner</code></em> to retrieve association_data for. The data returned in
-the <code class="literal">GHashTable</code> depends on the <em class="parameter"><code>miner</code></em> implementation and the type
+the <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><code class="literal">GHashTable</code></a> depends on the <em class="parameter"><code>miner</code></em> implementation and the type
 of authentication. See <code class="classname">TrackerMinerWebClass</code>
 for more information.
 </p>
@@ -403,13 +403,13 @@ for more information.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>return location for errors. <span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+<td>return location for errors. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym> callee-allocates][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <code class="literal">GHashTable</code> with the data. On failure <em class="parameter"><code>error</code></em> will be set
-and <a href="/opt/gnome/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> will be returned. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><code class="literal">GHashTable</code></a> with the data. On failure <em class="parameter"><code>error</code></em> will be set
+and <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> will be returned. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
@@ -420,6 +420,6 @@ and <a href="/opt/gnome/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--C
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

@@ -62,14 +62,6 @@
 <ANCHOR id="TrackerSparqlConnection.description" href="libtracker-sparql/TrackerSparqlConnection.html#TrackerSparqlConnection.description">
 <ANCHOR id="TrackerSparqlConnection.details" href="libtracker-sparql/TrackerSparqlConnection.html#TrackerSparqlConnection.details">
 <ANCHOR id="TrackerSparqlError" href="libtracker-sparql/TrackerSparqlConnection.html#TrackerSparqlError">
-<ANCHOR id="TRACKER-SPARQL-ERROR-PARSE:CAPS" href="libtracker-sparql/TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-PARSE:CAPS">
-<ANCHOR id="TRACKER-SPARQL-ERROR-UNKNOWN-CLASS:CAPS" href="libtracker-sparql/TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-UNKNOWN-CLASS:CAPS">
-<ANCHOR id="TRACKER-SPARQL-ERROR-UNKNOWN-PROPERTY:CAPS" href="libtracker-sparql/TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-UNKNOWN-PROPERTY:CAPS">
-<ANCHOR id="TRACKER-SPARQL-ERROR-TYPE:CAPS" href="libtracker-sparql/TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-TYPE:CAPS">
-<ANCHOR id="TRACKER-SPARQL-ERROR-CONSTRAINT:CAPS" href="libtracker-sparql/TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-CONSTRAINT:CAPS">
-<ANCHOR id="TRACKER-SPARQL-ERROR-NO-SPACE:CAPS" href="libtracker-sparql/TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-NO-SPACE:CAPS">
-<ANCHOR id="TRACKER-SPARQL-ERROR-INTERNAL:CAPS" href="libtracker-sparql/TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-INTERNAL:CAPS">
-<ANCHOR id="TRACKER-SPARQL-ERROR-UNSUPPORTED:CAPS" href="libtracker-sparql/TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-UNSUPPORTED:CAPS">
 <ANCHOR id="TrackerSparqlConnection-struct" href="libtracker-sparql/TrackerSparqlConnection.html#TrackerSparqlConnection-struct">
 <ANCHOR id="tracker-sparql-connection-get" href="libtracker-sparql/TrackerSparqlConnection.html#tracker-sparql-connection-get">
 <ANCHOR id="tracker-sparql-connection-get-async" href="libtracker-sparql/TrackerSparqlConnection.html#tracker-sparql-connection-get-async">

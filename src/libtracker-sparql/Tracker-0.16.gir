@@ -29,7 +29,7 @@
 		<member name="internal" c:identifier="TRACKER_SPARQL_ERROR_INTERNAL" value="6"/>
 		<member name="unsupported" c:identifier="TRACKER_SPARQL_ERROR_UNSUPPORTED" value="7"/>
 	</enumeration>
-	<class name="SparqlBuilder" c:type="TrackerSparqlBuilder" glib:type-name="TrackerSparqlBuilder" glib:get-type="tracker_sparql_builder_get_type" glib:type-struct="SparqlBuilderClass" parent="GObject.Object">
+	<class name="SparqlBuilder" c:type="TrackerSparqlBuilder" glib:type-name="TrackerSparqlBuilder" glib:get-type="tracker_sparql_builder_get_type" glib:type-struct="BuilderClass" parent="GObject.Object">
 		<field name="parent_instance">
 			<type name="GObject.Object" c:type="GObject"/>
 		</field>
@@ -296,7 +296,7 @@
 			<type name="Tracker.SparqlBuilderState" c:type="TrackerSparqlBuilderState"/>
 		</property>
 	</class>
-	<record name="SparqlBuilderClass" c:type="TrackerSparqlBuilderClass" glib:is-gtype-struct-for="Builder">
+	<record name="BuilderClass" c:type="TrackerSparqlBuilderClass" glib:is-gtype-struct-for="Builder">
 		<field name="parent_class">
 			<type name="GObject.ObjectClass" c:type="GObjectClass"/>
 		</field>
@@ -314,7 +314,7 @@
 		<member name="embedded_insert" c:identifier="TRACKER_SPARQL_BUILDER_STATE_EMBEDDED_INSERT" value="8"/>
 		<member name="graph" c:identifier="TRACKER_SPARQL_BUILDER_STATE_GRAPH" value="9"/>
 	</enumeration>
-	<class name="SparqlConnection" c:type="TrackerSparqlConnection" glib:type-name="TrackerSparqlConnection" glib:get-type="tracker_sparql_connection_get_type" glib:type-struct="SparqlConnectionClass" parent="GObject.Object" abstract="1">
+	<class name="SparqlConnection" c:type="TrackerSparqlConnection" glib:type-name="TrackerSparqlConnection" glib:get-type="tracker_sparql_connection_get_type" glib:type-struct="ConnectionClass" parent="GObject.Object" abstract="1">
 		<field name="parent_instance">
 			<type name="GObject.Object" c:type="GObject"/>
 		</field>
@@ -602,9 +602,9 @@
 		</method>
 		<method name="update_array_finish" c:identifier="tracker_sparql_connection_update_array_finish" throws="1">
 			<return-value transfer-ownership="full" allow-none="1">
-				<array name="GLib.PtrArray" c:type="GPtrArray*">
+				<type name="GLib.GenericArray" c:type="GPtrArray*">
 					<type name="Tracker.SparqlError" c:type="GError*"/>
-				</array>
+				</type>
 			</return-value>
 			<parameters>
 				<parameter name="_res_" transfer-ownership="none">
@@ -641,9 +641,9 @@
 		</virtual-method>
 		<virtual-method name="update_array_finish" invoker="update_array_finish" throws="1">
 			<return-value transfer-ownership="full" allow-none="1">
-				<array name="GLib.PtrArray" c:type="GPtrArray*">
+				<type name="GLib.GenericArray" c:type="GPtrArray*">
 					<type name="Tracker.SparqlError" c:type="GError*"/>
-				</array>
+				</type>
 			</return-value>
 			<parameters>
 				<parameter name="_res_" transfer-ownership="none">
@@ -904,7 +904,7 @@
 			</parameters>
 		</virtual-method>
 	</class>
-	<record name="SparqlConnectionClass" c:type="TrackerSparqlConnectionClass" glib:is-gtype-struct-for="Connection">
+	<record name="ConnectionClass" c:type="TrackerSparqlConnectionClass" glib:is-gtype-struct-for="Connection">
 		<field name="parent_class">
 			<type name="GObject.ObjectClass" c:type="GObjectClass"/>
 		</field>
@@ -1063,9 +1063,9 @@
 		<field name="update_array_finish">
 			<callback name="update_array_finish" c:type="update_array_finish" throws="1">
 				<return-value transfer-ownership="full" allow-none="1">
-					<array name="GLib.PtrArray" c:type="GPtrArray*">
+					<type name="GLib.GenericArray" c:type="GPtrArray*">
 						<type name="Tracker.SparqlError" c:type="GError*"/>
-					</array>
+					</type>
 				</return-value>
 				<parameters>
 					<parameter name="self" transfer-ownership="none">
@@ -1250,7 +1250,7 @@
 		</field>
 	</record>
 	<record name="ConnectionPrivate" c:type="TrackerSparqlConnectionPrivate" disguised="1"/>
-	<class name="SparqlCursor" c:type="TrackerSparqlCursor" glib:type-name="TrackerSparqlCursor" glib:get-type="tracker_sparql_cursor_get_type" glib:type-struct="SparqlCursorClass" parent="GObject.Object" abstract="1">
+	<class name="SparqlCursor" c:type="TrackerSparqlCursor" glib:type-name="TrackerSparqlCursor" glib:get-type="tracker_sparql_cursor_get_type" glib:type-struct="CursorClass" parent="GObject.Object" abstract="1">
 		<field name="parent_instance">
 			<type name="GObject.Object" c:type="GObject"/>
 		</field>
@@ -1502,7 +1502,7 @@
 			<type name="gint" c:type="gint"/>
 		</property>
 	</class>
-	<record name="SparqlCursorClass" c:type="TrackerSparqlCursorClass" glib:is-gtype-struct-for="Cursor">
+	<record name="CursorClass" c:type="TrackerSparqlCursorClass" glib:is-gtype-struct-for="Cursor">
 		<field name="parent_class">
 			<type name="GObject.ObjectClass" c:type="GObjectClass"/>
 		</field>

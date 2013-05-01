@@ -1,3 +1,126 @@
+2013-05-01  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.16.1
+
+2013-05-01  Antoine Jacoutot  <ajacoutot@gnome.org>
+
+	Implement get_memory_total() on OpenBSD.
+	https://bugzilla.gnome.org/show_bug.cgi?id=697719
+
+	tracker-dbus: add support for OpenBSD
+	Add OS dependant glue for tracker-dbus on OpenBSD using kvm(3).
+
+2013-05-01  Dominique Leuenberger  <dimstar@opensuse.org>
+
+	firefox/thunderbird: prefer tracker 0.16 over tracker 0.14
+	https://bugzilla.gnome.org/show_bug.cgi?id=697809
+
+2013-05-01  Antoine Jacoutot  <ajacoutot@gnome.org>
+
+	SCHED_IDLE is only available on Linux.
+	https://bugzilla.gnome.org/show_bug.cgi?id=697728
+
+	Another need for XOPEN_SOURCE_EXTENDED missed in previous commit.
+	Was missed in 3443706bbe0c1c2e465336c59f87cec90929ff1e
+
+	OpenBSD needs _XOPEN_SOURCE_EXTENDED for strptime/strcasecmp
+	These were introduced in XPG4. On OpenBSD, just defining _XOPEN_SOURCE
+	gets you the older XPG3 wich doesn't include them, so we need to define
+	_XOPEN_SOURCE_EXTENDED to get XPG4v2. This fixes several implicit
+	declarations.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=697688
+
+2013-05-01  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-data: Fix unit tests for localtime/timezone functions
+	The insert order != query order and the query has no ORDER BY. So it's not
+	guaranteed anyway, but the diff expects an order. So this patch adds ORDER BY
+	to ensure the diff doesn't fail due to ordering but only lack of content
+	expected.
+
+2013-04-30  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-sparql-backend: Fix connection singleton mutex issue
+	Since moving from GStaticMutex to GMutex (due to deprecations in GLib), there
+	has been an issue noticed with the way the mutex is created. Before, the
+	GStaticMutex was created in the first instance from any API call and used
+	there on after. This meant the chance of it not being initialised when we used
+	it was almost 0.
+
+	Now with GMutex, because we've initialised it differently (in the class
+	constructor) with Mutex() this means that g_mutex_init(&_tmp0_) is the
+	generated source from that. Sadly, the first instance of g_mutex_lock() will
+	create the mutex for us if it is NULL or {0} anyway and this happens _BEFORE_
+	the g_mutex_init() call. So we were locking, initing and the unlocking. This
+	is the cause of the problem.
+
+	Now we don't initialise the mutex at all and let that initialise upon first
+	lock. Note, atomic operations in GLib should protect race conditions affecting
+	creation of the singleton here.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=697316
+
+2013-04-29  Andika Triwidada  <andika@gmail.com>
+
+	Updated Indonesian translation
+
+2013-04-28  Žygimantas Beručka  <uid0@akl.lt>
+
+	Updated Lithuanian translation
+
+2013-04-25  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2013-04-18  Alexandre Franke  <alexandre.franke@gmail.com>
+
+	Update French translation
+
+2013-04-11  Мирослав Николић  <miroslavnikolic@rocketmail.com>
+
+	Updated Serbian translation
+
+2013-04-10  Rafael Ferreira  <rafael.f.f1@gmail.com>
+
+	Updated Brazilian Portuguese translation
+
+2013-04-08  Carlos Garnacho  <carlosg@gnome.org>
+
+	Fix AS ?foo handling in FTS queries
+	FTS queries implicitly add an "AS var" clause to the translated
+	SQL select query so values can be matched with the outer query that
+	accesses FTS tables, which resulted in doubly added AS clauses if
+	it was specified explicitly in SPARQL too.
+
+	So, make sure the clause is just added once.
+
+2013-04-01  Aurimas Černius  <aurisc4@gmail.com>
+
+	Updated Lithuanian translation
+
+2013-03-30  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+	Updated Slovenian translation
+
+2013-03-27  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2013-03-25  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2013-03-25  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-tag: Fix --list (-t) to use logical OR, not AND
+	Also improve the documentation.
+
+	tracker-tag: Fixed GLib-WARNING **: goption.c:2193: ignoring no-arg...
+	Was using wrong FLAG in GOption
+
 2013-03-18  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.16.0

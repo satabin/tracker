@@ -53,23 +53,8 @@ rules_in_files = \
 # NOTE:
 # We don't always link with libtracker-common, we only link
 # against it if we directly use functions in the .so
-modules_LTLIBRARIES = \
-	libextract-abw.la \
-	libextract-dvi.la \
-	libextract-mp3.la \
-	libextract-png.la \
-	libextract-ps.la \
-	libextract-text.la \
-	libextract-icon.la
-
-rules_DATA = \
-	10-abw.rule \
-	10-dvi.rule \
-	10-ico.rule \
-	10-mp3.rule \
-	10-png.rule \
-	10-ps.rule \
-	90-text-generic.rule
+modules_LTLIBRARIES = # Empty
+rules_DATA = # Empty
 
 if HAVE_LIBVORBIS
 modules_LTLIBRARIES += libextract-vorbis.la
@@ -154,6 +139,41 @@ endif
 if HAVE_LIBOSINFO
 modules_LTLIBRARIES += libextract-iso.la
 rules_DATA += 11-iso.rule
+endif
+
+if HAVE_LIBPNG
+modules_LTLIBRARIES += libextract-png.la
+rules_DATA += 10-png.rule
+endif
+
+if HAVE_ABIWORD
+modules_LTLIBRARIES += libextract-abw.la
+rules_DATA += 10-abw.rule
+endif
+
+if HAVE_DVI
+modules_LTLIBRARIES += libextract-dvi.la
+rules_DATA += 10-dvi.rule
+endif
+
+if HAVE_MP3
+modules_LTLIBRARIES += libextract-mp3.la
+rules_DATA += 10-mp3.rule
+endif
+
+if HAVE_PS
+modules_LTLIBRARIES += libextract-ps.la
+rules_DATA += 10-ps.rule
+endif
+
+if HAVE_TEXT
+modules_LTLIBRARIES += libextract-text.la
+rules_DATA += 90-text-generic.rule
+endif
+
+if HAVE_ICON
+modules_LTLIBRARIES += libextract-icon.la
+rules_DATA += 10-ico.rule
 endif
 
 # ABW

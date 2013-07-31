@@ -259,6 +259,72 @@ add_double_gst_tag (TrackerSparqlBuilder  *metadata,
 	}
 }
 
+static inline gboolean
+get_gst_date_time_to_buf (GstDateTime *date_time,
+                          gchar       *buf,
+                          size_t       size)
+{
+	const gchar *offset_str;
+	gint year, month, day, hour, minute, second;
+	gfloat offset;
+	gboolean complete;
+
+	offset_str = "+";
+	year = month = day = hour = minute = second = 0;
+	offset = 0.0;
+	complete = TRUE;
+
+	if (gst_date_time_has_year (date_time)) {
+		year = gst_date_time_get_year (date_time);
+	} else {
+		complete = FALSE;
+	}
+
+	if (gst_date_time_has_month (date_time)) {
+		month = gst_date_time_get_month (date_time);
+	} else {
+		complete = FALSE;
+	}
+
+	if (gst_date_time_has_day (date_time)) {
+		day = gst_date_time_get_day (date_time);
+	} else {
+		complete = FALSE;
+	}
+
+	/* Hour and Minute data is retrieved by first checking the
+	 * _has_time() API.
+	 */
+
+	if (gst_date_time_has_second (date_time)) {
+		second = gst_date_time_get_second (date_time);
+	} else {
+		complete = FALSE;
+	}
+
+	if (gst_date_time_has_time (date_time)) {
+		hour = gst_date_time_get_hour (date_time);
+		minute = gst_date_time_get_minute (date_time);
+		offset_str = gst_date_time_get_time_zone_offset (date_time) >= 0 ? "+" : "";
+		offset = gst_date_time_get_time_zone_offset (date_time);
+	} else {
+		offset_str = "+";
+		complete = FALSE;
+	}
+
+	snprintf (buf, size, "%04d-%02d-%02dT%02d:%02d:%02d%s%02d00",
+	          year,
+	          month,
+	          day,
+	          hour,
+	          minute,
+	          second,
+	          offset_str,
+	          (gint) offset);
+
+	return complete;
+}
+
 static void
 add_date_time_gst_tag_with_mtime_fallback (TrackerSparqlBuilder  *metadata,
                                            const gchar           *uri,
@@ -276,17 +342,14 @@ add_date_time_gst_tag_with_mtime_fallback (TrackerSparqlBuilder  *metadata,
 	buf[0] = '\0';
 
 	if (gst_tag_list_get_date_time (tag_list, tag_date_time, &date_time)) {
-		snprintf (buf, sizeof (buf), "%04d-%02d-%02dT%02d:%02d:%02d%s%02d00",
-		          gst_date_time_get_year (date_time),
-		          gst_date_time_get_month (date_time),
-		          gst_date_time_get_day (date_time),
-		          gst_date_time_get_hour (date_time),
-		          gst_date_time_get_minute (date_time),
-		          gst_date_time_get_second (date_time),
-		          gst_date_time_get_time_zone_offset (date_time) >= 0 ? "+" : "",
-		          (int) gst_date_time_get_time_zone_offset (date_time));
+		gboolean complete;
 
+		complete = get_gst_date_time_to_buf (date_time, buf, sizeof (buf));
 		gst_date_time_unref (date_time);
+
+		if (!complete) {
+			g_message ("GstDateTime was not complete, parts of the date/time were missing (e.g. hours, minutes, seconds)");
+		}
 	} else if (gst_tag_list_get_date (tag_list, tag_date, &date)) {
 		gboolean ret = FALSE;
 
@@ -420,28 +483,33 @@ get_embedded_media_art (MetadataExtractor *extractor)
 
 		if (have_sample) {
 			GstBuffer *buffer;
-			GstCaps *caps;
-			GstStructure *caps_struct;
+			const GstStructure *info_struct;
 			gint type;
 
 			buffer = gst_sample_get_buffer (extractor->sample);
-			caps = gst_sample_get_caps (extractor->sample);
-			caps_struct = gst_caps_get_structure (caps, 0);
-			gst_structure_get_enum (caps_struct,
-			                        "image-type",
-			                        GST_TYPE_TAG_IMAGE_TYPE,
-			                        &type);
+			info_struct = gst_sample_get_info (extractor->sample);
+			if (gst_structure_get_enum (info_struct,
+			                            "image-type",
+			                            GST_TYPE_TAG_IMAGE_TYPE,
+			                            &type)) {
+				if (type == GST_TAG_IMAGE_TYPE_FRONT_COVER ||
+				    (type == GST_TAG_IMAGE_TYPE_UNDEFINED &&
+				     extractor->media_art_buffer_size == 0)) {
+					GstCaps *caps;
+					GstStructure *caps_struct;
 
-			if (type == GST_TAG_IMAGE_TYPE_FRONT_COVER ||
-			    (type == GST_TAG_IMAGE_TYPE_UNDEFINED && extractor->media_art_buffer_size == 0)) {
-				if (!gst_buffer_map (buffer, &extractor->info, GST_MAP_READ))
-					return FALSE;
+					if (!gst_buffer_map (buffer, &extractor->info, GST_MAP_READ))
+						return FALSE;
 
-				extractor->media_art_buffer = extractor->info.data;
-				extractor->media_art_buffer_size = extractor->info.size;
-				extractor->media_art_buffer_mime = gst_structure_get_name (caps_struct);
+					caps = gst_sample_get_caps (extractor->sample);
+					caps_struct = gst_caps_get_structure (caps, 0);
 
-				return TRUE;
+					extractor->media_art_buffer = extractor->info.data;
+					extractor->media_art_buffer_size = extractor->info.size;
+					extractor->media_art_buffer_mime = gst_structure_get_name (caps_struct);
+
+					return TRUE;
+				}
 			}
 
 			lindex++;
@@ -1973,41 +2041,38 @@ tracker_extract_gstreamer (const gchar          *uri,
 	success = discoverer_init_and_run (extractor, uri);
 #endif
 
-	if (!success) {
-		gst_tag_list_free (extractor->tagcache);
-		g_slice_free (MetadataExtractor, extractor);
-		return;
+	if (success) {
+		cue_sheet = get_embedded_cue_sheet_data (extractor->tagcache);
+
+		if (cue_sheet) {
+			g_debug ("Using embedded CUE sheet.");
+			extractor->toc = tracker_cue_sheet_parse (cue_sheet);
+			g_free (cue_sheet);
+		}
+
+		if (extractor->toc == NULL) {
+			extractor->toc = tracker_cue_sheet_parse_uri (uri);
+		}
+
+		extract_metadata (extractor,
+		                  uri,
+		                  preupdate,
+		                  postupdate,
+		                  metadata,
+		                  graph);
+
+		if (extractor->media_art_type != TRACKER_MEDIA_ART_NONE) {
+			tracker_media_art_process (extractor->media_art_buffer,
+			                           extractor->media_art_buffer_size,
+			                           extractor->media_art_buffer_mime,
+			                           extractor->media_art_type,
+			                           extractor->media_art_artist,
+			                           extractor->media_art_title,
+			                           uri);
+		}
 	}
 
-	cue_sheet = get_embedded_cue_sheet_data (extractor->tagcache);
-
-	if (cue_sheet) {
-		g_debug ("Using embedded CUE sheet.");
-		extractor->toc = tracker_cue_sheet_parse (cue_sheet);
-		g_free (cue_sheet);
-	}
-
-	if (extractor->toc == NULL) {
-		extractor->toc = tracker_cue_sheet_parse_uri (uri);
-	}
-
-	extract_metadata (extractor,
-	                  uri,
-	                  preupdate,
-	                  postupdate,
-	                  metadata,
-	                  graph);
-
-	if (extractor->media_art_type != TRACKER_MEDIA_ART_NONE) {
-		tracker_media_art_process (extractor->media_art_buffer,
-		                           extractor->media_art_buffer_size,
-		                           extractor->media_art_buffer_mime,
-		                           extractor->media_art_type,
-		                           extractor->media_art_artist,
-		                           extractor->media_art_title,
-		                           uri);
-	}
-
+	/* Clean up */
 	g_free (extractor->media_art_artist);
 	g_free (extractor->media_art_title);
 	if (extractor->sample) {

@@ -1,3 +1,144 @@
+2013-07-31  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-preferences: Added reindex function, require GTK+3 & fix optical disc sensitivity.
+	- Glade file required older GTK+ 2.x version, but we require 3.x in the code
+	  base.
+
+	- The index optical discs checkbutton was not correctly insensitive at the
+	  right times.
+
+	- We now have a "system" page to reindex our data if users want an easy way to
+	  do this.
+
+	libtracker-common, tracker-miner-fs: Fixed config file and settings overwriting
+	libtracker-common: Added config tracing to avoid spaming logs most of the
+	time, but kept for cases where we need to see what we're doing with configs.
+
+	libtracker-common: Added +tracker_config_file_import_to_settings() We call
+	this now from tracker-config.c in miner-fs when using config files to update
+	our local GSettings. No overwriting stored GSettings happens.
+
+	tracker-miner-fs: Removed all unused _set() functions in tracker-config.[ch].
+
+	tracker-miner-fs: Only allow *local* GSettings override of verbosity and
+	initial-sleep from the command line.
+
+	tracker-miner-fs: Don't re-write the default config in some cases.
+
+	tracker-miner-fs: For config, don't bind DEFAULT, but only GET for most
+	properties, we don't want to save back what we change locally, that's what
+	tracker-preferences does.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=703759
+
+	tracker-preferences: Mention that TRACKER_USE_CONFIG_FILES has no effect
+
+	libtracker-common: Small changes to config file logging
+
+2013-07-31  Chao-Hsiung Liao  <j_h_liau@yahoo.com.tw>
+
+	Updated Traditional Chinese translation(Hong Kong and Taiwan)
+
+2013-07-31  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract-gstreamer: Don't leak file descriptors & use up all FDs
+	The GStreamer extractor was not calling all the shutdown functions internally
+	to clean up streams in failure conditions.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=704048
+	https://bugzilla.redhat.com/show_bug.cgi?id=741479
+	https://bugzilla.redhat.com/show_bug.cgi?id=959020
+
+	libtracker-data: Don't use the count_changes PRAGMA, it is deprecated
+	See SQLite manual section here:
+	  http://www.sqlite.org/pragma.html#pragma_count_changes
+
+2013-07-31  Jonatan Pålsson  <jonatan.palsson@pelagicore.com>
+
+	tracker-extract-mp3: Fix segfault when trying to process NULL ID3 tag
+	When calling g_convert with a missing codepage, it returns NULL, while not
+	setting an error (specifically, if the CP1252 code page is missing, a
+	segmentation fault occurs). This means id3v24_text_to_utf8 and
+	id3v2_text_to_utf8 may return NULL. If NULL is returned by these functions, do
+	not process this tag further.
+
+2013-07-31  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract-gstreamer: Fixed missing const for GstStructure compiler warning
+
+2013-07-31  Arnel A. Borja  <arnelborja@src.gnome.org>
+
+	tracker-extract-gstreamer: Get media art image type from sample info
+	Instead of getting the "image-type" field from the caps of the sample, get
+	it from the structure for extra information of the sample. Check also that
+	the field does exists, skipping the sample if it doesn't.
+
+	Fixes GB#703747
+
+2013-07-31  Philip Van Hoof  <philip@codeminded.be>
+
+	Fix E-mail address in AUTHORS file
+
+	Updated my own E-mail adress in MAINTAINERS and AUTHORS
+
+2013-07-31  Ralph Boehme  <sloowfranklin@gmail.com>
+
+	tracker-control: Use procfs psinfo instead of cmdline on Solaris
+
+2013-07-31  Jonatan Pålsson  <jonatan.palsson@pelagicore.com>
+
+	build scripts: Added switch to disable installation of artwork (icons etc)
+	The switch is --disable-artwork
+
+	tracker-extract: Make icon extractor optional, using --enable-icon
+
+	tracker-extract: Make text extractor optional, using --enable-text
+
+	tracker-extract: Make PS extractor optional, using --enable-ps
+
+	tracker-extract: Make MP3 extractor optional, using --enable-mp3
+
+	tracker-extract: Make DVI extractor optional, using --enable-dvi
+
+	tracker-extract: Make the AbiWord extractor optional, using --enable-abiword
+
+	tracker-extract: Make PNG extractor optional, using --enable-libpng
+
+2013-07-31  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-common: Fix indentation of previous patch by contributor
+
+2013-07-31  Ralph Boehme  <sloowfranklin@gmail.com>
+
+	libtracker-common: Add /proc/meminfo replacement for Solaris
+
+2013-07-10  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'gst-datetime-criticals' into tracker-0.16
+
+	Don't throw log warnings if GstDateTime has missing information
+	Part Fixes GB#700199
+
+2013-05-21  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2013-05-15  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	Update DConf profile for functional tests to new format
+	This fixes the following warning when running the functional tests:
+
+	    (process:4036): dconf-WARNING **: unknown dconf database description:
+	    trackertest
+
+2013-05-15  Yuri Myasoedov  <omerta13@yandex.ru>
+
+	Updated Russian translation
+
+2013-05-13  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	Updated Hungarian translation
+
 2013-05-01  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.16.1

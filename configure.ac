@@ -13,8 +13,8 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [16])
-m4_define([tracker_micro_version], [1])
-m4_define([tracker_interface_age], [1])
+m4_define([tracker_micro_version], [2])
+m4_define([tracker_interface_age], [2])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -198,6 +198,7 @@ REST_REQUIRED=0.6
 NETWORK_MANAGER_REQUIRED=0.8
 GSTREAMER_REQUIRED=0.10.31
 GUPNP_DLNA_REQUIRED=0.9.4
+LIBPNG_REQUIRED=0.89
 
 # 3.6.11 for sqlite_backup API
 # 3.6.16 to fix test failures
@@ -2033,6 +2034,53 @@ CFLAGS="$OLD_CFLAGS"
 LIBS="$OLD_LIBS"
 
 ##################################################################
+# Check for tracker-extract: libpng
+##################################################################
+
+# FIXME: This should be package based. Unfortunately in several main
+# distros, it is not.
+
+OLD_CFLAGS="$CFLAGS"
+OLD_LIBS="$LIBS"
+CFLAGS=""
+LIBS=""
+
+AC_ARG_ENABLE(libpng,
+              AS_HELP_STRING([--enable-libpng],
+                             [enable extractor for PNG data [[default=auto]]]),,
+              [enable_libpng=auto])
+
+if test "x$enable_libpng" != "xno" ; then
+   AC_CHECK_HEADER(png.h,
+                   AC_CHECK_LIB(png, png_create_read_struct))
+
+   have_libpng=${ac_cv_lib_png_png_create_read_struct:-no}
+
+   LIBPNG_CFLAGS="$CFLAGS"
+   LIBPNG_LIBS="$LIBS"
+
+   AC_SUBST(LIBPNG_CFLAGS)
+   AC_SUBST(LIBPNG_LIBS)
+
+   if test "x$have_libpng" = "xyes"; then
+      AC_DEFINE(HAVE_LIBPNG, [], [Define if we have libpng])
+   fi
+else
+   have_libpng="no  (disabled)"
+fi
+
+if test "x$enable_libpng" = "xyes"; then
+   if test "x$have_libpng" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find libpng >= $LIBPNG_REQUIRED.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_LIBPNG, test "x$have_libpng" = "xyes")
+
+CFLAGS="$OLD_CFLAGS"
+LIBS="$OLD_LIBS"
+
+##################################################################
 # Check for tracker-extract: vorbis
 ##################################################################
 
@@ -2131,6 +2179,126 @@ fi
 AM_CONDITIONAL(HAVE_LIBCUE, test "x$have_libcue" = "xyes")
 
 ####################################################################
+# Check for tracker-extract: AbiWord
+####################################################################
+
+AC_ARG_ENABLE(abiword,
+              AS_HELP_STRING([--enable-abiword],
+                             [enable AbiWord support [[default=auto]]]),,
+              [enable_abiword=auto])
+
+if test "x$enable_abiword" != "xno" ; then
+   AC_SUBST(ABIWORD_CFLAGS)
+   AC_SUBST(ABIWORD_LIBS)
+   AC_DEFINE(HAVE_ABIWORD, [], [Define if we have AbiWord extractor])
+   have_abiword=yes
+else
+   have_abiword="no  (disabled)"
+fi
+
+AM_CONDITIONAL(HAVE_ABIWORD, test "x$have_abiword" = "xyes")
+
+####################################################################
+# Check for tracker-extract: DVI
+####################################################################
+
+AC_ARG_ENABLE(dvi,
+              AS_HELP_STRING([--enable-dvi],
+                             [enable DVI support [[default=auto]]]),,
+              [enable_dvi=auto])
+
+if test "x$enable_dvi" != "xno"; then
+   AC_SUBST(DVI_CFLAGS)
+   AC_SUBST(DVI_LIBS)
+   AC_DEFINE(HAVE_DVI, [], [Define if we have DVI extractor])
+   have_dvi=yes
+else
+   have_dvi="no  (disabled)"
+fi
+
+AM_CONDITIONAL(HAVE_DVI, test "x$have_dvi" = "xyes")
+
+####################################################################
+# Check for tracker-extract: mp3
+####################################################################
+
+AC_ARG_ENABLE(mp3,
+              AS_HELP_STRING([--enable-mp3],
+                             [enable MP3 support [[default=auto]]]),,
+              [enable_mp3=auto])
+
+if test "x$enable_mp3" != "xno"; then
+   AC_SUBST(MP3_CFLAGS)
+   AC_SUBST(MP3_LIBS)
+   AC_DEFINE(HAVE_MP3, [], [Define if we have MP3 extractor])
+   have_mp3=yes
+else
+   have_mp3="no  (disabled)"
+fi
+
+AM_CONDITIONAL(HAVE_MP3, test "x$have_mp3" = "xyes")
+
+####################################################################
+# Check for tracker-extract: ps
+####################################################################
+
+AC_ARG_ENABLE(ps,
+              AS_HELP_STRING([--enable-ps],
+                             [enable PS support [[default=auto]]]),,
+              [enable_ps=auto])
+
+if test "x$enable_ps" != "xno"; then
+   AC_SUBST(PS_CFLAGS)
+   AC_SUBST(PS_LIBS)
+   AC_DEFINE(HAVE_PS, [], [Define if we have PS extractor])
+   have_ps=yes
+else
+   have_ps="no  (disabled)"
+fi
+
+AM_CONDITIONAL(HAVE_PS, test "x$have_ps" = "xyes")
+
+####################################################################
+# Check for tracker-extract: text
+####################################################################
+
+AC_ARG_ENABLE(text,
+              AS_HELP_STRING([--enable-text],
+                             [enable text support [[default=auto]]]),,
+              [enable_text=auto])
+
+if test "x$enable_text" != "xno"; then
+   AC_SUBST(TEXT_CFLAGS)
+   AC_SUBST(TEXT_LIBS)
+   AC_DEFINE(HAVE_TEXT, [], [Define if we have text extractor])
+   have_text=yes
+else
+   have_text="no  (disabled)"
+fi
+
+AM_CONDITIONAL(HAVE_TEXT, test "x$have_text" = "xyes")
+
+####################################################################
+# Check for tracker-extract: icon
+####################################################################
+
+AC_ARG_ENABLE(icon,
+              AS_HELP_STRING([--enable-icon],
+                             [enable icon support [[default=auto]]]),,
+              [enable_icon=auto])
+
+if test "x$enable_icon" != "xno"; then
+   AC_SUBST(ICON_CFLAGS)
+   AC_SUBST(ICON_LIBS)
+   AC_DEFINE(HAVE_ICON, [], [Define if we have ICON extractor])
+   have_icon=yes
+else
+   have_icon="no  (disabled)"
+fi
+
+AM_CONDITIONAL(HAVE_ICON, test "x$have_icon" = "xyes")
+
+####################################################################
 # Check for tracker-extract, tracker-writeback: totem-pl-parser
 ####################################################################
 
@@ -2194,6 +2362,25 @@ fi
 AC_PATH_PROG(INITCTL, initctl, [])
 AC_SUBST(INITCTL)
 AM_CONDITIONAL(HAVE_UPSTART, test "x$INITCTL" != "x")
+
+####################################################################
+# Check whether we should install artwork
+####################################################################
+
+AC_ARG_ENABLE(artwork,
+              AS_HELP_STRING([--enable-artwork],
+                             [install artwork, such as icons and logos [[default=auto]]]),,
+              [enable_artwork=auto])
+
+if test "x$enable_artwork" != "xno"; then
+   AC_DEFINE(HAVE_ARTWORK, [], [Define if we should install artwork])
+   have_artwork=yes
+else
+   have_artwork="no  (disabled)"
+fi
+
+AM_CONDITIONAL(HAVE_ARTWORK, test "x$have_artwork" = "xyes")
+
 
 ##################################################################
 # Write generated files
@@ -2390,7 +2577,7 @@ Applications:
 Metadata Extractors:
 
 	Support libstreamanalyzer:              $have_libstreamanalyzer
-	Support PNG:                            yes
+	Support PNG:                            $have_libpng
 	Support PDF:                            $have_poppler
 	Support XPS:                            $have_libgxps
 	Support GIF:                            $have_libgif (xmp: $have_exempi)
@@ -2406,6 +2593,12 @@ Metadata Extractors:
 	Support cue sheet parsing:              $have_libcue
 	Support playlists (w/ Totem):           $have_playlist
 	Support ISO image parsing:              $have_libosinfo
+	Support AbiWord document parsing:       $have_abiword
+	Support DVI parsing:                    $have_dvi
+	Support MP3 parsing:                    $have_mp3
+	Support PS parsing:                     $have_ps
+	Support text parsing:                   $have_text
+	Support icon parsing:                   $have_icon
 
 Data Miners:
 
@@ -2432,6 +2625,10 @@ Frameworks / Options:
 	Support Maemo                           $enable_maemo
 	Support libmeegotouch                   $have_meegotouch
 	Support Guaranteed Metadata             $enable_guarantee_metadata (e.g. guess nie:title from files)
+
+Miscellaneous:
+
+	Install artwork                         $have_artwork
 
 "
 

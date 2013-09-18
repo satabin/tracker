@@ -22,13 +22,20 @@ override_dh_auto_configure:
 		--enable-libgif \
 		--enable-libjpeg \
 		--enable-libtiff \
+		--enable-libpng \
 		--enable-poppler \
 		--enable-libgsf \
+		--enable-abiword \
 		--enable-libxml2 \
 		--enable-libvorbis \
 		--enable-libflac \
 		--enable-playlist \
+		--enable-mp3 \
 		--enable-libgxps \
+		--enable-dvi \
+		--enable-ps \
+		--enable-icon \
+		--enable-text \
 		--enable-gtk-doc \
 		--disable-unit-tests \
 		--disable-network-manager \

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Nepomuk Messaging Ontology (NMO): Model for messages and communications, including Email, SMS, MMS and phone calls</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
 <link rel="up" href="ontology.html" title="Part I. Overview">
 <link rel="prev" href="nco-properties.html" title="NCO Ontology Properties">
 <link rel="next" href="nmo-classes.html" title="NMO Ontology Classes">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -22,13 +22,13 @@
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
 <a name="nmo-ontology"></a>Nepomuk Messaging Ontology (NMO): Model for messages and communications, including Email, SMS, MMS and phone calls</h2></div></div></div>
-<div class="toc"><dl>
+<div class="toc"><dl class="toc">
 <dt><span class="section"><a href="nmo-ontology.html#nmo-explanation">Overview</a></span></dt>
 <dt><span class="section"><a href="nmo-classes.html">NMO Ontology Classes</a></span></dt>
 <dt><span class="section"><a href="nmo-properties.html">NMO Ontology Properties</a></span></dt>
 </dl></div>
 <dt><span class="term">Authors:</span></dt>
-<dd><div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<dd><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">Tracker Developers</li>
 <li class="listitem">Ludger van Elst, DFKI,  &lt;elst@dfki.uni-kl.de&gt;</li>
 <li class="listitem">Michael Sintek, DFKI,  &lt;michael.sintek@dfki.de&gt;</li>
@@ -36,12 +36,12 @@
 <li class="listitem">Antoni Mylka, DFKI, &lt;antoni.mylka@dfki.de&gt;</li>
 </ul></div></dd>
 <dt><span class="term">Editors:</span></dt>
-<dd><div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<dd><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">Antoni Mylka, DFKI, &lt;antoni.mylka@dfki.de&gt;</li>
 <li class="listitem">Tracker developers (translation into turtle)</li>
 </ul></div></dd>
 <dt><span class="term">Contributors:</span></dt>
-<dd><div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<dd><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">Christiaan Fluit, Aduna, &lt;christiaan.fluit@aduna-software.com&gt;</li>
 <li class="listitem">Evgeny 'phreedom' Egorochkin, KDE Strigi Developer, &lt;stexx@mail.ru&gt;</li>
 </ul></div></dd>
@@ -75,7 +75,7 @@
 <a name="nmo-message-graph"></a><p class="title"><b>Figure 2. Graphical Overview (Message class)</b></p>
 <div class="figure-contents">
 <div><img src="message-class-overview.png" alt="Graphical Overview (Message class)"></div>
-<p>Notation defined <a class="link" href="ontology-notation-description.html#ontology-notation" title="Figure 8. Notation for ontology description">in this page</a></p>
+<p>Notation defined <a class="link" href="ontology-notation-description.html#ontology-notation" title="Figure 9. Notation for ontology description">in this page</a></p>
 </div>
 </div>
 <br class="figure-break">
@@ -97,7 +97,7 @@
 <a name="nmo-message-graph"></a><p class="title"><b>Figure 3. Graphical Overview (Email related classes)</b></p>
 <div class="figure-contents">
 <div><img src="email-mimeparts-overview.png" alt="Graphical Overview (Email related classes)"></div>
-<p>Notation defined <a class="link" href="ontology-notation-description.html#ontology-notation" title="Figure 8. Notation for ontology description">in this page</a></p>
+<p>Notation defined <a class="link" href="ontology-notation-description.html#ontology-notation" title="Figure 9. Notation for ontology description">in this page</a></p>
 </div>
 </div>
 <br class="figure-break">
@@ -114,7 +114,7 @@
     </p>
 <p>An SMS Message comes from the network in vmessage format and contains to/from recipients in vcards. It is represented in the ontology with the following properties:
     </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">A <a class="link" href="nmo-classes.html#nmo-SMSMessage" title="nmo:SMSMessage">nmo:SMSMessage</a> instance to represent the message itself</li>
 <li class="listitem">
 <a class="link" href="nmo-properties.html#nmo-to" title="nmo:to">nmo:to</a> and <a class="link" href="nmo-properties.html#nmo-from" title="nmo:from">nmo:from</a> linking the contacts (one of them "me", the other a nco:Contact or even a nco:PersonContact if the software is able to identify him).</li>
@@ -164,6 +164,6 @@ nmo:containsSMS property will link the message with the relevant nmo:SMSFolder.<
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

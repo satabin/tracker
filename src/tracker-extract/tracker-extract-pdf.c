@@ -360,7 +360,7 @@ extract_content_parent_process (PopplerDocument *document,
 			perror ("select()");
 			finished = TRUE;
 		} else if (retval == 1) {
-			gsize bytes_remaining;
+			gsize bytes_remaining = bytes_expected;
 			gboolean read_finished = FALSE;
 
 			if (g_timer_elapsed (timer, NULL) >= EXTRACTION_PROCESS_TIMEOUT) {
@@ -463,10 +463,8 @@ extract_content_child_cleanup (int action)
 	pid_t child_pid;
 	int status;
 
-	g_debug ("Parent: Zombies, say hello to my little friend!");
-	while ((child_pid = waitpid (-1, &status, WNOHANG)) > 0) {
-		g_debug ("Parent:   Zombie %d reaped", child_pid);
-	}
+	while ((child_pid = waitpid (-1, &status, WNOHANG)) > 0)
+		;
 }
 
 static gchar *

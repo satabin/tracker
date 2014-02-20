@@ -12,15 +12,15 @@ AC_PREREQ([2.64])
 # if backwards compatibility has been broken,
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
-m4_define([tracker_minor_version], [16])
+m4_define([tracker_minor_version], [17])
 m4_define([tracker_micro_version], [2])
-m4_define([tracker_interface_age], [2])
+m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
           [tracker_major_version.tracker_minor_version.tracker_micro_version])
 # This is the X.Y used in -llibtracker-FOO-X.Y
-m4_define([tracker_api_version], [0.16])
+m4_define([tracker_api_version], [1.0])
 
 # libtool version related macros
 m4_define([tracker_lt_release], [tracker_major_version.tracker_minor_version])
@@ -38,7 +38,7 @@ m4_define([tracker_lt_current_minus_age],
 # for Tracker.
 #
 # TRACKER_BINARY_VERSION=$TRACKER_MAJOR_VERSION.$TRACKER_MINOR_VERSION.$LT_CURRENT
-m4_define([tracker_binary_version], [0.16.0])
+m4_define([tracker_binary_version], [0.18.0])
 
 AC_INIT([tracker],
         [tracker_version],
@@ -133,7 +133,7 @@ AC_CHECK_DECLS(posix_fadvise, [], [], [
 
 # Checks for functions
 AC_CHECK_FUNCS([posix_fadvise])
-AC_CHECK_FUNCS([getline])
+AC_CHECK_FUNCS([getline strnlen])
 
 CFLAGS="$CFLAGS"
 
@@ -162,7 +162,7 @@ PYTHON_REQUIRED=2.6
 
 # Library required versions
 DBUS_REQUIRED=1.3.1
-GLIB_REQUIRED=2.35.1
+GLIB_REQUIRED=2.38.0
 PANGO_REQUIRED=1.0.0
 GTK_REQUIRED=3.0.0
 LIBXML2_REQUIRED=2.6
@@ -170,7 +170,8 @@ LIBNOTIFY_REQUIRED=0.4.3
 HAL_REQUIRED=0.5
 UPOWER_REQUIRED=0.9.0
 GDKPIXBUF_REQUIRED=2.12.0
-QT_REQUIRED=4.7.1
+QT5_REQUIRED=5.0.0
+QT4_REQUIRED=4.7.1
 MEEGOTOUCH_REQUIRED=0.20
 POPPLER_REQUIRED=0.16.0
 CAIRO_REQUIRED=1.0
@@ -181,8 +182,8 @@ LIBTIFF_REQUIRED="any version"
 LIBVORBIS_REQUIRED=0.22
 LIBFLAC_REQUIRED=1.2.1
 LIBEXIF_REQUIRED=0.6
-LIBGSF_REQUIRED=1.13
-LIBOSINFO_REQUIRED=0.0.2
+LIBGSF_REQUIRED=1.14.24
+LIBOSINFO_REQUIRED=0.2.9
 EXEMPI_REQUIRED=2.1.0
 EVO_REQUIRED=2.32.0
 EVO_SHELL_REQUIRED=2.32.0
@@ -199,6 +200,7 @@ NETWORK_MANAGER_REQUIRED=0.8
 GSTREAMER_REQUIRED=0.10.31
 GUPNP_DLNA_REQUIRED=0.9.4
 LIBPNG_REQUIRED=0.89
+LIBMEDIAART_REQUIRED=0.1.0
 
 # 3.6.11 for sqlite_backup API
 # 3.6.16 to fix test failures
@@ -227,8 +229,9 @@ LIBTRACKER_BUS_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
 PKG_CHECK_MODULES(LIBTRACKER_BUS, [$LIBTRACKER_BUS_REQUIRED])
 
 # Check requirements for libtracker-common
-LIBTRACKER_COMMON_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
-                            gio-unix-2.0 >= $GLIB_REQUIRED"
+LIBTRACKER_COMMON_REQUIRED="glib-2.0        >= $GLIB_REQUIRED
+                            gio-unix-2.0    >= $GLIB_REQUIRED
+                            libmediaart-1.0 >= $LIBMEDIAART_REQUIRED"
 
 PKG_CHECK_MODULES(LIBTRACKER_COMMON, [$LIBTRACKER_COMMON_REQUIRED])
 
@@ -268,8 +271,9 @@ LIBTRACKER_FTS_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
 PKG_CHECK_MODULES(LIBTRACKER_FTS, [$LIBTRACKER_FTS_REQUIRED])
 
 # Check requirements for libtracker-miner
-LIBTRACKER_MINER_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
-                           gio-unix-2.0 >= $GLIB_REQUIRED"
+LIBTRACKER_MINER_REQUIRED="glib-2.0        >= $GLIB_REQUIRED
+                           gio-unix-2.0    >= $GLIB_REQUIRED
+                           libmediaart-1.0 >= $LIBMEDIAART_REQUIRED"
 
 PKG_CHECK_MODULES(LIBTRACKER_MINER, [$LIBTRACKER_MINER_REQUIRED])
 
@@ -305,9 +309,10 @@ PKG_CHECK_MODULES(TRACKER_STORE, [$TRACKER_STORE_REQUIRED])
 TRACKER_STORE_LIBS="$TRACKER_STORE_LIBS -lz -lm"
 
 # Check requirements for tracker-extract
-TRACKER_EXTRACT_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
-                          gio-unix-2.0 >= $GLIB_REQUIRED
-                          gmodule-2.0  >= $GLIB_REQUIRED"
+TRACKER_EXTRACT_REQUIRED="glib-2.0        >= $GLIB_REQUIRED
+                          gio-unix-2.0    >= $GLIB_REQUIRED
+                          gmodule-2.0     >= $GLIB_REQUIRED
+                          libmediaart-1.0 >= $LIBMEDIAART_REQUIRED"
 
 PKG_CHECK_MODULES(TRACKER_EXTRACT, [$TRACKER_EXTRACT_REQUIRED])
 
@@ -520,12 +525,17 @@ AC_SUBST(GCOV_LIBS)
 
 ####################################################################
 # General VALAFLAGS/CFLAGS/LIBS
+#
+# NOTE: BUILD_VALACFLAGS are for the sources built by Vala,
+#       not for .vala files themselves.
 ####################################################################
-BUILD_VALAFLAGS="-g --target-glib=2.34"
+BUILD_VALAFLAGS="-g --target-glib=${GLIB_REQUIRED}"
+BUILD_VALACFLAGS="${WARN_VALACFLAGS} ${GCOV_CFLAGS} -DG_LOG_DOMAIN=\\\"Tracker\\\" -DTRACKER_COMPILATION"
 BUILD_CFLAGS="${WARN_CFLAGS} ${GCOV_CFLAGS} -DG_LOG_DOMAIN=\\\"Tracker\\\" -DTRACKER_COMPILATION"
 BUILD_LIBS="${GCOV_LIBS}"
 
 AC_SUBST(BUILD_VALAFLAGS)
+AC_SUBST(BUILD_VALACFLAGS)
 AC_SUBST(BUILD_CFLAGS)
 AC_SUBST(BUILD_LIBS)
 
@@ -618,6 +628,22 @@ if test "x$enable_maemo" = "xyes" ; then
 fi
 
 ####################################################################
+# Check if we should install nemo specific features
+####################################################################
+
+AC_ARG_ENABLE(nemo,
+              AS_HELP_STRING([--enable-nemo],
+                             [enable nemo specific [[default=no]]]),
+             [enable_nemo="$enableval"],
+             [enable_nemo=no])
+
+AM_CONDITIONAL(HAVE_NEMO, test "x$enable_nemo" = "xyes")
+
+if test "x$enable_nemo" = "xyes" ; then
+   AC_DEFINE(HAVE_NEMO, 1, [Define if we enable Nemo specific features])
+fi
+
+####################################################################
 # Check if we should disable the journal
 ####################################################################
 
@@ -654,15 +680,23 @@ if test "x$ax_cv_sqlite_threadsafe" != "xyes"; then
 fi
 
 # Make sure we're not using versions which cause problems.
+#
 # Avoid versions:
 #   3.7.10 - 3.7.13
-# For details, see:
-#   https://mail.gnome.org/archives/tracker-list/2012-October/msg00028.html
+#   3.8.1
+#
+# For details see:
+#      https://mail.gnome.org/archives/tracker-list/2012-October/msg00028.html
+#      https://mail.gnome.org/archives/tracker-list/2013-November/msg00021.html
 AC_MSG_CHECKING(whether SQLite3 version is safe)
 
 PKG_CHECK_EXISTS([sqlite3 <= 3.7.9], sqlite_safe=yes, sqlite_safe=no)
 if test "x$sqlite_safe" != "xyes"; then
    PKG_CHECK_EXISTS([sqlite3 >= 3.7.14], sqlite_safe=yes, sqlite_safe=no)
+fi
+
+if test "x$sqlite_safe" == "xyes"; then
+   PKG_CHECK_EXISTS([sqlite3 = 3.8.1], sqlite_safe=no, sqlite_safe=yes)
 fi
 
 if test "x$sqlite_safe" != "xyes"; then
@@ -740,9 +774,6 @@ fi
 DBUS_SERVICES_DIR="$services_dir"
 AC_SUBST(DBUS_SERVICES_DIR)
 
-GLIB_GENMARSHAL=`$PKG_CONFIG glib-2.0 --variable=glib_genmarshal`
-AC_SUBST(GLIB_GENMARSHAL)
-
 # Introduced with GSettings
 GLIB_MKENUMS=`$PKG_CONFIG glib-2.0 --variable=glib_mkenums`
 AC_SUBST(GLIB_MKENUMS)
@@ -780,7 +811,7 @@ AC_ARG_ENABLE(upower,
                              [disable UPower support for AC power detection [[default=auto]]]),,
               [enable_upower=auto])
 
-if test "x$enable_upower" != "xno"; then
+AS_IF([test "x$enable_upower" != "xno"], [
    PKG_CHECK_MODULES(UPOWER,
                      [upower-glib >= $UPOWER_REQUIRED],
                      [have_upower=yes],
@@ -788,13 +819,17 @@ if test "x$enable_upower" != "xno"; then
 
    TRACKER_MINER_FS_CFLAGS="$TRACKER_MINER_FS_CFLAGS $UPOWER_CFLAGS"
    TRACKER_MINER_FS_LIBS="$TRACKER_MINER_FS_LIBS $UPOWER_LIBS"
+   save_LIBS=$LIBS
+   LIBS=$UPOWER_LIBS
+   AC_CHECK_FUNCS(up_client_get_on_low_battery)
+   LIBS=$save_LIBS
 
    if test "x$have_upower" = "xyes"; then
       AC_DEFINE(HAVE_UPOWER, [], [Define if we have UPOWER])
    fi
-else
+], [
    have_upower="no  (disabled)"
-fi
+])
 
 if test "x$enable_upower" = "xyes"; then
    if test "x$have_upower" != "xyes"; then
@@ -857,14 +892,11 @@ AC_CHECK_HEADER(uniwbrk.h,
 LIBUNISTRING_CFLAGS=""
 LIBUNISTRING_LIBS="-lunistring"
 
-# Check for libicu... Note that AC_CHECK_LIB cannot be used as
-#  symbol name includes libicu library version... don't want to
-#  look for ubrk_next_4_2
-AC_CHECK_HEADER(unicode/ubrk.h,
-                [have_libicu=yes],
-                [have_libicu=no])
-LIBICU_CFLAGS=""
-LIBICU_LIBS="-licuuc -licui18n"
+# Check for libicu...
+PKG_CHECK_MODULES(LIBICU,
+                  [icu-i18n icu-uc],
+                  [have_libicu=yes],
+                  [have_libicu=no])
 
 # Configure option
 AC_ARG_WITH([unicode-support],
@@ -913,6 +945,8 @@ case "x$with_unicode_support" in
      *) AC_MSG_ERROR([Wrong value for --with-unicode-support: $with_unicode_support]) ;;
 esac
 
+AM_CONDITIONAL(HAVE_LIBICU, test "x$have_libicu" = "xyes")
+
 # Add to libtracker-fts
 LIBTRACKER_FTS_CFLAGS="$LIBTRACKER_FTS_CFLAGS $UNICODE_SUPPORT_CFLAGS"
 LIBTRACKER_FTS_LIBS="$LIBTRACKER_FTS_LIBS $UNICODE_SUPPORT_LIBS"
@@ -920,6 +954,10 @@ LIBTRACKER_FTS_LIBS="$LIBTRACKER_FTS_LIBS $UNICODE_SUPPORT_LIBS"
 # Add to libtracker-data
 LIBTRACKER_DATA_CFLAGS="$LIBTRACKER_DATA_CFLAGS $UNICODE_SUPPORT_CFLAGS"
 LIBTRACKER_DATA_LIBS="$LIBTRACKER_DATA_LIBS $UNICODE_SUPPORT_LIBS"
+
+# Add to libtracker-extract
+LIBTRACKER_EXTRACT_CFLAGS="$LIBTRACKER_EXTRACT_CFLAGS $UNICODE_SUPPORT_CFLAGS"
+LIBTRACKER_EXTRACT_LIBS="$LIBTRACKER_EXTRACT_LIBS $UNICODE_SUPPORT_LIBS"
 
 AM_CONDITIONAL(BUILD_LIBUNISTRING_PARSER, test "x$with_unicode_support" = "xlibunistring")
 AM_CONDITIONAL(BUILD_LIBICU_PARSER, test "x$with_unicode_support" = "xlibicu")
@@ -1466,6 +1504,12 @@ else
    have_enca="no  (disabled)"
 fi
 
+if test "x$have_enca" = "xyes" || test "x$have_libicu" = "xyes"; then
+   have_charset_detection="yes"
+else
+   have_charset_detection="no"
+fi
+
 AM_CONDITIONAL(HAVE_ENCA, test "$have_enca" = "yes")
 
 ####################################################################
@@ -1565,29 +1609,53 @@ selected_for_media_art="no  (disabled)"
 ##################################################################
 
 if test "x$enable_qt" != "xno" && test "x$enable_gdkpixbuf" != "xyes"; then
-   PKG_CHECK_MODULES(QT,
-                     [QtGui >= $QT_REQUIRED],
-                     [have_qt=yes],
-                     [have_qt=no])
+   PKG_CHECK_MODULES(QT5,
+                     [Qt5Gui >= $QT5_REQUIRED],
+                     [have_qt5=yes],
+                     [have_qt5=no])
 
-   TRACKER_EXTRACT_CFLAGS="$TRACKER_EXTRACT_CFLAGS $QT_CFLAGS"
-   TRACKER_EXTRACT_LIBS="$TRACKER_EXTRACT_LIBS $QT_LIBS"
+   PKG_CHECK_MODULES(QT4,
+                     [QtGui >= $QT4_REQUIRED],
+                     [have_qt4=yes],
+                     [have_qt4=no])
 
-   if test "x$have_qt" = "xyes"; then
+
+   if test "x$have_qt5" = "xyes"; then
+      TRACKER_EXTRACT_CFLAGS="$TRACKER_EXTRACT_CFLAGS $QT5_CFLAGS -fPIC"
+      TRACKER_EXTRACT_LIBS="$TRACKER_EXTRACT_LIBS $QT5_LIBS"
+
+      AC_DEFINE(HAVE_QT5, [], [Define if we have Qt5])
       AC_DEFINE(HAVE_QT, [], [Define if we have Qt])
-      selected_for_media_art="yes (qt)"
+
+      selected_for_media_art="yes (qt5)"
+   else
+      if test "x$have_qt4" = "xyes"; then
+         TRACKER_EXTRACT_CFLAGS="$TRACKER_EXTRACT_CFLAGS $QT4_CFLAGS -fPIC"
+         TRACKER_EXTRACT_LIBS="$TRACKER_EXTRACT_LIBS $QT4_LIBS"
+
+         AC_DEFINE(HAVE_QT4, [], [Define if we have Qt4])
+         AC_DEFINE(HAVE_QT, [], [Define if we have Qt])
+
+         selected_for_media_art="yes (qt4)"
+      fi
    fi
 else
-   have_qt="no  (disabled)"
+   have_qt4="no  (disabled)"
+   have_qt5="no  (disabled)"
 fi
 
 if test "x$enable_qt" = "xyes"; then
-   if test "x$have_qt" != "xyes"; then
-      AC_MSG_ERROR([Couldn't find Qt >= $QT_REQUIRED.])
+   if test "x$have_qt5" != "xyes"; then
+      if test "x$have_qt4" != "xyes"; then
+         AC_MSG_ERROR([Couldn't find Qt4 >= $QT4_REQUIRED or Qt5 >= $QT5_REQUIRED.])
+      fi
    fi
 fi
 
-AM_CONDITIONAL(HAVE_QT, test "x$have_qt" = "xyes")
+AM_CONDITIONAL(HAVE_QT4, test "x$have_qt4" = "xyes")
+AM_CONDITIONAL(HAVE_QT5, test "x$have_qt5" = "xyes")
+AM_CONDITIONAL(HAVE_QT, test "x$have_qt5" = "xyes" || test "x$have_qt4" = "xyes")
+
 
 if test "x$enable_gdkpixbuf" != "xno" && test "x$enable_quill" != "xyes"; then
    PKG_CHECK_MODULES(GDKPIXBUF,
@@ -1620,7 +1688,7 @@ AM_CONDITIONAL(HAVE_GDKPIXBUF, test "x$have_gdkpixbuf" = "xyes")
 
 AC_ARG_ENABLE(generic-media-extractor,
               AS_HELP_STRING([--enable-generic-media-extractor=ARG],
-                             [enables one of the (gstreamer, xine, external, auto) generic media extractor backends [[default=auto]]]),,
+                             [enables one of the (gstreamer, libav, xine, external, auto) generic media extractor backends [[default=auto]]]),,
               [enable_generic_media_extractor=auto])
 
 PKG_CHECK_MODULES(GSTREAMER,
@@ -1640,10 +1708,37 @@ PKG_CHECK_MODULES(XINE,
 AC_SUBST(XINE_CFLAGS)
 AC_SUBST(XINE_LIBS)
 
+PKG_CHECK_MODULES(AVFORMAT,
+                  [libavformat >= 0.8.4],
+                  [have_libavformat=yes],
+                  [have_libavformat=no])
+
+AC_SUBST(AVFORMAT_CFLAGS)
+AC_SUBST(AVFORMAT_LIBS)
+
+PKG_CHECK_MODULES(AVCODEC,
+                  [libavcodec >= 0.8.4],
+                  [have_libavcodec=yes],
+                  [have_libavcodec=no])
+
+AC_SUBST(AVCODEC_CFLAGS)
+AC_SUBST(AVCODEC_LIBS)
+
+PKG_CHECK_MODULES(AVCODEC,
+                  [libavutil >= 0.8.4],
+                  [have_libavutil=yes],
+                  [have_libavutil=no])
+
+AC_SUBST(AVUTIL_CFLAGS)
+AC_SUBST(AVUTIL_LIBS)
+
 if test "x$enable_generic_media_extractor" = "xauto"; then
    if test "$have_libgstreamer" = "yes"; then
       have_generic_media_handler="yes"
       have_generic_media_handler_app="GStreamer"
+   elif test "$have_libav" = "yes"; then
+      have_generic_media_handler_app="libav"
+      have_generic_media_handler="yes"
    elif test "$have_libxine" = "yes"; then
       have_generic_media_handler_app="Xine"
       have_generic_media_handler="yes"
@@ -1665,6 +1760,13 @@ elif test "x$enable_generic_media_extractor" = "xxine"; then
    else
       AC_MSG_ERROR([Couldn't find libxine])
    fi
+elif test "x$enable_generic_media_extractor" = "xlibav"; then
+   if test "$have_libavformat" = "yes" && test "$have_libavcodec" = "yes" && test "$have_libavutil" = "yes"; then
+      have_generic_media_handler_app="libav"
+      have_generic_media_handler="yes"
+   else
+      AC_MSG_ERROR([Couldn't find libav])
+   fi
 else
    have_generic_media_handler="?"
    have_generic_media_handler_app="An external generic media player will be called"
@@ -1674,17 +1776,26 @@ if test "$have_generic_media_handler_app" = "GStreamer"; then
    AC_DEFINE(HAVE_GSTREAMER, [], [Define if we have GStreamer])
    AM_CONDITIONAL(HAVE_GSTREAMER, true)
    AM_CONDITIONAL(HAVE_LIBXINE, false)
+   AM_CONDITIONAL(HAVE_LIBAV, false)
    AM_CONDITIONAL(USING_EXTERNAL_GENERIC_MEDIA_PLAYER, false)
 elif test "$have_generic_media_handler_app" = "Xine"; then
    AC_DEFINE(HAVE_LIBXINE, [], [Define if we have Libxine])
    AM_CONDITIONAL(HAVE_LIBXINE, true)
    AM_CONDITIONAL(HAVE_GSTREAMER, false)
+   AM_CONDITIONAL(HAVE_LIBAV, false)
    AM_CONDITIONAL(USING_EXTERNAL_GENERIC_MEDIA_PLAYER, false)
+elif test "$have_generic_media_handler_app" = "libav"; then
+    AC_DEFINE(HAVE_GSTREAMER, [], [Define if we have libav])
+    AM_CONDITIONAL(HAVE_LIBAV, true)
+    AM_CONDITIONAL(HAVE_GSTREAMER, false)
+    AM_CONDITIONAL(HAVE_LIBXINE, false)
+    AM_CONDITIONAL(USING_EXTERNAL_GENERIC_MEDIA_PLAYER, false)
 else
    AC_DEFINE(USING_EXTERNAL_GENERIC_MEDIA_PLAYER, [], [Define that Tracker will try to use external generic media players])
    AM_CONDITIONAL(USING_EXTERNAL_GENERIC_MEDIA_PLAYER, true)
    AM_CONDITIONAL(HAVE_GSTREAMER, false)
    AM_CONDITIONAL(HAVE_LIBXINE, false)
+   AM_CONDITIONAL(HAVE_LIBAV, false)
 fi
 
 ###########################################################################
@@ -2449,7 +2560,6 @@ AC_CONFIG_FILES([
         src/plugins/thunderbird/chrome/Makefile
         src/plugins/thunderbird/chrome/content/Makefile
         src/plugins/thunderbird/chrome/locale/Makefile
-        src/plugins/thunderbird/chrome/locale/en-US/Makefile
         src/plugins/thunderbird/chrome/skin/Makefile
         src/plugins/thunderbird/defaults/Makefile
         src/plugins/thunderbird/defaults/preferences/Makefile
@@ -2458,14 +2568,10 @@ AC_CONFIG_FILES([
         src/plugins/firefox/chrome/Makefile
         src/plugins/firefox/chrome/content/Makefile
         src/plugins/firefox/chrome/locale/Makefile
-        src/plugins/firefox/chrome/locale/en-US/Makefile
-        src/plugins/firefox/chrome/locale/es-ES/Makefile
-        src/plugins/firefox/chrome/locale/fr-FR/Makefile
         src/plugins/firefox/chrome/skin/Makefile
         src/plugins/firefox/defaults/Makefile
         src/plugins/firefox/defaults/preferences/Makefile
 	src/plugins/nautilus/Makefile
-	src/vapi/Makefile
 	tests/common/Makefile
         tests/gvdb/Makefile
 	tests/libtracker-common/Makefile
@@ -2533,6 +2639,7 @@ AC_CONFIG_FILES([
 	utils/data-generators/Makefile
 	utils/data-generators/cc/Makefile
 	utils/mtp/Makefile
+	utils/sandbox/Makefile
 	utils/tracker-sql/Makefile
 	utils/tracker-resdump/Makefile
 	examples/Makefile
@@ -2561,7 +2668,6 @@ Build Configuration:
 
 	Support for HAL:                        $have_hal
 	Support for UPower:                     $have_upower
-	Support for Cyrillic languages (enca):  $have_enca
 	Support for network status detection:   $have_network_manager
         Support for keyring data (libsecret):   $have_libsecret
 	Unicode support library:                $with_unicode_support
@@ -2596,6 +2702,7 @@ Metadata Extractors:
 	Support AbiWord document parsing:       $have_abiword
 	Support DVI parsing:                    $have_dvi
 	Support MP3 parsing:                    $have_mp3
+	Support MP3 tag charset detection:      $have_charset_detection (icu: $have_libicu, enca: $have_enca)
 	Support PS parsing:                     $have_ps
 	Support text parsing:                   $have_text
 	Support icon parsing:                   $have_icon
@@ -2623,6 +2730,7 @@ Writeback:
 Frameworks / Options:
 
 	Support Maemo                           $enable_maemo
+	Support Nemo                            $enable_nemo
 	Support libmeegotouch                   $have_meegotouch
 	Support Guaranteed Metadata             $enable_guarantee_metadata (e.g. guess nie:title from files)
 
@@ -2634,11 +2742,13 @@ Miscellaneous:
 
 # Any warnings we need to issue...
 if test "x$sqlite_safe" = "xno"; then
+sqlite_version=$($PKG_CONFIG --modversion sqlite3)
 echo "
 WARNING:
-        SQLite3 version is not safe. For details see:
+        SQLite3 version $sqlite_version is not safe. For details see:
         https://mail.gnome.org/archives/tracker-list/2012-October/msg00028.html
-        Unsafe versions are 3.7.10 to 3.7.13.
+        https://mail.gnome.org/archives/tracker-list/2013-November/msg00021.html
+        Unsafe versions are 3.7.10 to 3.7.13, and 3.8.1.
 
 "
 fi

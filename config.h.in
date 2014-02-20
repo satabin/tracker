@@ -86,7 +86,7 @@
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #undef HAVE_GETTEXT
 
-/* Define if we have GStreamer */
+/* Define if we have libav */
 #undef HAVE_GSTREAMER
 
 /* Define if we have HAL */
@@ -173,6 +173,9 @@
 /* Define if we have MP3 extractor */
 #undef HAVE_MP3
 
+/* Define if we enable Nemo specific features */
+#undef HAVE_NEMO
+
 /* Define if we have NetworkManager for network status detection */
 #undef HAVE_NETWORK_MANAGER
 
@@ -187,6 +190,12 @@
 
 /* Define if we have Qt */
 #undef HAVE_QT
+
+/* Define if we have Qt4 */
+#undef HAVE_QT4
+
+/* Define if we have Qt5 */
+#undef HAVE_QT5
 
 /* Define to 1 if you have the <sqlite3.h> header file. */
 #undef HAVE_SQLITE3_H
@@ -205,6 +214,9 @@
 
 /* Define to 1 if you have the <string.h> header file. */
 #undef HAVE_STRING_H
+
+/* Define to 1 if you have the `strnlen' function. */
+#undef HAVE_STRNLEN
 
 /* Define to 1 if you have the <sys/statvfs.h> header file. */
 #undef HAVE_SYS_STATVFS_H
@@ -238,6 +250,9 @@
 
 /* Define if we have UPOWER */
 #undef HAVE_UPOWER
+
+/* Define to 1 if you have the `up_client_get_on_low_battery' function. */
+#undef HAVE_UP_CLIENT_GET_ON_LOW_BATTERY
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */

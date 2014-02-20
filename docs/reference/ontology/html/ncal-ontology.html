@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Nepomuk Calendar Ontology (NCAL): Automatic translation of the ICAL standard into ontology. Too complex for our taste. Please check SCAL</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
 <link rel="up" href="ontology.html" title="Part I. Overview">
 <link rel="prev" href="nmo-properties.html" title="NMO Ontology Properties">
 <link rel="next" href="ncal-properties.html" title="NCAL Ontology Properties">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -22,24 +22,24 @@
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
 <a name="ncal-ontology"></a>Nepomuk Calendar Ontology (NCAL): Automatic translation of the ICAL standard into ontology. Too complex for our taste. Please check SCAL</h2></div></div></div>
-<div class="toc"><dl>
+<div class="toc"><dl class="toc">
 <dt><span class="section"><a href="ncal-ontology.html#ncal-classes">NCAL Ontology Classes</a></span></dt>
 <dt><span class="section"><a href="ncal-properties.html">NCAL Ontology Properties</a></span></dt>
 </dl></div>
 <dt><span class="term">Authors:</span></dt>
-<dd><div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<dd><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">Ludger van Elst, DFKI,  &lt;elst@dfki.uni-kl.de&gt;</li>
 <li class="listitem">Michael Sintek, DFKI,  &lt;michael.sintek@dfki.de&gt;</li>
 <li class="listitem">Leo Sauermann, DFKI,  &lt;leo.sauermann@dfki.de&gt;</li>
 <li class="listitem">Antoni Mylka, DFKI, &lt;antoni.mylka@dfki.de&gt;</li>
 </ul></div></dd>
 <dt><span class="term">Editors:</span></dt>
-<dd><div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<dd><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">Antoni Mylka, DFKI, &lt;antoni.mylka@dfki.de&gt;</li>
 <li class="listitem">Tracker developers (translation into turtle)</li>
 </ul></div></dd>
 <dt><span class="term">Contributors:</span></dt>
-<dd><div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<dd><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">Christiaan Fluit, Aduna, &lt;christiaan.fluit@aduna-software.com&gt;</li>
 <li class="listitem">Evgeny 'phreedom' Egorochkin, KDE Strigi Developer, &lt;stexx@mail.ru&gt;</li>
 </ul></div></dd>
@@ -55,8 +55,11 @@
 <div class="refsect2">
 <a name="ncal-Weekday"></a><h3>ncal:Weekday</h3>
 <p>Day of the week. This class has been created to provide the limited vocabulary for ncal:byday property. See the documentation for ncal:byday for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -83,8 +86,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-Freebusy"></a><h3>ncal:Freebusy</h3>
 <p>Provide a grouping of component properties that describe either a request for free/busy time, describe a response to a request for free/busy time or describe a published set of busy time.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -110,8 +116,11 @@ rdfs:Resource, </td>
 <hr>
 <div class="refsect2">
 <a name="ncal-UnionParentClass"></a><h3>ncal:UnionParentClass</h3>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -139,8 +148,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-Attachment"></a><h3>ncal:Attachment</h3>
 <p>An object attached to a calendar entity. This class has been introduced to serve as a structured value of the ncal:attach property. See the documentation of ncal:attach for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -168,8 +180,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-TodoStatus"></a><h3>ncal:TodoStatus</h3>
 <p>A status of a calendar entity. This class has been introduced to express the limited set of values for the ncal:status property. The user may use the instances provided with this ontology or create his/her own. See the documentation for ncal:todoStatus for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -196,8 +211,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-Attendee"></a><h3>ncal:Attendee</h3>
 <p>An attendee of an event. This class has been introduced to serve as the range for ncal:attendee property. See documentation of ncal:attendee for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -225,8 +243,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-ParticipationStatus"></a><h3>ncal:ParticipationStatus</h3>
 <p>Participation Status. This class has been introduced to express the limited vocabulary of values for the ncal:partstat property. See the documentation of ncal:partstat for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -253,8 +274,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-Todo"></a><h3>ncal:Todo</h3>
 <p>Provide a grouping of calendar properties that describe a to-do.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -285,8 +309,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-CalendarUserType"></a><h3>ncal:CalendarUserType</h3>
 <p>A calendar user type. This class has been introduced to express the limited vocabulary for the ncal:cutype property. See documentation of ncal:cutype for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -313,8 +340,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-RequestStatus"></a><h3>ncal:RequestStatus</h3>
 <p>Request Status. A class that was introduced to provide a structure for the value of ncal:requestStatus property. See documentation for ncal:requestStatus for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -342,8 +372,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-EventStatus"></a><h3>ncal:EventStatus</h3>
 <p>A status of an event. This class has been introduced to express the limited set of values for the ncal:status property. The user may use the instances provided with this ontology or create his/her own. See the documentation for ncal:eventStatus for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -370,8 +403,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-JournalStatus"></a><h3>ncal:JournalStatus</h3>
 <p>A status of a journal entry. This class has been introduced to express the limited set of values for the ncal:status property. The user may use the instances provided with this ontology or create his/her own. See the documentation for ncal:journalStatus for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -398,8 +434,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-CalendarScale"></a><h3>ncal:CalendarScale</h3>
 <p>A calendar scale. This class has been introduced to provide the limited vocabulary for the ncal:calscale property.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -426,8 +465,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-FreebusyType"></a><h3>ncal:FreebusyType</h3>
 <p>Type of a Freebusy indication. This class has been introduced to serve as a limited set of values for the ncal:fbtype property. See the documentation of ncal:fbtype for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -454,8 +496,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-NcalTimeEntity"></a><h3>ncal:NcalTimeEntity</h3>
 <p>A time entity. Conceived as a common superclass for NcalDateTime and NcalPeriod. According to RFC 2445 both DateTime and Period can be interpreted in different timezones. The first case is explored in many properties. The second case is theoretically possible in ncal:rdate property. Therefore the timezone properties have been defined at this level.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -483,8 +528,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-AlarmAction"></a><h3>ncal:AlarmAction</h3>
 <p>Action to be performed on alarm. This class has been introduced to express the limited set of values of the ncal:action property. Please refer to the documentation of ncal:action for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -511,8 +559,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-CalendarDataObject"></a><h3>ncal:CalendarDataObject</h3>
 <p>A DataObject found in a calendar. It is usually interpreted as one of the calendar entity types (e.g. Event, Journal, Todo etc.)</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -539,8 +590,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-AccessClassification"></a><h3>ncal:AccessClassification</h3>
 <p>Access classification of a calendar component. Introduced to express the set of values for the ncal:class property. The user may use instances provided with this ontology or create his/her own with desired semantics. See the documentation of ncal:class for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -567,8 +621,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-RecurrenceFrequency"></a><h3>ncal:RecurrenceFrequency</h3>
 <p>Frequency of a recurrence rule. This class has been introduced to express a limited set of allowed values for the ncal:freq property. See the documentation of ncal:freq for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -595,8 +652,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-AttachmentEncoding"></a><h3>ncal:AttachmentEncoding</h3>
 <p>Attachment encoding. This class has been introduced to express the limited vocabulary of values for the ncal:encoding property. See the documentation of ncal:encoding for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -623,8 +683,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-RecurrenceIdentifierRange"></a><h3>ncal:RecurrenceIdentifierRange</h3>
 <p>Recurrence Identifier Range. This class has been created to provide means to express the limited set of values for the ncal:range property. See documentation for ncal:range for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -651,8 +714,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-Timezone"></a><h3>ncal:Timezone</h3>
 <p>Provide a grouping of component properties that defines a time zone.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -680,8 +746,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-NcalPeriod"></a><h3>ncal:NcalPeriod</h3>
 <p>A period of time. Inspired by the PERIOD datatype specified in RFC 2445 sec. 4.3.9</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -709,8 +778,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-FreebusyPeriod"></a><h3>ncal:FreebusyPeriod</h3>
 <p>An aggregate of a period and a freebusy type. This class has been introduced to serve as a range of the ncal:freebusy property. See documentation for ncal:freebusy for details. Note that the specification of freebusy property states that the period is to be expressed using UTC time, so the timezone properties should NOT be used for instances of this class.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -738,8 +810,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-RecurrenceIdentifier"></a><h3>ncal:RecurrenceIdentifier</h3>
 <p>Recurrence Identifier. Introduced to provide a structure for the value of ncal:recurrenceId property. See the documentation of ncal:recurrenceId for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -767,8 +842,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-BydayRulePart"></a><h3>ncal:BydayRulePart</h3>
 <p>Expresses the compound value of a byday part of a recurrence rule. It stores the weekday and the integer modifier. Inspired by RFC 2445 sec. 4.3.10</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -796,8 +874,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-AttendeeOrOrganizer"></a><h3>ncal:AttendeeOrOrganizer</h3>
 <p>A common superclass for ncal:Attendee and ncal:Organizer.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -824,8 +905,11 @@ rdfs:Resource, </td>
 <hr>
 <div class="refsect2">
 <a name="ncal-RecurrenceRule"></a><h3>ncal:RecurrenceRule</h3>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -853,8 +937,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-Journal"></a><h3>ncal:Journal</h3>
 <p>Provide a grouping of component properties that describe a journal entry.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -885,8 +972,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-Trigger"></a><h3>ncal:Trigger</h3>
 <p>An alarm trigger. This class has been created to serve as the range of ncal:trigger property. See the documentation for ncal:trigger for more details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -914,8 +1004,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-TriggerRelation"></a><h3>ncal:TriggerRelation</h3>
 <p>The relation between the trigger and its parent calendar component. This class has been introduced to express the limited vocabulary for the ncal:related property. See the documentation for ncal:related for more details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -942,8 +1035,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-Calendar"></a><h3>ncal:Calendar</h3>
 <p>A calendar. Inspirations for this class can be traced to the VCALENDAR component defined in RFC 2445 sec. 4.4, but it may just as well be used to represent any kind of Calendar.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -969,8 +1065,11 @@ rdfs:Resource, </td>
 <hr>
 <div class="refsect2">
 <a name="ncal-NcalDateTime"></a><h3>ncal:NcalDateTime</h3>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -998,8 +1097,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-AttendeeRole"></a><h3>ncal:AttendeeRole</h3>
 <p>A role the attendee is going to play during an event. This class has been introduced to express the limited vocabulary for the values of ncal:role property. Please refer to the documentation of ncal:role for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1026,8 +1128,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-Organizer"></a><h3>ncal:Organizer</h3>
 <p>An organizer of an event. This class has been introduced to serve as a range of ncal:organizer property. See documentation of ncal:organizer for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1053,8 +1158,11 @@ rdfs:Resource, </td>
 <hr>
 <div class="refsect2">
 <a name="ncal-TimezoneObservance"></a><h3>ncal:TimezoneObservance</h3>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1082,8 +1190,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-TimeTransparency"></a><h3>ncal:TimeTransparency</h3>
 <p>Time transparency. Introduced to provide a way to express the limited vocabulary for the values of ncal:transp property. See documentation of ncal:transp for details.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1110,8 +1221,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-Alarm"></a><h3>ncal:Alarm</h3>
 <p>Provide a grouping of component properties that define an alarm.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1138,8 +1252,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="ncal-Event"></a><h3>ncal:Event</h3>
 <p>Provide a grouping of component properties that describe an event.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1171,6 +1288,6 @@ rdfs:Resource, </td>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

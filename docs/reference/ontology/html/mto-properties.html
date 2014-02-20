@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>MTO Ontology Properties</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
 <link rel="up" href="mto-ontology.html" title="Maemo Transfer Ontology (MTO): Representation of download and upload operations in the system">
 <link rel="prev" href="mto-ontology.html" title="Maemo Transfer Ontology (MTO): Representation of download and upload operations in the system">
-<link rel="next" href="mfo-ontology.html" title="Maemo Feeds Ontology (MFO): Model for feeds and alike online streams">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<link rel="next" href="mlo-ontology.html" title="Maemo Location Ontology (MLO): Deprecated ontology for location and landmarks. Please check SLO">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -17,7 +17,7 @@
 <td><a accesskey="u" href="mto-ontology.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">Tracker Ontology Reference Manual</th>
-<td><a accesskey="n" href="mfo-ontology.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="mlo-ontology.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -25,8 +25,11 @@
 <div class="refsect2">
 <a name="mto-transferState"></a><h3>mto:transferState</h3>
 <p>Captures the state of the transfer. This is derived from the cumulative states of the transfer elements of this transfer. Applications are responsible to keep it up-to-date</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
@@ -61,8 +64,11 @@
 <div class="refsect2">
 <a name="mto-destination"></a><h3>mto:destination</h3>
 <p>The destination of the transfer. If the transfer is an download, it would be the URI for a file on the device. If the transfer is a (web) upload, it will be a URL, which will be filled once the upload is completed.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
@@ -97,8 +103,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="mto-transferList"></a><h3>mto:transferList</h3>
 <p>A list of transfer elements</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
@@ -129,8 +138,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="mto-transferPrivacyLevel"></a><h3>mto:transferPrivacyLevel</h3>
 <p>It will contain an string with the privacy level in the service. The exact string and its interpretation is service specific</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
@@ -161,8 +173,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="mto-method"></a><h3>mto:method</h3>
 <p>The method of transfer - Bluetooth, Web upload etc</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
@@ -197,8 +212,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="mto-state"></a><h3>mto:state</h3>
 <p>Captures the current state of the transfer element: Pending (not started), In Progress, Paused, Cancelled, Done</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
@@ -233,8 +251,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="mto-created"></a><h3>mto:created</h3>
 <p>The date and time when the transfer was created</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
@@ -269,8 +290,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="mto-agent"></a><h3>mto:agent</h3>
 <p>The application processing the transfer - e.g. Upload Engine etc</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
@@ -305,8 +329,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="mto-source"></a><h3>mto:source</h3>
 <p>The source for the transfer. If the transfer is an upload, it would be the URI for a file on the device. If the transfer is a (web) download, it will be a URL. Question: Does it make more sense to have two fields: uploadSource and downloadSource?</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
@@ -341,8 +368,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="mto-starter"></a><h3>mto:starter</h3>
 <p>The application that actually triggered the transfer - e.g. Gallery, Content Manager etc</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
@@ -377,8 +407,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="mto-account"></a><h3>mto:account</h3>
 <p>A reference to the account to which the web upload is to be done. This should at least contain information about the account and the service which is being used. For instance, Google/YouTube or Google/Picassa</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
@@ -413,8 +446,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="mto-transferCategory"></a><h3>mto:transferCategory</h3>
 <p>This can contain category / tag / album / folder in the destination service</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
@@ -445,8 +481,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="mto-completedTime"></a><h3>mto:completedTime</h3>
 <p>Captures the date and time when the transfer ended. It must be set only when the trasfer element is completed succesfully</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
@@ -481,8 +520,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="mto-startedTime"></a><h3>mto:startedTime</h3>
 <p>Captures the date and time when the transfer was started</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
@@ -516,6 +558,6 @@ rdfs:Resource, </td>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

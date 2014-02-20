@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>NCO Ontology Classes</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
 <link rel="up" href="nco-ontology.html" title="Nepomuk Contacts Ontology (NCO): All about contacts. Rough equivalent of the VCARD standard.">
 <link rel="prev" href="nco-ontology.html" title="Nepomuk Contacts Ontology (NCO): All about contacts. Rough equivalent of the VCARD standard.">
 <link rel="next" href="nco-properties.html" title="NCO Ontology Properties">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -25,8 +25,11 @@
 <div class="refsect2">
 <a name="nco-IMAccount"></a><h3>nco:IMAccount</h3>
 <p>An account in an Instant Messaging system. This refers to IM accounts of the user 'me'.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -57,8 +60,11 @@
 <div class="refsect2">
 <a name="nco-PcsNumber"></a><h3>nco:PcsNumber</h3>
 <p>Personal Communication Services Number. A class inspired by the TYPE=pcs parameter of the TEL property defined in RFC 2426 sec. 3.3.1</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -84,8 +90,11 @@
 <div class="refsect2">
 <a name="nco-PersonContact"></a><h3>nco:PersonContact</h3>
 <p>A Contact that denotes a Person. A person can have multiple Affiliations.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -121,8 +130,11 @@ nco:default-contact-me, </td>
 <div class="refsect2">
 <a name="nco-VoicePhoneNumber"></a><h3>nco:VoicePhoneNumber</h3>
 <p>A telephone number with voice communication capabilities. Class inspired by the TYPE=voice parameter of the TEL property defined in RFC 2426 sec. 3.3.1</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -150,8 +162,11 @@ nco:default-contact-me, </td>
 <div class="refsect2">
 <a name="nco-MessagingNumber"></a><h3>nco:MessagingNumber</h3>
 <p>A number that can accept textual messages.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -178,8 +193,11 @@ nco:default-contact-me, </td>
 <div class="refsect2">
 <a name="nco-BbsNumber"></a><h3>nco:BbsNumber</h3>
 <p>A Bulletin Board System (BBS) phone number. Inspired by the (TYPE=bbsl) parameter of the TEL property as defined in RFC 2426 sec  3.3.1.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -205,8 +223,11 @@ nco:default-contact-me, </td>
 <div class="refsect2">
 <a name="nco-Gender"></a><h3>nco:Gender</h3>
 <p>Gender. Instances of this class may include male and female.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -238,8 +259,11 @@ nco:gender-other, nco:gender-female, nco:gender-male, </td>
 <div class="refsect2">
 <a name="nco-ContactMedium"></a><h3>nco:ContactMedium</h3>
 <p>A superclass for all contact media - ways to contact an entity represented by a Contact instance. Some of the subclasses of this class (the various kinds of telephone numbers and postal addresses) have been inspired by the values of the TYPE parameter of ADR and TEL properties defined in RFC 2426 sec. 3.2.1. and 3.3.1 respectively. Each value is represented by an appropriate subclass with two major exceptions TYPE=home and TYPE=work. They are to be expressed by the roles these contact media are attached to i.e. contact media with TYPE=home parameter are to be attached to the default role (nco:Contact or nco:PersonContact), whereas media with TYPE=work parameter should be attached to nco:Affiliation or nco:OrganizationContact.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -268,8 +292,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nco-CellPhoneNumber"></a><h3>nco:CellPhoneNumber</h3>
 <p>A cellular phone number. Inspired by the (TYPE=cell) parameter of the TEL property as defined in RFC 2426 sec  3.3.1. Usually a cellular phone can accept voice calls as well as textual messages (SMS), therefore this class has two superclasses.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -295,8 +322,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nco-Role"></a><h3>nco:Role</h3>
 <p>A role played by a contact. Contacts that denote people, can have many roles (e.g. see the hasAffiliation property and Affiliation class). Contacts that denote Organizations or other Agents usually have one role.  Each role can introduce additional contact media.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -324,8 +354,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nco-IsdnNumber"></a><h3>nco:IsdnNumber</h3>
 <p>An ISDN phone number. Inspired by the (TYPE=isdn) parameter of the TEL property as defined in RFC 2426 sec  3.3.1.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -351,8 +384,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nco-ContactList"></a><h3>nco:ContactList</h3>
 <p>A contact list, this class represents an addressbook or a contact list of an IM application. Contacts inside a contact list can belong to contact groups.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -383,8 +419,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nco-VideoTelephoneNumber"></a><h3>nco:VideoTelephoneNumber</h3>
 <p>A Video telephone number. A class inspired by the TYPE=video parameter of the TEL property defined in RFC 2426 sec. 3.3.1</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -410,8 +449,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nco-DomesticDeliveryAddress"></a><h3>nco:DomesticDeliveryAddress</h3>
 <p>Domestic Delivery Addresse. Class inspired by TYPE=dom parameter of the ADR property defined in RFC 2426 sec. 3.2.1</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -437,8 +479,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nco-FaxNumber"></a><h3>nco:FaxNumber</h3>
 <p>A fax number. Inspired by the (TYPE=fax) parameter of the TEL property as defined in RFC 2426 sec  3.3.1.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -464,8 +509,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nco-OrganizationContact"></a><h3>nco:OrganizationContact</h3>
 <p>A Contact that denotes on Organization.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -493,8 +541,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nco-PhoneNumber"></a><h3>nco:PhoneNumber</h3>
 <p>A telephone number.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -523,8 +574,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nco-IMAddress"></a><h3>nco:IMAddress</h3>
 <p>An instant messaging address such as xmpp:foo@bar.com.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -556,8 +610,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nco-PresenceStatus"></a><h3>nco:PresenceStatus</h3>
 <p>Predefined set of status level instances</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -589,8 +646,11 @@ nco:presence-status-error, nco:presence-status-unknown, nco:presence-status-busy
 <div class="refsect2">
 <a name="nco-PostalAddress"></a><h3>nco:PostalAddress</h3>
 <p>A postal address. A class aggregating the various parts of a value for the 'ADR' property as defined in RFC 2426 Sec. 3.2.1.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -619,8 +679,11 @@ nco:presence-status-error, nco:presence-status-unknown, nco:presence-status-busy
 <div class="refsect2">
 <a name="nco-EmailAddress"></a><h3>nco:EmailAddress</h3>
 <p>An email address. The recommended best practice is to use mailto: uris for instances of this class.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -648,8 +711,11 @@ nco:presence-status-error, nco:presence-status-unknown, nco:presence-status-busy
 <div class="refsect2">
 <a name="nco-CarPhoneNumber"></a><h3>nco:CarPhoneNumber</h3>
 <p>A car phone number. Inspired by the (TYPE=car) parameter of the TEL property as defined in RFC 2426 sec  3.3.1.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -675,8 +741,11 @@ nco:presence-status-error, nco:presence-status-unknown, nco:presence-status-busy
 <div class="refsect2">
 <a name="nco-AuthorizationStatus"></a><h3>nco:AuthorizationStatus</h3>
 <p>Predefined instances to indicate the auth status: yes, no, requested</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -708,8 +777,11 @@ nco:predefined-auth-status-requested, nco:predefined-auth-status-no, nco:predefi
 <div class="refsect2">
 <a name="nco-ModemNumber"></a><h3>nco:ModemNumber</h3>
 <p>A modem phone number. Inspired by the (TYPE=modem) parameter of the TEL property as defined in RFC 2426 sec  3.3.1.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -736,8 +808,11 @@ nco:predefined-auth-status-requested, nco:predefined-auth-status-no, nco:predefi
 <div class="refsect2">
 <a name="nco-ContactGroup"></a><h3>nco:ContactGroup</h3>
 <p>A group of Contacts. Could be used to express a group in an addressbook or on a contact list of an IM application. One contact can belong to many groups.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -769,8 +844,11 @@ nco:predefined-auth-status-requested, nco:predefined-auth-status-no, nco:predefi
 <div class="refsect2">
 <a name="nco-ContactListDataObject"></a><h3>nco:ContactListDataObject</h3>
 <p>An entity occuring on a contact list (usually interpreted as an nco:Contact)</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -797,8 +875,11 @@ nco:predefined-auth-status-requested, nco:predefined-auth-status-no, nco:predefi
 <div class="refsect2">
 <a name="nco-ParcelDeliveryAddress"></a><h3>nco:ParcelDeliveryAddress</h3>
 <p>Parcel Delivery Addresse. Class inspired by TYPE=parcel parameter of the ADR property defined in RFC 2426 sec. 3.2.1</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -824,8 +905,11 @@ nco:predefined-auth-status-requested, nco:predefined-auth-status-no, nco:predefi
 <div class="refsect2">
 <a name="nco-IMCapability"></a><h3>nco:IMCapability</h3>
 <p>Features of a certain IM connection (depends on the IMAccount implementation used by the Contact)</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -857,8 +941,11 @@ nco:im-capability-dbus-tubes, nco:im-capability-stream-tubes, nco:im-capability-
 <div class="refsect2">
 <a name="nco-PagerNumber"></a><h3>nco:PagerNumber</h3>
 <p>A pager phone number. Inspired by the (TYPE=pager) parameter of the TEL property as defined in RFC 2426 sec  3.3.1.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -884,8 +971,11 @@ nco:im-capability-dbus-tubes, nco:im-capability-stream-tubes, nco:im-capability-
 <div class="refsect2">
 <a name="nco-Affiliation"></a><h3>nco:Affiliation</h3>
 <p>Aggregates three properties defined in RFC2426. Originally all three were attached directly to a person. One person could have only one title and one role within one organization. This class is intended to lift this limitation.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -913,8 +1003,11 @@ nco:im-capability-dbus-tubes, nco:im-capability-stream-tubes, nco:im-capability-
 <div class="refsect2">
 <a name="nco-InternationalDeliveryAddress"></a><h3>nco:InternationalDeliveryAddress</h3>
 <p>International Delivery Addresse. Class inspired by TYPE=intl parameter of the ADR property defined in RFC 2426 sec. 3.2.1</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -940,8 +1033,11 @@ nco:im-capability-dbus-tubes, nco:im-capability-stream-tubes, nco:im-capability-
 <div class="refsect2">
 <a name="nco-Contact"></a><h3>nco:Contact</h3>
 <p>A Contact. A piece of data that can provide means to identify or communicate with an entity.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -969,6 +1065,6 @@ nco:im-capability-dbus-tubes, nco:im-capability-stream-tubes, nco:im-capability-
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

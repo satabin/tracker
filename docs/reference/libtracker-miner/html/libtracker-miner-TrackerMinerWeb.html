@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerMinerWeb</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="up" href="ch02.html" title="Base abstract miner classes">
 <link rel="prev" href="TrackerMiner.html" title="TrackerMiner">
-<link rel="next" href="ch03.html" title="Miner classes for file system">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<link rel="next" href="TrackerDecorator.html" title="TrackerDecorator">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -18,7 +18,7 @@
 <td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">Tracker Miner Library Reference Manual</th>
-<td><a accesskey="n" href="ch03.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="TrackerDecorator.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libtracker-miner-TrackerMinerWeb.synopsis" class="shortcut">Top</a>
@@ -74,32 +74,24 @@ service.
 <a name="TRACKER-MINER-WEB-DBUS-INTERFACE:CAPS"></a><h3>TRACKER_MINER_WEB_DBUS_INTERFACE</h3>
 <pre class="programlisting">#define TRACKER_MINER_WEB_DBUS_INTERFACE "org.freedesktop.Tracker1.MinerWeb"
 </pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="TRACKER-MINER-WEB-ERROR:CAPS"></a><h3>TRACKER_MINER_WEB_ERROR</h3>
 <pre class="programlisting">#define TRACKER_MINER_WEB_ERROR        tracker_miner_web_error_quark ()
 </pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="TRACKER-MINER-WEB-ERROR-DOMAIN:CAPS"></a><h3>TRACKER_MINER_WEB_ERROR_DOMAIN</h3>
 <pre class="programlisting">#define TRACKER_MINER_WEB_ERROR_DOMAIN "TrackerMinerWeb"
 </pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="TrackerMinerWeb"></a><h3>TrackerMinerWeb</h3>
 <pre class="programlisting">typedef struct TrackerMinerWeb TrackerMinerWeb;
 </pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -127,7 +119,7 @@ returned in the <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-
 </p>
 <p>
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
       <span class="emphasis"><em>url</em></span>: the url to point the user to.
     </p></li></ul></div>
 <p>
@@ -138,7 +130,7 @@ following keys:
 </p>
 <p>
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
       <span class="emphasis"><em>post_message</em></span>: a message to display after
       the user completes the association process.
@@ -168,7 +160,7 @@ based authentication, the following keys must be defined:
 </p>
 <p>
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
       <span class="emphasis"><em>username</em></span>: the username.
     </p></li>
@@ -186,8 +178,11 @@ ignored since it will be empty.
 For the <em class="parameter"><code>dissociate</code></em> function, miners <span class="emphasis"><em>must</em></span>
 forget any user credentials stored.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a class="link" href="TrackerMiner.html#TrackerMinerClass" title="TrackerMinerClass"><span class="type">TrackerMinerClass</span></a> <em class="structfield"><code><a name="TrackerMinerWebClass.parent-class"></a>parent_class</code></em>;</span></p></td>
@@ -233,8 +228,11 @@ association with a remote service</td>
 The following errors are possible during any of the performed
 actions with a remote service.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="TRACKER-MINER-WEB-ERROR-WRONG-CREDENTIALS:CAPS"></a><span class="term"><code class="literal">TRACKER_MINER_WEB_ERROR_WRONG_CREDENTIALS</code></span></p></td>
@@ -289,8 +287,11 @@ information.
 <p>
 On failure <em class="parameter"><code>error</code></em> will be set.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -304,7 +305,7 @@ associating with a remote service.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>return location for errors. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym> callee-allocates][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+<td>return location for errors. <span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
@@ -320,8 +321,11 @@ associating with a remote service.</td>
 Asks <em class="parameter"><code>miner</code></em> to authenticate with a remote service. On failure
 <em class="parameter"><code>error</code></em> will be set.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -330,7 +334,7 @@ Asks <em class="parameter"><code>miner</code></em> to authenticate with a remote
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>return location for errors. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym> callee-allocates][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+<td>return location for errors. <span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
@@ -350,8 +354,11 @@ which could be used to authenticate with the remote service.
 <p>
 On failure <em class="parameter"><code>error</code></em> will be set.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -360,7 +367,7 @@ On failure <em class="parameter"><code>error</code></em> will be set.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>return location for errors. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym> callee-allocates][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+<td>return location for errors. <span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
@@ -371,8 +378,11 @@ On failure <em class="parameter"><code>error</code></em> will be set.
 <div class="refsect2">
 <a name="tracker-miner-web-error-quark"></a><h3>tracker_miner_web_error_quark ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              tracker_miner_web_error_quark       (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>the <a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="type">GQuark</span></a> used to identify miner web errors in GError
@@ -393,8 +403,11 @@ the <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#
 of authentication. See <code class="classname">TrackerMinerWebClass</code>
 for more information.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -403,7 +416,7 @@ for more information.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>return location for errors. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym> callee-allocates][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+<td>return location for errors. <span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
 </tr>
 <tr>
@@ -420,6 +433,6 @@ and <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.h
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

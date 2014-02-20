@@ -91,6 +91,10 @@
 <listitem><simpara>--</simpara></listitem>
 </varlistentry>
 </variablelist>
+<note>
+<title>Note:</title>
+<para>This class notifies about changes</para>
+</note>
 </refsect2>
 
 <refsect2 id='nfo-MediaList'>
@@ -231,13 +235,13 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nfo-RegionOfInterest'>
-<title>nfo:RegionOfInterest</title>
-<para>Area on an image with relevant content. Following the spec in http://www.metadataworkinggroup.org</para>
+<refsect2 id='nfo-ImageCategory'>
+<title>nfo:ImageCategory</title>
+<para>A image category</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-DataContainer'>nfo:DataContainer</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
@@ -245,11 +249,15 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-roiRefersTo'>nfo:roiRefersTo</link>, <link linkend='nfo-regionOfInterestType'>nfo:regionOfInterestType</link>, <link linkend='nfo-regionOfInterestHeight'>nfo:regionOfInterestHeight</link>, <link linkend='nfo-regionOfInterestWidth'>nfo:regionOfInterestWidth</link>, <link linkend='nfo-regionOfInterestY'>nfo:regionOfInterestY</link>, <link linkend='nfo-regionOfInterestX'>nfo:regionOfInterestX</link>, </simpara></listitem>
+<listitem><simpara>--</simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-hasRegionOfInterest'>nfo:hasRegionOfInterest</link>, </simpara></listitem>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Predefined instances</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-image-category-screenshot'>nfo:image-category-screenshot</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -1148,7 +1156,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-SoftwareCategory'>nfo:SoftwareCategory</link>, <link linkend='nfo-Archive'>nfo:Archive</link>, <link linkend='nfo-Trash'>nfo:Trash</link>, <link linkend='nfo-Filesystem'>nfo:Filesystem</link>, <link linkend='nfo-Folder'>nfo:Folder</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-SoftwareCategory'>nfo:SoftwareCategory</link>, <link linkend='nfo-ImageCategory'>nfo:ImageCategory</link>, <link linkend='nfo-Archive'>nfo:Archive</link>, <link linkend='nfo-Trash'>nfo:Trash</link>, <link linkend='nfo-Filesystem'>nfo:Filesystem</link>, <link linkend='nfo-Folder'>nfo:Folder</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
@@ -1367,6 +1375,29 @@
 <title>Note:</title>
 <para>This class notifies about changes</para>
 </note>
+</refsect2>
+
+<refsect2 id='nfo-RegionOfInterest'>
+<title>nfo:RegionOfInterest</title>
+<para>Area on an image with relevant content. Following the spec in http://www.metadataworkinggroup.org</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-roiRefersTo'>nfo:roiRefersTo</link>, <link linkend='nfo-regionOfInterestType'>nfo:regionOfInterestType</link>, <link linkend='nfo-regionOfInterestHeight'>nfo:regionOfInterestHeight</link>, <link linkend='nfo-regionOfInterestWidth'>nfo:regionOfInterestWidth</link>, <link linkend='nfo-regionOfInterestY'>nfo:regionOfInterestY</link>, <link linkend='nfo-regionOfInterestX'>nfo:regionOfInterestX</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-hasRegionOfInterest'>nfo:hasRegionOfInterest</link>, </simpara></listitem>
+</varlistentry>
+</variablelist>
 </refsect2>
 
 <refsect2 id='nfo-Orientation'>

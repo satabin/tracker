@@ -51,10 +51,11 @@
 #include <gst/gst.h>
 #include <gst/tag/tag.h>
 
+#include <libmediaart/mediaart.h>
+
 #include <libtracker-common/tracker-common.h>
 #include <libtracker-extract/tracker-extract.h>
 
-#include "tracker-media-art.h"
 #include "tracker-cue-sheet.h"
 
 /* We wait this long (seconds) for NULL state before freeing */
@@ -106,13 +107,13 @@ typedef struct {
 
 	GSList         *artist_list;
 
-	TrackerMediaArtType  media_art_type;
-	gchar               *media_art_artist;
-	gchar               *media_art_title;
+	MediaArtType    media_art_type;
+	gchar          *media_art_artist;
+	gchar          *media_art_title;
 
-	unsigned char       *media_art_buffer;
-	guint                media_art_buffer_size;
-	const gchar         *media_art_buffer_mime;
+	unsigned char  *media_art_buffer;
+	guint           media_art_buffer_size;
+	const gchar    *media_art_buffer_mime;
 
 	GstSample      *sample;
 	GstMapInfo      info;
@@ -727,7 +728,7 @@ extractor_apply_general_metadata (MetadataExtractor     *extractor,
 	add_string_gst_tag (metadata, "dc:coverage", tag_list, GST_TAG_LOCATION);
 	add_string_gst_tag (metadata, "nie:comment", tag_list, GST_TAG_COMMENT);
 
-	if (extractor->media_art_type == TRACKER_MEDIA_ART_VIDEO) {
+	if (extractor->media_art_type == MEDIA_ART_VIDEO) {
 		extractor->media_art_title = title_guaranteed;
 	} else {
 		g_free (title_guaranteed);
@@ -766,10 +767,12 @@ extractor_apply_album_metadata (MetadataExtractor     *extractor,
 
 	album_artist = g_strdup (tracker_coalesce_strip (2, album_artist_temp, track_artist_temp));
 
-	if (album_artist != NULL)
-		add_artist (extractor, preupdate, graph, album_artist, p_album_artist_uri);
-
-	*p_album_uri = tracker_sparql_escape_uri_printf ("urn:album:%s", album_title);
+        if (album_artist != NULL) {
+                add_artist (extractor, preupdate, graph, album_artist, p_album_artist_uri);
+                *p_album_uri = tracker_sparql_escape_uri_printf ("urn:album:%s:%s", album_title, album_artist);
+        } else {
+                *p_album_uri = tracker_sparql_escape_uri_printf ("urn:album:%s", album_title);
+        }
 
 	tracker_sparql_builder_insert_open (preupdate, NULL);
 	if (graph) {
@@ -826,9 +829,16 @@ extractor_apply_album_metadata (MetadataExtractor     *extractor,
 
 	has_it = gst_tag_list_get_uint (tag_list, GST_TAG_ALBUM_VOLUME_NUMBER, &count);
 
-	*p_album_disc_uri = tracker_sparql_escape_uri_printf ("urn:album-disc:%s:Disc%d",
-	                                                      album_title,
-	                                                      has_it ? count : 1);
+        if (album_artist) {
+                *p_album_disc_uri = tracker_sparql_escape_uri_printf ("urn:album-disc:%s:%s:Disc%d",
+                                                                      album_title, album_artist,
+                                                                      has_it ? count : 1);
+        } else {
+                *p_album_disc_uri = tracker_sparql_escape_uri_printf ("urn:album-disc:%s:Disc%d",
+                                                                      album_title,
+                                                                      has_it ? count : 1);
+        }
+
 
 	tracker_sparql_builder_delete_open (preupdate, NULL);
 	tracker_sparql_builder_subject_iri (preupdate, *p_album_disc_uri);
@@ -1094,7 +1104,7 @@ extract_metadata (MetadataExtractor      *extractor,
 	g_return_if_fail (postupdate != NULL);
 	g_return_if_fail (metadata != NULL);
 
-	extractor->media_art_type = TRACKER_MEDIA_ART_NONE;
+	extractor->media_art_type = MEDIA_ART_NONE;
 
 	if (extractor->toc) {
 		gst_tag_list_insert (extractor->tagcache,
@@ -1139,11 +1149,11 @@ extract_metadata (MetadataExtractor      *extractor,
 			if (extractor->toc == NULL || extractor->toc->entry_list == NULL)
 				tracker_sparql_builder_object (metadata, "nmm:MusicPiece");
 
-			extractor->media_art_type = TRACKER_MEDIA_ART_ALBUM;
+			extractor->media_art_type = MEDIA_ART_ALBUM;
 		} else if (extractor->mime == EXTRACT_MIME_VIDEO) {
 			tracker_sparql_builder_object (metadata, "nmm:Video");
 
-			extractor->media_art_type = TRACKER_MEDIA_ART_VIDEO;
+			extractor->media_art_type = MEDIA_ART_VIDEO;
 		} else {
 			tracker_sparql_builder_object (metadata, "nfo:Image");
 
@@ -1401,16 +1411,18 @@ discoverer_init_and_run (MetadataExtractor *extractor,
 	info = gst_discoverer_discover_uri (extractor->discoverer,
 	                                    uri,
 	                                    &error);
-	if (error) {
-		g_warning ("Call to gst_discoverer_discover_uri() failed: %s",
-		           error->message);
-		g_error_free (error);
-		return FALSE;
-	}
 
 	if (!info) {
 		g_warning ("Nothing discovered, bailing out");
 		return TRUE;
+	}
+
+	if (error) {
+		g_warning ("Call to gst_discoverer_discover_uri() failed: %s",
+		           error->message);
+		gst_discoverer_info_unref (info);
+		g_error_free (error);
+		return FALSE;
 	}
 
 #if defined(GSTREAMER_BACKEND_GUPNP_DLNA)
@@ -1486,6 +1498,8 @@ discoverer_init_and_run (MetadataExtractor *extractor,
 					     GST_TAG_MERGE_APPEND);
 		}
 	}
+
+	gst_discoverer_info_unref (info);
 
 	return TRUE;
 }
@@ -2026,7 +2040,7 @@ tracker_extract_gstreamer (const gchar          *uri,
 	extractor = g_slice_new0 (MetadataExtractor);
 	extractor->mime = type;
 	extractor->tagcache = gst_tag_list_new_empty ();
-	extractor->media_art_type = TRACKER_MEDIA_ART_NONE;
+	extractor->media_art_type = MEDIA_ART_NONE;
 
 	g_debug ("GStreamer backend in use:");
 
@@ -2061,14 +2075,14 @@ tracker_extract_gstreamer (const gchar          *uri,
 		                  metadata,
 		                  graph);
 
-		if (extractor->media_art_type != TRACKER_MEDIA_ART_NONE) {
-			tracker_media_art_process (extractor->media_art_buffer,
-			                           extractor->media_art_buffer_size,
-			                           extractor->media_art_buffer_mime,
-			                           extractor->media_art_type,
-			                           extractor->media_art_artist,
-			                           extractor->media_art_title,
-			                           uri);
+		if (extractor->media_art_type != MEDIA_ART_NONE) {
+			media_art_process (extractor->media_art_buffer,
+			                   extractor->media_art_buffer_size,
+			                   extractor->media_art_buffer_mime,
+			                   extractor->media_art_type,
+			                   extractor->media_art_artist,
+			                   extractor->media_art_title,
+			                   uri);
 		}
 	}
 

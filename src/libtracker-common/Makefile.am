@@ -29,8 +29,7 @@ libtracker_common_la_SOURCES = \
 	tracker-type-utils.c \
 	tracker-utils.c \
 	tracker-crc32.c \
-	tracker-locale.c \
-	tracker-media-art.c
+	tracker-locale.c
 
 noinst_HEADERS = \
 	tracker-dbus.h \
@@ -48,8 +47,7 @@ noinst_HEADERS = \
 	tracker-type-utils.h \
 	tracker-utils.h \
 	tracker-crc32.h \
-	tracker-locale.h \
-	tracker-media-art.h
+	tracker-locale.h
 
 if HAVE_TRACKER_FTS
 libtracker_common_la_SOURCES += tracker-language.c
@@ -73,17 +71,6 @@ if HAVE_TRACKER_FTS
 libtracker_common_la_LIBADD += $(top_builddir)/src/libstemmer/libstemmer.la
 endif
 
-marshal_sources = \
-	tracker-marshal.h \
-	tracker-marshal.c
-
-tracker-marshal.h: tracker-marshal.list
-	$(AM_V_GEN)$(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --header > $@
-
-tracker-marshal.c: tracker-marshal.list
-	$(AM_V_GEN)echo "#include \"tracker-marshal.h\"" > $@ && \
-		   $(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --body >> $@
-
 tracker-enum-types.h: tracker-enum-types.h.template $(NOINST_H_FILES)
 	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template tracker-enum-types.h.template $(noinst_HEADERS)) > $@
 
@@ -92,17 +79,14 @@ tracker-enum-types.c: tracker-enum-types.c.template $(NOINST_H_FILES)
 
 
 BUILT_SOURCES =	                                       \
-	$(marshal_sources)                             \
 	tracker-enum-types.c                           \
 	tracker-enum-types.h
 
 CLEANFILES =                                           \
-	$(marshal_sources)                             \
 	tracker-enum-types.c                           \
 	tracker-enum-types.h
 
 EXTRA_DIST =                                           \
-	tracker-marshal.list                           \
 	libtracker-common.vapi                         \
 	tracker-enum-types.c.template                  \
 	tracker-enum-types.h.template

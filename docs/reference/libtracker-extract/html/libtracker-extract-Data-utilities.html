@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Data utilities</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Extract Library Reference Manual">
 <link rel="up" href="ch02.html" title="Core API">
 <link rel="prev" href="libtracker-extract-TrackerExtractInfo.html" title="TrackerExtractInfo">
 <link rel="next" href="ch03.html" title="Common Embedded Support API">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -100,8 +100,11 @@ The returned value is stripped using <a href="http://library.gnome.org/devel/gli
 supplied are freed. It is MOST important NOT to pass constant
 string pointers to this function!
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n_values</code></em> :</span></p></td>
@@ -134,8 +137,11 @@ using @... and returns the first which is not <a href="http://library.gnome.org/
 The returned value is stripped using <a href="http://library.gnome.org/devel/glib/unstable/glib-String-Utility-Functions.html#g-strstrip"><code class="function">g_strstrip()</code></a>. It is MOST
 important NOT to pass constant string pointers to this function!
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n_values</code></em> :</span></p></td>
@@ -173,8 +179,11 @@ strings. All passed strings are freed (don't pass const values)/
 The <em class="parameter"><code>delimiter</code></em> can be <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. If specified, it will be used in
 between each merged string in the result.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>delimiter</code></em> :</span></p></td>
@@ -212,8 +221,11 @@ strings.
 The <em class="parameter"><code>delimiter</code></em> can be <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. If specified, it will be used in
 between each merged string in the result.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>delimiter</code></em> :</span></p></td>
@@ -250,8 +262,11 @@ and includes the newline character, if one was found.
 <p>
 Read GNU <code class="function">getline()</code>'s manpage for more information
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>lineptr</code></em> :</span></p></td>
@@ -292,7 +307,7 @@ using <a href="http://library.gnome.org/devel/glib/unstable/glib-Unicode-Manipul
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Unicode-Manipulation.html#GUnicodeType"><code class="literal">GUnicodeType</code></a> is checked to make sure it is one fo the following
 values:
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Unicode-Manipulation.html#G-UNICODE-LOWERCASE-LETTER:CAPS"><code class="literal">G_UNICODE_LOWERCASE_LETTER</code></a></p></li>
 <li class="listitem"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Unicode-Manipulation.html#G-UNICODE-MODIFIER-LETTER:CAPS"><code class="literal">G_UNICODE_MODIFIER_LETTER</code></a></p></li>
 <li class="listitem"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Unicode-Manipulation.html#G-UNICODE-OTHER-LETTER:CAPS"><code class="literal">G_UNICODE_OTHER_LETTER</code></a></p></li>
@@ -310,8 +325,11 @@ in the returned string.
 The <em class="parameter"><code>n_words</code></em> can be <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. If specified, it will be populated with
 the number of words that were normalized in the result.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>text</code></em> :</span></p></td>
@@ -346,8 +364,11 @@ This function iterates through <em class="parameter"><code>text</code></em> chec
 using <a href="http://library.gnome.org/devel/glib/unstable/glib-Unicode-Manipulation.html#g-utf8-validate"><code class="function">g_utf8_validate()</code></a>, appends the first chunk of valid characters
 to <em class="parameter"><code>str</code></em>, and gives the number of valid UTF-8 bytes in <em class="parameter"><code>valid_len</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>text</code></em> :</span></p></td>
@@ -384,8 +405,11 @@ not needed.</td>
 This function uses <code class="function">strptime()</code> to create a time tm structure using
 <em class="parameter"><code>date_string</code></em> and <em class="parameter"><code>format</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>date_string</code></em> :</span></p></td>
@@ -418,7 +442,7 @@ Some of the string formats guessed include:
 </p>
 <p>
 </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>"YYYY-MM-DD" (Simple format)</p></li>
 <li class="listitem"><p>"20050315113224-08'00'" (PDF format)</p></li>
 <li class="listitem"><p>"20050216111533Z" (PDF format)</p></li>
@@ -428,8 +452,11 @@ Some of the string formats guessed include:
 </ul></div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>date_string</code></em> :</span></p></td>
@@ -454,8 +481,11 @@ finished with, otherwise <a href="http://library.gnome.org/devel/glib/unstable/g
 Parses a keywords line into store, avoiding duplicates and stripping leading
 and trailing spaces from keywords. Allowed delimiters are , and ;
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>store</code></em> :</span></p></td>
@@ -473,6 +503,6 @@ and trailing spaces from keywords. Allowed delimiters are , and ;
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

@@ -57,6 +57,30 @@
 <ANCHOR id="tracker-miner-web-dissociate" href="libtracker-miner/libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-dissociate">
 <ANCHOR id="tracker-miner-web-error-quark" href="libtracker-miner/libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-error-quark">
 <ANCHOR id="tracker-miner-web-get-association-data" href="libtracker-miner/libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-get-association-data">
+<ANCHOR id="TrackerDecorator" href="libtracker-miner/TrackerDecorator.html">
+<ANCHOR id="TrackerDecorator.synopsis" href="libtracker-miner/TrackerDecorator.html#TrackerDecorator.synopsis">
+<ANCHOR id="TrackerDecorator.object-hierarchy" href="libtracker-miner/TrackerDecorator.html#TrackerDecorator.object-hierarchy">
+<ANCHOR id="TrackerDecorator.implemented-interfaces" href="libtracker-miner/TrackerDecorator.html#TrackerDecorator.implemented-interfaces">
+<ANCHOR id="TrackerDecorator.description" href="libtracker-miner/TrackerDecorator.html#TrackerDecorator.description">
+<ANCHOR id="TrackerDecorator.details" href="libtracker-miner/TrackerDecorator.html#TrackerDecorator.details">
+<ANCHOR id="TrackerDecorator-struct" href="libtracker-miner/TrackerDecorator.html#TrackerDecorator-struct">
+<ANCHOR id="TrackerDecoratorClass" href="libtracker-miner/TrackerDecorator.html#TrackerDecoratorClass">
+<ANCHOR id="TrackerDecoratorInfo" href="libtracker-miner/TrackerDecorator.html#TrackerDecoratorInfo">
+<ANCHOR id="tracker-decorator-get-class-names" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-get-class-names">
+<ANCHOR id="tracker-decorator-get-data-source" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-get-data-source">
+<ANCHOR id="tracker-decorator-get-n-items" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-get-n-items">
+<ANCHOR id="tracker-decorator-get-type" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-get-type">
+<ANCHOR id="tracker-decorator-info-get-type" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-info-get-type">
+<ANCHOR id="tracker-decorator-info-ref" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-info-ref">
+<ANCHOR id="tracker-decorator-info-unref" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-info-unref">
+<ANCHOR id="tracker-decorator-info-get-mimetype" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-info-get-mimetype">
+<ANCHOR id="tracker-decorator-info-get-sparql" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-info-get-sparql">
+<ANCHOR id="tracker-decorator-info-get-task" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-info-get-task">
+<ANCHOR id="tracker-decorator-info-get-url" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-info-get-url">
+<ANCHOR id="tracker-decorator-info-get-urn" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-info-get-urn">
+<ANCHOR id="tracker-decorator-next" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-next">
+<ANCHOR id="tracker-decorator-next-finish" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-next-finish">
+<ANCHOR id="TrackerDecorator.see-also" href="libtracker-miner/TrackerDecorator.html#TrackerDecorator.see-also">
 <ANCHOR id="TrackerMinerFS" href="libtracker-miner/TrackerMinerFS.html">
 <ANCHOR id="TrackerMinerFS.synopsis" href="libtracker-miner/TrackerMinerFS.html#TrackerMinerFS.synopsis">
 <ANCHOR id="TrackerMinerFS.object-hierarchy" href="libtracker-miner/TrackerMinerFS.html#TrackerMinerFS.object-hierarchy">
@@ -133,6 +157,16 @@
 <ANCHOR id="TrackerIndexingTree-directory-added" href="libtracker-miner/TrackerIndexingTree.html#TrackerIndexingTree-directory-added">
 <ANCHOR id="TrackerIndexingTree-directory-removed" href="libtracker-miner/TrackerIndexingTree.html#TrackerIndexingTree-directory-removed">
 <ANCHOR id="TrackerIndexingTree-directory-updated" href="libtracker-miner/TrackerIndexingTree.html#TrackerIndexingTree-directory-updated">
+<ANCHOR id="TrackerDecoratorFS" href="libtracker-miner/TrackerDecoratorFS.html">
+<ANCHOR id="TrackerDecoratorFS.synopsis" href="libtracker-miner/TrackerDecoratorFS.html#TrackerDecoratorFS.synopsis">
+<ANCHOR id="TrackerDecoratorFS.object-hierarchy" href="libtracker-miner/TrackerDecoratorFS.html#TrackerDecoratorFS.object-hierarchy">
+<ANCHOR id="TrackerDecoratorFS.implemented-interfaces" href="libtracker-miner/TrackerDecoratorFS.html#TrackerDecoratorFS.implemented-interfaces">
+<ANCHOR id="TrackerDecoratorFS.description" href="libtracker-miner/TrackerDecoratorFS.html#TrackerDecoratorFS.description">
+<ANCHOR id="TrackerDecoratorFS.details" href="libtracker-miner/TrackerDecoratorFS.html#TrackerDecoratorFS.details">
+<ANCHOR id="TrackerDecoratorFS-struct" href="libtracker-miner/TrackerDecoratorFS.html#TrackerDecoratorFS-struct">
+<ANCHOR id="TrackerDecoratorFSClass" href="libtracker-miner/TrackerDecoratorFS.html#TrackerDecoratorFSClass">
+<ANCHOR id="tracker-decorator-fs-get-type" href="libtracker-miner/TrackerDecoratorFS.html#tracker-decorator-fs-get-type">
+<ANCHOR id="TrackerDecoratorFS.see-also" href="libtracker-miner/TrackerDecoratorFS.html#TrackerDecoratorFS.see-also">
 <ANCHOR id="TrackerMinerManager" href="libtracker-miner/TrackerMinerManager.html">
 <ANCHOR id="TrackerMinerManager.synopsis" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager.synopsis">
 <ANCHOR id="TrackerMinerManager.object-hierarchy" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager.object-hierarchy">
@@ -245,6 +279,8 @@
 <ANCHOR id="libtracker-miner-Media-art-management.synopsis" href="libtracker-miner/libtracker-miner-Media-art-management.html#libtracker-miner-Media-art-management.synopsis">
 <ANCHOR id="libtracker-miner-Media-art-management.description" href="libtracker-miner/libtracker-miner-Media-art-management.html#libtracker-miner-Media-art-management.description">
 <ANCHOR id="libtracker-miner-Media-art-management.details" href="libtracker-miner/libtracker-miner-Media-art-management.html#libtracker-miner-Media-art-management.details">
+<ANCHOR id="tracker-media-art-queue-empty" href="libtracker-miner/libtracker-miner-Media-art-management.html#tracker-media-art-queue-empty">
+<ANCHOR id="tracker-media-art-queue-remove" href="libtracker-miner/libtracker-miner-Media-art-management.html#tracker-media-art-queue-remove">
 <ANCHOR id="libtracker-miner-Thumbnailer-management" href="libtracker-miner/libtracker-miner-Thumbnailer-management.html">
 <ANCHOR id="libtracker-miner-Thumbnailer-management.synopsis" href="libtracker-miner/libtracker-miner-Thumbnailer-management.html#libtracker-miner-Thumbnailer-management.synopsis">
 <ANCHOR id="libtracker-miner-Thumbnailer-management.description" href="libtracker-miner/libtracker-miner-Thumbnailer-management.html#libtracker-miner-Thumbnailer-management.description">
@@ -263,3 +299,4 @@
 <ANCHOR id="annotation-glossterm-transfer container" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-transfer container">
 <ANCHOR id="annotation-glossterm-in" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-in">
 <ANCHOR id="annotation-glossterm-transfer full" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-transfer full">
+<ANCHOR id="annotation-glossterm-out callee-allocates" href="libtracker-miner/annotation-glossary.html#annotation-glossterm-out callee-allocates">

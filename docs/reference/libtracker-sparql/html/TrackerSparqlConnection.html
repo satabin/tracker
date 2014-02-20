@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerSparqlConnection</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker SPARQL Library Reference Manual">
 <link rel="up" href="libtracker-sparql-reference.html" title="Part II. Reference">
 <link rel="prev" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder">
 <link rel="next" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -156,8 +156,6 @@ struct              <a class="link" href="TrackerSparqlConnection.html#TrackerSp
 </div>
 <div class="refsect1">
 <a name="TrackerSparqlConnection.description"></a><h2>Description</h2>
-<p>
-</p>
 </div>
 <div class="refsect1">
 <a name="TrackerSparqlConnection.details"></a><h2>Details</h2>
@@ -174,8 +172,46 @@ struct              <a class="link" href="TrackerSparqlConnection.html#TrackerSp
 	TRACKER_SPARQL_ERROR_UNSUPPORTED
 } TrackerSparqlError;
 </pre>
-<p>
-</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><a name="TRACKER-SPARQL-ERROR-PARSE:CAPS"></a><span class="term"><code class="literal">TRACKER_SPARQL_ERROR_PARSE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="TRACKER-SPARQL-ERROR-UNKNOWN-CLASS:CAPS"></a><span class="term"><code class="literal">TRACKER_SPARQL_ERROR_UNKNOWN_CLASS</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="TRACKER-SPARQL-ERROR-UNKNOWN-PROPERTY:CAPS"></a><span class="term"><code class="literal">TRACKER_SPARQL_ERROR_UNKNOWN_PROPERTY</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="TRACKER-SPARQL-ERROR-TYPE:CAPS"></a><span class="term"><code class="literal">TRACKER_SPARQL_ERROR_TYPE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="TRACKER-SPARQL-ERROR-CONSTRAINT:CAPS"></a><span class="term"><code class="literal">TRACKER_SPARQL_ERROR_CONSTRAINT</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="TRACKER-SPARQL-ERROR-NO-SPACE:CAPS"></a><span class="term"><code class="literal">TRACKER_SPARQL_ERROR_NO_SPACE</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="TRACKER-SPARQL-ERROR-INTERNAL:CAPS"></a><span class="term"><code class="literal">TRACKER_SPARQL_ERROR_INTERNAL</code></span></p></td>
+<td></td>
+</tr>
+<tr>
+<td><p><a name="TRACKER-SPARQL-ERROR-UNSUPPORTED:CAPS"></a><span class="term"><code class="literal">TRACKER_SPARQL_ERROR_UNSUPPORTED</code></span></p></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -221,8 +257,11 @@ databases weren't shutdown cleanly and need to be checked on start up. If
 the journal needs to be replayed in such an event, the delay may be
 substantial while data is restored as best as possible.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
@@ -248,8 +287,6 @@ object when no longer used.</td>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_connection_get_async (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -262,8 +299,11 @@ This function is called from the callback provided for
 <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-async" title="tracker_sparql_connection_get_async ()"><code class="function">tracker_sparql_connection_get_async()</code></a> to return the connection requested
 or an error in cases of failure.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_res_</code></em> :</span></p></td>
@@ -301,8 +341,11 @@ The advantage to this API over the <a class="link" href="TrackerSparqlConnection
 function is that it will use direct-access. This is faster than using
 D-Bus which may be the case with <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get" title="tracker_sparql_connection_get ()"><code class="function">tracker_sparql_connection_get()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
@@ -329,8 +372,6 @@ object when no longer used.</td>
                                                         (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -347,8 +388,11 @@ This function is called from the callback provided for
 <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-async" title="tracker_sparql_connection_get_direct_async ()"><code class="function">tracker_sparql_connection_get_direct_async()</code></a> to return the connection
 requested or an error in cases of failure.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_res_</code></em> :</span></p></td>
@@ -380,8 +424,11 @@ object when no longer used.</td>
 Executes a SPARQL query on. The API call is completely synchronous, so
 it may block.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -420,8 +467,6 @@ Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-O
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -433,8 +478,11 @@ Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-O
 <p>
 Finishes the asynchronous SPARQL query operation.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -472,8 +520,11 @@ Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-O
 Executes a SPARQL update. The API call is completely
 synchronous, so it may block.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -514,8 +565,11 @@ synchronous, so it may block.
 <p>
 Executes asynchronously a SPARQL update.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -558,8 +612,11 @@ asynchronous operation is finished.</td>
 <p>
 Finishes the asynchronous SPARQL update operation.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -595,8 +652,11 @@ Executes asynchronously an array of SPARQL updates. Each update in the
 array is its own transaction. This means that update n+1 is not halted
 due to an error in update n.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -647,7 +707,7 @@ Finishes the asynchronous SPARQL update_array operation.
 <p>
 </p>
 <div class="example">
-<a name="idp11291712"></a><p class="title"><b>Example 1. </b></p>
+<a name="id-1.3.4.6.17.5.1"></a><p class="title"><b>Example 1. </b></p>
 <div class="example-contents"><pre class="programlisting">
 static void
 async_update_array_callback (GObject      *source_object,
@@ -673,8 +733,11 @@ async_update_array_callback (GObject      *source_object,
 </div>
 <p><br class="example-break">
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -717,8 +780,11 @@ you passed to tracker_sparql_connection_update_array_async.</td>
 Executes a SPARQL update and returns the URNs of the generated nodes,
 if any. The API call is completely synchronous, so it may block.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -764,8 +830,11 @@ if any. The API call is completely synchronous, so it may block.
 <p>
 Executes asynchronously a SPARQL update.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -809,8 +878,11 @@ asynchronous operation is finished.</td>
 Finishes the asynchronous SPARQL update operation, and returns
 the URNs of the generated nodes, if any.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -846,8 +918,11 @@ the URNs of the generated nodes, if any.
 Loads a Turtle file (TTL) into the store. The API call is completely
 synchronous, so it may block.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -884,8 +959,11 @@ synchronous, so it may block.
 <p>
 Loads, asynchronously, a Turtle file (TTL) into the store.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -925,8 +1003,11 @@ asynchronous operation is finished.</td>
 <p>
 Finishes the asynchronous load of the Turtle file.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -957,8 +1038,11 @@ Finishes the asynchronous load of the Turtle file.
 Retrieves the statistics from the Store. The API call is completely
 synchronous, so it may block.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -995,8 +1079,11 @@ needed.</td>
 <p>
 Retrieves, asynchronously, the statistics from the Store.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -1031,8 +1118,11 @@ asynchronous operation is finished.</td>
 <p>
 Finishes the asynchronous retrieval of statistics from the Store.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
@@ -1062,6 +1152,6 @@ needed.</td>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

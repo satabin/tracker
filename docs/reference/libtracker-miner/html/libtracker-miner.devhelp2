@@ -9,10 +9,12 @@
       <sub name="Base abstract miner classes" link="ch02.html">
         <sub name="TrackerMiner" link="TrackerMiner.html"/>
         <sub name="TrackerMinerWeb" link="libtracker-miner-TrackerMinerWeb.html"/>
+        <sub name="TrackerDecorator" link="TrackerDecorator.html"/>
       </sub>
       <sub name="Miner classes for file system" link="ch03.html">
         <sub name="TrackerMinerFS" link="TrackerMinerFS.html"/>
         <sub name="TrackerIndexingTree" link="TrackerIndexingTree.html"/>
+        <sub name="TrackerDecoratorFS" link="TrackerDecoratorFS.html"/>
       </sub>
       <sub name="Managing miners" link="ch04.html">
         <sub name="TrackerMinerManager" link="TrackerMinerManager.html"/>
@@ -69,6 +71,23 @@
     <keyword type="function" name="tracker_miner_web_dissociate ()" link="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-dissociate" since="0.8"/>
     <keyword type="function" name="tracker_miner_web_error_quark ()" link="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-error-quark" since="0.8"/>
     <keyword type="function" name="tracker_miner_web_get_association_data ()" link="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-get-association-data" since="0.8"/>
+    <keyword type="struct" name="struct TrackerDecorator" link="TrackerDecorator.html#TrackerDecorator-struct"/>
+    <keyword type="struct" name="struct TrackerDecoratorClass" link="TrackerDecorator.html#TrackerDecoratorClass"/>
+    <keyword type="struct" name="TrackerDecoratorInfo" link="TrackerDecorator.html#TrackerDecoratorInfo"/>
+    <keyword type="function" name="tracker_decorator_get_class_names ()" link="TrackerDecorator.html#tracker-decorator-get-class-names" since="0.18"/>
+    <keyword type="function" name="tracker_decorator_get_data_source ()" link="TrackerDecorator.html#tracker-decorator-get-data-source" since="0.18"/>
+    <keyword type="function" name="tracker_decorator_get_n_items ()" link="TrackerDecorator.html#tracker-decorator-get-n-items" since="0.18"/>
+    <keyword type="function" name="tracker_decorator_get_type ()" link="TrackerDecorator.html#tracker-decorator-get-type"/>
+    <keyword type="function" name="tracker_decorator_info_get_type ()" link="TrackerDecorator.html#tracker-decorator-info-get-type"/>
+    <keyword type="function" name="tracker_decorator_info_ref ()" link="TrackerDecorator.html#tracker-decorator-info-ref"/>
+    <keyword type="function" name="tracker_decorator_info_unref ()" link="TrackerDecorator.html#tracker-decorator-info-unref"/>
+    <keyword type="function" name="tracker_decorator_info_get_mimetype ()" link="TrackerDecorator.html#tracker-decorator-info-get-mimetype" since="0.18"/>
+    <keyword type="function" name="tracker_decorator_info_get_sparql ()" link="TrackerDecorator.html#tracker-decorator-info-get-sparql" since="0.18"/>
+    <keyword type="function" name="tracker_decorator_info_get_task ()" link="TrackerDecorator.html#tracker-decorator-info-get-task" since="0.18"/>
+    <keyword type="function" name="tracker_decorator_info_get_url ()" link="TrackerDecorator.html#tracker-decorator-info-get-url" since="0.18"/>
+    <keyword type="function" name="tracker_decorator_info_get_urn ()" link="TrackerDecorator.html#tracker-decorator-info-get-urn" since="0.18"/>
+    <keyword type="function" name="tracker_decorator_next ()" link="TrackerDecorator.html#tracker-decorator-next" since="0.18"/>
+    <keyword type="function" name="tracker_decorator_next_finish ()" link="TrackerDecorator.html#tracker-decorator-next-finish" since="0.18"/>
     <keyword type="struct" name="struct TrackerMinerFS" link="TrackerMinerFS.html#TrackerMinerFS-struct"/>
     <keyword type="struct" name="TrackerMinerFSClass" link="TrackerMinerFS.html#TrackerMinerFSClass"/>
     <keyword type="function" name="tracker_miner_fs_add_directory_without_parent ()" link="TrackerMinerFS.html#tracker-miner-fs-add-directory-without-parent" since="0.10"/>
@@ -126,6 +145,9 @@
     <keyword type="signal" name="The &quot;directory-added&quot; signal" link="TrackerIndexingTree.html#TrackerIndexingTree-directory-added"/>
     <keyword type="signal" name="The &quot;directory-removed&quot; signal" link="TrackerIndexingTree.html#TrackerIndexingTree-directory-removed"/>
     <keyword type="signal" name="The &quot;directory-updated&quot; signal" link="TrackerIndexingTree.html#TrackerIndexingTree-directory-updated"/>
+    <keyword type="struct" name="struct TrackerDecoratorFS" link="TrackerDecoratorFS.html#TrackerDecoratorFS-struct"/>
+    <keyword type="struct" name="struct TrackerDecoratorFSClass" link="TrackerDecoratorFS.html#TrackerDecoratorFSClass"/>
+    <keyword type="function" name="tracker_decorator_fs_get_type ()" link="TrackerDecoratorFS.html#tracker-decorator-fs-get-type"/>
     <keyword type="macro" name="TRACKER_MINER_MANAGER_ERROR" link="TrackerMinerManager.html#TRACKER-MINER-MANAGER-ERROR:CAPS"/>
     <keyword type="struct" name="struct TrackerMinerManager" link="TrackerMinerManager.html#TrackerMinerManager-struct"/>
     <keyword type="struct" name="TrackerMinerManagerClass" link="TrackerMinerManager.html#TrackerMinerManagerClass"/>
@@ -185,6 +207,8 @@
     <keyword type="function" name="tracker_storage_get_type_for_uuid ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-get-type-for-uuid" since="0.10"/>
     <keyword type="function" name="tracker_storage_get_uuid_for_file ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-get-uuid-for-file" since="0.8"/>
     <keyword type="function" name="tracker_storage_new ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-new" since="0.8"/>
+    <keyword type="function" name="tracker_media_art_queue_empty ()" link="libtracker-miner-Media-art-management.html#tracker-media-art-queue-empty"/>
+    <keyword type="function" name="tracker_media_art_queue_remove ()" link="libtracker-miner-Media-art-management.html#tracker-media-art-queue-remove" since="0.10.4"/>
     <keyword type="function" name="tracker_thumbnailer_cleanup ()" link="libtracker-miner-Thumbnailer-management.html#tracker-thumbnailer-cleanup" since="0.8"/>
     <keyword type="function" name="tracker_thumbnailer_init ()" link="libtracker-miner-Thumbnailer-management.html#tracker-thumbnailer-init" since="0.8"/>
     <keyword type="function" name="tracker_thumbnailer_move_add ()" link="libtracker-miner-Thumbnailer-management.html#tracker-thumbnailer-move-add" since="0.8"/>

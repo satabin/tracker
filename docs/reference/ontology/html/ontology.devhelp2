@@ -56,6 +56,11 @@
         <sub name="MTO Ontology Classes" link="mto-ontology.html#mto-classes"/>
         <sub name="MTO Ontology Properties" link="mto-properties.html"/>
       </sub>
+      <sub name="Maemo Location Ontology (MLO): Deprecated ontology for location and landmarks. Please check SLO" link="mlo-ontology.html">
+        <sub name="Overview" link="mlo-ontology.html#mlo-explanation"/>
+        <sub name="MLO Ontology Classes" link="mlo-classes.html"/>
+        <sub name="MLO Ontology Properties" link="mlo-properties.html"/>
+      </sub>
       <sub name="Maemo Feeds Ontology (MFO): Model for feeds and alike online streams" link="mfo-ontology.html">
         <sub name="Overview" link="mfo-ontology.html#mfo-explanation"/>
         <sub name="MFO Ontology Classes" link="mfo-classes.html"/>
@@ -194,7 +199,7 @@
     <keyword type="" name="nfo:SourceCode" link="nfo-ontology.html#nfo-SourceCode"/>
     <keyword type="" name="nfo:RemotePortAddress" link="nfo-ontology.html#nfo-RemotePortAddress"/>
     <keyword type="" name="nfo:Cursor" link="nfo-ontology.html#nfo-Cursor"/>
-    <keyword type="" name="nfo:RegionOfInterest" link="nfo-ontology.html#nfo-RegionOfInterest"/>
+    <keyword type="" name="nfo:ImageCategory" link="nfo-ontology.html#nfo-ImageCategory"/>
     <keyword type="" name="nfo:Document" link="nfo-ontology.html#nfo-Document"/>
     <keyword type="" name="http://www.tracker-project.org/ontologies/poi#ObjectOfInterest" link="poi#ObjectOfInterest"/>
     <keyword type="" name="nfo:Presentation" link="nfo-ontology.html#nfo-Presentation"/>
@@ -242,6 +247,7 @@
     <keyword type="" name="nfo:RegionOfInterestContent" link="nfo-ontology.html#nfo-RegionOfInterestContent"/>
     <keyword type="" name="nfo:Bookmark" link="nfo-ontology.html#nfo-Bookmark"/>
     <keyword type="" name="nfo:SoftwareApplication" link="nfo-ontology.html#nfo-SoftwareApplication"/>
+    <keyword type="" name="nfo:RegionOfInterest" link="nfo-ontology.html#nfo-RegionOfInterest"/>
     <keyword type="" name="nfo:Orientation" link="nfo-ontology.html#nfo-Orientation"/>
     <keyword type="" name="nfo:softwareCategoryIcon" link="nfo-properties.html#nfo-softwareCategoryIcon"/>
     <keyword type="" name="nfo:hasMediaStream" link="nfo-properties.html#nfo-hasMediaStream"/>
@@ -834,6 +840,44 @@
     <keyword type="" name="mto:transferCategory" link="mto-properties.html#mto-transferCategory"/>
     <keyword type="" name="mto:completedTime" link="mto-properties.html#mto-completedTime"/>
     <keyword type="" name="mto:startedTime" link="mto-properties.html#mto-startedTime"/>
+    <keyword type="" name="Introduction" link="mlo-ontology.html#mlo-introduction"/>
+    <keyword type="" name="Considerations" link="mlo-ontology.html#mlo-considerations"/>
+    <keyword type="" name="Contract with applications" link="mlo-ontology.html#mlo-comments"/>
+    <keyword type="" name="" link="mlo-ontology.html#mlo-graphical-overview"/>
+    <keyword type="" name="mlo:GeoLocation" link="mlo-classes.html#mlo-GeoLocation"/>
+    <keyword type="" name="mlo:PointOfInterest" link="mlo-classes.html#mlo-PointOfInterest"/>
+    <keyword type="" name="mlo:LandmarkCategory" link="mlo-classes.html#mlo-LandmarkCategory"/>
+    <keyword type="" name="mlo:Landmark" link="mlo-classes.html#mlo-Landmark"/>
+    <keyword type="" name="mlo:LocationBoundingBox" link="mlo-classes.html#mlo-LocationBoundingBox"/>
+    <keyword type="" name="mlo:Route" link="mlo-classes.html#mlo-Route"/>
+    <keyword type="" name="mlo:GeoPoint" link="mlo-classes.html#mlo-GeoPoint"/>
+    <keyword type="" name="mlo:GeoBoundingBox" link="mlo-classes.html#mlo-GeoBoundingBox"/>
+    <keyword type="" name="mlo:GeoSphere" link="mlo-classes.html#mlo-GeoSphere"/>
+    <keyword type="" name="mlo:endTime" link="mlo-properties.html#mlo-endTime"/>
+    <keyword type="" name="mlo:poiLocation" link="mlo-properties.html#mlo-poiLocation"/>
+    <keyword type="" name="mlo:boxSouthWestCorner" link="mlo-properties.html#mlo-boxSouthWestCorner"/>
+    <keyword type="" name="mlo:boxVerticalLimit" link="mlo-properties.html#mlo-boxVerticalLimit"/>
+    <keyword type="" name="mlo:location" link="mlo-properties.html#mlo-location"/>
+    <keyword type="" name="mlo:timestamp" link="mlo-properties.html#mlo-timestamp"/>
+    <keyword type="" name="mlo:boxNorthLimit" link="mlo-properties.html#mlo-boxNorthLimit"/>
+    <keyword type="" name="mlo:bbSouthEast" link="mlo-properties.html#mlo-bbSouthEast"/>
+    <keyword type="" name="mlo:bbNorthWest" link="mlo-properties.html#mlo-bbNorthWest"/>
+    <keyword type="" name="mlo:routeDetails" link="mlo-properties.html#mlo-routeDetails"/>
+    <keyword type="" name="mlo:radius" link="mlo-properties.html#mlo-radius"/>
+    <keyword type="" name="mlo:asBoundingBox" link="mlo-properties.html#mlo-asBoundingBox"/>
+    <keyword type="" name="mlo:isRemovable" link="mlo-properties.html#mlo-isRemovable"/>
+    <keyword type="" name="mlo:startTime" link="mlo-properties.html#mlo-startTime"/>
+    <keyword type="" name="mlo:city" link="mlo-properties.html#mlo-city"/>
+    <keyword type="" name="mlo:asGeoPoint" link="mlo-properties.html#mlo-asGeoPoint"/>
+    <keyword type="" name="mlo:address" link="mlo-properties.html#mlo-address"/>
+    <keyword type="" name="mlo:state" link="mlo-properties.html#mlo-state"/>
+    <keyword type="" name="mlo:asPostalAddress" link="mlo-properties.html#mlo-asPostalAddress"/>
+    <keyword type="" name="mlo:boxEastLimit" link="mlo-properties.html#mlo-boxEastLimit"/>
+    <keyword type="" name="mlo:longitude" link="mlo-properties.html#mlo-longitude"/>
+    <keyword type="" name="mlo:country" link="mlo-properties.html#mlo-country"/>
+    <keyword type="" name="mlo:altitude" link="mlo-properties.html#mlo-altitude"/>
+    <keyword type="" name="mlo:latitude" link="mlo-properties.html#mlo-latitude"/>
+    <keyword type="" name="mlo:belongsToCategory" link="mlo-properties.html#mlo-belongsToCategory"/>
     <keyword type="" name="" link="mfo-ontology.html#mfo-graphical-overview"/>
     <keyword type="" name="mfo:FeedElement" link="mfo-classes.html#mfo-FeedElement"/>
     <keyword type="" name="mfo:Action" link="mfo-classes.html#mfo-Action"/>

@@ -162,11 +162,7 @@ static TrackerDBManagerFlags old_flags = 0;
 static guint                 s_cache_size;
 static guint                 u_cache_size;
 
-#if GLIB_CHECK_VERSION (2,31,0)
 static GPrivate              interface_data_key = G_PRIVATE_INIT ((GDestroyNotify)g_object_unref);
-#else
-static GStaticPrivate        interface_data_key = G_STATIC_PRIVATE_INIT;
-#endif
 
 /* mutex used by singleton connection in libtracker-direct, not used by tracker-store */
 static GMutex                global_mutex;
@@ -657,6 +653,14 @@ tracker_db_manager_locale_changed (void)
 	gchar *current_locale;
 	gboolean changed;
 
+	/* As a special case, we allow calling this API function before
+	 * tracker_data_manager_init() has been called, so it can be used
+	 * to check for locale mismatches for initializing the database.
+	 */
+	if (!locations_initialized) {
+		tracker_db_manager_init_locations ();
+	}
+
 	/* Get current collation locale */
 	current_locale = tracker_locale_get (TRACKER_LOCALE_COLLATE);
 
@@ -784,6 +788,10 @@ tracker_db_manager_init_locations (void)
 	const gchar *dir;
 	guint i;
 
+	if (locations_initialized) {
+		return;
+	}
+
 	user_data_dir = g_build_filename (g_get_user_data_dir (),
 	                                  "tracker",
 	                                  "data",
@@ -886,16 +894,7 @@ tracker_db_manager_init (TrackerDBManagerFlags   flags,
 
 	old_flags = flags;
 
-	g_free (user_data_dir);
-	user_data_dir = g_build_filename (g_get_user_data_dir (),
-	                                  "tracker",
-	                                  "data",
-	                                  NULL);
-
-	g_free (data_dir);
-	data_dir = g_build_filename (g_get_user_cache_dir (),
-	                             "tracker",
-	                             NULL);
+	tracker_db_manager_init_locations ();
 
 	g_free (in_use_filename);
 	in_use_filename = g_build_filename (g_get_user_data_dir (),
@@ -931,12 +930,6 @@ tracker_db_manager_init (TrackerDBManagerFlags   flags,
 	g_message ("Checking database files exist");
 
 	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
-		/* Fill absolute path for the database */
-
-		dir = location_to_directory (dbs[i].location);
-		g_free (dbs[i].abs_filename);
-		dbs[i].abs_filename = g_build_filename (dir, dbs[i].file, NULL);
-
 		/* Check we have each database in place, if one is
 		 * missing, we reindex.
 		 */
@@ -1244,13 +1237,8 @@ tracker_db_manager_init (TrackerDBManagerFlags   flags,
 	s_cache_size = select_cache_size;
 	u_cache_size = update_cache_size;
 
-	if ((flags & TRACKER_DB_MANAGER_READONLY) == 0) {
-#if GLIB_CHECK_VERSION (2,31,0)
+	if ((flags & TRACKER_DB_MANAGER_READONLY) == 0)
 		g_private_replace (&interface_data_key, resources_iface);
-#else
-		g_static_private_set (&interface_data_key, resources_iface, (GDestroyNotify) g_object_unref);
-#endif
-	}
 
 	return TRUE;
 }
@@ -1288,11 +1276,7 @@ tracker_db_manager_shutdown (void)
 	}
 
 	/* shutdown db interface in all threads */
-#if GLIB_CHECK_VERSION (2,31,0)
 	g_private_replace (&interface_data_key, NULL);
-#else
-	g_static_private_free (&interface_data_key);
-#endif
 
 	/* Since we don't reference this enum anywhere, we do
 	 * it here to make sure it exists when we call
@@ -1502,11 +1486,7 @@ tracker_db_manager_get_db_interface (void)
 		return global_iface;
 	}
 
-#if GLIB_CHECK_VERSION (2,31,0)
 	interface = g_private_get (&interface_data_key);
-#else
-	interface = g_static_private_get (&interface_data_key);
-#endif
 
 	/* Ensure the interface is there */
 	if (!interface) {
@@ -1529,11 +1509,7 @@ tracker_db_manager_get_db_interface (void)
 		                                              TRACKER_DB_STATEMENT_CACHE_TYPE_UPDATE,
 		                                              u_cache_size);
 
-#if GLIB_CHECK_VERSION (2,31,0)
 		g_private_set (&interface_data_key, interface);
-#else
-		g_static_private_set (&interface_data_key, interface, (GDestroyNotify)g_object_unref);
-#endif
 	}
 
 	return interface;

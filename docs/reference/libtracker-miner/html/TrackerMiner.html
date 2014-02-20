@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerMiner</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="up" href="ch02.html" title="Base abstract miner classes">
 <link rel="prev" href="ch02.html" title="Base abstract miner classes">
 <link rel="next" href="libtracker-miner-TrackerMinerWeb.html" title="TrackerMinerWeb">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -77,6 +77,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <pre class="synopsis">
   <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
    +----TrackerMiner
+         +----<a class="link" href="TrackerDecorator.html" title="TrackerDecorator">TrackerDecorator</a>
          +----<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a>
 </pre>
 </div>
@@ -127,16 +128,12 @@ just after creation (or directly created with <a href="http://library.gnome.org/
 <a name="TRACKER-MINER-ERROR:CAPS"></a><h3>TRACKER_MINER_ERROR</h3>
 <pre class="programlisting">#define TRACKER_MINER_ERROR        tracker_miner_error_quark()
 </pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="TRACKER-MINER-ERROR-DOMAIN:CAPS"></a><h3>TRACKER_MINER_ERROR_DOMAIN</h3>
 <pre class="programlisting">#define TRACKER_MINER_ERROR_DOMAIN "TrackerMiner"
 </pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -170,8 +167,11 @@ Abstract miner object.
 <p>
 Virtual methods left to implement.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObjectClass"><span class="type">GObjectClass</span></a> <em class="structfield"><code><a name="TrackerMinerClass.parent-class"></a>parent_class</code></em>;</span></p></td>
@@ -211,8 +211,11 @@ Virtual methods left to implement.
 <p>
 Returns the <a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="type">GQuark</span></a> used to identify miner errors in GError structures.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>the error <a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="type">GQuark</span></a>
@@ -228,8 +231,11 @@ Returns the <a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.ht
 <p>
 Gets the <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlConnection.html"><span class="type">TrackerSparqlConnection</span></a> initialized by <em class="parameter"><code>miner</code></em>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -252,8 +258,11 @@ Gets the <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/Trac
 <p>
 Gets the <a href="http://library.gnome.org/devel/gio/unstable/GDBusConnection.html"><span class="type">GDBusConnection</span></a> initialized by <em class="parameter"><code>miner</code></em>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -276,8 +285,11 @@ Gets the <a href="http://library.gnome.org/devel/gio/unstable/GDBusConnection.ht
 <p>
 Gets the DBus name registered by <em class="parameter"><code>miner</code></em>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -299,8 +311,11 @@ Gets the DBus name registered by <em class="parameter"><code>miner</code></em>
 <p>
 Gets the DBus path registered by <em class="parameter"><code>miner</code></em>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -323,8 +338,11 @@ Gets the DBus path registered by <em class="parameter"><code>miner</code></em>
 Returns the number of pause reasons holding <em class="parameter"><code>miner</code></em> from
 indexing contents.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -347,8 +365,11 @@ indexing contents.
 <p>
 Tells the miner to mark <em class="parameter"><code>urls</code></em> are to ignore on next update.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -371,8 +392,11 @@ Tells the miner to mark <em class="parameter"><code>urls</code></em> are to igno
 <p>
 Returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the miner is paused.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -395,8 +419,11 @@ Returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macr
 <p>
 Returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the miner has been started.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -423,8 +450,11 @@ Asks <em class="parameter"><code>miner</code></em> to pause. On success the cook
 this is what must be used in <a class="link" href="TrackerMiner.html#tracker-miner-resume" title="tracker_miner_resume ()"><code class="function">tracker_miner_resume()</code></a> to resume
 operations. On failure <em class="parameter"><code>error</code></em> will be set and -1 will be returned.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -437,7 +467,7 @@ operations. On failure <em class="parameter"><code>error</code></em> will be set
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>return location for errors. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym> callee-allocates][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+<td>return location for errors. <span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
 </tr>
 <tr>
@@ -459,8 +489,11 @@ Asks the miner to resume processing. The cookie must be something
 returned by <a class="link" href="TrackerMiner.html#tracker-miner-pause" title="tracker_miner_pause ()"><code class="function">tracker_miner_pause()</code></a>. The miner won't actually resume
 operations until all pause requests have been resumed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -492,8 +525,11 @@ operations until all pause requests have been resumed.
 <p>
 Tells the miner to start processing data.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
 <td>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a>
@@ -509,8 +545,11 @@ Tells the miner to start processing data.
 <p>
 Tells the miner to stop processing data.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
 <td>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a>
@@ -541,7 +580,7 @@ Tells the miner to stop processing data.
 <a name="TrackerMiner--remaining-time"></a><h3>The <code class="literal">"remaining-time"</code> property</h3>
 <pre class="programlisting">  "remaining-time"           <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write / Construct</pre>
 <p>Estimated remaining time to finish processing.</p>
-<p>Allowed values: &gt;= G_MAXULONG</p>
+<p>Allowed values: &gt;= -1</p>
 <p>Default value: -1</p>
 </div>
 <hr>
@@ -564,8 +603,11 @@ the ::ignore-next-update signal is emitted in the miner
 right after it has been asked to mark <em class="parameter"><code>urls</code></em> as to ignore on next update
 through <a class="link" href="TrackerMiner.html#tracker-miner-ignore-next-update" title="tracker_miner_ignore_next_update ()"><code class="function">tracker_miner_ignore_next_update()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -595,8 +637,11 @@ there is any reason to pause, either
 internal (through <a class="link" href="TrackerMiner.html#tracker-miner-pause" title="tracker_miner_pause ()"><code class="function">tracker_miner_pause()</code></a>) or
 external (through DBus, see <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a>).
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -627,8 +672,11 @@ will indicate how much has been processed so far. <em class="parameter"><code>re
 give the number expected of seconds to finish processing, 0 if the
 value cannot be estimated, and -1 if its not applicable.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -666,8 +714,11 @@ the ::resumed signal is emitted whenever
 all reasons to pause have disappeared, see
 <a class="link" href="TrackerMiner.html#tracker-miner-resume" title="tracker_miner_resume ()"><code class="function">tracker_miner_resume()</code></a> and <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -692,8 +743,11 @@ the ::started signal is emitted in the miner
 right after it has been started through
 <a class="link" href="TrackerMiner.html#tracker-miner-start" title="tracker_miner_start ()"><code class="function">tracker_miner_start()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -718,8 +772,11 @@ the ::stopped signal is emitted in the miner
 right after it has been stopped through
 <a class="link" href="TrackerMiner.html#tracker-miner-stop" title="tracker_miner_stop ()"><code class="function">tracker_miner_stop()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
@@ -738,6 +795,6 @@ right after it has been stopped through
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

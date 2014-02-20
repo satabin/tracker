@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Nepomuk File Ontology (NFO): About files and other desktop resources.</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
 <link rel="up" href="ontology.html" title="Part I. Overview">
 <link rel="prev" href="nao-properties.html" title="NAO Ontology Properties">
 <link rel="next" href="nfo-properties.html" title="NFO Ontology Properties">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -22,12 +22,12 @@
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
 <a name="nfo-ontology"></a>Nepomuk File Ontology (NFO): About files and other desktop resources.</h2></div></div></div>
-<div class="toc"><dl>
+<div class="toc"><dl class="toc">
 <dt><span class="section"><a href="nfo-ontology.html#nfo-classes">NFO Ontology Classes</a></span></dt>
 <dt><span class="section"><a href="nfo-properties.html">NFO Ontology Properties</a></span></dt>
 </dl></div>
 <dt><span class="term">Authors:</span></dt>
-<dd><div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<dd><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">Tracker Developers</li>
 <li class="listitem">Ludger van Elst, DFKI,  &lt;elst@dfki.uni-kl.de&gt;</li>
 <li class="listitem">Michael Sintek, DFKI,  &lt;michael.sintek@dfki.de&gt;</li>
@@ -35,12 +35,12 @@
 <li class="listitem">Antoni Mylka, DFKI, &lt;antoni.mylka@dfki.de&gt;</li>
 </ul></div></dd>
 <dt><span class="term">Editors:</span></dt>
-<dd><div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<dd><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">Antoni Mylka, DFKI, &lt;antoni.mylka@dfki.de&gt;</li>
 <li class="listitem">Tracker developers (translation into turtle)</li>
 </ul></div></dd>
 <dt><span class="term">Contributors:</span></dt>
-<dd><div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<dd><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">Christiaan Fluit, Aduna, &lt;christiaan.fluit@aduna-software.com&gt;</li>
 <li class="listitem">Evgeny 'phreedom' Egorochkin, KDE Strigi Developer, &lt;stexx@mail.ru&gt;</li>
 </ul></div></dd>
@@ -56,8 +56,11 @@
 <div class="refsect2">
 <a name="nfo-FileDataObject"></a><h3>nfo:FileDataObject</h3>
 <p>A resource containing a finite sequence of bytes with arbitrary information, that is available to a computer program and is usually based on some kind of durable storage. A file is durable in the sense that it remains available for programs to use after the current program has finished.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -85,8 +88,11 @@
 <div class="refsect2">
 <a name="nfo-Video"></a><h3>nfo:Video</h3>
 <p>A video file.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -108,13 +114,20 @@
 </tr>
 </tbody>
 </table></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note:</h3>
+<p>This class notifies about changes</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nfo-MediaList"></a><h3>nfo:MediaList</h3>
 <p>A file containing a list of media files.e.g. a playlist</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -141,8 +154,11 @@
 <div class="refsect2">
 <a name="nfo-Executable"></a><h3>nfo:Executable</h3>
 <p>An executable file.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -168,8 +184,11 @@
 <div class="refsect2">
 <a name="nfo-SoftwareCategory"></a><h3>nfo:SoftwareCategory</h3>
 <p>A software category</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -196,8 +215,11 @@
 <div class="refsect2">
 <a name="nfo-SourceCode"></a><h3>nfo:SourceCode</h3>
 <p>Code in a compilable or interpreted programming language.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -224,8 +246,11 @@
 <div class="refsect2">
 <a name="nfo-RemotePortAddress"></a><h3>nfo:RemotePortAddress</h3>
 <p>An address specifying a remote host and port. Such an address can be interpreted in many ways (examples of such interpretations include mailboxes, websites, remote calendars or filesystems), depending on an interpretation, various kinds of data may be extracted from such an address.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -251,8 +276,11 @@
 <div class="refsect2">
 <a name="nfo-Cursor"></a><h3>nfo:Cursor</h3>
 <p>A Cursor.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -276,15 +304,18 @@
 </div>
 <hr>
 <div class="refsect2">
-<a name="nfo-RegionOfInterest"></a><h3>nfo:RegionOfInterest</h3>
-<p>Area on an image with relevant content. Following the spec in http://www.metadataworkinggroup.org</p>
-<div class="variablelist"><table border="0">
+<a name="nfo-ImageCategory"></a><h3>nfo:ImageCategory</h3>
+<p>A image category</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
 <td>
-<a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a>, </td>
+<a class="link" href="nfo-ontology.html#nfo-DataContainer" title="nfo:DataContainer">nfo:DataContainer</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subclasses</code></em> :</span></p></td>
@@ -292,13 +323,16 @@
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>In domain of</code></em> :</span></p></td>
-<td>
-<a class="link" href="nfo-properties.html#nfo-roiRefersTo" title="nfo:roiRefersTo">nfo:roiRefersTo</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestType" title="nfo:regionOfInterestType">nfo:regionOfInterestType</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestHeight" title="nfo:regionOfInterestHeight">nfo:regionOfInterestHeight</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestWidth" title="nfo:regionOfInterestWidth">nfo:regionOfInterestWidth</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestY" title="nfo:regionOfInterestY">nfo:regionOfInterestY</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestX" title="nfo:regionOfInterestX">nfo:regionOfInterestX</a>, </td>
+<td>--</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>In range of</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Predefined instances</code></em> :</span></p></td>
 <td>
-<a class="link" href="nfo-properties.html#nfo-hasRegionOfInterest" title="nfo:hasRegionOfInterest">nfo:hasRegionOfInterest</a>, </td>
+nfo:image-category-screenshot, </td>
 </tr>
 </tbody>
 </table></div>
@@ -307,8 +341,11 @@
 <div class="refsect2">
 <a name="nfo-Document"></a><h3>nfo:Document</h3>
 <p>A generic document. A common superclass for all documents on the desktop.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -339,8 +376,11 @@
 <hr>
 <div class="refsect2">
 <a name="http-//www.tracker-project.org/ontologies/poi#ObjectOfInterest"></a><h3>http://www.tracker-project.org/ontologies/poi#ObjectOfInterest</h3>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -367,8 +407,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Presentation"></a><h3>nfo:Presentation</h3>
 <p>A Presentation made by some presentation software (Corel Presentations, OpenOffice Impress, MS Powerpoint etc.)</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -394,8 +437,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-RemoteDataObject"></a><h3>nfo:RemoteDataObject</h3>
 <p>A file data object stored at a remote location. Don't confuse this class with a RemotePortAddress. This one applies to a particular resource, RemotePortAddress applies to an address, that can have various interpretations.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -421,8 +467,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Software"></a><h3>nfo:Software</h3>
 <p>A piece of software. Examples may include applications and the operating system. This interpretation most commonly applies to SoftwareItems.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -451,8 +500,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-ArchiveItem"></a><h3>nfo:ArchiveItem</h3>
 <p>A file entity inside an archive.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -479,8 +531,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-HardDiskPartition"></a><h3>nfo:HardDiskPartition</h3>
 <p>A partition on a hard disk</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -506,8 +561,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Font"></a><h3>nfo:Font</h3>
 <p>A font.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -534,8 +592,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-FilesystemImage"></a><h3>nfo:FilesystemImage</h3>
 <p>An image of a filesystem. Instances of this class may include CD images, DVD images or hard disk partition images created by various pieces of software (e.g. Norton Ghost)</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -561,8 +622,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-HelpDocument"></a><h3>nfo:HelpDocument</h3>
 <p>User guides and similar to assist the user</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -588,8 +652,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-DeletedResource"></a><h3>nfo:DeletedResource</h3>
 <p>A file entity that has been deleted from the original source. Usually such entities are stored within various kinds of 'Trash' or 'Recycle Bin' folders.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -616,8 +683,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-RasterImage"></a><h3>nfo:RasterImage</h3>
 <p>A raster image.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -644,8 +714,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-MindMap"></a><h3>nfo:MindMap</h3>
 <p>A MindMap, created by a mind-mapping utility. Examples might include FreeMind or mind mapper.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -671,8 +744,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Note"></a><h3>nfo:Note</h3>
 <p>Usually small document with snippets, reminders or frequenly used content.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -698,8 +774,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-PlainTextDocument"></a><h3>nfo:PlainTextDocument</h3>
 <p>A file containing plain text (ASCII, Unicode or other encodings). Examples may include TXT, HTML, XML, program source code etc.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -726,8 +805,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Spreadsheet"></a><h3>nfo:Spreadsheet</h3>
 <p>A spreadsheet, created by a spreadsheet application. Examples might include Gnumeric, OpenOffice Calc or MS Excel.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -753,8 +835,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Trash"></a><h3>nfo:Trash</h3>
 <p>Represents a container for deleted files, a feature common in modern operating systems.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -780,8 +865,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Media"></a><h3>nfo:Media</h3>
 <p>A piece of media content. This class may be used to express complex media containers with many streams of various media content (both aural and visual).</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -809,8 +897,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-SoftwareService"></a><h3>nfo:SoftwareService</h3>
 <p>A service published by a piece of software, either by an operating system or an application. Examples of such services may include calendar, addresbook and mailbox managed by a PIM application. This category is introduced to distinguish between data available directly from the applications (Via some Interprocess Communication Mechanisms) and data available from files on a disk. In either case both DataObjects would receive a similar interpretation (e.g. a Mailbox) and wouldn't differ on the content level.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -835,8 +926,11 @@ rdfs:Resource, </td>
 <hr>
 <div class="refsect2">
 <a name="nfo-VectorImage"></a><h3>nfo:VectorImage</h3>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -862,8 +956,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-WebHistory"></a><h3>nfo:WebHistory</h3>
 <p>A web history entry</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -894,8 +991,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-HtmlDocument"></a><h3>nfo:HtmlDocument</h3>
 <p>A HTML document, may contain links to other files.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -921,8 +1021,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-TextDocument"></a><h3>nfo:TextDocument</h3>
 <p>A text document</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -950,8 +1053,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-SoftwareItem"></a><h3>nfo:SoftwareItem</h3>
 <p>A DataObject representing a piece of software. Examples of interpretations of a SoftwareItem include an Application and an OperatingSystem.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -977,8 +1083,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-OperatingSystem"></a><h3>nfo:OperatingSystem</h3>
 <p>An OperatingSystem</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1004,8 +1113,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-PaginatedTextDocument"></a><h3>nfo:PaginatedTextDocument</h3>
 <p>A file containing a text document, that is unambiguously divided into pages. Examples might include PDF, DOC, PS', DVI etc.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1032,8 +1144,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-MediaFileListEntry"></a><h3>nfo:MediaFileListEntry</h3>
 <p>A single node in the list of media files contained within an MediaList instance. This class is intended to provide a type all those links have. In valid NRL untyped resources cannot be linked. There are no properties defined for this class but the application may expect rdf:first and rdf:last links. The former points to the DataObject instance, interpreted as Media the latter points at another MediaFileListEntr. At the end of the list there is a link to rdf:nil.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1061,8 +1176,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Folder"></a><h3>nfo:Folder</h3>
 <p>A folder/directory. Examples of folders include folders on a filesystem and message folders in a mailbox.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1088,8 +1206,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Filesystem"></a><h3>nfo:Filesystem</h3>
 <p>A filesystem. Examples of filesystems include hard disk partitions, removable media, but also images thereof stored in files.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1116,8 +1237,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Image"></a><h3>nfo:Image</h3>
 <p>A file containing an image.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1150,8 +1274,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-CompressionType"></a><h3>nfo:CompressionType</h3>
 <p>Type of compression. Instances of this class represent the limited set of values allowed for the nfo:compressionType property.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1178,8 +1305,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-FileHash"></a><h3>nfo:FileHash</h3>
 <p>A fingerprint of the file, generated by some hashing function.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1207,8 +1337,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-MediaStream"></a><h3>nfo:MediaStream</h3>
 <p>A stream of multimedia content, usually contained within a media container such as a movie (containing both audio and video) or a DVD (possibly containing many streams of audio and video). Most common interpretations for such a DataObject include Audio and Video.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1234,8 +1367,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Attachment"></a><h3>nfo:Attachment</h3>
 <p>A file attached to another data object. Many data formats allow for attachments: emails, vcards, ical events, id3 and exif...</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1261,8 +1397,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Equipment"></a><h3>nfo:Equipment</h3>
 <p>The equipment used to create media</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1290,8 +1429,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Website"></a><h3>nfo:Website</h3>
 <p>A website, usually a container for remote resources, that may be interpreted as HTMLDocuments, images or other types of content.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1317,8 +1459,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Application"></a><h3>nfo:Application</h3>
 <p>An application</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1344,8 +1489,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-EmbeddedFileDataObject"></a><h3>nfo:EmbeddedFileDataObject</h3>
 <p>A file embedded in another data object. There are many ways in which a file may be embedded in another one. Use this class directly only in cases if none of the subclasses gives a better description of your case.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1373,8 +1521,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-DataContainer"></a><h3>nfo:DataContainer</h3>
 <p>A superclass for all entities, whose primary purpose is to serve as containers for other data object. They usually don't have any 'meaning' by themselves. Examples include folders, archives and optical disc images.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1384,7 +1535,7 @@ rdfs:Resource, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subclasses</code></em> :</span></p></td>
 <td>
-<a class="link" href="nfo-ontology.html#nfo-SoftwareCategory" title="nfo:SoftwareCategory">nfo:SoftwareCategory</a>, <a class="link" href="nfo-ontology.html#nfo-Archive" title="nfo:Archive">nfo:Archive</a>, <a class="link" href="nfo-ontology.html#nfo-Trash" title="nfo:Trash">nfo:Trash</a>, <a class="link" href="nfo-ontology.html#nfo-Filesystem" title="nfo:Filesystem">nfo:Filesystem</a>, <a class="link" href="nfo-ontology.html#nfo-Folder" title="nfo:Folder">nfo:Folder</a>, </td>
+<a class="link" href="nfo-ontology.html#nfo-SoftwareCategory" title="nfo:SoftwareCategory">nfo:SoftwareCategory</a>, <a class="link" href="nfo-ontology.html#nfo-ImageCategory" title="nfo:ImageCategory">nfo:ImageCategory</a>, <a class="link" href="nfo-ontology.html#nfo-Archive" title="nfo:Archive">nfo:Archive</a>, <a class="link" href="nfo-ontology.html#nfo-Trash" title="nfo:Trash">nfo:Trash</a>, <a class="link" href="nfo-ontology.html#nfo-Filesystem" title="nfo:Filesystem">nfo:Filesystem</a>, <a class="link" href="nfo-ontology.html#nfo-Folder" title="nfo:Folder">nfo:Folder</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>In domain of</code></em> :</span></p></td>
@@ -1406,8 +1557,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-BookmarkFolder"></a><h3>nfo:BookmarkFolder</h3>
 <p>A folder with bookmarks of a webbrowser. Use nfo:containsBookmark to relate Bookmarks. Folders can contain subfolders, use containsBookmarkFolder to relate them.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1439,8 +1593,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Audio"></a><h3>nfo:Audio</h3>
 <p>A file containing audio content</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1471,8 +1628,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Archive"></a><h3>nfo:Archive</h3>
 <p>A compressed file. May contain other files or folder inside.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1499,8 +1659,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Visual"></a><h3>nfo:Visual</h3>
 <p>File containing visual content.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1528,8 +1691,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-Icon"></a><h3>nfo:Icon</h3>
 <p>An Icon (regardless of whether it's a raster or a vector icon. A resource representing an icon could have two types (Icon and Raster, or Icon and Vector) if required.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1555,8 +1721,11 @@ rdfs:Resource, </td>
 <div class="refsect2">
 <a name="nfo-RegionOfInterestContent"></a><h3>nfo:RegionOfInterestContent</h3>
 <p>Content in the area. There is a predefined set of contents in the spec: http://www.metadataworkinggroup.org</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1588,8 +1757,11 @@ nfo:roi-content-undefined, nfo:roi-content-barcode, nfo:roi-content-focus, nfo:r
 <div class="refsect2">
 <a name="nfo-Bookmark"></a><h3>nfo:Bookmark</h3>
 <p>A bookmark of a webbrowser. Use nie:title for the name/label, nie:contentCreated to represent the date when the user added the bookmark, and nie:contentLastModified for modifications. nfo:bookmarks to store the link.</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1621,8 +1793,11 @@ nfo:roi-content-undefined, nfo:roi-content-barcode, nfo:roi-content-focus, nfo:r
 <div class="refsect2">
 <a name="nfo-SoftwareApplication"></a><h3>nfo:SoftwareApplication</h3>
 <p>An application</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1650,10 +1825,45 @@ nfo:roi-content-undefined, nfo:roi-content-barcode, nfo:roi-content-focus, nfo:r
 </div>
 <hr>
 <div class="refsect2">
+<a name="nfo-RegionOfInterest"></a><h3>nfo:RegionOfInterest</h3>
+<p>Area on an image with relevant content. Following the spec in http://www.metadataworkinggroup.org</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
+<td>
+<a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subclasses</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>In domain of</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-properties.html#nfo-roiRefersTo" title="nfo:roiRefersTo">nfo:roiRefersTo</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestType" title="nfo:regionOfInterestType">nfo:regionOfInterestType</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestHeight" title="nfo:regionOfInterestHeight">nfo:regionOfInterestHeight</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestWidth" title="nfo:regionOfInterestWidth">nfo:regionOfInterestWidth</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestY" title="nfo:regionOfInterestY">nfo:regionOfInterestY</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestX" title="nfo:regionOfInterestX">nfo:regionOfInterestX</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>In range of</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-properties.html#nfo-hasRegionOfInterest" title="nfo:hasRegionOfInterest">nfo:hasRegionOfInterest</a>, </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="nfo-Orientation"></a><h3>nfo:Orientation</h3>
 <p>Orientation enum</p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
@@ -1685,6 +1895,6 @@ nfo:orientation-left, nfo:orientation-right-mirror, nfo:orientation-right, nfo:o
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

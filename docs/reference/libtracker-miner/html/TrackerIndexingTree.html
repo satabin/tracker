@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerIndexingTree</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="up" href="ch03.html" title="Miner classes for file system">
 <link rel="prev" href="TrackerMinerFS.html" title="TrackerMinerFS">
-<link rel="next" href="ch04.html" title="Managing miners">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<link rel="next" href="TrackerDecoratorFS.html" title="TrackerDecoratorFS">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -18,7 +18,7 @@
 <td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">Tracker Miner Library Reference Manual</th>
-<td><a accesskey="n" href="ch04.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="TrackerDecoratorFS.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#TrackerIndexingTree.synopsis" class="shortcut">Top</a>
@@ -142,8 +142,11 @@ Base object used to configure indexing within <a class="link" href="TrackerMiner
 <p>
 Class for the <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObjectClass"><span class="type">GObjectClass</span></a> <em class="structfield"><code><a name="TrackerIndexingTreeClass.parent-class"></a>parent_class</code></em>;</span></p></td>
@@ -174,8 +177,11 @@ Class for the <a class="link" href="TrackerIndexingTree.html" title="TrackerInde
 Adds a directory to the indexing tree with the
 given configuration flags.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>tree</code></em> :</span></p></td>
@@ -203,8 +209,11 @@ given configuration flags.
 <p>
 Adds a new filter for basenames.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>tree</code></em> :</span></p></td>
@@ -230,8 +239,11 @@ Adds a new filter for basenames.
 <p>
 Clears all filters of a given type.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>tree</code></em> :</span></p></td>
@@ -261,8 +273,11 @@ parameters given through <a class="link" href="TrackerIndexingTree.html#tracker-
 If <em class="parameter"><code>file_type</code></em> is <a href="http://library.gnome.org/devel/gio/unstable/GFileInfo.html#G-FILE-TYPE-UNKNOWN:CAPS"><span class="type">G_FILE_TYPE_UNKNOWN</span></a>, file type will be queried to the
 file system.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>tree</code></em> :</span></p></td>
@@ -292,8 +307,6 @@ file system.
 <a name="tracker-indexing-tree-file-is-root"></a><h3>tracker_indexing_tree_file_is_root ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_indexing_tree_file_is_root  (<em class="parameter"><code><a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *tree</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *file</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -305,8 +318,11 @@ file system.
 <p>
 Returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>file</code></em> matches any filter of the given filter type.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>tree</code></em> :</span></p></td>
@@ -336,16 +352,12 @@ Returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macr
 <pre class="programlisting"><a class="link" href="libtracker-miner-Enumerations.html#TrackerFilterPolicy" title="enum TrackerFilterPolicy"><span class="returnvalue">TrackerFilterPolicy</span></a> tracker_indexing_tree_get_default_policy
                                                         (<em class="parameter"><code><a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *tree</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-miner-Enumerations.html#TrackerFilterType" title="enum TrackerFilterType"><span class="type">TrackerFilterType</span></a> filter</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="tracker-indexing-tree-get-filter-hidden"></a><h3>tracker_indexing_tree_get_filter_hidden ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_indexing_tree_get_filter_hidden
                                                         (<em class="parameter"><code><a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *tree</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -361,8 +373,11 @@ and would equal or contain <em class="parameter"><code>file</code></em>, or <a h
 If the return value is non-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, <em class="parameter"><code>directory_flags</code></em> would contain the
 <a class="link" href="libtracker-miner-Enumerations.html#TrackerDirectoryFlags" title="enum TrackerDirectoryFlags"><span class="type">TrackerDirectoryFlags</span></a> applying to <em class="parameter"><code>file</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>tree</code></em> :</span></p></td>
@@ -394,8 +409,11 @@ If the return value is non-<a href="http://library.gnome.org/devel/glib/unstable
 <p>
 Returns the list of indexing roots in <em class="parameter"><code>tree</code></em>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>tree</code></em> :</span></p></td>
@@ -420,8 +438,11 @@ freed. <span class="annotation">[<acronym title="Free data container after the c
 <p>
 Returns a newly created <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a newly allocated <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a>
@@ -439,8 +460,11 @@ Returns a newly created <a class="link" href="TrackerIndexingTree.html" title="T
 <p>
 returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>parent</code></em> should be indexed based on its contents.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>tree</code></em> :</span></p></td>
@@ -474,8 +498,11 @@ Removes <em class="parameter"><code>directory</code></em> from the indexing tree
 only directories previously added with <a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-add" title="tracker_indexing_tree_add ()"><code class="function">tracker_indexing_tree_add()</code></a>
 can be effectively removed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>tree</code></em> :</span></p></td>
@@ -497,8 +524,6 @@ can be effectively removed.
                                                         (<em class="parameter"><code><a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *tree</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-miner-Enumerations.html#TrackerFilterType" title="enum TrackerFilterType"><span class="type">TrackerFilterType</span></a> filter</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-miner-Enumerations.html#TrackerFilterPolicy" title="enum TrackerFilterPolicy"><span class="type">TrackerFilterPolicy</span></a> policy</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -506,8 +531,6 @@ can be effectively removed.
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_indexing_tree_set_filter_hidden
                                                         (<em class="parameter"><code><a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *tree</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> filter_hidden</code></em>);</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
@@ -526,21 +549,6 @@ can be effectively removed.
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *trackerindexingtree,
                                                         <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>               *arg1,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>             user_data)                : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
-<p>
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>trackerindexingtree</code></em> :</span></p></td>
-<td>the object which received the signal.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>user data set when the signal handler was connected.</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -548,21 +556,6 @@ can be effectively removed.
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *trackerindexingtree,
                                                         <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>               *arg1,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>             user_data)                : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
-<p>
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>trackerindexingtree</code></em> :</span></p></td>
-<td>the object which received the signal.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>user data set when the signal handler was connected.</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -570,26 +563,11 @@ can be effectively removed.
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *trackerindexingtree,
                                                         <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>               *arg1,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>             user_data)                : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
-<p>
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>trackerindexingtree</code></em> :</span></p></td>
-<td>the object which received the signal.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>user data set when the signal handler was connected.</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

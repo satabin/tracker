@@ -40,11 +40,11 @@
 #include <sys/mman.h>
 #endif /* G_OS_WIN32 */
 
+#include <libmediaart/mediaart.h>
+
 #include <libtracker-common/tracker-common.h>
 
 #include <libtracker-extract/tracker-extract.h>
-
-#include "tracker-media-art.h"
 
 #ifdef FRAME_ENABLE_TRACE
 #warning Frame traces enabled
@@ -1294,6 +1294,7 @@ get_id3v24_tags (id3v24frame           frame,
 			g_strstrip (word);
 		} else {
 			/* Can't do anything without word. */
+			g_free (word);
 			break;
 		}
 
@@ -1485,6 +1486,7 @@ get_id3v23_tags (id3v24frame           frame,
 			g_strstrip (word);
 		} else {
 			/* Can't do anything without word. */
+			g_free (word);
 			break;
 		}
 
@@ -2138,21 +2140,6 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 
 	g_free (id3v1_buffer);
 
-	if (md.id3v1.encoding != NULL) {
-		gchar *locale;
-
-		locale = tracker_locale_get (TRACKER_LOCALE_LANGUAGE);
-		if (!g_str_has_prefix (locale, "ru") &&
-		    !g_str_has_prefix (locale, "uk")) {
-			/* use guessed encoding for ID3v2 tags only in selected locales
-			   where broken ID3v2 is widespread */
-			g_free (md.id3v1.encoding);
-			md.id3v1.encoding = NULL;
-		}
-		g_free (locale);
-		locale = NULL;
-	}
-
 	/* Get other embedded tags */
 	uri = g_file_get_uri (file);
 	audio_offset = parse_id3v2 (buffer, buffer_size, &md.id3v1, uri, metadata, &md);
@@ -2500,13 +2487,13 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 	/* Get mp3 stream info */
 	mp3_parse (buffer, buffer_size, audio_offset, uri, metadata, &md);
 
-	tracker_media_art_process (md.media_art_data,
-	                           md.media_art_size,
-	                           md.media_art_mime,
-	                           TRACKER_MEDIA_ART_ALBUM,
-	                           md.performer,
-	                           md.album,
-	                           uri);
+	media_art_process (md.media_art_data,
+	                   md.media_art_size,
+	                   md.media_art_mime,
+	                   MEDIA_ART_ALBUM,
+	                   md.performer,
+	                   md.album,
+	                   uri);
 	g_free (md.media_art_data);
 	g_free (md.media_art_mime);
 

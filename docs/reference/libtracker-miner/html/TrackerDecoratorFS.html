@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TrackerDecoratorFS</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
+<link rel="up" href="ch03.html" title="Miner classes for file system">
+<link rel="prev" href="TrackerIndexingTree.html" title="TrackerIndexingTree">
+<link rel="next" href="ch04.html" title="Managing miners">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="TrackerIndexingTree.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Tracker Miner Library Reference Manual</th>
+<td><a accesskey="n" href="ch04.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#TrackerDecoratorFS.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#TrackerDecoratorFS.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#TrackerDecoratorFS.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#TrackerDecoratorFS.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="TrackerDecoratorFS"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="TrackerDecoratorFS.top_of_page"></a>TrackerDecoratorFS</span></h2>
+<p>TrackerDecoratorFS — Filesystem implementation for TrackerDecorator</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="TrackerDecoratorFS.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+#include &lt;libtracker-miner/tracker-miner.h&gt;
+
+struct              <a class="link" href="TrackerDecoratorFS.html#TrackerDecoratorFS-struct" title="struct TrackerDecoratorFS">TrackerDecoratorFS</a>;
+struct              <a class="link" href="TrackerDecoratorFS.html#TrackerDecoratorFSClass" title="struct TrackerDecoratorFSClass">TrackerDecoratorFSClass</a>;
+<a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="returnvalue">GType</span></a>               <a class="link" href="TrackerDecoratorFS.html#tracker-decorator-fs-get-type" title="tracker_decorator_fs_get_type ()">tracker_decorator_fs_get_type</a>       (<em class="parameter"><code><span class="type">void</span></code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="TrackerDecoratorFS.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a class="link" href="TrackerMiner.html" title="TrackerMiner">TrackerMiner</a>
+         +----<a class="link" href="TrackerDecorator.html" title="TrackerDecorator">TrackerDecorator</a>
+               +----TrackerDecoratorFS
+</pre>
+</div>
+<div class="refsect1">
+<a name="TrackerDecoratorFS.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+TrackerDecoratorFS implements
+ <a href="http://library.gnome.org/devel/gio/unstable/GInitable.html">GInitable</a>.</p>
+</div>
+<div class="refsect1">
+<a name="TrackerDecoratorFS.description"></a><h2>Description</h2>
+<p>
+<a class="link" href="TrackerDecoratorFS.html" title="TrackerDecoratorFS"><span class="type">TrackerDecoratorFS</span></a> is used to handle extended metadata extraction
+for resources on file systems that are mounted or unmounted.
+</p>
+</div>
+<div class="refsect1">
+<a name="TrackerDecoratorFS.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="TrackerDecoratorFS-struct"></a><h3>struct TrackerDecoratorFS</h3>
+<pre class="programlisting">struct TrackerDecoratorFS;</pre>
+<p>
+A decorator object.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="TrackerDecoratorFSClass"></a><h3>struct TrackerDecoratorFSClass</h3>
+<pre class="programlisting">struct TrackerDecoratorFSClass {
+	TrackerDecoratorClass parent_class;
+};
+</pre>
+<p>
+A class that takes care of resources on mount points added or
+removed, this is based on <a class="link" href="TrackerDecorator.html#TrackerDecoratorClass" title="struct TrackerDecoratorClass"><span class="type">TrackerDecoratorClass</span></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><a class="link" href="TrackerDecorator.html#TrackerDecoratorClass" title="struct TrackerDecoratorClass"><span class="type">TrackerDecoratorClass</span></a> <em class="structfield"><code><a name="TrackerDecoratorFSClass.parent-class"></a>parent_class</code></em>;</span></p></td>
+<td>parent object class.</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-decorator-fs-get-type"></a><h3>tracker_decorator_fs_get_type ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="returnvalue">GType</span></a>               tracker_decorator_fs_get_type       (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="TrackerDecoratorFS.see-also"></a><h2>See Also</h2>
+<a class="link" href="TrackerDecorator.html" title="TrackerDecorator"><span class="type">TrackerDecorator</span></a>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.19</div>
+</body>
+</html>

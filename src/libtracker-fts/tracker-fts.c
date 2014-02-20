@@ -28,6 +28,8 @@
 #  include "fts3.h"
 #endif
 
+static gchar **property_names;
+
 gboolean
 tracker_fts_init (void) {
 #ifdef HAVE_BUILTIN_FTS
@@ -80,7 +82,8 @@ function_offsets (sqlite3_context *context,
                   int              argc,
                   sqlite3_value   *argv[])
 {
-	gchar *offsets, **names;
+	gchar *offsets;
+	const gchar * const * names;
 	gint offset_values[4];
 	GString *result = NULL;
 	gint i = 0;
@@ -92,8 +95,8 @@ function_offsets (sqlite3_context *context,
 		return;
 	}
 
-	offsets = sqlite3_value_text (argv[0]);
-	names = (unsigned int *) sqlite3_value_blob (argv[1]);
+	offsets = (gchar *) sqlite3_value_text (argv[0]);
+	names = sqlite3_value_blob (argv[1]);
 
 	while (offsets && *offsets) {
 		offset_values[i] = g_strtod (offsets, &offsets);
@@ -127,13 +130,15 @@ function_weights (sqlite3_context *context,
                   sqlite3_value   *argv[])
 {
 	static guint *weights = NULL;
-	static gsize weights_initialized = 0;
+	static GMutex mutex;
+	int rc = SQLITE_DONE;
 
-	if (g_once_init_enter (&weights_initialized)) {
+	g_mutex_lock (&mutex);
+
+	if (G_UNLIKELY (weights == NULL)) {
 		GArray *weight_array;
 		sqlite3_stmt *stmt;
 		sqlite3 *db;
-		int rc;
 
 		weight_array = g_array_new (FALSE, FALSE, sizeof (guint));
 		db = sqlite3_context_db_handle (context);
@@ -149,18 +154,26 @@ function_weights (sqlite3_context *context,
 				guint weight;
 				weight = sqlite3_column_int (stmt, 0);
 				g_array_append_val (weight_array, weight);
+			} else if (rc != SQLITE_BUSY) {
+				break;
 			}
 		}
 
-		if (rc == SQLITE_DONE) {
-			rc = sqlite3_finalize (stmt);
-		}
+		sqlite3_finalize (stmt);
 
-		weights = (guint *) g_array_free (weight_array, FALSE);
-		g_once_init_leave (&weights_initialized, (rc == SQLITE_OK));
+		if (rc == SQLITE_DONE) {
+			weights = (guint *) g_array_free (weight_array, FALSE);
+		} else {
+			g_array_free (weight_array, TRUE);
+		}
 	}
 
-	sqlite3_result_blob (context, weights, sizeof (weights), NULL);
+	g_mutex_unlock (&mutex);
+
+	if (rc == SQLITE_DONE)
+		sqlite3_result_blob (context, weights, sizeof (weights), NULL);
+	else
+		sqlite3_result_error_code (context, rc);
 }
 
 static void
@@ -168,44 +181,7 @@ function_property_names (sqlite3_context *context,
                          int              argc,
                          sqlite3_value   *argv[])
 {
-	static gchar **names = NULL;
-	static gsize names_initialized = 0;
-
-	if (g_once_init_enter (&names_initialized)) {
-		GPtrArray *names_array;
-		sqlite3_stmt *stmt;
-		sqlite3 *db;
-		int rc;
-
-		names_array = g_ptr_array_new ();
-		db = sqlite3_context_db_handle (context);
-		rc = sqlite3_prepare_v2 (db,
-		                         "SELECT Uri "
-		                         "FROM Resource "
-		                         "JOIN \"rdf:Property\" "
-		                         "ON Resource.ID = \"rdf:Property\".ID "
-		                         "WHERE \"rdf:Property\".\"tracker:fulltextIndexed\" = 1 "
-		                         "ORDER BY \"rdf:Property\".ID ",
-		                         -1, &stmt, NULL);
-
-		while ((rc = sqlite3_step (stmt)) != SQLITE_DONE) {
-			if (rc == SQLITE_ROW) {
-				const gchar *name;
-
-				name = sqlite3_column_text (stmt, 0);
-				g_ptr_array_add (names_array, g_strdup (name));
-			}
-		}
-
-		if (rc == SQLITE_DONE) {
-			rc = sqlite3_finalize (stmt);
-		}
-
-		names = (gchar **) g_ptr_array_free (names_array, FALSE);
-		g_once_init_leave (&names_initialized, (rc == SQLITE_OK));
-	}
-
-	sqlite3_result_blob (context, names, sizeof (names), NULL);
+	sqlite3_result_blob (context, property_names, sizeof (property_names), NULL);
 }
 
 static void
@@ -225,11 +201,37 @@ tracker_fts_register_functions (sqlite3 *db)
 	                         NULL, NULL);
 }
 
+static void
+tracker_fts_init_property_names (GHashTable *tables)
+{
+	GHashTableIter iter;
+	GList *columns;
+	GList *table_columns;
+	gchar **ptr;
+
+	columns = NULL;
+	g_hash_table_iter_init (&iter, tables);
+	while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &table_columns)) {
+		columns = g_list_concat (columns, g_list_copy (table_columns));
+	}
+
+	ptr = property_names = g_new0 (gchar *, g_list_length (columns));
+	while (columns) {
+		*ptr = g_strdup (columns->data);
+		ptr ++;
+		columns = columns->next;
+	}
+}
+
 gboolean
-tracker_fts_init_db (sqlite3 *db) {
+tracker_fts_init_db (sqlite3 *db,
+                     GHashTable *tables)
+{
 	if (!tracker_tokenizer_initialize (db)) {
 		return FALSE;
 	}
+
+	tracker_fts_init_property_names (tables);
 
 	tracker_fts_register_functions (db);
 	return TRUE;

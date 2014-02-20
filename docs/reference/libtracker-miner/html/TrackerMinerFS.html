@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerMinerFS</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="up" href="ch03.html" title="Miner classes for file system">
 <link rel="prev" href="ch03.html" title="Miner classes for file system">
 <link rel="next" href="TrackerIndexingTree.html" title="TrackerIndexingTree">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -195,8 +195,11 @@ Abstract miner implementation to get data from the filesystem.
 Prototype for the abstract class, <em class="parameter"><code>process_file</code></em> must be implemented
 in the deriving class in order to actually extract data.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><a class="link" href="TrackerMiner.html#TrackerMinerClass" title="TrackerMinerClass"><span class="type">TrackerMinerClass</span></a> <em class="structfield"><code><a name="TrackerMinerFSClass.parent"></a>parent</code></em>;</span></p></td>
@@ -241,8 +244,11 @@ parent object. In this case, when regenerating internal
 caches, an extra query will be done so that these elements
 are taken into account.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -269,8 +275,11 @@ Tells the filesystem miner to check and index a directory,
 this file must be part of the usual crawling directories
 of <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>. See <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-directory-add" title="tracker_miner_fs_directory_add ()"><code class="function">tracker_miner_fs_directory_add()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -303,8 +312,11 @@ Tells the filesystem miner to check and index a directory at
 a given priority, this file must be part of the usual crawling
 directories of <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>. See <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-directory-add" title="tracker_miner_fs_directory_add ()"><code class="function">tracker_miner_fs_directory_add()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -339,8 +351,11 @@ Tells the filesystem miner to check and index a file,
 this file must be part of the usual crawling directories
 of <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>. See <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-directory-add" title="tracker_miner_fs_directory_add ()"><code class="function">tracker_miner_fs_directory_add()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -374,8 +389,11 @@ a given priority, this file must be part of the usual
 crawling directories of <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>. See
 <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-directory-add" title="tracker_miner_fs_directory_add ()"><code class="function">tracker_miner_fs_directory_add()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -408,8 +426,11 @@ crawling directories of <a class="link" href="TrackerMinerFS.html" title="Tracke
 <p>
 Tells the filesystem miner to inspect a directory.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -438,8 +459,11 @@ Tells the filesystem miner to inspect a directory.
 Removes a directory from being inspected by <em class="parameter"><code>fs</code></em>. Note that only directory
  watches are removed.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -471,8 +495,11 @@ Removes a directory from being inspected by <em class="parameter"><code>fs</code
 associated metadata of the directory (and its contents) from the
 store.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -504,8 +531,11 @@ Notifies <em class="parameter"><code>fs</code></em> that all processing on <em c
 happened during file data processing, it should be passed in <em class="parameter"><code>error</code></em>, else
 that parameter will contain <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to reflect success.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -535,8 +565,11 @@ that parameter will contain <a href="http://library.gnome.org/devel/glib/unstabl
 Tells <em class="parameter"><code>fs</code></em> to force mtime checking (regardless of the global mtime check
 configuration) on the given <em class="parameter"><code>directory</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -555,8 +588,6 @@ configuration) on the given <em class="parameter"><code>directory</code></em>.
 <div class="refsect2">
 <a name="tracker-miner-fs-force-recheck"></a><h3>tracker_miner_fs_force_recheck ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_miner_fs_force_recheck      (<em class="parameter"><code><a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> *fs</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -567,8 +598,11 @@ configuration) on the given <em class="parameter"><code>directory</code></em>.
 Returns the <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> which determines
 what files/directories are indexed by <em class="parameter"><code>fs</code></em>
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -589,15 +623,16 @@ holding the indexing configuration. <span class="annotation">[<acronym title="Do
 <a name="tracker-miner-fs-get-initial-crawling"></a><h3>tracker_miner_fs_get_initial_crawling ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_miner_fs_get_initial_crawling
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> *fs</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="tracker-miner-fs-get-mtime-checking"></a><h3>tracker_miner_fs_get_mtime_checking ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_miner_fs_get_mtime_checking (<em class="parameter"><code><a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> *fs</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -628,8 +663,11 @@ has been already fully processed for indexing before any
 children is processed, so most usually this function should
 return non-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -657,8 +695,11 @@ return non-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-M
 <p>
 Gets the current throttle value. see <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-set-throttle" title="tracker_miner_fs_set_throttle ()"><code class="function">tracker_miner_fs_set_throttle()</code></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -686,8 +727,11 @@ the URN for a <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><
 If <em class="parameter"><code>file</code></em> is not being currently processed by <em class="parameter"><code>fs</code></em>, or doesn't
 exist in the store yet, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> will be returned.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -714,8 +758,11 @@ or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.ht
 <a name="tracker-miner-fs-has-items-to-process"></a><h3>tracker_miner_fs_has_items_to_process ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_miner_fs_has_items_to_process
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> *fs</code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -744,8 +791,11 @@ the URN of the given <a href="http://library.gnome.org/devel/gio/unstable/GFile.
 <p>
 If <em class="parameter"><code>file</code></em> doesn't exist in the store yet, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> will be returned.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -773,8 +823,6 @@ to <em class="parameter"><code>file</code></em>, or <a href="http://library.gnom
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_miner_fs_set_initial_crawling
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> *fs</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> do_initial_crawling</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -801,8 +849,11 @@ process using this API.
 <p>
 The default if not set directly is that <em class="parameter"><code>mtime_checking</code></em> is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -829,8 +880,11 @@ a value of 0 means no throttling at all, so the miner
 will perform operations at full speed, 1 is the slowest
 value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -855,8 +909,11 @@ value.
 <p>
 Tells the filesystem miner to writeback a file.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -892,8 +949,11 @@ Notifies <em class="parameter"><code>fs</code></em> that all writing back on <em
 happened during file data processing, it should be passed in <em class="parameter"><code>error</code></em>, else
 that parameter will contain <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to reflect success.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
@@ -969,8 +1029,11 @@ that parameter will contain <a href="http://library.gnome.org/devel/glib/unstabl
 The ::finished signal is emitted when <em class="parameter"><code>miner_fs</code></em> has finished
 all pending processing.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner_fs</code></em> :</span></p></td>
@@ -1025,8 +1088,11 @@ be marked as to ignore on next update, and it's metadata prepared for that.
 <em class="parameter"><code>builder</code></em> is the <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
 to be performed for <em class="parameter"><code>file</code></em> will be appended.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner_fs</code></em> :</span></p></td>
@@ -1086,8 +1152,11 @@ must call <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-file-notify
 processing has finished on <em class="parameter"><code>file</code></em>, so the miner can execute
 the SPARQL updates and continue processing other files.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner_fs</code></em> :</span></p></td>
@@ -1148,8 +1217,11 @@ must call <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-file-notify
 processing has finished on <em class="parameter"><code>file</code></em>, so the miner can execute
 the SPARQL updates and continue processing other files.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner_fs</code></em> :</span></p></td>
@@ -1198,8 +1270,11 @@ the SPARQL updates and continue processing other files.
 The ::writeback-file signal is emitted whenever a file must be written
 back
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner_fs</code></em> :</span></p></td>
@@ -1242,6 +1317,6 @@ back
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

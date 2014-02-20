@@ -38,6 +38,8 @@
 #include <sys/resource.h>
 #endif
 
+#include <libmediaart/mediaart.h>
+
 #include <libtracker-common/tracker-log.h>
 #include <libtracker-common/tracker-dbus.h>
 #include <libtracker-common/tracker-os-dependant.h>
@@ -47,11 +49,10 @@
 
 #include <libtracker-data/tracker-db-manager.h>
 
-#include "tracker-media-art.h"
 #include "tracker-config.h"
 #include "tracker-main.h"
 #include "tracker-extract.h"
-#include "tracker-controller.h"
+#include "tracker-extract-decorator.h"
 
 #ifdef THREAD_ENABLE_TRACE
 #warning Main thread traces enabled
@@ -74,7 +75,6 @@ static GMainLoop *main_loop;
 static gint verbosity = -1;
 static gchar *filename;
 static gchar *mime_type;
-static gboolean disable_shutdown;
 static gboolean force_internal_extractors;
 static gchar *force_module;
 static gboolean version;
@@ -95,12 +95,6 @@ static GOptionEntry entries[] = {
 	  G_OPTION_ARG_STRING, &mime_type,
 	  N_("MIME type for file (if not provided, this will be guessed)"),
 	  N_("MIME") },
-	/* Debug run is used to avoid that the mainloop exits, so that
-	 * as a developer you can be relax when running the tool in gdb */
-	{ "disable-shutdown", 'd', 0,
-	  G_OPTION_ARG_NONE, &disable_shutdown,
-	  N_("Disable shutting down after 30 seconds of inactivity"),
-	  NULL },
 	{ "force-internal-extractors", 'i', 0,
 	  G_OPTION_ARG_NONE, &force_internal_extractors,
 	  N_("Force internal extractors over 3rd parties like libstreamanalyzer"),
@@ -183,7 +177,6 @@ signal_handler (int signo)
 	case SIGTERM:
 	case SIGINT:
 		in_loop = TRUE;
-		disable_shutdown = FALSE;
 		g_main_loop_quit (main_loop);
 
 		/* Fall through */
@@ -278,7 +271,10 @@ run_standalone (TrackerConfig *config)
 	}
 
 	tracker_locale_init ();
-	tracker_media_art_init ();
+
+	if (!media_art_init ()) {
+		g_warning ("Could not initialize media art, will not be available");
+	}
 
 	/* This makes sure we don't steal all the system's resources */
 	initialize_priority_and_scheduling (tracker_config_get_sched_idle (config),
@@ -287,14 +283,14 @@ run_standalone (TrackerConfig *config)
 	file = g_file_new_for_commandline_arg (filename);
 	uri = g_file_get_uri (file);
 
-	object = tracker_extract_new (disable_shutdown,
+	object = tracker_extract_new (TRUE,
 	                              force_internal_extractors,
 	                              force_module);
 
 	if (!object) {
 		g_object_unref (file);
 		g_free (uri);
-		tracker_media_art_shutdown ();
+		media_art_shutdown ();
 		tracker_locale_shutdown ();
 		return EXIT_FAILURE;
 	}
@@ -307,7 +303,7 @@ run_standalone (TrackerConfig *config)
 	g_object_unref (file);
 	g_free (uri);
 
-	tracker_media_art_shutdown ();
+	media_art_shutdown ();
 	tracker_locale_shutdown ();
 
 	return EXIT_SUCCESS;
@@ -318,11 +314,10 @@ main (int argc, char *argv[])
 {
 	GOptionContext *context;
 	GError *error = NULL;
-	TrackerExtract *object;
-	TrackerController *controller;
+	TrackerExtract *extract;
+	TrackerDecorator *decorator;
 	gchar *log_filename = NULL;
 	GMainLoop *my_main_loop;
-	guint shutdown_timeout;
 
 	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -397,9 +392,6 @@ main (int argc, char *argv[])
 		g_free (log_filename);
 	}
 
-	g_message ("Shutdown after 30 seconds of inactivity is %s",
-	           disable_shutdown ? "disabled" : "enabled");
-
 	sanity_check_option_values (config);
 
 	/* This makes sure we don't steal all the system's resources */
@@ -407,29 +399,21 @@ main (int argc, char *argv[])
 	                                    tracker_db_manager_get_first_index_done () == FALSE);
 	tracker_memory_setrlimits ();
 
-	if (disable_shutdown) {
-		shutdown_timeout = 0;
-	} else {
-		shutdown_timeout = QUIT_TIMEOUT;
-	}
+	extract = tracker_extract_new (TRUE,
+	                               force_internal_extractors,
+	                               force_module);
 
-	object = tracker_extract_new (disable_shutdown,
-	                              force_internal_extractors,
-	                              force_module);
-
-	if (!object) {
+	if (!extract) {
 		g_object_unref (config);
 		tracker_log_shutdown ();
 		return EXIT_FAILURE;
 	}
 
-	controller = tracker_controller_new (object, shutdown_timeout, &error);
+	decorator = tracker_extract_decorator_new (extract, NULL, &error);
 
-	if (!controller) {
-		g_critical ("Controller thread failed to initialize: %s\n", error->message);
-		g_error_free (error);
+	if (error) {
+		g_critical ("Could not start decorator: %s\n", error->message);
 		g_object_unref (config);
-		g_object_unref (object);
 		tracker_log_shutdown ();
 		return EXIT_FAILURE;
 	}
@@ -440,7 +424,12 @@ main (int argc, char *argv[])
 #endif /* THREAD_ENABLE_TRACE */
 
 	tracker_locale_init ();
-	tracker_media_art_init ();
+
+	if (!media_art_init ()) {
+		g_warning ("Could not initialize media art, will not be available");
+	}
+
+	tracker_miner_start (TRACKER_MINER (decorator));
 
 	/* Main loop */
 	main_loop = g_main_loop_new (NULL, FALSE);
@@ -450,14 +439,14 @@ main (int argc, char *argv[])
 	main_loop = NULL;
 	g_main_loop_unref (my_main_loop);
 
-	g_message ("Shutdown started");
+	tracker_miner_stop (TRACKER_MINER (decorator));
 
 	/* Shutdown subsystems */
-	tracker_media_art_shutdown ();
+	media_art_shutdown ();
 	tracker_locale_shutdown ();
 
-	g_object_unref (object);
-	g_object_unref (controller);
+	g_object_unref (extract);
+	g_object_unref (decorator);
 
 	tracker_log_shutdown ();
 

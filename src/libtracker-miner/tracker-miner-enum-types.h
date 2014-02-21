@@ -17,6 +17,8 @@ GType tracker_filter_type_get_type (void) G_GNUC_CONST;
 #define TRACKER_TYPE_FILTER_TYPE (tracker_filter_type_get_type ())
 GType tracker_filter_policy_get_type (void) G_GNUC_CONST;
 #define TRACKER_TYPE_FILTER_POLICY (tracker_filter_policy_get_type ())
+GType tracker_network_type_get_type (void) G_GNUC_CONST;
+#define TRACKER_TYPE_NETWORK_TYPE (tracker_network_type_get_type ())
 G_END_DECLS
 
 #endif /* __TRACKER_ENUMS_TYPES_H__ */

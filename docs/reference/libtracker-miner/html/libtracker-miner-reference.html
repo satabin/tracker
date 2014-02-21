@@ -2,22 +2,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Part II. Reference</title>
+<title>Tracker Miner Library Reference Manual: Part II. Reference</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="up" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="prev" href="tracker-overview-compiling.html" title="Compiling applications">
 <link rel="next" href="ch02.html" title="Base abstract miner classes">
-<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.20.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="tracker-overview-compiling.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td> </td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">Tracker Miner Library Reference Manual</th>
-<td><a accesskey="n" href="ch02.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><img src="up-insensitive.png" width="16" height="16" border="0"></td>
+<td><a accesskey="p" href="tracker-overview-compiling.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="ch02.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="part">
 <div class="titlepage"><div><div><h1 class="title">
@@ -36,7 +36,8 @@
 <span class="refentrytitle"><a href="TrackerMiner.html">TrackerMiner</a></span><span class="refpurpose"> — Abstract base class for data miners</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="libtracker-miner-TrackerMinerWeb.html">TrackerMinerWeb</a></span><span class="refpurpose"> — Abstract base class for miners using web services</span>
+<span class="refentrytitle"><a href="TrackerMinerOnline.html">TrackerMinerOnline</a></span><span class="refpurpose"> — Abstract base class for miners connecting to
+  online resources</span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="TrackerDecorator.html">TrackerDecorator</a></span><span class="refpurpose"> — A miner tasked with listening for DB resource changes and extracting metadata</span>
@@ -54,33 +55,14 @@
 <span class="refentrytitle"><a href="TrackerDecoratorFS.html">TrackerDecoratorFS</a></span><span class="refpurpose"> — Filesystem implementation for TrackerDecorator</span>
 </dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch04.html">Managing miners</a></span></dt>
-<dd><dl><dt>
-<span class="refentrytitle"><a href="TrackerMinerManager.html">TrackerMinerManager</a></span><span class="refpurpose"> — External control and monitoring of miners</span>
-</dt></dl></dd>
-<dt><span class="chapter"><a href="ch05.html">Base abstract providers for network/password/etc control</a></span></dt>
+<dt><span class="chapter"><a href="ch04.html">Utilities</a></span></dt>
 <dd><dl>
 <dt>
-<span class="refentrytitle"><a href="libtracker-miner-TrackerNetworkProvider.html">TrackerNetworkProvider</a></span><span class="refpurpose"> — Network status interface for cross platform backends</span>
+<span class="refentrytitle"><a href="libtracker-miner-TrackerThumbnailer.html">TrackerThumbnailer</a></span><span class="refpurpose"> — Request the thumbnailer service creates or
+updates thumbnails.</span>
 </dt>
-<dt>
-<span class="refentrytitle"><a href="libtracker-miner-TrackerPasswordProvider.html">TrackerPasswordProvider</a></span><span class="refpurpose"> — Password storage interface for cross platform backends</span>
-</dt>
-</dl></dd>
-<dt><span class="chapter"><a href="ch06.html">Utilities</a></span></dt>
-<dd><dl>
 <dt>
 <span class="refentrytitle"><a href="libtracker-miner-Enumerations.html">Enumerations</a></span><span class="refpurpose"> — Common enumerations</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="libtracker-miner-TrackerStorage.html">TrackerStorage</a></span><span class="refpurpose"> — Removable storage and mount point convenience API</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="libtracker-miner-Media-art-management.html">Media art management</a></span><span class="refpurpose"> — Media art request and management.</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="libtracker-miner-Thumbnailer-management.html">Thumbnailer management</a></span><span class="refpurpose"> — Request the thumbnailer service creates or
-updates thumbnails.</span>
 </dt>
 </dl></dd>
 </dl>
@@ -89,6 +71,6 @@ updates thumbnails.</span>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.19</div>
+          Generated by GTK-Doc V1.20.1</div>
 </body>
 </html>

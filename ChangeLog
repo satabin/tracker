@@ -1,3 +1,253 @@
+2014-02-20  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 0.17.3
+
+2014-02-20  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-sparql: Add new command line features for help with the ontology
+	Specifically
+
+	  --tree $CLASS (to print the tree for $CLASS, or NULL for all ontology)
+	  --get-shorthand $CLASS
+	  --get-longhand $CLASS
+
+2014-02-20  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-control: Add missing gio.h include
+
+2014-02-20  Martyn Russell  <martyn@lanedo.com>
+
+	tests: Updated gtester scripts to improve testing system
+	We imported Makefile.decl from glib when it was using Subversion, a long time
+	ago. The script had a few issues (like running all unit tests twice on make
+	distcheck) and needed to be updated.
+
+	I've stolen a latest version from GLib's glib.mk and also their m4 macros
+	which are required to make this all work too.
+
+	This gives us the advantage of defining installable and uninstallable test
+	cases as well as test data, scripts and other useful stuff.
+
+	The debug output also looks quite good.
+	And distcheck passes :)
+
+2014-02-20  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-control: remove generated vapi/deps files on distclean
+
+	po: Add tracker-miner-online.c
+	Messages were marked as translatable there, so it needs to be in
+	POTFILES.in
+
+	libtracker-extract: Fix distcheck
+	A few headers were missing in SOURCES, and noinst_HEADERS was mistakenly
+	empty, which broke build if builddir!=srcdir
+
+2014-02-20  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Fixed all documentation warnings
+
+	docs: Make sure we fix cross referenced library symbols
+	Fixes the warnings about GError and other symbols which are unknown when
+	generating the documentation for libtracker-{sparql|miner|control}
+
+2014-02-20  Carlos Garnacho  <carlosg@gnome.org>
+
+	Merge branch 'api-cleanup'
+
+2014-02-20  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Make sure we compile if we don't HAVE_NETWORK_MANAGER
+
+2014-02-20  Carlos Garnacho  <carlosg@gnome.org>
+
+	tests: Fix build in libtracker-miner
+
+	libtracker-miner: Add padding pointers to *Class structs
+	Will be useful for long term ABI compat.
+
+	docs: Add missing TrackerDecorator type to .types
+
+	libtracker-miner: remove private namespace symbols from being exported
+
+	libtracker-miner: Remove TrackerMinerWeb and helper objects
+	TrackerMinerWeb vmethods are very focused on the management of
+	credentials and capabilities, this is something that's been taken
+	over by gnome-online-accounts since this API was added, and the
+	lack of TrackerMinerWeb implementations in the wild seems to
+	hint it's not been as useful as when it was initially devised,
+	so farewell.
+
+	rss: Implement TrackerMinerOnline
+	This is more suitable than implementing TrackerMiner directly
+
+	libtracker-miner: Add TrackerMinerOnline
+	This TrackerMiner is a simpler replacement for TrackerMinerWeb that
+	doesn't get into credentials handling. It handles network state,
+	emitting ::connected or ::disconnected on the way, and ensuring the
+	miner is paused/resumed as necessary when suitable networks come and
+	go, implementations of this miner can control this behavior through
+	the return value in the ::connected signal.
+
+	libtracker-control: New separate library, just contains TrackerMinerManager
+	TrackerMinerManager has been moved from libtracker-miner, so it remains a library
+	to implement miners. libtracker-control will be of interest to anything that
+	attempts to track or control the state of running/available miners.
+
+	tracker-writeback: Remove unneeded code using TrackerMinerManager
+	TrackerMinerManager isn't used here after all, so remove all code
+	using it.
+
+	libtracker-miner: Make TrackerCrawler private
+	This object can remain entirely private, as it is wrapped in quite more
+	convenient ways by TrackerMinerFS (ie. tracking of additions/removals,
+	file monitoring...), so turn it fully private.
+
+	libtracker-miner: Move TrackerStorage to libtracker-common
+	This is used in a variety of places (tracker-writeback, TrackerMinerFiles,
+	and TrackerDecorator), but it doesn't make sense to have that exposed in
+	libtracker-miner, so move to libtracker-common, where it can be used in a
+	private manner.
+
+	libtracker-miner: Avoid use of TrackerCrawler in TrackerMinerManager
+	This object just needs it to iterate over .desktop files, so use plain GIO there.
+
+	tracker-control: Avoid usage of TrackerCrawler
+	This can be easily replaced by a helper function that iterates
+	over a directory.
+
+	libtracker-miner: hide media-art header
+	These calls to manipulate the media art queue are already
+	performed inside TrackerMinerFS, and there are no foreseeable
+	situations where a TrackerMinerFS implementation will need
+	to call these directly, so just move the code and header
+	to private land.
+
+	libtracker-miner: Turn thumbnailer into an object
+	TrackerMinerFS in libtracker-miner was already doing most of the
+	tracker_thumbnailer_* calls necessary. The only API required on
+	callers only was tracker_thumbnailer_init/shutdown(). So just
+	turn this into an object so all usage is kept private to
+	libtracker-miner, and we can remove these headers out of the
+	public.
+
+	libtracker-extract: Make it completely private
+	This library has some rough spots, mainly around:
+
+	1) Usefulness: The library is not specially useful outside of
+	   tracker. In the source tree we already have plenty of extract
+	   modules that handle most popular file formats. Future-wise, if
+	   a brand new file format earns popularity, we'll want it in the
+	   tracker tree, and not as an external module. So neither
+	   implementing minor third party out-of-tree modules nor offering
+	   the possibility to reimplement a type Tracker knows well is a
+	   compelling thing to support.
+
+	2) Maintainability: The API is highly inconsistent, hardly
+	   introspectable and with little forward-compatibility thinking.
+
+	So in short, libtracker-extract is something we want to keep under
+	the rug, only available to tracker-miner-fs and tracker-extract.
+
+2014-02-20  Xavier Claessens  <xavier.claessens@collabora.com>
+
+	TrackerDecorator: Add writable "priority-rdf-types" property
+
+2014-02-20  Xavier Claessens  <xavier.claessens@collabora.co.uk>
+
+	TrackerExtractDecorator: Remove useless goto.
+
+	TrackerExtractController: Fix coding style
+
+	TrackerExtractController: Avoid useless string comparaison
+
+	TrackerDecorator: Query the type of removed elements
+	When "?urn nie:dataSource tracker:extractor-data-source" gets removed
+	it means that we have to re-extract that file. It should not happen
+	in normal usage, only for testing purpose. In that case we have
+	to query its type.
+
+	Add TrackerExtractController to pause/resume the miner
+	It listen to "wait-for-miner-fs" option and check the status
+	of tracker-miner-fs to pause/resume the extractor.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=719802
+
+	tracker-extract: add "wait-for-miner-fs" setting
+	https://bugzilla.gnome.org/show_bug.cgi?id=719802
+
+	TrackerExtractDecorator: Add ClearRdfTypes DBus method
+	Also handle SetRdfTypes with empty strv the same as ClearRdfTypes.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=719802
+
+	TrackerDecorator: Sort elem_queue to extract important files first
+	There are 2 things affecting an element position in the queue:
+	prepend (typically files from an USB key the user plugged),
+	and prior (the file type matches what applications needs first, e.g.
+	nfo:Audio).
+
+	The queue is sorted like that:
+	1) prepend and prior files
+	2) prior files
+	3) prepend files
+	4) the rest
+
+	This garantees that if I open the Music app and plug an USB key, I'll
+	get the MP3s from that key first, which is probably want the user
+	wants.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=719802
+
+	Conflicts:
+		src/libtracker-miner/tracker-decorator.c
+
+	TrackerDecorator: Replace the elements GQueue with a TrackerPriorityQueue
+	This will allow more fine grained priorities than the current
+	append/prepend.
+
+	TrackerDecorator: Query the rdf:type for each element in the queue
+	The type will be used in upcoming commits to sort the elem_queue by
+	priority.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=719802
+
+	TrackerExtractDecorator: Add priority dbus interface
+	That dbus interface lets application tell tracker-extract which
+	rdf:type must be extracted in priority. For example, when the user
+	interacts with the music player, they want to give the priority to
+	"nfo:Audio" files.
+
+	This commit only introduces the DBus machinary, not the actual
+	implementation.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=719802
+
+	TrackerExtractDecorator: Fix pause/resume
+	It should not get the next file when the miner is paused/stopped,
+	or if there are no items available anymore.
+
+	This also ensure we never have more than MAX_EXTRACTING_FILES
+	(currently one) extraction operation running in parallel.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=719802
+
+	tracker-extract: Fix TrackerConfig not handling change notification
+	https://bugzilla.gnome.org/show_bug.cgi?id=719802
+
+	TrackerPriorityQueue: Add node-based API
+	This exposes the fact that it is implemented using a GList, but
+	makes possible to remove a node without iterating the whole queue.
+	Those new API will be used in upcoming commits.
+
+	TrackerDecorator: remove the "(boxed)" annotation
+	That annotation does not exist, g-i is smart enough to
+	see by itself that TrackerDecoratorInfo is a boxed type.
+
+2014-02-19  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'prioritized-crawling'
+
 2014-02-14  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.17.2
@@ -22,6 +272,24 @@
 	break with Vala built C.
 
 2014-02-13  Carlos Garnacho  <carlosg@gnome.org>
+
+	miner-fs: Set the priority flag on mounted volumes.
+	This is so their content is inspected as soon as possible, even if tracker
+	is busy crawling over local directories.
+
+	libtracker-miner: Obey the "priority" flag when adding files to processing queues
+	If a file belongs to a root directory with that flag set, it will get G_PRIORITY_HIGH
+	at the time of processing the file in TrackerMinerFS queues. Also, make
+	tracker_miner_fs_check_directory() use G_PRIORITY_HIGH, like check_file() does.
+
+	libtracker-miner: Add/handle a "priority" TrackerDirectoryFlag
+	If that flag is set on a file in the TrackerIndexingTree, the
+	TrackerFileNotifier will append these when processing, so these
+	directories will be crawled and inspected as soon as possible
+
+	libtracker-miner: Detach early the processed file in TrackerFileNotifier
+	This is so priv->pending_index_roots can be prepended/appended without confusing
+	ongoing crawling on the current folder.
 
 	tracker-extract: Split generic gstreamer/libav extract rules
 	This is so audio, images and videos going through these modules get
@@ -198,7 +466,7 @@
 
 	Release 0.17.1
 
-2014-01-23  Reinout van Schouwen  <reinouts@gnome.org>
+2014-01-24  Reinout van Schouwen  <reinouts@gnome.org>
 
 	Updated translation by Erwin Poeze
 
@@ -645,7 +913,7 @@
 
 	Updated Spanish translation
 
-2014-01-07  Piotr Drąg  <piotrdrag@gmail.com>
+2014-01-08  Piotr Drąg  <piotrdrag@gmail.com>
 
 	Updated Polish translation
 
@@ -1602,7 +1870,7 @@
 
 	Updated Norwegian bokmål translation
 
-2013-06-01  Fran Diéguez  <fran.dieguez@mabishu.com>
+2013-06-02  Fran Diéguez  <fran.dieguez@mabishu.com>
 
 	Updated Galician translations
 
@@ -1768,7 +2036,7 @@
 	tracker-tag: Fixed GLib-WARNING **: goption.c:2193: ignoring no-arg...
 	Was using wrong FLAG in GOption
 
-2013-03-24  Fran Diéguez  <fran.dieguez@mabishu.com>
+2013-03-25  Fran Diéguez  <fran.dieguez@mabishu.com>
 
 	Updated Galician translations
 
@@ -2499,12 +2767,14 @@
 	tracker-extract-pdf: Fix crash if mmap() fails
 	Patch from Fedora: https://bugzilla.redhat.com/show_bug.cgi?id=751922
 
-2012-07-23  Jürg Billeter  <j@bitron.ch>
+2012-07-24  Jürg Billeter  <j@bitron.ch>
 
 	tracker-miner-fs: Ignore XDG directories set to $HOME
 	This prevents accidental recursive indexing of $HOME.
 
 	Fixes GB#680172.
+
+2012-07-23  Jürg Billeter  <j@bitron.ch>
 
 	tracker-needle: Fix double free
 	Fixes GB#680350.
@@ -2864,7 +3134,7 @@
 
 	[l10n] Update Japanese translation
 
-2012-03-19  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+2012-03-20  Sam Thursfield  <sam.thursfield@codethink.co.uk>
 
 	utils: Add tracker-sandbox
 	This script assists in running development versions of Tracker in
@@ -2970,7 +3240,7 @@
 
 	Rename remaining albumart function to media_art
 
-2012-02-13  Zeeshan Ali (Khattak)  <zeeshanak@gnome.org>
+2012-02-14  Zeeshan Ali (Khattak)  <zeeshanak@gnome.org>
 
 	tracker-extract: Extract media ID for bootable ISO
 	In Boxes, we need to know which (libosinfo) media exactly are we talking
@@ -4247,7 +4517,7 @@
 
 	Updated Czech translation
 
-2011-10-30  Daniel Mustieles  <daniel.mustieles@gmail.com>
+2011-10-31  Daniel Mustieles  <daniel.mustieles@gmail.com>
 
 	Updated Spanish translation
 
@@ -5204,7 +5474,7 @@
 
 	Updated Czech translation
 
-2011-09-16  Martyn Russell  <martyn@lanedo.com>
+2011-09-17  Martyn Russell  <martyn@lanedo.com>
 
 	Merge branch 'tracker-preferences-xdg-dirs'
 
@@ -6126,7 +6396,7 @@
 
 	Updated Slovenian translation
 
-2011-08-05  Christian Kirbach  <Christian.Kirbach@googlemail.com>
+2011-08-06  Christian Kirbach  <Christian.Kirbach@googlemail.com>
 
 	[l10n] Updated German translation
 
@@ -7449,11 +7719,11 @@
 
 	Insert nco:EmailAddress resources
 
-2011-06-04  Adrien Bustany  <abustany@gnome.org>
-
 	Add indexing delay to prefs
 
 	Can build SPARQL to insert messages
+
+2011-06-04  Adrien Bustany  <abustany@gnome.org>
 
 	Can list all messages
 
@@ -7537,7 +7807,7 @@
 	acquire the bus name, leaving the other with a bus name but
 	ignorant about the mtime check needed.
 
-2011-06-01  Gil Forcada  <gforcada@gnome.org>
+2011-06-02  Gil Forcada  <gforcada@gnome.org>
 
 	[l10n]Updated Catalan translation
 
@@ -8876,7 +9146,7 @@
 
 	Update Simplified Chinese translation.
 
-2011-03-24  Carlos Garnacho  <carlosg@gnome.org>
+2011-03-25  Carlos Garnacho  <carlosg@gnome.org>
 
 	tracker-needle: Fix alignment of folders without known parent
 
@@ -10686,7 +10956,7 @@
 
 	libtracker-data: Fix C warning in tracker-db-interface-sqlite.c
 
-2011-01-21  Javier Jardón  <jjardon@gnome.org>
+2011-01-22  Javier Jardón  <jjardon@gnome.org>
 
 	tracker-needle: Use accessor functions instead direct access
 	Fixes https://bugzilla.gnome.org/show_bug.cgi?id=640231
@@ -11128,8 +11398,6 @@
 
 	tracker-needle: Add Ctrl+W to close window
 	Fixes GB#639543, Ctrl+W should close the window
-
-2011-01-14  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-needle: Use a meaningful window title "Desktop Search"
 	Fixes GB#639552, Give needle window a name that means something
@@ -12108,7 +12376,7 @@
 
 	docs: Document the TRACKER_PRAGMAS_FILE environment variable
 
-2010-11-27  Martyn Russell  <martyn@lanedo.com>
+2010-11-28  Martyn Russell  <martyn@lanedo.com>
 
 	Fixes GB#635757, missing test file in tarball
 
@@ -12677,7 +12945,7 @@
 
 	Updated Slovenian translation
 
-2010-10-29  Carles Ferrando  <carles.ferrando@gmail.com>
+2010-10-30  Carles Ferrando  <carles.ferrando@gmail.com>
 
 	Added Catalan (Valencian) translation
 
@@ -12701,7 +12969,7 @@
 
 	tracker-preferences: Fixed check which used "text" not "test"
 
-2010-10-28  Jorge González  <jorgegonz@svn.gnome.org>
+2010-10-29  Jorge González  <jorgegonz@svn.gnome.org>
 
 	Updated Spanish translation
 
@@ -13361,7 +13629,7 @@
 	Those classes shouldn't be run in the tests. Are there to organize the code
 	but don't contain useful tests by themselves.
 
-2010-10-13  Mikael Ottela  <mikael.ottela@ixonos.com>
+2010-10-14  Mikael Ottela  <mikael.ottela@ixonos.com>
 
 	Fix the gupnp-dlna extractor to use the tracker_sparql_escape_uri_printf
 
@@ -14216,7 +14484,7 @@
 	tracker-store: Send D-Bus replies for BatchCommit
 	Fixes NB#189896.
 
-2010-09-02  Daniel Nylander  <po@danielnylander.se>
+2010-09-03  Daniel Nylander  <po@danielnylander.se>
 
 	Updated Swedish translation
 
@@ -15562,7 +15830,7 @@
 	    Thus, adding an extra reference during the g_file_enumerate_children_async()
 	    for the specific GFile being used.
 
-2010-08-01  Gabor Kelemen  <kelemeng@gnome.hu>
+2010-08-02  Gabor Kelemen  <kelemeng@gnome.hu>
 
 	Updated Hungarian translation
 
@@ -17750,7 +18018,7 @@
 
 	tracker-extract: gstreamer: Bugfix for NB#169119, critical about unref of an object
 
-2010-05-16  Petr Kovar  <pknbe@volny.cz>
+2010-05-17  Petr Kovar  <pknbe@volny.cz>
 
 	Update Czech translation by Marek Cernocky
 
@@ -18137,7 +18405,7 @@
 
 	Update Czech translation by Marek Cernocky
 
-2010-05-01  Mario Blättermann  <mariobl@gnome.org>
+2010-05-02  Mario Blättermann  <mariobl@gnome.org>
 
 	Updated German translation
 
@@ -18171,9 +18439,9 @@
 
 	libtracker-data: Fixed compilation warning
 
-2010-04-29  Philip Van Hoof  <philip@codeminded.be>
-
 	libtracker-db: Fix for last commit, || should be &&
+
+2010-04-29  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-db: Avoid strstr in uri_is_parent and uri_is_descendant
 
@@ -18366,7 +18634,7 @@
 
 	libstemmer: Bugfix NB#164958, FTS doesn't work for "beautif" and "beautifu"
 
-2010-04-22  Petr Kovar  <pknbe@volny.cz>
+2010-04-23  Petr Kovar  <pknbe@volny.cz>
 
 	Update Czech translation by Marek Cernocky
 
@@ -18946,7 +19214,7 @@
 
 	Fix build failures on none Linux platforms
 
-2010-04-08  Debarshi Ray  <debarshir@src.gnome.org>
+2010-04-09  Debarshi Ray  <debarshir@src.gnome.org>
 
 	tracker-miner-rss: Implicitly link the RSS miner against GTHREAD_LIBS
 
@@ -19079,7 +19347,7 @@
 	regex string. This fix changes the regex from a bound literal to being part
 	of the SQL query string itself.
 
-2010-04-05  Mikael Ottela  <mikael.ottela@ixonos.com>
+2010-04-06  Mikael Ottela  <mikael.ottela@ixonos.com>
 
 	Added indices to message ontology for query performance
 
@@ -19189,7 +19457,7 @@
 
 	libtracker-miner: Don't install tracker-miner-dbus.h to /usr/include
 
-2010-03-31  Aurimas Černius  <aurisc4@gmail.com>
+2010-04-01  Aurimas Černius  <aurisc4@gmail.com>
 
 	Updated Lithuanian translation
 
@@ -21690,7 +21958,7 @@
 
 	Updated Norwegian bokmål translation
 
-2010-02-09  Martyn Russell  <martyn@lanedo.com>
+2010-02-10  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-miner: Removed tracker_miner_fs_get_directories()
 	This is no longer needed.
@@ -25418,7 +25686,7 @@
 	 --image-files to --images
 	 --music-files to --music
 
-2009-09-23  Michael Biebl  <biebl@debian.org>
+2009-09-24  Michael Biebl  <biebl@debian.org>
 
 	Add missing files to POTFILES.in
 	According to 4ddf3304d4c3909ab9ec9cf56edcb495e1d634c3 the miner desktop
@@ -25428,6 +25696,8 @@
 	This reverts commit 336b0bff94af3e96e1d5722ff1cd2e9cfa559b6c.
 
 	Add missing "\"
+
+2009-09-23  Michael Biebl  <biebl@debian.org>
 
 	Fix a few typos in the man pages
 
@@ -25526,7 +25796,7 @@
 
 	Fixes bug #584607, Search does not work for Hungarian
 
-2009-09-20  Daniel Nylander  <po@danielnylander.se>
+2009-09-21  Daniel Nylander  <po@danielnylander.se>
 
 	Updated Swedish translation
 
@@ -28480,13 +28750,13 @@
 
 	Arbitrary lowering priority of SetMany() items
 
-2009-06-14  Philip Van Hoof  <philip@codeminded.be>
-
 	Don't do all the g_idle_add nonsense in the push modules
 	These were causing a GSource source for each 2000 items being pushed using the
 	DBus SetMany() call. Making it actually worse than better. I just removed them
 	for now, we might have to replace it with an internal, but static global for
 	the module, queue (not a queue per SetMany, like what is being removed here).
+
+2009-06-14  Philip Van Hoof  <philip@codeminded.be>
 
 	Fixed push modules, bugfix closing the query
 
@@ -29219,8 +29489,6 @@
 	Another include path fix
 	libtracker-gtk uses <tracker.h>, so we also need to add
 	$(top_srcdir)/src/libtracker for tracker-search-tool.
-
-2009-05-11  Michael Biebl  <biebl@debian.org>
 
 	Fix include path
 	tracker-search-tool-callbacks.c uses
@@ -30017,7 +30285,7 @@
 	Add gitlog-to-changelog script from gnulib and a dist-hook to
 	generate ChangeLog file when creating tarballs.
 
-2009-04-13  Khaled Hosny  <khaledhosny@eglug.org>
+2009-04-14  Khaled Hosny  <khaledhosny@eglug.org>
 
 	Updated Arabic translaion
 

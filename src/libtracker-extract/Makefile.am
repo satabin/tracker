@@ -1,5 +1,3 @@
-include $(top_srcdir)/Makefile.decl
-
 AM_CPPFLAGS =                                          \
 	$(BUILD_CFLAGS)                                \
 	-I$(top_srcdir)/src                            \
@@ -17,13 +15,13 @@ libtracker_extract_@TRACKER_API_VERSION@_la_LIBADD =   \
 	$(BUILD_LIBS)                                  \
 	$(LIBTRACKER_EXTRACT_LIBS)
 
-libtracker_extractincludedir=$(includedir)/tracker-$(TRACKER_API_VERSION)/libtracker-extract/
-
 libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES =  \
 	tracker-data.h                                 \
 	tracker-encoding.c                             \
+	tracker-encoding.h                             \
 	tracker-exif.c                                 \
 	tracker-exif.h                                 \
+	tracker-extract.h                              \
 	tracker-extract-client.c                       \
 	tracker-extract-client.h                       \
 	tracker-extract-info.c                         \
@@ -35,12 +33,11 @@ libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES =  \
 	tracker-module-manager.c                       \
 	tracker-module-manager.h                       \
 	tracker-utils.c                                \
+	tracker-utils.h                                \
 	tracker-xmp.c                                  \
 	tracker-xmp.h
 
-noinst_HEADERS =
-
-libtracker_extractinclude_HEADERS =                    \
+noinst_HEADERS =                                       \
 	tracker-data.h                                 \
 	tracker-encoding.h                             \
 	tracker-exif.h                                 \

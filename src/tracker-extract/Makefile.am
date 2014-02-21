@@ -1,4 +1,4 @@
-include $(top_srcdir)/Makefile.decl
+extractrulesdir = $(datadir)/tracker/extract-rules
 
 module_flags = -module -avoid-version -no-undefined
 rulesdir = $(extractrulesdir)
@@ -54,6 +54,7 @@ rules_files = \
 # NOTE:
 # We don't always link with libtracker-common, we only link
 # against it if we directly use functions in the .so
+extractmodulesdir = $(libdir)/tracker-$(TRACKER_API_VERSION)/extract-modules
 extractmodules_LTLIBRARIES = # Empty
 rules_DATA = # Empty
 
@@ -527,8 +528,12 @@ tracker_extract_SOURCES = \
 	tracker-config.h \
 	tracker-extract.c \
 	tracker-extract.h \
+	tracker-extract-controller.c \
+	tracker-extract-controller.h \
 	tracker-extract-decorator.c \
 	tracker-extract-decorator.h \
+	tracker-extract-priority-dbus.c \
+	tracker-extract-priority-dbus.h \
 	tracker-read.c \
 	tracker-read.h \
 	tracker-main.c \
@@ -552,6 +557,28 @@ endif
 if HAVE_LIBSTREAMANALYZER
 tracker_extract_SOURCES += tracker-topanalyzer.cpp tracker-topanalyzer.h
 endif
+
+# do nothing, output as a side-effect
+tracker-extract-priority-dbus.c: tracker-extract-priority-dbus-stamp
+	@:
+
+tracker-extract-priority-dbus.h: tracker-extract-priority-dbus-stamp
+	@:
+
+tracker-extract-priority-dbus-stamp: Makefile.am $(top_srcdir)/data/dbus/tracker-extract-priority.xml
+	gdbus-codegen --interface-prefix org.freedesktop.Tracker1.Extract. \
+	              --generate-c-code tracker-extract-priority-dbus \
+	              --c-namespace TrackerExtractDBus \
+	              $(top_srcdir)/data/dbus/tracker-extract-priority.xml
+	touch $@
+
+BUILT_SOURCES = \
+	tracker-extract-priority-dbus.c \
+	tracker-extract-priority-dbus.h \
+	tracker-extract-priority-dbus-stamp \
+	$(NULL)
+
+CLEANFILES = $(BUILT_SOURCES)
 
 EXTRA_DIST = \
 	$(rules_files)

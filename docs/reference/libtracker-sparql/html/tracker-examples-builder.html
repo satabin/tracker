@@ -2,22 +2,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>SPARQL query builder</title>
+<title>Tracker SPARQL Library Reference Manual: SPARQL query builder</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker SPARQL Library Reference Manual">
 <link rel="up" href="tracker-examples.html" title="Part III. Examples">
 <link rel="prev" href="tracker-examples.html" title="Part III. Examples">
 <link rel="next" href="tracker-examples-readonly.html" title="Querying the Store">
-<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.20.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="tracker-examples.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="tracker-examples.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">Tracker SPARQL Library Reference Manual</th>
-<td><a accesskey="n" href="tracker-examples-readonly.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="tracker-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="tracker-examples.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="tracker-examples-readonly.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
@@ -41,25 +41,25 @@ int main (int argc, char **argv)
   time_t now;
 
   /* Create builder */
-  builder = <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-new-update" title="tracker_sparql_builder_new_update ()">tracker_sparql_builder_new_update</a></code> ();
+  builder = <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-new-update" title="tracker_sparql_builder_new_update ()">tracker_sparql_builder_new_update</a></code> ();
 
   /* Insert new data */
-  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-insert-open" title="tracker_sparql_builder_insert_open ()">tracker_sparql_builder_insert_open</a></code> (builder, NULL);
+  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-insert-open" title="tracker_sparql_builder_insert_open ()">tracker_sparql_builder_insert_open</a></code> (builder, NULL);
 
-  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-subject-iri" title="tracker_sparql_builder_subject_iri ()">tracker_sparql_builder_subject_iri</a></code> (builder, iri);
+  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-subject-iri" title="tracker_sparql_builder_subject_iri ()">tracker_sparql_builder_subject_iri</a></code> (builder, iri);
 
-  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-predicate" title="tracker_sparql_builder_predicate ()">tracker_sparql_builder_predicate</a></code> (builder, "a");
-  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-object" title="tracker_sparql_builder_object ()">tracker_sparql_builder_object</a></code> (builder, "nie:DataObject");
-  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-object" title="tracker_sparql_builder_object ()">tracker_sparql_builder_object</a></code> (builder, "nfo:FileDataObject");
+  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-predicate" title="tracker_sparql_builder_predicate ()">tracker_sparql_builder_predicate</a></code> (builder, "a");
+  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-object" title="tracker_sparql_builder_object ()">tracker_sparql_builder_object</a></code> (builder, "nie:DataObject");
+  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-object" title="tracker_sparql_builder_object ()">tracker_sparql_builder_object</a></code> (builder, "nfo:FileDataObject");
 
   now = time (NULL);
-  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-predicate" title="tracker_sparql_builder_predicate ()">tracker_sparql_builder_predicate</a></code> (builder, "nfo:fileLastModified");
-  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-object-date" title="tracker_sparql_builder_object_date ()">tracker_sparql_builder_object_date</a></code> (builder, &amp;now);
+  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-predicate" title="tracker_sparql_builder_predicate ()">tracker_sparql_builder_predicate</a></code> (builder, "nfo:fileLastModified");
+  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-object-date" title="tracker_sparql_builder_object_date ()">tracker_sparql_builder_object_date</a></code> (builder, &amp;now);
 
-  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-insert-close" title="tracker_sparql_builder_insert_close ()">tracker_sparql_builder_insert_close</a></code> (builder);
+  <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-insert-close" title="tracker_sparql_builder_insert_close ()">tracker_sparql_builder_insert_close</a></code> (builder);
 
   /* Get query as string. Do NOT g_free() the resulting string! */
-  query_str = <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-get-result" title="tracker_sparql_builder_get_result ()">tracker_sparql_builder_get_result</a></code> (builder);
+  query_str = <code class="function"><a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-get-result" title="tracker_sparql_builder_get_result ()">tracker_sparql_builder_get_result</a></code> (builder);
 
   /* Print it */
   g_print ("Generated SPARQL query: '%s'\n", query_str);
@@ -89,6 +89,6 @@ int main (int argc, char **argv)
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.19</div>
+          Generated by GTK-Doc V1.20.1</div>
 </body>
 </html>

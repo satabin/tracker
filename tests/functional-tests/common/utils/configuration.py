@@ -61,7 +61,7 @@ def expandvars (variable):
 
 
 
-PREFIX = "/usr"
+PREFIX = "/home/carlos/Build/gnome"
 #
 # This raw variables are set by autotools without translating vars:
 #   E.G. bindir='${exec_prefix}/bin
@@ -79,7 +79,7 @@ DATADIR = os.path.normpath (expandvars (RAW_DATA_DIR))
 BINDIR = os.path.normpath (expandvars (RAW_BINDIR))
                             
 haveMaemo = ("#" == "")
-haveUpstart = ("" == "")
+haveUpstart = ("#" == "")
 disableJournal = ("#" == "")
 
 TEST_TMP_DIR = os.path.join (os.environ["HOME"], "tracker-tests")

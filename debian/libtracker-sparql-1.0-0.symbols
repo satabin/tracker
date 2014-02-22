@@ -1,4 +1,4 @@
-libtracker-sparql-0.16.so.0 libtracker-sparql-0.16-0 #MINVER#
+libtracker-sparql-1.0.so.0 libtracker-sparql-1.0-0 #MINVER#
  tracker_sparql_builder_append@Base 0.10.0
  tracker_sparql_builder_construct@Base 0.10.0
  tracker_sparql_builder_construct_embedded_insert@Base 0.10.0

@@ -1,3 +1,9 @@
+tracker (0.17.4-1) UNRELEASED; urgency=medium
+
+  * New upstream development release.
+
+ -- Michael Biebl <biebl@debian.org>  Sat, 22 Feb 2014 02:09:24 +0100
+
 tracker (0.16.2-1) unstable; urgency=low
 
   * New upstream release.

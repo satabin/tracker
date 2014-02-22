@@ -1,3 +1,30 @@
+2014-02-21  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 0.17.4
+
+2014-02-21  Aurimas Černius  <aurisc4@gmail.com>
+
+	Updated Lithuanian translation
+
+2014-02-21  Carlos Garnacho  <carlosg@gnome.org>
+
+	rss: Fix compilation with rss miner enabled
+	Missing TRACKER_ prefix in enum value...
+
+2014-02-21  Rafael Ferreira  <rafael.f.f1@gmail.com>
+
+	Updated Brazilian Portuguese translation
+
+2014-02-21  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-sparql: Various improvements/fixes for --tree command line option
+	Specifically:
+	- Fix offset error when highlighting parts of the tree when -s is used
+	- Use GNode APIs g_node_traverse() to print and find nodes, reducing code size
+	- Remove unnecessary memory allocation for --get-longhand
+	- Fix memory leak of longhand to shorthand conversion in --tree
+	- Avoid memory allocations when generating filter hashtable
+
 2014-02-20  Carlos Garnacho  <carlosg@gnome.org>
 
 	Release 0.17.3

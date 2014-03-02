@@ -1,6 +1,12 @@
 tracker (0.17.4-1) UNRELEASED; urgency=medium
 
   * New upstream development release.
+  * Update Build-Depends:
+    - Bump libglib2.0-dev to (>= 2.38.0).
+    - Bump libgsf-1-dev to (>= 1.14.24).
+    - Add libmediaart-1.0-dev (>= 0.1.0).
+    - Use libtiff-dev, not libtiff4-dev. The latter is a transitional package
+      and going away. (Closes: #736047)
 
  -- Michael Biebl <biebl@debian.org>  Sat, 22 Feb 2014 02:09:24 +0100
 

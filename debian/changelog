@@ -20,6 +20,7 @@ tracker (0.17.4-1) UNRELEASED; urgency=medium
   * Use dh-autoreconf to update the build system. Override dh_autoreconf since
     we need to run gtkdocize and intltoolize.
   * Ship ontology documentation in libtracker-sparql-doc.
+  * Update tracker-extract.install for new files.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 22 Feb 2014 02:09:24 +0100
 

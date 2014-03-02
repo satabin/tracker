@@ -7,6 +7,8 @@ tracker (0.17.4-1) UNRELEASED; urgency=medium
     - Add libmediaart-1.0-dev (>= 0.1.0).
     - Use libtiff-dev, not libtiff4-dev. The latter is a transitional package
       and going away. (Closes: #736047)
+  * Upstream finally declared the API version as stable and bumped it to 1.0.
+    Rename the files accordingly.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 22 Feb 2014 02:09:24 +0100
 

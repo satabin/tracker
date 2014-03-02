@@ -1,32 +1,23 @@
 libtracker-miner-1.0.so.0 libtracker-miner-1.0-0 #MINVER#
- tracker_crawler_get_file_attributes@Base 0.14.0
- tracker_crawler_get_file_info@Base 0.14.0
- tracker_crawler_get_type@Base 0.8.0
- tracker_crawler_new@Base 0.8.0
- tracker_crawler_pause@Base 0.8.0
- tracker_crawler_resume@Base 0.8.0
- tracker_crawler_set_file_attributes@Base 0.14.0
- tracker_crawler_set_throttle@Base 0.8.0
- tracker_crawler_start@Base 0.8.0
- tracker_crawler_stop@Base 0.8.0
+ tracker_decorator_delete_id@Base 0.17.4
+ tracker_decorator_fs_get_type@Base 0.17.4
+ tracker_decorator_get_class_names@Base 0.17.4
+ tracker_decorator_get_data_source@Base 0.17.4
+ tracker_decorator_get_n_items@Base 0.17.4
+ tracker_decorator_get_type@Base 0.17.4
+ tracker_decorator_info_get_mimetype@Base 0.17.4
+ tracker_decorator_info_get_sparql@Base 0.17.4
+ tracker_decorator_info_get_task@Base 0.17.4
+ tracker_decorator_info_get_type@Base 0.17.4
+ tracker_decorator_info_get_url@Base 0.17.4
+ tracker_decorator_info_get_urn@Base 0.17.4
+ tracker_decorator_info_ref@Base 0.17.4
+ tracker_decorator_info_unref@Base 0.17.4
+ tracker_decorator_next@Base 0.17.4
+ tracker_decorator_next_finish@Base 0.17.4
+ tracker_decorator_prepend_id@Base 0.17.4
+ tracker_decorator_set_priority_rdf_types@Base 0.17.4
  tracker_directory_flags_get_type@Base 0.14.0
- tracker_file_notifier_get_file_iri@Base 0.14.0
- tracker_file_notifier_get_type@Base 0.14.0
- tracker_file_notifier_is_active@Base 0.14.0
- tracker_file_notifier_new@Base 0.14.0
- tracker_file_notifier_start@Base 0.14.0
- tracker_file_notifier_stop@Base 0.14.0
- tracker_file_system_forget_files@Base 0.14.5
- tracker_file_system_get_file@Base 0.14.0
- tracker_file_system_get_property@Base 0.14.0
- tracker_file_system_get_type@Base 0.14.0
- tracker_file_system_new@Base 0.14.0
- tracker_file_system_peek_file@Base 0.14.0
- tracker_file_system_peek_parent@Base 0.14.0
- tracker_file_system_register_property@Base 0.14.0
- tracker_file_system_set_property@Base 0.14.0
- tracker_file_system_traverse@Base 0.14.0
- tracker_file_system_unset_property@Base 0.14.0
  tracker_filter_policy_get_type@Base 0.14.0
  tracker_filter_type_get_type@Base 0.14.0
  tracker_indexing_tree_add@Base 0.14.0
@@ -80,60 +71,10 @@ libtracker-miner-1.0.so.0 libtracker-miner-1.0-0 #MINVER#
  tracker_miner_ignore_next_update@Base 0.8.0
  tracker_miner_is_paused@Base 0.10.0
  tracker_miner_is_started@Base 0.8.0
- tracker_miner_manager_error_quark@Base 0.10.0
- tracker_miner_manager_get_available@Base 0.8.0
- tracker_miner_manager_get_description@Base 0.8.0
- tracker_miner_manager_get_display_name@Base 0.8.0
- tracker_miner_manager_get_running@Base 0.8.0
- tracker_miner_manager_get_status@Base 0.8.0
- tracker_miner_manager_get_type@Base 0.8.0
- tracker_miner_manager_ignore_next_update@Base 0.8.0
- tracker_miner_manager_index_file@Base 0.10.0
- tracker_miner_manager_index_file_async@Base 0.15.4
- tracker_miner_manager_index_file_finish@Base 0.15.4
- tracker_miner_manager_is_active@Base 0.8.0
- tracker_miner_manager_is_paused@Base 0.8.0
- tracker_miner_manager_new@Base 0.8.0
- tracker_miner_manager_new_full@Base 0.10.5
- tracker_miner_manager_pause@Base 0.8.0
- tracker_miner_manager_pause_for_process@Base 0.10.22
- tracker_miner_manager_reindex_by_mimetype@Base 0.10.0
- tracker_miner_manager_resume@Base 0.8.0
+ tracker_miner_online_get_network_type@Base 0.17.4
+ tracker_miner_online_get_type@Base 0.17.4
  tracker_miner_pause@Base 0.8.0
  tracker_miner_resume@Base 0.8.0
  tracker_miner_start@Base 0.8.0
  tracker_miner_stop@Base 0.8.0
- tracker_miner_web_associate@Base 0.8.0
- tracker_miner_web_authenticate@Base 0.8.0
- tracker_miner_web_dissociate@Base 0.8.0
- tracker_miner_web_error_quark@Base 0.8.0
- tracker_miner_web_get_association_data@Base 0.8.0
- tracker_miner_web_get_type@Base 0.8.0
- (regex|optional)tracker_network_provider_.*_get_type@Base 0.10.0
- tracker_network_provider_get@Base 0.10.0
- tracker_network_provider_get_name@Base 0.10.0
- tracker_network_provider_get_status@Base 0.10.0
- tracker_network_provider_get_type@Base 0.10.0
- tracker_password_provider_error_quark@Base 0.8.0
- tracker_password_provider_forget_password@Base 0.8.0
- tracker_password_provider_get@Base 0.8.0
- tracker_password_provider_get_name@Base 0.8.0
- tracker_password_provider_get_password@Base 0.8.0
- tracker_password_provider_get_type@Base 0.8.0
- (regex|optional)tracker_password_provider_.*_get_type@Base 0.10.17
- tracker_password_provider_lock_password@Base 0.8.0
- tracker_password_provider_store_password@Base 0.8.0
- tracker_password_provider_unlock_password@Base 0.8.0
- tracker_storage_get_device_roots@Base 0.8.0
- tracker_storage_get_device_uuids@Base 0.8.0
- tracker_storage_get_mount_point_for_uuid@Base 0.8.0
- tracker_storage_get_type@Base 0.8.0
- tracker_storage_get_type_for_uuid@Base 0.10.0
- tracker_storage_get_uuid_for_file@Base 0.8.0
- tracker_storage_new@Base 0.8.0
- tracker_thumbnailer_cleanup@Base 0.8.0
- tracker_thumbnailer_init@Base 0.8.0
- tracker_thumbnailer_move_add@Base 0.8.0
- tracker_thumbnailer_remove_add@Base 0.8.0
- tracker_thumbnailer_send@Base 0.8.0
- tracker_thumbnailer_shutdown@Base 0.8.0
+ tracker_network_type_get_type@Base 0.17.4

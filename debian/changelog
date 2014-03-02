@@ -16,6 +16,7 @@ tracker (0.17.4-1) UNRELEASED; urgency=medium
     libtracker-extract a package-private library. Move the library to
     pkglibdir to reflect that change.
   * Remove libtracker-extract packages.
+  * Update shlibs.local for libtracker-extract and libtracker-control.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 22 Feb 2014 02:09:24 +0100
 

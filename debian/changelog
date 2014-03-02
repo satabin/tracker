@@ -21,6 +21,7 @@ tracker (0.17.4-1) UNRELEASED; urgency=medium
     we need to run gtkdocize and intltoolize.
   * Ship ontology documentation in libtracker-sparql-doc.
   * Update tracker-extract.install for new files.
+  * Bump Standards-Version to 3.9.5. No further changes.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 22 Feb 2014 02:09:24 +0100
 

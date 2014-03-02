@@ -44,7 +44,7 @@ Build-Depends: debhelper (>= 8.1.0~),
                libgxps-dev,
                libgirepository1.0-dev (>= 0.10.7-1~),
                gobject-introspection (>= 0.10)
-Standards-Version: 3.9.4
+Standards-Version: 3.9.5
 Vcs-Git: git://anonscm.debian.org/collab-maint/tracker.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/tracker.git;a=summary
 Homepage: http://projects.gnome.org/tracker/

@@ -3,7 +3,7 @@ Section: utils
 Priority: optional
 Maintainer: Michael Biebl <biebl@debian.org>
 Build-Depends: debhelper (>= 8.1.0~),
-               autotools-dev,
+               dh-autoreconf,
                pkg-config,
                intltool (>= 0.40.0),
                libglib2.0-dev (>= 2.38.0),

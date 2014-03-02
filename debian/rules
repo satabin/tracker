@@ -1,9 +1,17 @@
 #!/usr/bin/make -f
 
 %:
-	dh $@ --with gir
+	dh $@ --with gir,autoreconf
 
 export LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed -Wl,-Bsymbolic
+
+autoreconf:
+	gtkdocize --flavour no-tmpl
+	autopoint --force
+	AUTOPOINT='intltoolize --automake --copy' autoreconf --verbose --force --install
+
+override_dh_autoreconf:
+	dh_autoreconf debian/rules -- autoreconf
 
 override_dh_auto_configure:
 	dh_auto_configure -- \

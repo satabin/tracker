@@ -162,56 +162,6 @@ Description: tracker data miner library - API documentation
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-extract-1.0-0
-Architecture: any
-Section: libs
-Depends: ${shlibs:Depends},
-         ${misc:Depends}
-Description: tracker extractor library
- This package contains the library that is used by applications that provide
- metadata extractors for 3rd party file types.
- .
- Tracker is an advanced framework for first class objects with associated
- metadata and tags. It provides a one stop solution for all metadata, tags,
- shared object databases, search tools and indexing.
-
-Package: libtracker-extract-1.0-dev
-Architecture: any
-Section: libdevel
-Depends: libtracker-extract-1.0-0 (= ${binary:Version}),
-         ${misc:Depends},
-         libtracker-sparql-1.0-dev,
-         libglib2.0-dev,
-         gir1.2-tracker-1.0 (= ${binary:Version})
-Suggests: libtracker-extract-doc
-Description: tracker extractor library - development files
- This package contains the static libraries and header files needed to link
- applications with libtracker-extract.
- .
- libtracker-extract provides a library to develop metadata extractors for 3rd
- party file types.
- .
- Tracker is an advanced framework for first class objects with associated
- metadata and tags. It provides a one stop solution for all metadata, tags,
- shared object databases, search tools and indexing.
-
-Package: libtracker-extract-doc
-Architecture: all
-Section: doc
-Depends: ${misc:Depends}
-Suggests: devhelp
-Breaks: libtracker-extract-0.8-dev, libtracker-extract-0.10-dev
-Replaces: libtracker-extract-0.8-dev, libtracker-extract-0.10-dev
-Description: tracker extractor library - API documentation
- This package contains the gtk-doc API documentation for libtracker-extract.
- .
- libtracker-extract provides a library to develop metadata extractors for 3rd
- party file types.
- .
- Tracker is an advanced framework for first class objects with associated
- metadata and tags. It provides a one stop solution for all metadata, tags,
- shared object databases, search tools and indexing.
-
 Package: libtracker-control-1.0-0
 Architecture: any
 Section: libs

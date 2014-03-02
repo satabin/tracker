@@ -15,6 +15,7 @@ tracker (0.17.4-1) UNRELEASED; urgency=medium
   * debian/patches/01-libtracker-extract-internal.patch: Upstream has declared
     libtracker-extract a package-private library. Move the library to
     pkglibdir to reflect that change.
+  * Remove libtracker-extract packages.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 22 Feb 2014 02:09:24 +0100
 

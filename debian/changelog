@@ -1,4 +1,4 @@
-tracker (0.17.4-1) UNRELEASED; urgency=medium
+tracker (0.17.4-1) experimental; urgency=medium
 
   * New upstream development release.
   * Update Build-Depends:
@@ -25,7 +25,7 @@ tracker (0.17.4-1) UNRELEASED; urgency=medium
   * debian/patches/02-define-dirs.patch: Define back extract[rules|modules]dir
     for Makefile.am to use. Patch cherry-picked from upstream Git.
 
- -- Michael Biebl <biebl@debian.org>  Sat, 22 Feb 2014 02:09:24 +0100
+ -- Michael Biebl <biebl@debian.org>  Sun, 02 Mar 2014 16:30:12 +0100
 
 tracker (0.16.2-1) unstable; urgency=low
 

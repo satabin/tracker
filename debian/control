@@ -212,6 +212,53 @@ Description: tracker extractor library - API documentation
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
+Package: libtracker-control-1.0-0
+Architecture: any
+Section: libs
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
+Description: library to control/monitor tracker miners
+ This package contains a library for managing miners, including polling
+ status and progress, pausing, resuming and more.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+
+Package: libtracker-control-1.0-dev
+Architecture: any
+Section: libdevel
+Depends: libtracker-control-1.0-0 (= ${binary:Version}),
+         ${misc:Depends},
+         libglib2.0-dev,
+         gir1.2-tracker-1.0 (= ${binary:Version})
+Suggests: libtracker-control-doc
+Description: library to control/monitor tracker miners - development files
+ This package contains the static libraries and header files needed to link
+ applications with libtracker-control.
+ .
+ libtracker-control provides a library for managing miners, including polling
+ status and progress, pausing, resuming and more.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+
+Package: libtracker-control-doc
+Architecture: all
+Section: doc
+Depends: ${misc:Depends}
+Suggests: devhelp
+Description: library to control/monitor tracker miners - API documentation
+ This package contains the gtk-doc API documentation for libtracker-control.
+ .
+ libtracker-control provides a library for managing miners, including polling
+ status and progress, pausing, resuming and more.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+
 Package: gir1.2-tracker-1.0
 Section: introspection
 Architecture: any
@@ -219,7 +266,7 @@ Depends: ${shlibs:Depends},
          ${misc:Depends},
          ${gir:Depends}
 Description: GObject introspection data for Tracker
- This package contains introspection data for libtracker-extract,
+ This package contains introspection data for libtracker-control,
  libtracker-miner and libtracker-sparql.
  .
  It can be used by packages using the GIRepository format to generate

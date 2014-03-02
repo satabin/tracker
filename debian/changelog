@@ -12,6 +12,9 @@ tracker (0.17.4-1) UNRELEASED; urgency=medium
   * Update symbols file for libtracker-miner.
   * Add packages for libtracker-control, a new library for managing miners,
     including polling status and progress, pausing, resuming and more.
+  * debian/patches/01-libtracker-extract-internal.patch: Upstream has declared
+    libtracker-extract a package-private library. Move the library to
+    pkglibdir to reflect that change.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 22 Feb 2014 02:09:24 +0100
 

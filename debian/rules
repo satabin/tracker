@@ -54,7 +54,8 @@ override_dh_auto_configure:
 		--disable-hal \
 		--disable-taglib \
 		--disable-libosinfo \
-		--disable-libcue
+		--disable-libcue \
+		--libexecdir=\$${prefix}/lib/tracker
 
 override_dh_install:
 	dh_install -X.la --list-missing
@@ -62,7 +63,7 @@ override_dh_install:
 # Enforce tight shlibs dependencies
 override_dh_makeshlibs:
 	dh_makeshlibs -V \
-		-X/usr/lib/tracker-1.0/ \
+		-X/usr/lib/$(DEB_HOST_MULTIARCH)/tracker-1.0/ \
 		-X/usr/lib/evolution/ \
 		-X/usr/lib/nautilus/
 

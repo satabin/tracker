@@ -1,5 +1,5 @@
-usr/lib/libtracker-control-1.0.so
-usr/lib/pkgconfig/tracker-control-1.0.pc
+usr/lib/*/libtracker-control-1.0.so
+usr/lib/*/pkgconfig/tracker-control-1.0.pc
 usr/include/tracker-1.0/libtracker-control/*.h
 usr/share/vala/vapi/tracker-control-1.0.vapi
 usr/share/vala/vapi/tracker-control-1.0.deps

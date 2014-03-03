@@ -67,7 +67,9 @@ Description: metadata database, indexer and search tool
 
 Package: libtracker-sparql-1.0-0
 Architecture: any
+Multi-Arch: same
 Section: libs
+Pre-Depends: ${misc:Pre-Depends},
 Depends: ${shlibs:Depends},
          ${misc:Depends}
 Description: metadata database, indexer and search tool - library
@@ -116,7 +118,9 @@ Description: metadata database, indexer and search tool - API documentation
 
 Package: libtracker-miner-1.0-0
 Architecture: any
+Multi-Arch: same
 Section: libs
+Pre-Depends: ${misc:Pre-Depends},
 Depends: ${shlibs:Depends},
          ${misc:Depends}
 Description: tracker data miner library
@@ -164,7 +168,9 @@ Description: tracker data miner library - API documentation
 
 Package: libtracker-control-1.0-0
 Architecture: any
+Multi-Arch: same
 Section: libs
+Pre-Depends: ${misc:Pre-Depends},
 Depends: ${shlibs:Depends},
          ${misc:Depends}
 Description: library to control/monitor tracker miners

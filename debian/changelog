@@ -4,6 +4,7 @@ tracker (0.17.5-1) UNRELEASED; urgency=medium
   * Remove debian/patches/01-libtracker-extract-internal.patch and
     debian/patches/02-define-dirs.patch, both merged upstream.
   * Remove obsolete configure switches.
+  * Bump debhelper compatibility level to 9.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 04 Mar 2014 23:23:35 +0100
 

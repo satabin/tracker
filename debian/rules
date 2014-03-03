@@ -3,6 +3,8 @@
 %:
 	dh $@ --with gir,autoreconf
 
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+
 export LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed -Wl,-Bsymbolic
 
 autoreconf:

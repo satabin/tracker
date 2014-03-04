@@ -61,7 +61,7 @@ def expandvars (variable):
 
 
 
-PREFIX = "/home/carlos/Build/gnome"
+PREFIX = "/usr"
 #
 # This raw variables are set by autotools without translating vars:
 #   E.G. bindir='${exec_prefix}/bin

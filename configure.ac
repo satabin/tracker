@@ -13,7 +13,7 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [17])
-m4_define([tracker_micro_version], [4])
+m4_define([tracker_micro_version], [5])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -194,7 +194,6 @@ CAMEL_REQUIRED=2.32.0
 LIBSTREAMANALYZER_REQUIRED=0.7.0
 GEE_REQUIRED=0.3
 TAGLIB_REQUIRED=1.6
-LIBSECRET_REQUIRED=0.5
 LIBGRSS_REQUIRED=0.5
 REST_REQUIRED=0.6
 NETWORK_MANAGER_REQUIRED=0.8
@@ -319,6 +318,14 @@ TRACKER_EXTRACT_REQUIRED="glib-2.0        >= $GLIB_REQUIRED
                           libmediaart-1.0 >= $LIBMEDIAART_REQUIRED"
 
 PKG_CHECK_MODULES(TRACKER_EXTRACT, [$TRACKER_EXTRACT_REQUIRED])
+
+TRACKER_EXTRACT_MODULES_DIR="${libdir}/tracker-${TRACKER_API_VERSION}/extract-modules"
+AC_SUBST(TRACKER_EXTRACT_MODULES_DIR)
+
+# NOTE: We don't use ${TRACKER_API_VERSION} because other content like
+# the ontology is installed to the same location.
+TRACKER_EXTRACT_RULES_DIR="${datadir}/tracker/extract-rules"
+AC_SUBST(TRACKER_EXTRACT_RULES_DIR)
 
 # Check requirements for tracker-extract modules
 TRACKER_EXTRACT_MODULES_REQUIRED="glib-2.0     >= $GLIB_REQUIRED"
@@ -632,28 +639,12 @@ if test "x$enable_maemo" = "xyes" ; then
 fi
 
 ####################################################################
-# Check if we should install nemo specific features
-####################################################################
-
-AC_ARG_ENABLE(nemo,
-              AS_HELP_STRING([--enable-nemo],
-                             [enable nemo specific [[default=no]]]),
-             [enable_nemo="$enableval"],
-             [enable_nemo=no])
-
-AM_CONDITIONAL(HAVE_NEMO, test "x$enable_nemo" = "xyes")
-
-if test "x$enable_nemo" = "xyes" ; then
-   AC_DEFINE(HAVE_NEMO, 1, [Define if we enable Nemo specific features])
-fi
-
-####################################################################
 # Check if we should disable the journal
 ####################################################################
 
 AC_ARG_ENABLE(journal,
               AS_HELP_STRING([--enable-journal],
-                             [enable journal [[default=yes]]]),
+                             [enable database journal backup mechanism [[default=yes]]]),
              [enable_journal="$enableval"],
              [enable_journal=yes])
 
@@ -967,49 +958,6 @@ AM_CONDITIONAL(BUILD_LIBUNISTRING_PARSER, test "x$with_unicode_support" = "xlibu
 AM_CONDITIONAL(BUILD_LIBICU_PARSER, test "x$with_unicode_support" = "xlibicu")
 
 ##################################################################
-# Check for libtracker-miner: libsecet for web miner details
-##################################################################
-
-AC_ARG_ENABLE(gnome_keyring,
-              AS_HELP_STRING([--enable-gnome-keyring],
-                             [enable Gnome Keyring support to store credentials [[default=auto]]]),,
-              [enable_gnome_keyring=auto])
-
-AC_ARG_ENABLE(libsecret,
-              AS_HELP_STRING([--enable-libsecret],
-                             [enable libsecret support to store login credentials [[default=auto]]]),,
-              [enable_libsecret=auto])
-
-if test "x$enable_gnome_keyring" != "xauto"; then
-   AC_MSG_WARN([The --enable-gnome-keyring option has been deprecated for --enable-libsecret])
-
-   # Try to continue as normal
-   enable_libsecret="$enable_gnome_keyring"
-fi
-
-if test "x$enable_libsecret" != "xno"; then
-   PKG_CHECK_MODULES(LIBSECRET,
-                     [libsecret-unstable >= $LIBSECRET_REQUIRED],
-                     [have_libsecret=yes],
-                     [have_libsecret=no])
-
-   LIBTRACKER_MINER_CFLAGS="$LIBTRACKER_MINER_CFLAGS $LIBSECRET_CFLAGS"
-   LIBTRACKER_MINER_LIBS="$LIBTRACKER_MINER_LIBS $LIBSECRET_LIBS"
-
-   if test "x$have_libsecret" = "xyes"; then
-      AC_DEFINE(HAVE_LIBSECRET, [], [Define if we have libsecret for password storage])
-   fi
-fi
-
-if test "x$enable_libsecret" = "xyes"; then
-   if test "x$have_libsecret" != "xyes"; then
-      AC_MSG_ERROR([Couldn't find libsecret >= $LIBSECRET_REQUIRED.])
-   fi
-fi
-
-AM_CONDITIONAL(HAVE_LIBSECRET, test "x$have_libsecret" = "xyes")
-
-##################################################################
 # Check for libtracker-miner: network-manager for web miners
 ##################################################################
 
@@ -1046,7 +994,7 @@ AM_CONDITIONAL(HAVE_NETWORK_MANAGER, test "x$have_network_manager" = "xyes")
 
 AC_ARG_ENABLE(libexif,
               AS_HELP_STRING([--enable-libexif],
-                             [enable extractor for exif data [[default=auto]]]),,
+                             [enable extractor for exif metadata [[default=auto]]]),,
               [enable_libexif=auto])
 
 if test "x$enable_libexif" != "xno" ; then
@@ -1079,7 +1027,7 @@ AM_CONDITIONAL(HAVE_EXIF, test "x$have_libexif" = "xyes")
 
 AC_ARG_ENABLE(libiptcdata,
               AS_HELP_STRING([--enable-libiptcdata],
-                             [enable extractor for iptc data [[default=auto]]]),,
+                             [enable extractor for iptc metadata [[default=auto]]]),,
               [enable_libiptcdata=auto])
 
 if test "x$enable_libiptcdata" != "xno" ; then
@@ -1112,7 +1060,7 @@ AM_CONDITIONAL(HAVE_IPTC, test "x$have_libiptcdata" = "xyes")
 
 AC_ARG_ENABLE(exempi,
               AS_HELP_STRING([--enable-exempi],
-                             [enable extractor for XMP data [[default=auto]]]),,
+                             [enable extractor for XMP metadata [[default=auto]]]),,
               [enable_exempi=auto])
 
 if test "x$enable_exempi" != "xno" ; then
@@ -1360,7 +1308,7 @@ AM_CONDITIONAL(HAVE_TRACKER_MINER_FIREFOX, test "x$have_tracker_miner_firefox" =
 
 AC_ARG_ENABLE([nautilus-extension],
               AS_HELP_STRING([--enable-nautilus-extension],
-                             [enable the nautilus extension [[default=auto]]]),,
+                             [enable tagging in nautilus with Tracker [[default=auto]]]),,
               [enable_tracker_nautilus=auto])
 
 enable_tracker_nautilus_extension=$enable_nautilus_extension
@@ -1424,7 +1372,7 @@ AM_CONDITIONAL(HAVE_TAGLIB, test "x$have_taglib" = "xyes")
 
 AC_ARG_ENABLE([tracker-needle],
               AS_HELP_STRING([--enable-tracker-needle],
-                             [enable tracker-needle [[default=auto]]]),,
+                             [enable GTK+ UI to search for content [[default=auto]]]),,
               [enable_tracker_needle=auto])
 
 if test "x$enable_tracker_needle" = "xyes" ; then
@@ -1451,7 +1399,7 @@ AM_CONDITIONAL(HAVE_TRACKER_NEEDLE, test "$have_tracker_needle" = "yes")
 
 AC_ARG_ENABLE([tracker-preferences],
               AS_HELP_STRING([--enable-tracker-preferences],
-                             [enable the tracker preferences dialog [[default=auto]]]),,
+                             [enable GTK+ UI to configure Tracker [[default=auto]]]),,
               [enable_tracker_preferences=auto])
 
 # If we don't have miner-fs enabled, the preferences are pointless
@@ -1554,8 +1502,8 @@ AM_CONDITIONAL(HAVE_LIBSTREAMANALYZER, test "$have_libstreamanalyzer" = "yes")
 ##################################################################
 
 AC_ARG_ENABLE(libxml2,
-              AS_HELP_STRING([--disable-libxml2],
-                             [disable HTML/XML extractors [[default=yes]]]),,
+              AS_HELP_STRING([--enable-libxml2],
+                             [enable extractor for HTML/XML metadata [[default=yes]]]),,
               [enable_libxml2=yes])
 
 # Force libxml requirement for HAVE_MAEMO,
@@ -1587,104 +1535,6 @@ if test "x$enable_libxml2" = "xyes"; then
 fi
 
 AM_CONDITIONAL(HAVE_LIBXML2, test "x$have_libxml2" = "xyes")
-
-##################################################################
-# Check for tracker-extract: GdkPixbuf for MP3 album art
-##################################################################
-
-AC_ARG_ENABLE(gdkpixbuf,
-              AS_HELP_STRING([--enable-gdkpixbuf],
-                             [enable GdkPixbuf support, (MP3 album art) [[default=auto]]]),,
-              [enable_gdkpixbuf=auto])
-
-##################################################################
-# Check for tracker-extract: Qt for MP3 album art
-##################################################################
-
-AC_ARG_ENABLE(qt,
-              AS_HELP_STRING([--enable-qt],
-                             [enable Qt support, (MP3 album art) [[default=auto]]]),,
-              [enable_qt=auto])
-
-selected_for_media_art="no  (disabled)"
-
-##################################################################
-# Check for tracker-extract: Choose between GdkPixbuf/Qt
-##################################################################
-
-if test "x$enable_qt" != "xno" && test "x$enable_gdkpixbuf" != "xyes"; then
-   PKG_CHECK_MODULES(QT5,
-                     [Qt5Gui >= $QT5_REQUIRED],
-                     [have_qt5=yes],
-                     [have_qt5=no])
-
-   PKG_CHECK_MODULES(QT4,
-                     [QtGui >= $QT4_REQUIRED],
-                     [have_qt4=yes],
-                     [have_qt4=no])
-
-
-   if test "x$have_qt5" = "xyes"; then
-      TRACKER_EXTRACT_CFLAGS="$TRACKER_EXTRACT_CFLAGS $QT5_CFLAGS -fPIC"
-      TRACKER_EXTRACT_LIBS="$TRACKER_EXTRACT_LIBS $QT5_LIBS"
-
-      AC_DEFINE(HAVE_QT5, [], [Define if we have Qt5])
-      AC_DEFINE(HAVE_QT, [], [Define if we have Qt])
-
-      selected_for_media_art="yes (qt5)"
-   else
-      if test "x$have_qt4" = "xyes"; then
-         TRACKER_EXTRACT_CFLAGS="$TRACKER_EXTRACT_CFLAGS $QT4_CFLAGS -fPIC"
-         TRACKER_EXTRACT_LIBS="$TRACKER_EXTRACT_LIBS $QT4_LIBS"
-
-         AC_DEFINE(HAVE_QT4, [], [Define if we have Qt4])
-         AC_DEFINE(HAVE_QT, [], [Define if we have Qt])
-
-         selected_for_media_art="yes (qt4)"
-      fi
-   fi
-else
-   have_qt4="no  (disabled)"
-   have_qt5="no  (disabled)"
-fi
-
-if test "x$enable_qt" = "xyes"; then
-   if test "x$have_qt5" != "xyes"; then
-      if test "x$have_qt4" != "xyes"; then
-         AC_MSG_ERROR([Couldn't find Qt4 >= $QT4_REQUIRED or Qt5 >= $QT5_REQUIRED.])
-      fi
-   fi
-fi
-
-AM_CONDITIONAL(HAVE_QT4, test "x$have_qt4" = "xyes")
-AM_CONDITIONAL(HAVE_QT5, test "x$have_qt5" = "xyes")
-AM_CONDITIONAL(HAVE_QT, test "x$have_qt5" = "xyes" || test "x$have_qt4" = "xyes")
-
-
-if test "x$enable_gdkpixbuf" != "xno" && test "x$enable_quill" != "xyes"; then
-   PKG_CHECK_MODULES(GDKPIXBUF,
-                     [gdk-pixbuf-2.0 >= $GDKPIXBUF_REQUIRED],
-                     [have_gdkpixbuf=yes],
-                     [have_gdkpixbuf=no])
-
-   TRACKER_EXTRACT_CFLAGS="$TRACKER_EXTRACT_CFLAGS $GDKPIXBUF_CFLAGS"
-   TRACKER_EXTRACT_LIBS="$TRACKER_EXTRACT_LIBS $GDKPIXBUF_LIBS"
-
-   if test "x$have_gdkpixbuf" = "xyes"; then
-      AC_DEFINE(HAVE_GDKPIXBUF, [], [Define if we have GdkPixbuf])
-      selected_for_media_art="yes (GdkPixbuf)"
-   fi
-else
-   have_gdkpixbuf="no  (disabled)"
-fi
-
-if test "x$enable_gdkpixbuf" = "xyes"; then
-   if test "x$have_gdkpixbuf" != "xyes"; then
-      AC_MSG_ERROR([Couldn't find GdkPixbuf >= $GDKPIXBUF_REQUIRED.])
-   fi
-fi
-
-AM_CONDITIONAL(HAVE_GDKPIXBUF, test "x$have_gdkpixbuf" = "xyes")
 
 ####################################################################
 # Check for tracker-extract: gstreamer/xine/totem/mplayer/etc
@@ -1867,8 +1717,8 @@ AM_CONDITIONAL(HAVE_GSTREAMER_PBUTILS, test "x$gstreamer_backend" = "xDiscoverer
 ####################################################################
 
 AC_ARG_ENABLE([unzip_psgz_files],
-              AS_HELP_STRING([--disable-unzip-ps-gz-files],
-                             [disable unzipping ps.gz files [[default=yes]]]),,
+              AS_HELP_STRING([--enable-unzip-ps-gz-files],
+                             [enable extractor for PS.GZ metadata [[default=yes]]]),,
               [enable_unzip_psgz_files=yes])
 
 if test x$enable_unzip_psgz_files != "xno"; then
@@ -1881,7 +1731,7 @@ fi
 
 AC_ARG_ENABLE(poppler,
               AS_HELP_STRING([--enable-poppler],
-                             [enable extractor for PDF data [[default=auto]]]),,
+                             [enable extractor for PDF metadata [[default=auto]]]),,
               [enable_poppler=auto])
 
 if test "x$enable_poppler" != "xno" ; then
@@ -1914,7 +1764,7 @@ AM_CONDITIONAL(HAVE_POPPLER, test "x$have_poppler" = "xyes")
 
 AC_ARG_ENABLE(libgxps,
               AS_HELP_STRING([--enable-libgxps],
-                             [enable extractor for XPS data [[default=auto]]]),,
+                             [enable extractor for XPS metadata [[default=auto]]]),,
               [enable_libgxps=auto])
 
 if test "x$enable_libgxps" != "xno" ; then
@@ -1947,7 +1797,7 @@ AM_CONDITIONAL(HAVE_LIBGXPS, test "x$have_libgxps" = "xyes")
 
 AC_ARG_ENABLE(libgsf,
               AS_HELP_STRING([--enable-libgsf],
-                             [enable extractor for GSF data [[default=auto]]]),,
+                             [enable extractor for GSF metadata (MSOffice, LibreOffice, EPub) [[default=auto]]]),,
               [enable_libgsf=auto])
 
 if test "x$enable_libgsf" != "xno" ; then
@@ -1980,7 +1830,7 @@ AM_CONDITIONAL(HAVE_LIBGSF, test "x$have_libgsf" = "xyes")
 
 AC_ARG_ENABLE(libosinfo,
               AS_HELP_STRING([--enable-libosinfo],
-                             [enable extractor for ISO data [[default=auto]]]),,
+                             [enable extractor for ISO metadata [[default=auto]]]),,
               [enable_libosinfo=auto])
 
 if test "x$enable_libosinfo" != "xno" ; then
@@ -2021,7 +1871,7 @@ LIBS=""
 
 AC_ARG_ENABLE(libgif,
               AS_HELP_STRING([--enable-libgif],
-                             [enable extractor for GIF data [[default=auto]]]),,
+                             [enable extractor for GIF metadata [[default=auto]]]),,
               [enable_libgif=auto])
 
 if test "x$enable_libgif" != "xno" ; then
@@ -2068,7 +1918,7 @@ LIBS=""
 
 AC_ARG_ENABLE(libjpeg,
               AS_HELP_STRING([--enable-libjpeg],
-                             [enable extractor for JPEG data [[default=auto]]]),,
+                             [enable extractor for JPEG metadata [[default=auto]]]),,
               [enable_libjpeg=auto])
 
 if test "x$enable_libjpeg" != "xno" ; then
@@ -2115,7 +1965,7 @@ LIBS=""
 
 AC_ARG_ENABLE(libtiff,
               AS_HELP_STRING([--enable-libtiff],
-                             [enable extractor for TIFF data [[default=auto]]]),,
+                             [enable extractor for TIFF metadata [[default=auto]]]),,
               [enable_libtiff=auto])
 
 if test "x$enable_libtiff" != "xno" ; then
@@ -2162,7 +2012,7 @@ LIBS=""
 
 AC_ARG_ENABLE(libpng,
               AS_HELP_STRING([--enable-libpng],
-                             [enable extractor for PNG data [[default=auto]]]),,
+                             [enable extractor for PNG metadata [[default=auto]]]),,
               [enable_libpng=auto])
 
 if test "x$enable_libpng" != "xno" ; then
@@ -2201,7 +2051,7 @@ LIBS="$OLD_LIBS"
 
 AC_ARG_ENABLE(libvorbis,
               AS_HELP_STRING([--enable-libvorbis],
-                             [enable extractor for vorbis data (ogg) [[default=no]]]),,
+                             [enable extractor for OGG metadata (Vorbis) [[default=no]]]),,
               [enable_libvorbis=no])
 
 if test "x$enable_libvorbis" != "xno" ; then
@@ -2234,7 +2084,7 @@ AM_CONDITIONAL(HAVE_LIBVORBIS, test "x$have_libvorbis" = "xyes")
 
 AC_ARG_ENABLE(libflac,
               AS_HELP_STRING([--enable-libflac],
-                             [enable extractor for flac data [[default=no]]]),,
+                             [enable extractor for FLAC metadata [[default=no]]]),,
               [enable_libflac=no])
 
 if test "x$enable_libflac" != "xno" ; then
@@ -2299,7 +2149,7 @@ AM_CONDITIONAL(HAVE_LIBCUE, test "x$have_libcue" = "xyes")
 
 AC_ARG_ENABLE(abiword,
               AS_HELP_STRING([--enable-abiword],
-                             [enable AbiWord support [[default=auto]]]),,
+                             [enable extractor for ABW metadata (AbiWord) [[default=auto]]]),,
               [enable_abiword=auto])
 
 if test "x$enable_abiword" != "xno" ; then
@@ -2319,7 +2169,7 @@ AM_CONDITIONAL(HAVE_ABIWORD, test "x$have_abiword" = "xyes")
 
 AC_ARG_ENABLE(dvi,
               AS_HELP_STRING([--enable-dvi],
-                             [enable DVI support [[default=auto]]]),,
+                             [enable extractor for DVI metadata [[default=auto]]]),,
               [enable_dvi=auto])
 
 if test "x$enable_dvi" != "xno"; then
@@ -2339,7 +2189,7 @@ AM_CONDITIONAL(HAVE_DVI, test "x$have_dvi" = "xyes")
 
 AC_ARG_ENABLE(mp3,
               AS_HELP_STRING([--enable-mp3],
-                             [enable MP3 support [[default=auto]]]),,
+                             [enable extractor for MP3 metadata [[default=auto]]]),,
               [enable_mp3=auto])
 
 if test "x$enable_mp3" != "xno"; then
@@ -2359,7 +2209,7 @@ AM_CONDITIONAL(HAVE_MP3, test "x$have_mp3" = "xyes")
 
 AC_ARG_ENABLE(ps,
               AS_HELP_STRING([--enable-ps],
-                             [enable PS support [[default=auto]]]),,
+                             [enable extractor for PS metadata [[default=auto]]]),,
               [enable_ps=auto])
 
 if test "x$enable_ps" != "xno"; then
@@ -2379,7 +2229,7 @@ AM_CONDITIONAL(HAVE_PS, test "x$have_ps" = "xyes")
 
 AC_ARG_ENABLE(text,
               AS_HELP_STRING([--enable-text],
-                             [enable text support [[default=auto]]]),,
+                             [enable extractor for TXT metadata [[default=auto]]]),,
               [enable_text=auto])
 
 if test "x$enable_text" != "xno"; then
@@ -2399,7 +2249,7 @@ AM_CONDITIONAL(HAVE_TEXT, test "x$have_text" = "xyes")
 
 AC_ARG_ENABLE(icon,
               AS_HELP_STRING([--enable-icon],
-                             [enable icon support [[default=auto]]]),,
+                             [enable extractor for ICO metadata [[default=auto]]]),,
               [enable_icon=auto])
 
 if test "x$enable_icon" != "xno"; then
@@ -2419,7 +2269,7 @@ AM_CONDITIONAL(HAVE_ICON, test "x$have_icon" = "xyes")
 
 AC_ARG_ENABLE(playlist,
               AS_HELP_STRING([--enable-playlist],
-                             [enable playlist support [[default=auto]]]),,
+                             [enable extractor for Playlist metadata [[default=auto]]]),,
               [enable_playlist=auto])
 
 if test "x$enable_playlist" != "xno" ; then
@@ -2461,12 +2311,12 @@ AM_CONDITIONAL(HAVE_TOTEM_PL_PARSER, test "x$have_playlist" = "xyes")
 
 AC_ARG_ENABLE(guarantee-metadata,
              AS_HELP_STRING([--enable-guarantee-metadata],
-                            [enable guaranteed existence of some metadata [[default=no]]]),
+                            [enable guaranteed existence of some metadata, e.g. nie:title from files [[default=no]]]),
                             [enable_guarantee_metadata=yes],
                             [enable_guarantee_metadata=no])
 
 if test "x$enable_guarantee_metadata" != "xno"; then
-  AC_DEFINE(GUARANTEE_METADATA, 1, [Guarantee existence of certain metadata])
+  AC_DEFINE(GUARANTEE_METADATA, 1, [Guarantee existence of some metadata])
 fi
 
 ####################################################################
@@ -2484,7 +2334,7 @@ AM_CONDITIONAL(HAVE_UPSTART, test "x$INITCTL" != "x")
 
 AC_ARG_ENABLE(artwork,
               AS_HELP_STRING([--enable-artwork],
-                             [install artwork, such as icons and logos [[default=auto]]]),,
+                             [install artwork, e.g. data/icons/* [[default=auto]]]),,
               [enable_artwork=auto])
 
 if test "x$enable_artwork" != "xno"; then
@@ -2674,7 +2524,6 @@ Build Configuration:
 	Support for HAL:                        $have_hal
 	Support for UPower:                     $have_upower
 	Support for network status detection:   $have_network_manager
-        Support for keyring data (libsecret):   $have_libsecret
 	Unicode support library:                $with_unicode_support
 
 Applications:
@@ -2700,7 +2549,6 @@ Metadata Extractors:
 	Support XML / HTML:                     $have_libxml2
 	Support embedded / sidecar XMP:         $have_exempi
 	Support generic media formats:          $have_generic_media_handler ($have_generic_media_handler_app) (backend: $gstreamer_backend)
-	Support media art processing:           $selected_for_media_art
 	Support cue sheet parsing:              $have_libcue
 	Support playlists (w/ Totem):           $have_playlist
 	Support ISO image parsing:              $have_libosinfo
@@ -2735,7 +2583,6 @@ Writeback:
 Frameworks / Options:
 
 	Support Maemo                           $enable_maemo
-	Support Nemo                            $enable_nemo
 	Support libmeegotouch                   $have_meegotouch
 	Support Guaranteed Metadata             $enable_guarantee_metadata (e.g. guess nie:title from files)
 

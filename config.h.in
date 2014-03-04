@@ -34,7 +34,7 @@
 /* Define that GStreamer Tagreadbin should be used */
 #undef GSTREAMER_BACKEND_TAGREADBIN
 
-/* Guarantee existence of certain metadata */
+/* Guarantee existence of some metadata */
 #undef GUARANTEE_METADATA
 
 /* Define if we have AbiWord extractor */
@@ -76,9 +76,6 @@
 
 /* Define to 1 if you have the <fcntl.h> header file. */
 #undef HAVE_FCNTL_H
-
-/* Define if we have GdkPixbuf */
-#undef HAVE_GDKPIXBUF
 
 /* Define to 1 if you have the `getline' function. */
 #undef HAVE_GETLINE
@@ -134,9 +131,6 @@
 /* Define if we have libpng */
 #undef HAVE_LIBPNG
 
-/* Define if we have libsecret for password storage */
-#undef HAVE_LIBSECRET
-
 /* Define to 1 if you have the `sqlite3' library (-lsqlite3). */
 #undef HAVE_LIBSQLITE3
 
@@ -173,9 +167,6 @@
 /* Define if we have MP3 extractor */
 #undef HAVE_MP3
 
-/* Define if we enable Nemo specific features */
-#undef HAVE_NEMO
-
 /* Define if we have NetworkManager for network status detection */
 #undef HAVE_NETWORK_MANAGER
 
@@ -187,15 +178,6 @@
 
 /* Define if we have PS extractor */
 #undef HAVE_PS
-
-/* Define if we have Qt */
-#undef HAVE_QT
-
-/* Define if we have Qt4 */
-#undef HAVE_QT4
-
-/* Define if we have Qt5 */
-#undef HAVE_QT5
 
 /* Define to 1 if you have the <sqlite3.h> header file. */
 #undef HAVE_SQLITE3_H

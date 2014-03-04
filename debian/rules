@@ -47,7 +47,6 @@ override_dh_auto_configure:
 		--enable-gtk-doc \
 		--disable-unit-tests \
 		--disable-network-manager \
-		--disable-libsecret \
 		--disable-miner-rss \
 		--disable-miner-evolution \
 		--disable-miner-thunderbird \
@@ -55,8 +54,7 @@ override_dh_auto_configure:
 		--disable-hal \
 		--disable-taglib \
 		--disable-libosinfo \
-		--disable-libcue \
-		--disable-qt
+		--disable-libcue
 
 override_dh_install:
 	dh_install -X.la --list-missing

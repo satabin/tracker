@@ -5,6 +5,8 @@ tracker (0.17.5-1) UNRELEASED; urgency=medium
     debian/patches/02-define-dirs.patch, both merged upstream.
   * Remove obsolete configure switches.
   * Bump debhelper compatibility level to 9.
+  * Convert to multi-arch. Mark libtracker-sparql, libtracker-miner and
+    libtracker-control as Multi-Arch: same.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 04 Mar 2014 23:23:35 +0100
 

@@ -1,4 +1,4 @@
-tracker (0.17.5-1) UNRELEASED; urgency=medium
+tracker (0.17.5-1) experimental; urgency=medium
 
   * New upstream release.
   * Remove debian/patches/01-libtracker-extract-internal.patch and
@@ -8,7 +8,7 @@ tracker (0.17.5-1) UNRELEASED; urgency=medium
   * Convert to multi-arch. Mark libtracker-sparql, libtracker-miner and
     libtracker-control as Multi-Arch: same.
 
- -- Michael Biebl <biebl@debian.org>  Tue, 04 Mar 2014 23:23:35 +0100
+ -- Michael Biebl <biebl@debian.org>  Wed, 05 Mar 2014 02:06:05 +0100
 
 tracker (0.17.4-1) experimental; urgency=medium
 

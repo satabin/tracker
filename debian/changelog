@@ -1,6 +1,7 @@
 tracker (0.17.6-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Explicitly enable libmediaart support.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 18 Mar 2014 19:58:45 +0100
 

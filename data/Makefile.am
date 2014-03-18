@@ -1,6 +1,17 @@
 SUBDIRS = dbus languages icons ontologies miners gschemas
 
+# Set up pkg-config .pc files for exported libraries
+if HAVE_LIBMEDIAART
+requires="libmediaart-1.0"
+else
+requires=
+endif
+
 # First we fix the VERSION and libexecdir in the desktop files
+tracker-extract.desktop.in: tracker-extract.desktop.in.in
+	@sed -e "s|@libexecdir[@]|${libexecdir}|"      \
+	     -e "s|@VERSION[@]|${VERSION}|" $< > $@
+
 tracker-store.desktop.in: tracker-store.desktop.in.in
 	@sed -e "s|@libexecdir[@]|${libexecdir}|"      \
 	     -e "s|@VERSION[@]|${VERSION}|" $< > $@
@@ -14,12 +25,14 @@ tracker-miner-rss.desktop.in: tracker-miner-rss.desktop.in.in
 	     -e "s|@VERSION[@]|${VERSION}|" $< > $@
 
 desktop_in_in_files =                                  \
+	tracker-extract.desktop.in.in                  \
 	tracker-store.desktop.in.in                    \
 	tracker-miner-fs.desktop.in.in                 \
 	tracker-miner-rss.desktop.in.in
 
 # Second take those new .in files and translate them
 desktop_in_files =                                     \
+	tracker-extract.desktop.in                     \
 	tracker-store.desktop.in                       \
 	tracker-miner-fs.desktop.in                    \
 	tracker-miner-rss.desktop.in
@@ -30,7 +43,7 @@ autostart_DATA =                                       \
 	tracker-store.desktop
 
 if HAVE_TRACKER_MINER_FS
-autostart_DATA += tracker-miner-fs.desktop
+autostart_DATA += tracker-miner-fs.desktop tracker-extract.desktop
 endif
 
 if HAVE_TRACKER_MINER_RSS
@@ -39,7 +52,6 @@ endif
 
 @INTLTOOL_DESKTOP_RULE@
 
-# Set up pkg-config .pc files for exported libraries
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA =                                       \
 	tracker-control-$(TRACKER_API_VERSION).pc      \

@@ -8,15 +8,14 @@
 <link rel="up" href="libtracker-sparql-reference.html" title="Part II. Reference">
 <link rel="prev" href="libtracker-sparql-Utilities.html" title="Utilities">
 <link rel="next" href="tracker-examples.html" title="Part III. Examples">
-<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.20.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
-                  <a href="#libtracker-sparql-Version-Information.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
-                  <a href="#libtracker-sparql-Version-Information.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#libtracker-sparql-Version-Information.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="libtracker-sparql-reference.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
@@ -41,7 +40,7 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<td class="function_type">const <span class="returnvalue">gchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="libtracker-sparql-Version-Information.html#tracker-check-version" title="tracker_check_version ()">tracker_check_version</a> <span class="c_punctuation">()</span>
@@ -88,21 +87,16 @@
 </table></div>
 </div>
 <div class="refsect1">
-<a name="libtracker-sparql-Version-Information.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">
-</pre>
-</div>
-<div class="refsect1">
 <a name="libtracker-sparql-Version-Information.description"></a><h2>Description</h2>
 </div>
 <div class="refsect1">
 <a name="libtracker-sparql-Version-Information.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="tracker-check-version"></a><h3>tracker_check_version ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-tracker_check_version (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> required_major</code></em>,
-                       <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> required_minor</code></em>,
-                       <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> required_micro</code></em>);</pre>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+tracker_check_version (<em class="parameter"><code><span class="type">guint</span> required_major</code></em>,
+                       <em class="parameter"><code><span class="type">guint</span> required_minor</code></em>,
+                       <em class="parameter"><code><span class="type">guint</span> required_micro</code></em>);</pre>
 <p>Checks that the Tracker library in use is compatible with the
 given version. Generally you would pass in the constants
 <span class="type">TRACKER_MAJOR_VERSION</span>, <span class="type">TRACKER_MINOR_VERSION</span>, <span class="type">TRACKER_MICRO_VERSION</span>
@@ -121,7 +115,7 @@ version <em class="parameter"><code>required_major.required_minor</code></em>
 
 (same major version.)</p>
 <div class="refsect3">
-<a name="id-1.3.7.7.2.6"></a><h4>Parameters</h4>
+<a name="id-1.3.7.6.2.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -148,8 +142,8 @@ version <em class="parameter"><code>required_major.required_minor</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.7.7.2.7"></a><h4>Returns</h4>
-<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the Tracker library is compatible with the
+<a name="id-1.3.7.6.2.7"></a><h4>Returns</h4>
+<p> <code class="literal">NULL</code> if the Tracker library is compatible with the
 given version, or a string describing the version mismatch.
 The returned string is owned by Tracker and must not be modified
 or freed.</p>
@@ -166,7 +160,7 @@ or freed.</p>
 than a run-time operation. It will evaluate true or false based the
 version passed in and the version available.</p>
 <div class="example">
-<a name="id-1.3.7.7.3.5"></a><p class="title"><b>Example 2. Simple version check example</b></p>
+<a name="id-1.3.7.6.3.5"></a><p class="title"><b>Example 2. Simple version check example</b></p>
 <div class="example-contents">
 An example of how to make sure you have the version of Tracker
 installed to run your code.
@@ -178,7 +172,7 @@ if (!TRACKER_CHECK_VERSION (0, 10, 7)) {
 </div>
 </div>
 <br class="example-break"><div class="refsect3">
-<a name="id-1.3.7.7.3.6"></a><h4>Parameters</h4>
+<a name="id-1.3.7.6.3.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -242,6 +236,6 @@ if (!TRACKER_CHECK_VERSION (0, 10, 7)) {
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.20</div>
+          Generated by GTK-Doc V1.20.1</div>
 </body>
 </html>

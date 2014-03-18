@@ -112,7 +112,6 @@
 <ANCHOR id="libtracker-sparql-Utilities" href="libtracker-sparql/libtracker-sparql-Utilities.html">
 <ANCHOR id="libtracker-sparql-Utilities.stability-level" href="libtracker-sparql/libtracker-sparql-Utilities.html#libtracker-sparql-Utilities.stability-level">
 <ANCHOR id="libtracker-sparql-Utilities.functions" href="libtracker-sparql/libtracker-sparql-Utilities.html#libtracker-sparql-Utilities.functions">
-<ANCHOR id="libtracker-sparql-Utilities.object-hierarchy" href="libtracker-sparql/libtracker-sparql-Utilities.html#libtracker-sparql-Utilities.object-hierarchy">
 <ANCHOR id="libtracker-sparql-Utilities.includes" href="libtracker-sparql/libtracker-sparql-Utilities.html#libtracker-sparql-Utilities.includes">
 <ANCHOR id="libtracker-sparql-Utilities.description" href="libtracker-sparql/libtracker-sparql-Utilities.html#libtracker-sparql-Utilities.description">
 <ANCHOR id="libtracker-sparql-Utilities.functions_details" href="libtracker-sparql/libtracker-sparql-Utilities.html#libtracker-sparql-Utilities.functions_details">
@@ -124,7 +123,6 @@
 <ANCHOR id="libtracker-sparql-Version-Information" href="libtracker-sparql/libtracker-sparql-Version-Information.html">
 <ANCHOR id="libtracker-sparql-Version-Information.functions" href="libtracker-sparql/libtracker-sparql-Version-Information.html#libtracker-sparql-Version-Information.functions">
 <ANCHOR id="libtracker-sparql-Version-Information.other" href="libtracker-sparql/libtracker-sparql-Version-Information.html#libtracker-sparql-Version-Information.other">
-<ANCHOR id="libtracker-sparql-Version-Information.object-hierarchy" href="libtracker-sparql/libtracker-sparql-Version-Information.html#libtracker-sparql-Version-Information.object-hierarchy">
 <ANCHOR id="libtracker-sparql-Version-Information.description" href="libtracker-sparql/libtracker-sparql-Version-Information.html#libtracker-sparql-Version-Information.description">
 <ANCHOR id="libtracker-sparql-Version-Information.functions_details" href="libtracker-sparql/libtracker-sparql-Version-Information.html#libtracker-sparql-Version-Information.functions_details">
 <ANCHOR id="tracker-check-version" href="libtracker-sparql/libtracker-sparql-Version-Information.html#tracker-check-version">
@@ -135,3 +133,4 @@
 <ANCHOR id="tracker-micro-version" href="libtracker-sparql/libtracker-sparql-Version-Information.html#tracker-micro-version">
 <ANCHOR id="tracker-binary-age" href="libtracker-sparql/libtracker-sparql-Version-Information.html#tracker-binary-age">
 <ANCHOR id="tracker-interface-age" href="libtracker-sparql/libtracker-sparql-Version-Information.html#tracker-interface-age">
+<ANCHOR id="annotation-glossterm-Stable" href="libtracker-sparql/annotation-glossary.html#annotation-glossterm-Stable">

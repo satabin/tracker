@@ -49,9 +49,7 @@ rules_files = \
 	90-libav-audio-generic.rule \
 	90-libav-video-generic.rule \
 	91-gstreamer-generic-dlna.rule \
-	92-xine-generic.rule \
-	93-mplayer-generic.rule \
-	93-totem-generic.rule
+	93-mplayer-generic.rule
 
 # NOTE:
 # We don't always link with libtracker-common, we only link
@@ -127,15 +125,9 @@ if HAVE_GUPNP_DLNA
 rules_DATA += 91-gstreamer-generic-dlna.rule
 endif
 
-if HAVE_LIBXINE
-extractmodules_LTLIBRARIES += libextract-xine.la
-rules_DATA += 92-xine-generic.rule
-endif
-
 if USING_EXTERNAL_GENERIC_MEDIA_PLAYER
-extractmodules_LTLIBRARIES +=	libextract-mplayer.la \
-				libextract-totem.la
-rules_DATA += 93-mplayer-generic.rule 93-totem-generic.rule
+extractmodules_LTLIBRARIES +=	libextract-mplayer.la
+rules_DATA += 93-mplayer-generic.rule
 endif
 
 if HAVE_TOTEM_PL_PARSER
@@ -290,16 +282,6 @@ libextract_ps_la_LIBADD = \
 	$(BUILD_LIBS) \
 	$(TRACKER_EXTRACT_MODULES_LIBS)
 
-# Totem
-libextract_totem_la_SOURCES = tracker-extract-totem.c
-libextract_totem_la_CFLAGS = $(TRACKER_EXTRACT_MODULES_CFLAGS)
-libextract_totem_la_LDFLAGS = $(module_flags)
-libextract_totem_la_LIBADD = \
-	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(BUILD_LIBS) \
-	$(TRACKER_EXTRACT_MODULES_LIBS)
-
 # XMP
 libextract_xmp_la_SOURCES = tracker-extract-xmp.c
 libextract_xmp_la_CFLAGS = $(TRACKER_EXTRACT_MODULES_CFLAGS)
@@ -411,19 +393,6 @@ if HAVE_GSTREAMER_PBUTILS
 libextract_gstreamer_la_CFLAGS += $(GSTREAMER_PBUTILS_CFLAGS)
 libextract_gstreamer_la_LIBADD += $(GSTREAMER_PBUTILS_LIBS)
 endif
-
-# Xine
-libextract_xine_la_SOURCES = tracker-extract-libxine.c
-libextract_xine_la_CFLAGS = \
-	$(TRACKER_EXTRACT_MODULES_CFLAGS) \
-	$(XINE_CFLAGS)
-libextract_xine_la_LDFLAGS = $(module_flags)
-libextract_xine_la_LIBADD = \
-	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(BUILD_LIBS) \
-	$(TRACKER_EXTRACT_MODULES_LIBS) \
-	$(XINE_LIBS)
 
 # GIF
 libextract_gif_la_SOURCES = tracker-extract-gif.c
@@ -557,10 +526,6 @@ if HAVE_LIBGSF
 tracker_extract_SOURCES += tracker-gsf.c tracker-gsf.h
 tracker_extract_CFLAGS = $(LIBGSF_CFLAGS)
 tracker_extract_LDADD += $(LIBGSF_LIBS)
-endif
-
-if HAVE_LIBSTREAMANALYZER
-tracker_extract_SOURCES += tracker-topanalyzer.cpp tracker-topanalyzer.h
 endif
 
 # do nothing, output as a side-effect

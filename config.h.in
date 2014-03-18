@@ -22,17 +22,11 @@
 /* The gettext translation domain */
 #undef GETTEXT_PACKAGE
 
-/* Define that GStreamer Decodebin2 should be used */
-#undef GSTREAMER_BACKEND_DECODEBIN2
-
 /* Define that GStreamer Discoverer should be used */
 #undef GSTREAMER_BACKEND_DISCOVERER
 
 /* Define that GUPnP-DLNA should be used */
 #undef GSTREAMER_BACKEND_GUPNP_DLNA
-
-/* Define that GStreamer Tagreadbin should be used */
-#undef GSTREAMER_BACKEND_TAGREADBIN
 
 /* Guarantee existence of some metadata */
 #undef GUARANTEE_METADATA
@@ -125,6 +119,9 @@
 /* Define if we have libjpeg */
 #undef HAVE_LIBJPEG
 
+/* Define if we have libmediaart */
+#undef HAVE_LIBMEDIAART
+
 /* Define if we have libosinfo */
 #undef HAVE_LIBOSINFO
 
@@ -134,9 +131,6 @@
 /* Define to 1 if you have the `sqlite3' library (-lsqlite3). */
 #undef HAVE_LIBSQLITE3
 
-/* Define if we have libstreamanalyzer */
-#undef HAVE_LIBSTREAMANALYZER
-
 /* Define if we have libtiff */
 #undef HAVE_LIBTIFF
 
@@ -145,9 +139,6 @@
 
 /* Define if we have libvorbis */
 #undef HAVE_LIBVORBIS
-
-/* Define if we have Libxine */
-#undef HAVE_LIBXINE
 
 /* Define if we have libxml2 */
 #undef HAVE_LIBXML2
@@ -239,6 +230,9 @@
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
 #undef LT_OBJDIR
+
+/* Define to 1 if your C compiler doesn't accept -c and -o together. */
+#undef NO_MINUS_C_MINUS_O
 
 /* Define if we are on win32 */
 #undef OS_WIN32

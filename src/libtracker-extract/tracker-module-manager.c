@@ -163,10 +163,9 @@ tracker_extract_module_manager_init (void)
 		    !load_extractor_rule (key_file, &error)) {
 			g_warning ("  Could not load extractor rule file '%s': %s", name, error->message);
 			g_clear_error (&error);
-			continue;
+		} else {
+			g_debug ("  Loaded rule '%s'", name);
 		}
-
-		g_debug ("  Loaded rule '%s'", name);
 
 		g_key_file_free (key_file);
 		g_free (path);
@@ -237,7 +236,7 @@ lookup_rules (const gchar *mimetype)
 GStrv
 tracker_extract_module_manager_get_fallback_rdf_types (const gchar *mimetype)
 {
-	GList *l, *list = lookup_rules (mimetype);
+	GList *l, *list;
 	GHashTable *rdf_types;
 	gchar **types, *type;
 	GHashTableIter iter;
@@ -245,9 +244,10 @@ tracker_extract_module_manager_get_fallback_rdf_types (const gchar *mimetype)
 
 	if (!initialized &&
 	    !tracker_extract_module_manager_init ()) {
-		return FALSE;
+		return NULL;
 	}
 
+	list = lookup_rules (mimetype);
 	rdf_types = g_hash_table_new (g_str_hash, g_str_equal);
 
 	for (l = list; l; l = l->next) {
@@ -271,6 +271,8 @@ tracker_extract_module_manager_get_fallback_rdf_types (const gchar *mimetype)
 		types[i] = g_strdup (type);
 		i++;
 	}
+
+	g_hash_table_unref (rdf_types);
 
 	return types;
 }

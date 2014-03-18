@@ -1,3 +1,334 @@
+2014-03-18  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.17.6
+
+2014-03-18  Bastien Nocera  <hadess@hadess.net>
+
+	tracker-extract: Remove obsolete xine extractor
+	https://bugzilla.gnome.org/show_bug.cgi?id=726639
+
+	tracker-extract: Add Gibest hash calculation to GStreamer
+	Add Gibest extract to GStreamer extractor, as used in the
+	OpenSubtitles service:
+	http://trac.opensubtitles.org/projects/opensubtitles/wiki/HashSourceCodes
+
+	extract_gibest_hash() written by Carlos Garnacho <carlosg@gnome.org>
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=726640
+
+	tracker-extract: Remove obsolete GStreamer fallbacks
+	Remove the tagbin and decodebin2 GStreamer fallback backends,
+	GstDiscoverer is easier to use, and less prone to problems.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=726639
+
+	tracker-extract: Remove obsolete totem-video-indexer extractor
+	totem-video-indexer was removed in GNOME 3.2.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=726639
+
+2014-03-18  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-needle: Use BusType.SESSION for getting tracker-store stats
+	Fixes build. Was using Tracker.Bus.type(), which is from tracker-store.
+	We could depend on libtracker-common and call Tracker.IPC.bus, but I don't
+	want to add the dep. It's quite unlikely people use tracker-needle on the
+	SYSTEM bus anyway.
+
+	tracker-miner-{rss|evolution}: Fix DBus session used to TRACKER_IPC_BUS
+
+2014-03-18  Haithem Ben Ghorbal  <haithem.benghorbal_ext@softathome.com>
+
+	build: Move FTS feature check to m4 file with cache check too
+	This is to avoid checking for the FTS features in cross-compilation situations
+	where the check will fail and we've previously done the check anyway (knowing
+	it works). We use M4 caching for this.
+
+2014-03-18  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract: Removed support for libstreamanalyzer
+	This has not been compiled or used in years and likely doesn't produce an
+	ontology compatible output that we could use.
+
+	EXTERMINATE!
+
+	build: Make libmediaart a soft dependency, not hard
+
+	tracker-extract: Don't report < 0 nfo:width for images with GStreamer discoverer
+
+2014-03-17  Aurimas Černius  <aurisc4@gmail.com>
+
+	Updated Lithuanian translation
+
+2014-03-17  Haithem Ben Ghorbal  <haithem.benghorbal_ext@softathome.com>
+
+	build: Fix typos in configure.ac for fts4 and sqlite_safe
+
+2014-03-17  Dominique Leuenberger  <dimstar@opensuse.org>
+
+	libtracker-{common,data,extract}: do not maintain LT versioning
+	As these are private libraries, there is no reason to maintain LT versioning.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=725689
+
+2014-03-17  Luis Menina  <luis.menina@softathome.com>
+
+	build: Fix error message when running configure for tracker-miner-fs
+	Bad spacing on variable assignment caused an error message:
+	"enable_tracker_miner_fs: command not found"
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=726552
+
+	docs: remove the --low-memory option from tracker-store man page
+	This option was killed in 0.9.1.
+
+	build: Remove references to QT dependency in configure.ac
+	The dependency has been transfered to libmediaart.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=726553
+
+2014-03-17  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract: Remove the need for fork() and sub-processes with PDF extraction
+	This fuctionality we're removing has been around since
+	be58d8da6da5a8f16ca83f78a9427ca4de723151 where Philip added code to kill a
+	forked process after n seconds for really complex PDFs (or PDFs that take
+	longer to process on embedded devices). This was covered under NB#290406.
+
+	Later I improved the code to use select() instead of signal handlers due to
+	IO blocking in some situations in commit
+	9c4e166ec101c79bdeac30696371ffe0abd4e046 and as part of GB#680897.
+
+	However, the extra complexity is no longer needed as far as I can tell. There
+	was a good reason for the IO blocking in the past and I believe it has been
+	fixed by Carlos in one commit or another and with the new GTask and
+	_run_in_thread() APIs we have now, it's unnecessary to use this approach. IF
+	anything, we should add some timeout or cancellation in the task issuing
+	(main?) thread instead of implementing this for each extractor. Currently we
+	don't do this though.
+
+	As an additional note, this may fix GB#726421.
+
+	I've tested this patch with files attached to previous bug reports related,
+	including GB#680897 and GB#685378.
+
+	all: Make GBusType configurable with TRACKER_BUS_TYPE
+	This works by using G_BUS_TYPE_SESSION if the env var TRACKER_BUS_TYPE is not
+	set and will allow for "system" to be used as a value. If it is set, the
+	system bus is used instead.
+
+2014-03-17  Luis Menina  <liberforce@freeside.fr>
+
+	Updated French translation
+
+2014-03-17  Fran Dieguez  <frandieguez@gnome.org>
+
+	Updated Galician translation
+
+2014-03-17  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2014-03-17  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2014-03-17  Antonio Fernandes C. Neto  <fernandesn@gnome.org>
+
+	Updated Brazilian Portuguese translation
+
+2014-03-17  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract: Make logging clearer if we fail on no modules or no data
+	Also add i18n to command line use of tracker-extract.
+
+2014-03-16  Seong-ho Cho  <darkcircle.0426@gmail.com>
+
+	Updated Korean translation
+
+2014-03-16  AlainLojewski  <allomervan@gmail.com>
+
+	Updated French translation
+
+2014-03-16  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2014-03-15  Claude Paroz  <claude@2xlibre.net>
+
+	Updated French translation
+	Forward port of translation in tracker-0.16 branch.
+
+2014-03-14  Rafael Ferreira  <rafael.f.f1@gmail.com>
+
+	Updated Brazilian Portuguese translation
+
+2014-03-14  Aurimas Černius  <aurisc4@gmail.com>
+
+	Updated Lithuanian translation
+
+2014-03-14  Seong-ho Cho  <darkcircle.0426@gmail.com>
+
+	Updated Korean translation
+
+2014-03-14  Fran Diéguez  <fran.dieguez@mabishu.com>
+
+	Updated Galician translations
+
+2014-03-14  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+	Updated POTFILES.in and POTFILES.skip
+
+2014-03-14  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract: Fixed epub extractor so it doesn't use broken ontology
+	- The nco:nameOther ontology doesn't exist. Now we use nco:nameAdditional
+	- The graph was not being used for inserts.
+	- The roles / affiliation were not inserted properly. WE now use artist
+	  (like other extractors)
+
+	tracker-extract: Improve logging, too many debug statements
+	It was hard to see what was going on with most logs as debug comments.
+
+	Also all thread messages are now debug and have been moved into the #ifdef for
+	other thread events
+
+	It's a bit easier to see what is going on now using -v 2 and there is less
+	mess with -v 3
+
+2014-03-14  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-extract: Lookup rules after maybe initializing in get_fallback_rdf_types()
+	Otherwise the first lookup might come up empty.
+
+	libtracker-extract: Fix leak on .rule file error
+
+	data: Add tracker-extract autostart file
+	This should run together with tracker-miner-fs
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=725607
+
+2014-03-13  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract: set nfo:Video on the gstreamer guess rule for completeness
+
+	libtracker-miner: Dispose GFileInfo objects ASAP when crawling
+	Those are just needed for TrackerFileNotifier to extract mtime/type,
+	so make sure those are disposed soon, instead of living as long as
+	the GFile does. Although not a leak, should lead to a VmRSS decrease
+	during extraction time.
+
+2014-03-13  Yuri Myasoedov  <ymyasoedov@yandex.ru>
+
+	Updated Russian translation
+
+2014-03-10  Carlos Garnacho  <carlosg@gnome.org>
+
+	miner-fs: Plug leak
+	The rdf types GStrv must be freed after usage.
+
+	libtracker-extract: Plug leak
+	Destroy the hashtable after use, and s/FALSE/NULL/ in the return
+	value of the initial check.
+
+2014-03-10  Martyn Russell  <martyn@lanedo.com>
+
+	build: libicu version requirement doesn't need to be so high, 4.8.1.1 is lowest
+
+	build: Add version for libicu in the build requirements
+	The version we depend on is the first libicu version with pkg-config shipped,
+	but it's important to put this in the build requirements so people know what
+	they need.
+
+2014-03-10  Debarshi Ray  <debarshir@gnome.org>
+
+	miner-fs: Do not leak the UpDevice
+	https://bugzilla.gnome.org/show_bug.cgi?id=725890
+
+	libtracker-fts: Free the list
+	https://bugzilla.gnome.org/show_bug.cgi?id=725890
+
+	libtracker-miner: Do not leak the TrackerSparqlConnection
+	https://bugzilla.gnome.org/show_bug.cgi?id=725890
+
+2014-03-09  Milo Casagrande  <milo@ubuntu.com>
+
+	[l10n] Updated Italian translation.
+
+2014-03-09  Rūdolfs Mazurs  <rudolfsm@src.gnome.org>
+
+	Updated Latvian translation
+
+2014-03-09  Chao-Hsiung Liao  <j_h_liau@yahoo.com.tw>
+
+	Updated Traditional Chinese translation(Hong Kong and Taiwan)
+
+2014-03-08  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2014-03-08  Aurimas Černius  <aurisc4@gmail.com>
+
+	Updated Lithuanian translation
+
+2014-03-08  Wylmer Wang  <wantinghard@gmail.com>
+
+	Updated Chinese (China) translation
+
+2014-03-07  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2014-03-06  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Don't print uninitalised sparql variable for update_array_cb
+
+	libtracker-data: getting FTS multivalued properties used unintialised variable
+
+	all: Removed dead code from coverity report
+
+	libtracker-data: Protect potential NULL dereference in _db_cursor_iter_next()
+
+2014-03-06  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2014-03-06  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-sandbox: Locale and dbus fixes
+	Now we don't hard code the path to dbus-daemon.
+
+	We also don't force BUS or DIRECT connections, we let tracker-sparql decide
+	as it should.
+
+	Fixed locale mismatches:
+	This was causing tracker to throw out queries we try to make because the DB
+	locale didn't match the current locale. The script was using "C" locale vs
+	processes using "en_GB*" or whatever people are really using because tracker
+	processes use set_locale(LC_ALL, ""). We just did the same for this script.
+
+	tracker-sandbox: Make this Python script +x
+
+	tracker-extract: Make it clearer where MIME type came from in debug
+
+2014-03-06  Fran Diéguez  <fran.dieguez@mabishu.com>
+
+	Updated Galician translations
+
+2014-03-06  Rafael Ferreira  <rafael.f.f1@gmail.com>
+
+	Updated Brazilian Portuguese translation
+
+2014-03-05  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-sparql: Support properties with --tree and case insensitivity with --search
+
+2014-03-05  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
 2014-03-04  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.17.5

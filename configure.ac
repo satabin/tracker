@@ -13,7 +13,7 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [17])
-m4_define([tracker_micro_version], [5])
+m4_define([tracker_micro_version], [6])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -171,12 +171,11 @@ LIBNOTIFY_REQUIRED=0.4.3
 HAL_REQUIRED=0.5
 UPOWER_REQUIRED=0.9.0
 GDKPIXBUF_REQUIRED=2.12.0
-QT5_REQUIRED=5.0.0
-QT4_REQUIRED=4.7.1
 MEEGOTOUCH_REQUIRED=0.20
 POPPLER_REQUIRED=0.16.0
 CAIRO_REQUIRED=1.0
 GDK_REQUIRED=1.0
+LIBICU_REQUIRED=4.8.1.1
 LIBJPEG_REQUIRED="any version"
 LIBGIF_REQUIRED="any version"
 LIBTIFF_REQUIRED="any version"
@@ -190,8 +189,6 @@ EVO_REQUIRED=2.32.0
 EVO_SHELL_REQUIRED=2.32.0
 EDS_REQUIRED=2.32.0
 CAMEL_REQUIRED=2.32.0
-# Unlikely version for now, Nepomuk integration isn't finished in streamanalyzer atm
-LIBSTREAMANALYZER_REQUIRED=0.7.0
 GEE_REQUIRED=0.3
 TAGLIB_REQUIRED=1.6
 LIBGRSS_REQUIRED=0.5
@@ -233,8 +230,7 @@ PKG_CHECK_MODULES(LIBTRACKER_BUS, [$LIBTRACKER_BUS_REQUIRED])
 
 # Check requirements for libtracker-common
 LIBTRACKER_COMMON_REQUIRED="glib-2.0        >= $GLIB_REQUIRED
-                            gio-unix-2.0    >= $GLIB_REQUIRED
-                            libmediaart-1.0 >= $LIBMEDIAART_REQUIRED"
+                            gio-unix-2.0    >= $GLIB_REQUIRED"
 
 PKG_CHECK_MODULES(LIBTRACKER_COMMON, [$LIBTRACKER_COMMON_REQUIRED])
 
@@ -275,8 +271,7 @@ PKG_CHECK_MODULES(LIBTRACKER_FTS, [$LIBTRACKER_FTS_REQUIRED])
 
 # Check requirements for libtracker-miner
 LIBTRACKER_MINER_REQUIRED="glib-2.0        >= $GLIB_REQUIRED
-                           gio-unix-2.0    >= $GLIB_REQUIRED
-                           libmediaart-1.0 >= $LIBMEDIAART_REQUIRED"
+                           gio-unix-2.0    >= $GLIB_REQUIRED"
 
 PKG_CHECK_MODULES(LIBTRACKER_MINER, [$LIBTRACKER_MINER_REQUIRED])
 
@@ -314,8 +309,7 @@ TRACKER_STORE_LIBS="$TRACKER_STORE_LIBS -lz -lm"
 # Check requirements for tracker-extract
 TRACKER_EXTRACT_REQUIRED="glib-2.0        >= $GLIB_REQUIRED
                           gio-unix-2.0    >= $GLIB_REQUIRED
-                          gmodule-2.0     >= $GLIB_REQUIRED
-                          libmediaart-1.0 >= $LIBMEDIAART_REQUIRED"
+                          gmodule-2.0     >= $GLIB_REQUIRED"
 
 PKG_CHECK_MODULES(TRACKER_EXTRACT, [$TRACKER_EXTRACT_REQUIRED])
 
@@ -690,7 +684,7 @@ if test "x$sqlite_safe" != "xyes"; then
    PKG_CHECK_EXISTS([sqlite3 >= 3.7.14], sqlite_safe=yes, sqlite_safe=no)
 fi
 
-if test "x$sqlite_safe" == "xyes"; then
+if test "x$sqlite_safe" = "xyes"; then
    PKG_CHECK_EXISTS([sqlite3 = 3.8.1], sqlite_safe=no, sqlite_safe=yes)
 fi
 
@@ -718,34 +712,16 @@ fi
 if test "x$have_tracker_fts" = "xyes"; then
    AC_DEFINE(HAVE_TRACKER_FTS, [1], [Define to 1 if tracker FTS is compiled])
 
-   OLD_CFLAGS="$CFLAGS"
-   OLD_LIBS="$LIBS"
-   CFLAGS="$SQLITE3_CFLAGS"
-   LIBS="$SQLITE3_LIBS"
-
-   AC_MSG_CHECKING(whether SQLite3 has required FTS features)
-   AC_RUN_IFELSE([AC_LANG_PROGRAM([[#include <sqlite3.h>]],
-                                  [[sqlite3 *db;
-                                    int rc;
-                                    rc = sqlite3_open(":memory:", &db);
-                                    if (rc!=SQLITE_OK) return -1;
-                                    rc = sqlite3_exec(db, "create table a(text)", 0, 0, 0);
-                                    if (rc!=SQLITE_OK) return -1;
-                                    rc = sqlite3_exec(db, "create virtual table t using fts4(content='a',text)", 0, 0, 0);
-                                    if (rc!=SQLITE_OK) return -1;]])],
-                     [have_builtin_fts4=yes],
-                     [have_builtin_fts4=no])
-   AC_MSG_RESULT($have_builtin_fts4)
-
-   CFLAGS="$OLD_CFLAGS"
-   LIBS="$OLD_LIBS"
-
-   if test "x$have_builtin_fts4" = "xyes" ; then
+   AX_SQLITE_BUILTIN_FTS4
+   if test "x$ax_cv_sqlite_builtin_fts4" = "xyes" ; then
+      have_builtin_fts4="yes"
       AC_DEFINE(HAVE_BUILTIN_FTS, [], [Defined if Sqlite has FTS4 compiled in])
+   else
+      have_builtin_fts4="no"
    fi
 else
    AC_DEFINE(HAVE_TRACKER_FTS, [0], [Define to 0 if tracker FTS is not compiled])
-   $have_builtin_fts4="disabled"
+   have_builtin_fts4="disabled"
 fi
 
 AM_CONDITIONAL(HAVE_BUILTIN_FTS, test "$have_builtin_fts4" = "yes")
@@ -889,7 +865,7 @@ LIBUNISTRING_LIBS="-lunistring"
 
 # Check for libicu...
 PKG_CHECK_MODULES(LIBICU,
-                  [icu-i18n icu-uc],
+                  [icu-i18n >= $LIBICU_REQUIRED icu-uc >= $LIBICU_REQUIRED],
                   [have_libicu=yes],
                   [have_libicu=no])
 
@@ -987,6 +963,46 @@ if test "x$enable_network_manager" = "xyes"; then
 fi
 
 AM_CONDITIONAL(HAVE_NETWORK_MANAGER, test "x$have_network_manager" = "xyes")
+
+##################################################################
+# Check for libtracker-miner, tracker-extract: libmediaart
+##################################################################
+
+AC_ARG_ENABLE(libmediaart,
+              AS_HELP_STRING([--enable-libmediaart],
+                             [enable libmediaart for caching published video/audio art [[default=auto]]]),,
+              [enable_libmediaart=auto])
+
+if test "x$enable_libmediaart" != "xno" ; then
+   PKG_CHECK_MODULES(LIBMEDIAART,
+                     [libmediaart-1.0 >= $LIBMEDIAART_REQUIRED],
+                     [have_libmediaart=yes],
+                     [have_libmediaart=no])
+
+   LIBTRACKER_MINER_CFLAGS="$LIBTRACKER_MINER_CFLAGS $LIBMEDIAART_CFLAGS"
+   LIBTRACKER_MINER_LIBS="$LIBTRACKER_MINER_LIBS $LIBMEDIAART_LIBS"
+
+   TRACKER_EXTRACT_CFLAGS="$TRACKER_EXTRACT_CFLAGS $LIBMEDIAART_CFLAGS"
+   TRACKER_EXTRACT_LIBS="$TRACKER_EXTRACT_LIBS $LIBMEDIAART_LIBS"
+
+   # Used for .pc file...
+   LIBTRACKER_MINER_PC_REQUIRES="libmediaart-1.0"
+   AC_SUBST(LIBTRACKER_MINER_PC_REQUIRES)
+
+   if test "x$have_libmediaart" = "xyes"; then
+      AC_DEFINE(HAVE_LIBMEDIAART, [], [Define if we have libmediaart])
+   fi
+else
+   have_libmediaart="no  (disabled)"
+fi
+
+if test "x$enable_libmediaart" = "xyes"; then
+   if test "x$have_libmediaart" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find libmediaart >= $LIBMEDIAART_REQUIRED.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_LIBMEDIAART, test "x$have_libmediaart" = "xyes")
 
 ##################################################################
 # Check for libtracker-extract: libexif
@@ -1405,7 +1421,7 @@ AC_ARG_ENABLE([tracker-preferences],
 # If we don't have miner-fs enabled, the preferences are pointless
 # So we override in this case.
 if test "x$enable_tracker_miner_fs" = "xyes" ; then
-   enable_tracker_miner_fs = "no"
+   enable_tracker_miner_fs="no"
 fi
 
 if test "x$enable_tracker_preferences" = "xyes" ; then
@@ -1464,39 +1480,6 @@ fi
 
 AM_CONDITIONAL(HAVE_ENCA, test "$have_enca" = "yes")
 
-####################################################################
-# Check for tracker-extract: libstreamanalyzer
-####################################################################
-
-AC_ARG_ENABLE(libstreamanalyzer,
-              AS_HELP_STRING([--enable-libstreamanalyzer],
-                             [enable libstreamananalyzer [[default=no]]]),,
-              [enable_libstreamanalyzer=no])
-
-if test "x$enable_libstreamanalyzer" != "xno"; then
-   PKG_CHECK_MODULES(LIBSTREAMANALYZER,
-                     [libstreamanalyzer >= $LIBSTREAMANALYZER_REQUIRED],
-                     [have_libstreamanalyzer=yes],
-                     [have_libstreamanalyzer=no])
-
-   TRACKER_EXTRACT_CFLAGS="$TRACKER_EXTRACT_CFLAGS $LIBSTREAMANALYZER_CFLAGS"
-   TRACKER_EXTRACT_LIBS="$TRACKER_EXTRACT_LIBS $LIBSTREAMANALYZER_LIBS"
-
-   if test "x$have_libstreamanalyzer" = "xyes"; then
-      AC_DEFINE(HAVE_LIBSTREAMANALYZER, [], [Define if we have libstreamanalyzer])
-   fi
-else
-   have_libstreamanalyzer="no  (disabled)"
-fi
-
-if test "x$enable_libstreamanalyzer" = "xyes"; then
-   if test "x$have_libstreamanalyzer" != "xyes"; then
-      AC_MSG_ERROR([Couldn't find libstreamanalyzer >= $LIBSTREAMANALYZER_REQUIRED and libstreamanalyzer.])
-   fi
-fi
-
-AM_CONDITIONAL(HAVE_LIBSTREAMANALYZER, test "$have_libstreamanalyzer" = "yes")
-
 ##################################################################
 # Check for tracker-extract: libxml2 for XML/HTML extractor
 ##################################################################
@@ -1537,12 +1520,12 @@ fi
 AM_CONDITIONAL(HAVE_LIBXML2, test "x$have_libxml2" = "xyes")
 
 ####################################################################
-# Check for tracker-extract: gstreamer/xine/totem/mplayer/etc
+# Check for tracker-extract: gstreamer/mplayer/etc
 ####################################################################
 
 AC_ARG_ENABLE(generic-media-extractor,
               AS_HELP_STRING([--enable-generic-media-extractor=ARG],
-                             [enables one of the (gstreamer, libav, xine, external, auto) generic media extractor backends [[default=auto]]]),,
+                             [enables one of the (gstreamer, libav, external, auto) generic media extractor backends [[default=auto]]]),,
               [enable_generic_media_extractor=auto])
 
 PKG_CHECK_MODULES(GSTREAMER,
@@ -1553,14 +1536,6 @@ PKG_CHECK_MODULES(GSTREAMER,
 
 AC_SUBST(GSTREAMER_CFLAGS)
 AC_SUBST(GSTREAMER_LIBS)
-
-PKG_CHECK_MODULES(XINE,
-                  [libxine >= 1.0],
-                  [have_libxine=yes],
-                  [have_libxine=no])
-
-AC_SUBST(XINE_CFLAGS)
-AC_SUBST(XINE_LIBS)
 
 PKG_CHECK_MODULES(AVFORMAT,
                   [libavformat >= 0.8.4],
@@ -1593,9 +1568,6 @@ if test "x$enable_generic_media_extractor" = "xauto"; then
    elif test "$have_libav" = "yes"; then
       have_generic_media_handler_app="libav"
       have_generic_media_handler="yes"
-   elif test "$have_libxine" = "yes"; then
-      have_generic_media_handler_app="Xine"
-      have_generic_media_handler="yes"
    else
       have_generic_media_handler="?"
       have_generic_media_handler_app="An external generic_media player will be called"
@@ -1606,13 +1578,6 @@ elif test "x$enable_generic_media_extractor" = "xgstreamer"; then
       have_generic_media_handler="yes"
    else
       AC_MSG_ERROR([Couldn't find GStreamer >= $GSTREAMER_REQUIRED])
-   fi
-elif test "x$enable_generic_media_extractor" = "xxine"; then
-   if test "$have_libxine" = "yes"; then
-      have_generic_media_handler_app="Xine"
-      have_generic_media_handler="yes"
-   else
-      AC_MSG_ERROR([Couldn't find libxine])
    fi
 elif test "x$enable_generic_media_extractor" = "xlibav"; then
    if test "$have_libavformat" = "yes" && test "$have_libavcodec" = "yes" && test "$have_libavutil" = "yes"; then
@@ -1629,26 +1594,17 @@ fi
 if test "$have_generic_media_handler_app" = "GStreamer"; then
    AC_DEFINE(HAVE_GSTREAMER, [], [Define if we have GStreamer])
    AM_CONDITIONAL(HAVE_GSTREAMER, true)
-   AM_CONDITIONAL(HAVE_LIBXINE, false)
-   AM_CONDITIONAL(HAVE_LIBAV, false)
-   AM_CONDITIONAL(USING_EXTERNAL_GENERIC_MEDIA_PLAYER, false)
-elif test "$have_generic_media_handler_app" = "Xine"; then
-   AC_DEFINE(HAVE_LIBXINE, [], [Define if we have Libxine])
-   AM_CONDITIONAL(HAVE_LIBXINE, true)
-   AM_CONDITIONAL(HAVE_GSTREAMER, false)
    AM_CONDITIONAL(HAVE_LIBAV, false)
    AM_CONDITIONAL(USING_EXTERNAL_GENERIC_MEDIA_PLAYER, false)
 elif test "$have_generic_media_handler_app" = "libav"; then
     AC_DEFINE(HAVE_GSTREAMER, [], [Define if we have libav])
     AM_CONDITIONAL(HAVE_LIBAV, true)
     AM_CONDITIONAL(HAVE_GSTREAMER, false)
-    AM_CONDITIONAL(HAVE_LIBXINE, false)
     AM_CONDITIONAL(USING_EXTERNAL_GENERIC_MEDIA_PLAYER, false)
 else
    AC_DEFINE(USING_EXTERNAL_GENERIC_MEDIA_PLAYER, [], [Define that Tracker will try to use external generic media players])
    AM_CONDITIONAL(USING_EXTERNAL_GENERIC_MEDIA_PLAYER, true)
    AM_CONDITIONAL(HAVE_GSTREAMER, false)
-   AM_CONDITIONAL(HAVE_LIBXINE, false)
    AM_CONDITIONAL(HAVE_LIBAV, false)
 fi
 
@@ -1658,7 +1614,7 @@ fi
 
 AC_ARG_WITH([gstreamer-backend],
             AS_HELP_STRING([--with-gstreamer-backend],
-                           [enables one of the (gupnp-dlna, discoverer, decodebin2, tagreadbin) GStreamer backends [[default=discoverer]]]),,
+                           [enables one of the (gupnp-dlna, discoverer) GStreamer backends [[default=discoverer]]]),,
               [with_gstreamer_backend=discoverer])
 
 if test "$have_generic_media_handler_app" != "GStreamer"; then
@@ -1666,14 +1622,6 @@ if test "$have_generic_media_handler_app" != "GStreamer"; then
    gstreamer_backend="N/A"
 else
    case "x$with_gstreamer_backend" in
-        "xdecodebin2")
-           gstreamer_backend="Decodebin2"
-           AC_DEFINE(GSTREAMER_BACKEND_DECODEBIN2, [], [Define that GStreamer Decodebin2 should be used])
-        ;;
-        "xtagreadbin")
-           gstreamer_backend="Tagreadbin"
-           AC_DEFINE(GSTREAMER_BACKEND_TAGREADBIN, [], [Define that GStreamer Tagreadbin should be used])
-        ;;
         "xdiscoverer")
            PKG_CHECK_MODULES(GSTREAMER_PBUTILS,
                              [gstreamer-pbutils-1.0 >= $GSTREAMER_REQUIRED],
@@ -2536,7 +2484,6 @@ Applications:
 
 Metadata Extractors:
 
-	Support libstreamanalyzer:              $have_libstreamanalyzer
 	Support PNG:                            $have_libpng
 	Support PDF:                            $have_poppler
 	Support XPS:                            $have_libgxps
@@ -2588,6 +2535,7 @@ Frameworks / Options:
 
 Miscellaneous:
 
+	Cache media art                         $have_libmediaart (libmediaart)
 	Install artwork                         $have_artwork
 
 "

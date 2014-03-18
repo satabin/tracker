@@ -20,6 +20,7 @@
       <sub name="Updating the Store" link="tracker-examples-writeonly.html"/>
       <sub name="Updating the Store with Blank Nodes" link="tracker-examples-writeonly-with-blank-nodes.html"/>
     </sub>
+    <sub name="Annotation Glossary" link="annotation-glossary.html"/>
   </chapters>
   <functions>
     <keyword type="function" name="tracker_sparql_builder_new ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-new" since="0.10"/>

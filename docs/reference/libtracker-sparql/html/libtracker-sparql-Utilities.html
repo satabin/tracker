@@ -8,15 +8,14 @@
 <link rel="up" href="libtracker-sparql-reference.html" title="Part II. Reference">
 <link rel="prev" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor">
 <link rel="next" href="libtracker-sparql-Version-Information.html" title="Version Information">
-<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.20.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
-                  <a href="#libtracker-sparql-Utilities.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
-                  <a href="#libtracker-sparql-Utilities.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#libtracker-sparql-Utilities.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="libtracker-sparql-reference.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
@@ -34,7 +33,13 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="libtracker-sparql-Utilities.stability-level"></a><h2>Stability Level</h2>
-Stable, unless otherwise indicated
+<acronym title="The intention of a Stable interface is to enable arbitrary third parties to
+develop applications to these interfaces, release them, and have confidence that
+they will run on all minor releases of the product (after the one in which the
+interface was introduced, and within the same major release). Even at a major
+release, incompatible changes are expected to be rare, and to have strong
+justifications.
+"><span class="acronym">Stable</span></acronym>, unless otherwise indicated
 </div>
 <div class="refsect1">
 <a name="libtracker-sparql-Utilities.functions"></a><h2>Functions</h2>
@@ -46,7 +51,7 @@ Stable, unless otherwise indicated
 <tbody>
 <tr>
 <td class="function_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<span class="returnvalue">gchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-get-uuid-urn" title="tracker_sparql_get_uuid_urn ()">tracker_sparql_get_uuid_urn</a> <span class="c_punctuation">()</span>
@@ -54,7 +59,7 @@ Stable, unless otherwise indicated
 </tr>
 <tr>
 <td class="function_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<span class="returnvalue">gchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-string" title="tracker_sparql_escape_string ()">tracker_sparql_escape_string</a> <span class="c_punctuation">()</span>
@@ -62,7 +67,7 @@ Stable, unless otherwise indicated
 </tr>
 <tr>
 <td class="function_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<span class="returnvalue">gchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-printf" title="tracker_sparql_escape_uri_printf ()">tracker_sparql_escape_uri_printf</a> <span class="c_punctuation">()</span>
@@ -70,7 +75,7 @@ Stable, unless otherwise indicated
 </tr>
 <tr>
 <td class="function_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<span class="returnvalue">gchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-vprintf" title="tracker_sparql_escape_uri_vprintf ()">tracker_sparql_escape_uri_vprintf</a> <span class="c_punctuation">()</span>
@@ -78,11 +83,6 @@ Stable, unless otherwise indicated
 </tr>
 </tbody>
 </table></div>
-</div>
-<div class="refsect1">
-<a name="libtracker-sparql-Utilities.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">
-</pre>
 </div>
 <div class="refsect1">
 <a name="libtracker-sparql-Utilities.includes"></a><h2>Includes</h2>
@@ -99,16 +99,16 @@ The libtracker-sparql utilities help in the creation of proper SPARQL queries.
 <a name="libtracker-sparql-Utilities.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="tracker-sparql-get-uuid-urn"></a><h3>tracker_sparql_get_uuid_urn ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<pre class="programlisting"><span class="returnvalue">gchar</span> *
 tracker_sparql_get_uuid_urn (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Generates a unique universal identifier to be used for urns
 when inserting SPARQL into the database. The string returned is
 in lower case and has the format "urn:uuid:%s" where
 %s is the uuid generated.</p>
 <div class="refsect3">
-<a name="id-1.3.6.8.2.5"></a><h4>Returns</h4>
+<a name="id-1.3.6.7.2.5"></a><h4>Returns</h4>
 <p> a newly-allocated string. The returned string should
-be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed.</p>
+be freed with <code class="function">g_free()</code> when no longer needed.</p>
 <p></p>
 </div>
 <p class="since">Since 0.10</p>
@@ -116,11 +116,11 @@ be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-
 <hr>
 <div class="refsect2">
 <a name="tracker-sparql-escape-string"></a><h3>tracker_sparql_escape_string ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-tracker_sparql_escape_string (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *literal</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *
+tracker_sparql_escape_string (<em class="parameter"><code>const <span class="type">gchar</span> *literal</code></em>);</pre>
 <p>Escapes a string so that it can be used in a SPARQL query.</p>
 <div class="refsect3">
-<a name="id-1.3.6.8.3.5"></a><h4>Parameters</h4>
+<a name="id-1.3.6.7.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -135,10 +135,10 @@ tracker_sparql_escape_string (<em class="parameter"><code>const <a href="http://
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.6.8.3.6"></a><h4>Returns</h4>
+<a name="id-1.3.6.7.3.6"></a><h4>Returns</h4>
 <p> a newly-allocated string with the escaped version of <em class="parameter"><code>literal</code></em>
 .
-The returned string should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed.</p>
+The returned string should be freed with <code class="function">g_free()</code> when no longer needed.</p>
 <p></p>
 </div>
 <p class="since">Since 0.10</p>
@@ -146,12 +146,12 @@ The returned string should be freed with <a href="http://library.gnome.org/devel
 <hr>
 <div class="refsect2">
 <a name="tracker-sparql-escape-uri-printf"></a><h3>tracker_sparql_escape_uri_printf ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-tracker_sparql_escape_uri_printf (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<pre class="programlisting"><span class="returnvalue">gchar</span> *
+tracker_sparql_escape_uri_printf (<em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                   <em class="parameter"><code>...</code></em>);</pre>
 <p>Calls <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-vprintf" title="tracker_sparql_escape_uri_vprintf ()"><code class="function">tracker_sparql_escape_uri_vprintf()</code></a> with the @... supplied.</p>
 <div class="refsect3">
-<a name="id-1.3.6.8.4.5"></a><h4>Parameters</h4>
+<a name="id-1.3.6.7.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -163,7 +163,7 @@ tracker_sparql_escape_uri_printf (<em class="parameter"><code>const <a href="htt
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description">
 <p>a standard <code class="function">printf()</code> format string, but notice</p>
-string precision pitfalls documented in <a href="http://library.gnome.org/devel/glib/unstable/glib-String-Utility-Functions.html#g-strdup-printf"><code class="function">g_strdup_printf()</code></a>
+string precision pitfalls documented in <code class="function">g_strdup_printf()</code>
 </td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -176,9 +176,9 @@ string precision pitfalls documented in <a href="http://library.gnome.org/devel/
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.6.8.4.6"></a><h4>Returns</h4>
+<a name="id-1.3.6.7.4.6"></a><h4>Returns</h4>
 <p> a newly-allocated string holding the result.The returned string
-should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed.</p>
+should be freed with <code class="function">g_free()</code> when no longer needed.</p>
 <p></p>
 </div>
 <p class="since">Since 0.10</p>
@@ -186,15 +186,15 @@ should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-
 <hr>
 <div class="refsect2">
 <a name="tracker-sparql-escape-uri-vprintf"></a><h3>tracker_sparql_escape_uri_vprintf ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-tracker_sparql_escape_uri_vprintf (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<pre class="programlisting"><span class="returnvalue">gchar</span> *
+tracker_sparql_escape_uri_vprintf (<em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                    <em class="parameter"><code><span class="type">va_list</span> args</code></em>);</pre>
 <p>Similar to the standard C <code class="function">vsprintf()</code> function but safer, since it
 calculates the maximum space required and allocates memory to hold
 the result.</p>
-<p>The result is escaped using <a href="http://library.gnome.org/devel/glib/unstable/glib-URI-Functions.html#g-uri-escape-string"><code class="function">g_uri_escape_string()</code></a>.</p>
+<p>The result is escaped using <code class="function">g_uri_escape_string()</code>.</p>
 <div class="refsect3">
-<a name="id-1.3.6.8.5.6"></a><h4>Parameters</h4>
+<a name="id-1.3.6.7.5.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -206,7 +206,7 @@ the result.</p>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description">
 <p>a standard <code class="function">printf()</code> format string, but notice</p>
-string precision pitfalls documented in <a href="http://library.gnome.org/devel/glib/unstable/glib-String-Utility-Functions.html#g-strdup-printf"><code class="function">g_strdup_printf()</code></a>
+string precision pitfalls documented in <code class="function">g_strdup_printf()</code>
 </td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -219,9 +219,9 @@ string precision pitfalls documented in <a href="http://library.gnome.org/devel/
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.6.8.5.7"></a><h4>Returns</h4>
+<a name="id-1.3.6.7.5.7"></a><h4>Returns</h4>
 <p> a newly-allocated string holding the result. The returned string
-should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed.</p>
+should be freed with <code class="function">g_free()</code> when no longer needed.</p>
 <p></p>
 </div>
 <p class="since">Since 0.10</p>
@@ -233,6 +233,6 @@ should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.20</div>
+          Generated by GTK-Doc V1.20.1</div>
 </body>
 </html>

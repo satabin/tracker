@@ -1,10 +1,10 @@
-tracker (0.17.7-1) UNRELEASED; urgency=medium
+tracker (0.17.7-1) experimental; urgency=medium
 
   * New upstream release.
   * Install autostart file for tracker-extract.
   * Update patches.
 
- -- Michael Biebl <biebl@debian.org>  Wed, 19 Mar 2014 09:09:56 +0100
+ -- Michael Biebl <biebl@debian.org>  Wed, 19 Mar 2014 16:57:28 +0100
 
 tracker (0.17.6-1) experimental; urgency=medium
 

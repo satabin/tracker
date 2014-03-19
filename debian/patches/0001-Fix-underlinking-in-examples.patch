@@ -1,6 +1,6 @@
 From: Michael Biebl <biebl@debian.org>
 Date: Tue, 18 Mar 2014 23:04:54 +0100
-Subject: Link underlinking in examples
+Subject: Fix underlinking in examples
 
 ---
  examples/libtracker-sparql/Makefile.am | 1 +

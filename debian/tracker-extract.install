@@ -1,4 +1,5 @@
 usr/lib/tracker/tracker-extract
+etc/xdg/autostart/tracker-extract.desktop
 usr/lib/*/tracker-1.0/extract-modules/*.so
 usr/share/dbus-1/services/org.freedesktop.Tracker1.Miner.Extract.service
 usr/share/man/man1/tracker-extract.1

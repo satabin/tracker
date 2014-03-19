@@ -65,8 +65,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libtracker_sparql_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+libtracker_sparql_la_DEPENDENCIES =  \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libtracker_sparql_la_OBJECTS = tracker-builder.lo \
 	tracker-connection.lo tracker-cursor.lo tracker-utils.lo \
 	tracker-uri.lo tracker-version.lo
@@ -500,6 +501,7 @@ libtracker_sparql_la_SOURCES = \
 	tracker-version.c
 
 libtracker_sparql_la_LIBADD = \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(BUILD_LIBS)                                  \
 	$(LIBTRACKER_SPARQL_LIBS)
 

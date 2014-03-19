@@ -1,3 +1,20 @@
+2014-03-19  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.17.7
+
+2014-03-19  Michael Biebl  <biebl@debian.org>
+
+	libtracker-sparql: Fix undefined reference to symbol 'tracker_ipc_bus'
+	Now we link with libtracker-common
+
+2014-03-19  Milo Casagrande  <milo@ubuntu.com>
+
+	Updated Italian translation
+
+2014-03-19  Мирослав Николић  <miroslavnikolic@rocketmail.com>
+
+	Updated Serbian translation
+
 2014-03-18  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.17.6

@@ -2,6 +2,7 @@ tracker (0.17.8-1) UNRELEASED; urgency=medium
 
   * New upstream release.
     - Fixes description in tracker-store man page. (Closes: #675198)
+  * Update patches.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 21 Mar 2014 22:20:49 +0100
 

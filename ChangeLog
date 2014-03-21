@@ -1,4 +1,63 @@
+2014-03-21  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.17.8
+
+	Revert "libtracker-sparql: Fix undefined reference to symbol 'tracker_ipc_bus'"
+	This reverts commit 4623bcd6b089be5c32d615a1733bbcd387a7420e.
+
+	It's not libtracker-sparql that requires this symbol to be defined, it's
+	binaries using the symbols from libtracker-common that should have this fix
+	instead. Use of the TRACKER_IPC_BUS and above function is internal only.
+
+	This error was highlighted with --as-needed being used with the linker.
+
+	This is properly fixed in commit: 963e53eb79a5b727ef008a875f16005e4c6d67dd
+
+2014-03-21  Gábor Kelemen  <kelemeng@gnome.hu>
+
+	Updated Hungarian translation
+
+2014-03-21  Dominique Brazziel  <dbrazziel@snet.net>
+
+	docs: minor tracker-store man page cleanup
+	https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=675198
+
+2014-03-21  Martyn Russell  <martyn@lanedo.com>
+
+	build: Fix warning for --with-compile-warnings, which mentions --enable-compile-warnings
+	https://bugzilla.gnome.org/show_bug.cgi?id=705315
+
+2014-03-21  Andika Triwidada  <andika@gmail.com>
+
+	Updated Indonesian translation
+
+2014-03-20  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-sparql: Don't use internal tracker_ipc_bus() function in examples/
+	We don't want people copying this code and then having linking problems and
+	3rd party apps using libtracker-sparql shouldn't be depending on internal
+	functions or libraries like libtracker-common.
+
+2014-03-19  Rūdolfs Mazurs  <rudolfsm@src.gnome.org>
+
+	Updated Latvian translation
+
+2014-03-19  Ask H. Larsen  <asklarsen@gmail.com>
+
+	Updated Danish translation
+
+2014-03-19  Rūdolfs Mazurs  <rudolfsm@src.gnome.org>
+
+	Updated Latvian translation
+
+2014-03-19  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
 2014-03-19  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract: Fixed broken ontology use for JPEGS, dc:indentifier -> dc:identifier
+	https://bugzilla.gnome.org/show_bug.cgi?id=726419
 
 	Release 0.17.7
 

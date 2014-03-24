@@ -312,6 +312,7 @@ enum  {
 static GType tracker_sparql_backend_backend_get_type (void) G_GNUC_UNUSED;
 TrackerSparqlBackend* tracker_sparql_backend_new (GError** error);
 TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GError** error);
+static void tracker_sparql_backend_load_env (TrackerSparqlBackend* self);
 static void tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self, GError** error);
 static void tracker_sparql_backend_real_dispose (GObject* base);
 static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConnection* base, const gchar* sparql, GCancellable* cancellable, GError** error);
@@ -394,7 +395,7 @@ TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GErro
 	GError * _inner_error_ = NULL;
 #line 31 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) tracker_sparql_connection_construct (object_type);
-#line 398 "tracker-backend.c"
+#line 399 "tracker-backend.c"
 	{
 		GDBusConnection* bus = NULL;
 		GBusType _tmp0_ = 0;
@@ -409,88 +410,90 @@ TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GErro
 		GDBusMessage* _tmp8_ = NULL;
 		GDBusMessage* _tmp9_ = NULL;
 #line 34 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_debug ("tracker-backend.vala:34: Waiting for service to become available...");
-#line 38 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		tracker_sparql_backend_load_env (self);
+#line 37 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		g_debug ("tracker-backend.vala:37: Waiting for service to become available...");
+#line 41 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp0_ = self->priv->bus_type;
-#line 38 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 41 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = g_bus_get_sync (_tmp0_, NULL, &_inner_error_);
-#line 38 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 41 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		bus = _tmp1_;
-#line 38 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 41 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 422 "tracker-backend.c"
-			goto __catch0_g_error;
-		}
-#line 39 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp2_ = g_dbus_message_new_method_call (TRACKER_DBUS_SERVICE, TRACKER_DBUS_OBJECT_STATUS, TRACKER_DBUS_INTERFACE_STATUS, "Wait");
-#line 39 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		msg = _tmp2_;
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp4_ = bus;
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp5_ = msg;
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp6_ = G_MAXINT;
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp7_ = g_dbus_connection_send_message_with_reply_sync (_tmp4_, _tmp5_, 0, _tmp6_, NULL, NULL, &_inner_error_);
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp3_ = _tmp7_;
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		if (_inner_error_ != NULL) {
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (msg);
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (bus);
-#line 445 "tracker-backend.c"
-			goto __catch0_g_error;
-		}
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp8_ = _tmp3_;
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp3_ = NULL;
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp9_ = _tmp8_;
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_dbus_message_to_gerror (_tmp9_, &_inner_error_);
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_g_object_unref0 (_tmp9_);
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		if (_inner_error_ != NULL) {
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (_tmp3_);
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (msg);
-#line 40 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (bus);
-#line 466 "tracker-backend.c"
+#line 425 "tracker-backend.c"
 			goto __catch0_g_error;
 		}
 #line 42 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_debug ("tracker-backend.vala:42: Service is ready");
-#line 44 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_debug ("tracker-backend.vala:44: Constructing connection");
-#line 45 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		tracker_sparql_backend_load_plugins (self, &_inner_error_);
-#line 45 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp2_ = g_dbus_message_new_method_call (TRACKER_DBUS_SERVICE, TRACKER_DBUS_OBJECT_STATUS, TRACKER_DBUS_INTERFACE_STATUS, "Wait");
+#line 42 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		msg = _tmp2_;
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp4_ = bus;
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp5_ = msg;
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp6_ = G_MAXINT;
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp7_ = g_dbus_connection_send_message_with_reply_sync (_tmp4_, _tmp5_, 0, _tmp6_, NULL, NULL, &_inner_error_);
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp3_ = _tmp7_;
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 45 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (_tmp3_);
-#line 45 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (msg);
-#line 45 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (bus);
-#line 483 "tracker-backend.c"
+#line 448 "tracker-backend.c"
 			goto __catch0_g_error;
 		}
-#line 46 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_debug ("tracker-backend.vala:46: Backend is ready");
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp8_ = _tmp3_;
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp3_ = NULL;
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp9_ = _tmp8_;
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		g_dbus_message_to_gerror (_tmp9_, &_inner_error_);
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_g_object_unref0 (_tmp9_);
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		if (_inner_error_ != NULL) {
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (_tmp3_);
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (msg);
+#line 43 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (bus);
+#line 469 "tracker-backend.c"
+			goto __catch0_g_error;
+		}
+#line 45 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		g_debug ("tracker-backend.vala:45: Service is ready");
+#line 47 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		g_debug ("tracker-backend.vala:47: Constructing connection");
+#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		tracker_sparql_backend_load_plugins (self, &_inner_error_);
+#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		if (_inner_error_ != NULL) {
+#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (_tmp3_);
+#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (msg);
+#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (bus);
+#line 486 "tracker-backend.c"
+			goto __catch0_g_error;
+		}
+#line 49 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		g_debug ("tracker-backend.vala:49: Backend is ready");
 #line 32 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_tmp3_);
 #line 32 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (msg);
 #line 32 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (bus);
-#line 494 "tracker-backend.c"
+#line 497 "tracker-backend.c"
 	}
 	goto __finally0;
 	__catch0_g_error:
@@ -503,17 +506,17 @@ TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GErro
 		e = _inner_error_;
 #line 32 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp10_ = e;
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp11_ = _tmp10_->message;
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp12_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _tmp11_);
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = _tmp12_;
-#line 48 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e);
-#line 517 "tracker-backend.c"
+#line 520 "tracker-backend.c"
 		goto __finally0;
 	}
 	__finally0:
@@ -527,7 +530,7 @@ TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GErro
 			_g_object_unref0 (self);
 #line 32 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 531 "tracker-backend.c"
+#line 534 "tracker-backend.c"
 		} else {
 #line 32 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -535,21 +538,83 @@ TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GErro
 			g_clear_error (&_inner_error_);
 #line 32 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 539 "tracker-backend.c"
+#line 542 "tracker-backend.c"
 		}
 	}
-#line 51 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self->priv->initialized = TRUE;
 #line 31 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return self;
-#line 546 "tracker-backend.c"
+#line 549 "tracker-backend.c"
 }
 
 
 TrackerSparqlBackend* tracker_sparql_backend_new (GError** error) {
 #line 31 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return tracker_sparql_backend_construct (TRACKER_SPARQL_TYPE_BACKEND, error);
-#line 553 "tracker-backend.c"
+#line 556 "tracker-backend.c"
+}
+
+
+static void tracker_sparql_backend_load_env (TrackerSparqlBackend* self) {
+	gchar* env_bus_type = NULL;
+	const gchar* _tmp0_ = NULL;
+	gchar* _tmp1_ = NULL;
+	const gchar* _tmp2_ = NULL;
+#line 57 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_return_if_fail (self != NULL);
+#line 58 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp0_ = g_getenv ("TRACKER_BUS_TYPE");
+#line 58 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp1_ = g_strdup (_tmp0_);
+#line 58 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	env_bus_type = _tmp1_;
+#line 60 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp2_ = env_bus_type;
+#line 60 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	if (_tmp2_ != NULL) {
+#line 577 "tracker-backend.c"
+		const gchar* _tmp3_ = NULL;
+		gint _tmp4_ = 0;
+#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp3_ = env_bus_type;
+#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp4_ = g_ascii_strcasecmp (_tmp3_, "system");
+#line 61 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		if (_tmp4_ == 0) {
+#line 62 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			self->priv->bus_type = G_BUS_TYPE_SYSTEM;
+#line 63 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			g_debug ("tracker-backend.vala:63: Using bus = 'SYSTEM'");
+#line 590 "tracker-backend.c"
+		} else {
+			const gchar* _tmp5_ = NULL;
+			gint _tmp6_ = 0;
+#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp5_ = env_bus_type;
+#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp6_ = g_ascii_strcasecmp (_tmp5_, "session");
+#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			if (_tmp6_ == 0) {
+#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				self->priv->bus_type = G_BUS_TYPE_SESSION;
+#line 66 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_debug ("tracker-backend.vala:66: Using bus = 'SESSION'");
+#line 604 "tracker-backend.c"
+			} else {
+				const gchar* _tmp7_ = NULL;
+#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp7_ = env_bus_type;
+#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_warning ("tracker-backend.vala:68: Environment variable TRACKER_BUS_TYPE set to " \
+"unknown value '%s'", _tmp7_);
+#line 611 "tracker-backend.c"
+			}
+		}
+	}
+#line 57 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_g_free0 (env_bus_type);
+#line 617 "tracker-backend.c"
 }
 
 
@@ -557,46 +622,46 @@ static void tracker_sparql_backend_real_dispose (GObject* base) {
 	TrackerSparqlBackend * self;
 	gboolean _tmp0_ = FALSE;
 	GError * _inner_error_ = NULL;
-#line 54 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 73 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 56 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 75 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = self->priv->initialized;
-#line 56 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 75 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp0_) {
-#line 57 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 76 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_mutex_lock (&tracker_sparql_backend_door);
-#line 569 "tracker-backend.c"
+#line 633 "tracker-backend.c"
 		{
 			TrackerSparqlConnection* _tmp1_ = NULL;
-#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 83 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp1_ = tracker_sparql_backend_singleton;
-#line 64 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 83 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_tmp1_ == G_TYPE_CHECK_INSTANCE_CAST (self, TRACKER_SPARQL_TYPE_CONNECTION, TrackerSparqlConnection)) {
-#line 65 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				tracker_sparql_backend_singleton = NULL;
-#line 578 "tracker-backend.c"
+#line 642 "tracker-backend.c"
 			}
 		}
 		__finally1:
 		{
-#line 68 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_mutex_unlock (&tracker_sparql_backend_door);
-#line 585 "tracker-backend.c"
+#line 649 "tracker-backend.c"
 		}
-#line 59 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 59 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 59 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 59 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
-#line 595 "tracker-backend.c"
+#line 659 "tracker-backend.c"
 		}
 	}
-#line 72 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 91 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	G_OBJECT_CLASS (tracker_sparql_backend_parent_class)->dispose ((GObject*) G_TYPE_CHECK_INSTANCE_CAST (self, TRACKER_SPARQL_TYPE_CONNECTION, TrackerSparqlConnection));
-#line 600 "tracker-backend.c"
+#line 664 "tracker-backend.c"
 }
 
 
@@ -606,65 +671,65 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConn
 	const gchar* _tmp0_ = NULL;
 	TrackerSparqlConnection* _tmp1_ = NULL;
 	GError * _inner_error_ = NULL;
-#line 75 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 94 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 75 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 94 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_val_if_fail (sparql != NULL, NULL);
-#line 76 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = sparql;
-#line 76 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:76: %s(): '%s'", "Tracker.Sparql.Backend.query", _tmp0_);
-#line 77 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("tracker-backend.vala:95: %s(): '%s'", "Tracker.Sparql.Backend.query", _tmp0_);
+#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = self->priv->direct;
-#line 77 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp1_ != NULL) {
-#line 622 "tracker-backend.c"
+#line 686 "tracker-backend.c"
 		TrackerSparqlCursor* _tmp2_ = NULL;
 		TrackerSparqlConnection* _tmp3_ = NULL;
 		const gchar* _tmp4_ = NULL;
 		GCancellable* _tmp5_ = NULL;
 		TrackerSparqlCursor* _tmp6_ = NULL;
 		TrackerSparqlCursor* _tmp7_ = NULL;
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = self->priv->direct;
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = sparql;
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp5_ = cancellable;
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp6_ = tracker_sparql_connection_query (_tmp3_, _tmp4_, _tmp5_, &_inner_error_);
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = _tmp6_;
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return NULL;
-#line 647 "tracker-backend.c"
+#line 711 "tracker-backend.c"
 			} else {
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_clear_error (&_inner_error_);
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return NULL;
-#line 655 "tracker-backend.c"
+#line 719 "tracker-backend.c"
 			}
 		}
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp7_ = _tmp2_;
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = NULL;
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		result = _tmp7_;
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_tmp2_);
-#line 78 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return result;
-#line 668 "tracker-backend.c"
+#line 732 "tracker-backend.c"
 	} else {
 		TrackerSparqlCursor* _tmp8_ = NULL;
 		TrackerSparqlConnection* _tmp9_ = NULL;
@@ -672,46 +737,46 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConn
 		GCancellable* _tmp11_ = NULL;
 		TrackerSparqlCursor* _tmp12_ = NULL;
 		TrackerSparqlCursor* _tmp13_ = NULL;
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp9_ = self->priv->bus;
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp10_ = sparql;
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp11_ = cancellable;
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp12_ = tracker_sparql_connection_query (_tmp9_, _tmp10_, _tmp11_, &_inner_error_);
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp8_ = _tmp12_;
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return NULL;
-#line 694 "tracker-backend.c"
+#line 758 "tracker-backend.c"
 			} else {
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_clear_error (&_inner_error_);
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return NULL;
-#line 702 "tracker-backend.c"
+#line 766 "tracker-backend.c"
 			}
 		}
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp13_ = _tmp8_;
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp8_ = NULL;
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		result = _tmp13_;
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_tmp8_);
-#line 80 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return result;
-#line 715 "tracker-backend.c"
+#line 779 "tracker-backend.c"
 	}
 }
 
@@ -729,14 +794,14 @@ static void tracker_sparql_backend_real_query_async_data_free (gpointer _data) {
 	_g_object_unref0 (_data_->self);
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendQueryAsyncData, _data_);
-#line 733 "tracker-backend.c"
+#line 797 "tracker-backend.c"
 }
 
 
 static gpointer _g_object_ref0 (gpointer self) {
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return self ? g_object_ref (self) : NULL;
-#line 740 "tracker-backend.c"
+#line 804 "tracker-backend.c"
 }
 
 
@@ -778,7 +843,7 @@ static void tracker_sparql_backend_real_query_async (TrackerSparqlConnection* ba
 	_data_->cancellable = _tmp4_;
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_query_async_co (_data_);
-#line 782 "tracker-backend.c"
+#line 846 "tracker-backend.c"
 }
 
 
@@ -789,7 +854,7 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_query_finish (TrackerSpa
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 793 "tracker-backend.c"
+#line 857 "tracker-backend.c"
 	}
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
@@ -799,242 +864,242 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_query_finish (TrackerSpa
 	_data_->result = NULL;
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 803 "tracker-backend.c"
+#line 867 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_query_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendQueryAsyncData* _data_;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_query_async_co (_data_);
-#line 817 "tracker-backend.c"
+#line 881 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_query_async_co (TrackerSparqlBackendQueryAsyncData* _data_) {
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 826 "tracker-backend.c"
+#line 890 "tracker-backend.c"
 		goto _state_0;
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 830 "tracker-backend.c"
+#line 894 "tracker-backend.c"
 		goto _state_1;
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 2:
-#line 834 "tracker-backend.c"
+#line 898 "tracker-backend.c"
 		goto _state_2;
 		default:
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 839 "tracker-backend.c"
+#line 903 "tracker-backend.c"
 	}
 	_state_0:
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = NULL;
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->sparql;
-#line 85 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:85: %s(): '%s'", "Tracker.Sparql.Backend.query_async", _data_->_tmp0_);
-#line 86 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("tracker-backend.vala:104: %s(): '%s'", "Tracker.Sparql.Backend.query_async", _data_->_tmp0_);
+#line 105 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = NULL;
-#line 86 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = _data_->self->priv->direct;
-#line 86 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp1_ != NULL) {
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = NULL;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = _data_->self->priv->direct;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp4_ = NULL;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp4_ = _data_->sparql;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp5_ = NULL;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp5_ = _data_->cancellable;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_state_ = 1;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		tracker_sparql_connection_query_async (_data_->_tmp3_, _data_->_tmp4_, _data_->_tmp5_, tracker_sparql_backend_query_async_ready, _data_);
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
-#line 872 "tracker-backend.c"
+#line 936 "tracker-backend.c"
 		_state_1:
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp6_ = NULL;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp6_ = tracker_sparql_connection_query_finish (_data_->_tmp3_, _data_->_res_, &_data_->_inner_error_);
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp2_ = _data_->_tmp6_;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_error_free (_data_->_inner_error_);
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				if (_data_->_state_ == 0) {
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 892 "tracker-backend.c"
+#line 956 "tracker-backend.c"
 				} else {
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_simple_async_result_complete (_data_->_async_result);
-#line 896 "tracker-backend.c"
+#line 960 "tracker-backend.c"
 				}
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_object_unref (_data_->_async_result);
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return FALSE;
-#line 902 "tracker-backend.c"
+#line 966 "tracker-backend.c"
 			} else {
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_clear_error (&_data_->_inner_error_);
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return FALSE;
-#line 910 "tracker-backend.c"
+#line 974 "tracker-backend.c"
 			}
 		}
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp7_ = NULL;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp7_ = _data_->_tmp2_;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp2_ = NULL;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->result = _data_->_tmp7_;
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data_->_tmp2_);
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_state_ == 0) {
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 927 "tracker-backend.c"
+#line 991 "tracker-backend.c"
 		} else {
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_complete (_data_->_async_result);
-#line 931 "tracker-backend.c"
-		}
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_object_unref (_data_->_async_result);
-#line 87 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		return FALSE;
-#line 937 "tracker-backend.c"
-	} else {
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_data_->_tmp9_ = NULL;
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_data_->_tmp9_ = _data_->self->priv->bus;
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_data_->_tmp10_ = NULL;
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_data_->_tmp10_ = _data_->sparql;
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_data_->_tmp11_ = NULL;
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_data_->_tmp11_ = _data_->cancellable;
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_data_->_state_ = 2;
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		tracker_sparql_connection_query_async (_data_->_tmp9_, _data_->_tmp10_, _data_->_tmp11_, tracker_sparql_backend_query_async_ready, _data_);
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		return FALSE;
-#line 957 "tracker-backend.c"
-		_state_2:
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_data_->_tmp12_ = NULL;
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_data_->_tmp12_ = tracker_sparql_connection_query_finish (_data_->_tmp9_, _data_->_res_, &_data_->_inner_error_);
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_data_->_tmp8_ = _data_->_tmp12_;
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		if (_data_->_inner_error_ != NULL) {
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_error_free (_data_->_inner_error_);
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				if (_data_->_state_ == 0) {
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-					g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 977 "tracker-backend.c"
-				} else {
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-					g_simple_async_result_complete (_data_->_async_result);
-#line 981 "tracker-backend.c"
-				}
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_object_unref (_data_->_async_result);
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				return FALSE;
-#line 987 "tracker-backend.c"
-			} else {
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_clear_error (&_data_->_inner_error_);
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				return FALSE;
 #line 995 "tracker-backend.c"
+		}
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		g_object_unref (_data_->_async_result);
+#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		return FALSE;
+#line 1001 "tracker-backend.c"
+	} else {
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_data_->_tmp9_ = NULL;
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_data_->_tmp9_ = _data_->self->priv->bus;
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_data_->_tmp10_ = NULL;
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_data_->_tmp10_ = _data_->sparql;
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_data_->_tmp11_ = NULL;
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_data_->_tmp11_ = _data_->cancellable;
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_data_->_state_ = 2;
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		tracker_sparql_connection_query_async (_data_->_tmp9_, _data_->_tmp10_, _data_->_tmp11_, tracker_sparql_backend_query_async_ready, _data_);
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		return FALSE;
+#line 1021 "tracker-backend.c"
+		_state_2:
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_data_->_tmp12_ = NULL;
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_data_->_tmp12_ = tracker_sparql_connection_query_finish (_data_->_tmp9_, _data_->_res_, &_data_->_inner_error_);
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_data_->_tmp8_ = _data_->_tmp12_;
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		if (_data_->_inner_error_ != NULL) {
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_error_free (_data_->_inner_error_);
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				if (_data_->_state_ == 0) {
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+					g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 1041 "tracker-backend.c"
+				} else {
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+					g_simple_async_result_complete (_data_->_async_result);
+#line 1045 "tracker-backend.c"
+				}
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_object_unref (_data_->_async_result);
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				return FALSE;
+#line 1051 "tracker-backend.c"
+			} else {
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_clear_error (&_data_->_inner_error_);
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				return FALSE;
+#line 1059 "tracker-backend.c"
 			}
 		}
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp13_ = NULL;
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp13_ = _data_->_tmp8_;
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp8_ = NULL;
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->result = _data_->_tmp13_;
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data_->_tmp8_);
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_state_ == 0) {
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 1012 "tracker-backend.c"
+#line 1076 "tracker-backend.c"
 		} else {
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_complete (_data_->_async_result);
-#line 1016 "tracker-backend.c"
+#line 1080 "tracker-backend.c"
 		}
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_object_unref (_data_->_async_result);
-#line 89 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
-#line 1022 "tracker-backend.c"
+#line 1086 "tracker-backend.c"
 	}
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 1028 "tracker-backend.c"
+#line 1092 "tracker-backend.c"
 	} else {
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 1032 "tracker-backend.c"
+#line 1096 "tracker-backend.c"
 	}
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 84 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1038 "tracker-backend.c"
+#line 1102 "tracker-backend.c"
 }
 
 
@@ -1048,70 +1113,70 @@ static void tracker_sparql_backend_real_update (TrackerSparqlConnection* base, c
 	gint _tmp6_ = 0;
 	GCancellable* _tmp7_ = NULL;
 	GError * _inner_error_ = NULL;
-#line 93 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 93 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_if_fail (sparql != NULL);
-#line 94 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = priority;
-#line 94 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = sparql;
-#line 94 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:94: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update", _tmp0_, _tmp1_);
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("tracker-backend.vala:113: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update", _tmp0_, _tmp1_);
+#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = self->priv->bus;
-#line 95 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp2_ == NULL) {
-#line 1066 "tracker-backend.c"
+#line 1130 "tracker-backend.c"
 		GError* _tmp3_ = NULL;
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 115 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 115 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = _tmp3_;
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 115 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 115 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 115 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
-#line 1078 "tracker-backend.c"
+#line 1142 "tracker-backend.c"
 		} else {
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 115 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 115 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 96 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 115 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
-#line 1086 "tracker-backend.c"
+#line 1150 "tracker-backend.c"
 		}
 	}
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = self->priv->bus;
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = sparql;
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp6_ = priority;
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp7_ = cancellable;
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update (_tmp4_, _tmp5_, _tmp6_, _tmp7_, &_inner_error_);
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
-#line 1107 "tracker-backend.c"
+#line 1171 "tracker-backend.c"
 		} else {
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 98 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
-#line 1115 "tracker-backend.c"
+#line 1179 "tracker-backend.c"
 		}
 	}
 }
@@ -1131,85 +1196,85 @@ static GVariant* tracker_sparql_backend_real_update_blank (TrackerSparqlConnecti
 	GVariant* _tmp9_ = NULL;
 	GVariant* _tmp10_ = NULL;
 	GError * _inner_error_ = NULL;
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 101 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_val_if_fail (sparql != NULL, NULL);
-#line 102 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = priority;
-#line 102 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = sparql;
-#line 102 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:102: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank", _tmp0_, _tmp1_);
-#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("tracker-backend.vala:121: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank", _tmp0_, _tmp1_);
+#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = self->priv->bus;
-#line 103 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 122 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp2_ == NULL) {
-#line 1149 "tracker-backend.c"
-		GError* _tmp3_ = NULL;
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_inner_error_ = _tmp3_;
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_propagate_error (error, _inner_error_);
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			return NULL;
-#line 1161 "tracker-backend.c"
-		} else {
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_clear_error (&_inner_error_);
-#line 104 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			return NULL;
-#line 1169 "tracker-backend.c"
-		}
-	}
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp5_ = self->priv->bus;
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp6_ = sparql;
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp7_ = priority;
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp8_ = cancellable;
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp9_ = tracker_sparql_connection_update_blank (_tmp5_, _tmp6_, _tmp7_, _tmp8_, &_inner_error_);
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp4_ = _tmp9_;
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	if (_inner_error_ != NULL) {
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_propagate_error (error, _inner_error_);
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			return NULL;
-#line 1192 "tracker-backend.c"
-		} else {
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_clear_error (&_inner_error_);
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			return NULL;
-#line 1200 "tracker-backend.c"
-		}
-	}
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp10_ = _tmp4_;
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp4_ = NULL;
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	result = _tmp10_;
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_g_variant_unref0 (_tmp4_);
-#line 106 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	return result;
 #line 1213 "tracker-backend.c"
+		GError* _tmp3_ = NULL;
+#line 123 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
+#line 123 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_inner_error_ = _tmp3_;
+#line 123 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
+#line 123 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			g_propagate_error (error, _inner_error_);
+#line 123 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			return NULL;
+#line 1225 "tracker-backend.c"
+		} else {
+#line 123 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+#line 123 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			g_clear_error (&_inner_error_);
+#line 123 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			return NULL;
+#line 1233 "tracker-backend.c"
+		}
+	}
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp5_ = self->priv->bus;
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp6_ = sparql;
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp7_ = priority;
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp8_ = cancellable;
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp9_ = tracker_sparql_connection_update_blank (_tmp5_, _tmp6_, _tmp7_, _tmp8_, &_inner_error_);
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp4_ = _tmp9_;
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	if (_inner_error_ != NULL) {
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			g_propagate_error (error, _inner_error_);
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			return NULL;
+#line 1256 "tracker-backend.c"
+		} else {
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			g_clear_error (&_inner_error_);
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			return NULL;
+#line 1264 "tracker-backend.c"
+		}
+	}
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp10_ = _tmp4_;
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp4_ = NULL;
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	result = _tmp10_;
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_g_variant_unref0 (_tmp4_);
+#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	return result;
+#line 1277 "tracker-backend.c"
 }
 
 
@@ -1224,7 +1289,7 @@ static void tracker_sparql_backend_real_update_async_data_free (gpointer _data) 
 	_g_object_unref0 (_data_->self);
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendUpdateAsyncData, _data_);
-#line 1228 "tracker-backend.c"
+#line 1292 "tracker-backend.c"
 }
 
 
@@ -1271,7 +1336,7 @@ static void tracker_sparql_backend_real_update_async (TrackerSparqlConnection* b
 	_data_->cancellable = _tmp5_;
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_async_co (_data_);
-#line 1275 "tracker-backend.c"
+#line 1339 "tracker-backend.c"
 }
 
 
@@ -1281,172 +1346,172 @@ static void tracker_sparql_backend_real_update_finish (TrackerSparqlConnection* 
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return;
-#line 1285 "tracker-backend.c"
+#line 1349 "tracker-backend.c"
 	}
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 1289 "tracker-backend.c"
+#line 1353 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_update_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendUpdateAsyncData* _data_;
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_async_co (_data_);
-#line 1303 "tracker-backend.c"
+#line 1367 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_update_async_co (TrackerSparqlBackendUpdateAsyncData* _data_) {
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 1312 "tracker-backend.c"
+#line 1376 "tracker-backend.c"
 		goto _state_0;
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 1316 "tracker-backend.c"
+#line 1380 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 1321 "tracker-backend.c"
+#line 1385 "tracker-backend.c"
 	}
 	_state_0:
-#line 110 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = 0;
-#line 110 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->priority;
-#line 110 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = NULL;
-#line 110 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = _data_->sparql;
-#line 110 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:110: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_async", _data_->_tmp0_, _data_->_tmp1_);
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("tracker-backend.vala:129: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_async", _data_->_tmp0_, _data_->_tmp1_);
+#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = NULL;
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->self->priv->bus;
-#line 111 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 130 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp2_ == NULL) {
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = NULL;
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp3_;
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 1356 "tracker-backend.c"
+#line 1420 "tracker-backend.c"
 			} else {
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 1360 "tracker-backend.c"
+#line 1424 "tracker-backend.c"
 			}
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1366 "tracker-backend.c"
+#line 1430 "tracker-backend.c"
 		} else {
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 112 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1374 "tracker-backend.c"
+#line 1438 "tracker-backend.c"
 		}
 	}
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = NULL;
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = _data_->self->priv->bus;
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = NULL;
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = _data_->sparql;
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = 0;
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = _data_->priority;
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = NULL;
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = _data_->cancellable;
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update_async (_data_->_tmp4_, _data_->_tmp5_, _data_->_tmp6_, _data_->_tmp7_, tracker_sparql_backend_update_async_ready, _data_);
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1399 "tracker-backend.c"
+#line 1463 "tracker-backend.c"
 	_state_1:
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update_finish (_data_->_tmp4_, _data_->_res_, &_data_->_inner_error_);
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 1415 "tracker-backend.c"
+#line 1479 "tracker-backend.c"
 			} else {
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 1419 "tracker-backend.c"
+#line 1483 "tracker-backend.c"
 			}
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1425 "tracker-backend.c"
+#line 1489 "tracker-backend.c"
 		} else {
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 114 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1433 "tracker-backend.c"
+#line 1497 "tracker-backend.c"
 		}
 	}
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 1440 "tracker-backend.c"
+#line 1504 "tracker-backend.c"
 	} else {
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 1444 "tracker-backend.c"
+#line 1508 "tracker-backend.c"
 	}
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 109 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1450 "tracker-backend.c"
+#line 1514 "tracker-backend.c"
 }
 
 
@@ -1461,7 +1526,7 @@ static void tracker_sparql_backend_real_update_array_async_data_free (gpointer _
 	_g_object_unref0 (_data_->self);
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendUpdateArrayAsyncData, _data_);
-#line 1465 "tracker-backend.c"
+#line 1529 "tracker-backend.c"
 }
 
 
@@ -1508,7 +1573,7 @@ static void tracker_sparql_backend_real_update_array_async (TrackerSparqlConnect
 	_data_->cancellable = _tmp4_;
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_array_async_co (_data_);
-#line 1512 "tracker-backend.c"
+#line 1576 "tracker-backend.c"
 }
 
 
@@ -1519,7 +1584,7 @@ static GPtrArray* tracker_sparql_backend_real_update_array_finish (TrackerSparql
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 1523 "tracker-backend.c"
+#line 1587 "tracker-backend.c"
 	}
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
@@ -1529,192 +1594,192 @@ static GPtrArray* tracker_sparql_backend_real_update_array_finish (TrackerSparql
 	_data_->result = NULL;
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 1533 "tracker-backend.c"
+#line 1597 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_update_array_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendUpdateArrayAsyncData* _data_;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_array_async_co (_data_);
-#line 1547 "tracker-backend.c"
+#line 1611 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_update_array_async_co (TrackerSparqlBackendUpdateArrayAsyncData* _data_) {
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 1556 "tracker-backend.c"
+#line 1620 "tracker-backend.c"
 		goto _state_0;
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 1560 "tracker-backend.c"
+#line 1624 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 1565 "tracker-backend.c"
+#line 1629 "tracker-backend.c"
 	}
 	_state_0:
-#line 118 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = NULL;
-#line 118 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->self->priv->bus;
-#line 118 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp0_ == NULL) {
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp1_ = NULL;
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp1_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp1_;
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 1590 "tracker-backend.c"
+#line 1654 "tracker-backend.c"
 			} else {
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 1594 "tracker-backend.c"
+#line 1658 "tracker-backend.c"
 			}
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1600 "tracker-backend.c"
+#line 1664 "tracker-backend.c"
 		} else {
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 119 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1608 "tracker-backend.c"
+#line 1672 "tracker-backend.c"
 		}
 	}
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = NULL;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = _data_->self->priv->bus;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = NULL;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4__length1 = 0;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = _data_->sparql;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4__length1 = _data_->sparql_length1;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = 0;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = _data_->priority;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = NULL;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = _data_->cancellable;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update_array_async (_data_->_tmp3_, _data_->_tmp4_, _data_->_tmp4__length1, _data_->_tmp5_, _data_->_tmp6_, tracker_sparql_backend_update_array_async_ready, _data_);
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1637 "tracker-backend.c"
+#line 1701 "tracker-backend.c"
 	_state_1:
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = NULL;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = tracker_sparql_connection_update_array_finish (_data_->_tmp3_, _data_->_res_, &_data_->_inner_error_);
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->_tmp7_;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 1657 "tracker-backend.c"
+#line 1721 "tracker-backend.c"
 			} else {
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 1661 "tracker-backend.c"
+#line 1725 "tracker-backend.c"
 			}
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1667 "tracker-backend.c"
+#line 1731 "tracker-backend.c"
 		} else {
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1675 "tracker-backend.c"
+#line 1739 "tracker-backend.c"
 		}
 	}
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp8_ = NULL;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp8_ = _data_->_tmp2_;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = NULL;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = _data_->_tmp8_;
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_ptr_array_unref0 (_data_->_tmp2_);
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 1692 "tracker-backend.c"
+#line 1756 "tracker-backend.c"
 	} else {
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 1696 "tracker-backend.c"
+#line 1760 "tracker-backend.c"
 	}
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 121 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_ptr_array_unref0 (_data_->_tmp2_);
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 1708 "tracker-backend.c"
+#line 1772 "tracker-backend.c"
 	} else {
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 1712 "tracker-backend.c"
+#line 1776 "tracker-backend.c"
 	}
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 117 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1718 "tracker-backend.c"
+#line 1782 "tracker-backend.c"
 }
 
 
@@ -1731,7 +1796,7 @@ static void tracker_sparql_backend_real_update_blank_async_data_free (gpointer _
 	_g_object_unref0 (_data_->self);
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendUpdateBlankAsyncData, _data_);
-#line 1735 "tracker-backend.c"
+#line 1799 "tracker-backend.c"
 }
 
 
@@ -1778,7 +1843,7 @@ static void tracker_sparql_backend_real_update_blank_async (TrackerSparqlConnect
 	_data_->cancellable = _tmp5_;
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_blank_async_co (_data_);
-#line 1782 "tracker-backend.c"
+#line 1846 "tracker-backend.c"
 }
 
 
@@ -1789,7 +1854,7 @@ static GVariant* tracker_sparql_backend_real_update_blank_finish (TrackerSparqlC
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 1793 "tracker-backend.c"
+#line 1857 "tracker-backend.c"
 	}
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
@@ -1799,198 +1864,198 @@ static GVariant* tracker_sparql_backend_real_update_blank_finish (TrackerSparqlC
 	_data_->result = NULL;
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 1803 "tracker-backend.c"
+#line 1867 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_update_blank_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendUpdateBlankAsyncData* _data_;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_blank_async_co (_data_);
-#line 1817 "tracker-backend.c"
+#line 1881 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_update_blank_async_co (TrackerSparqlBackendUpdateBlankAsyncData* _data_) {
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 1826 "tracker-backend.c"
+#line 1890 "tracker-backend.c"
 		goto _state_0;
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 1830 "tracker-backend.c"
+#line 1894 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 1835 "tracker-backend.c"
+#line 1899 "tracker-backend.c"
 	}
 	_state_0:
-#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = 0;
-#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->priority;
-#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = NULL;
-#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = _data_->sparql;
-#line 125 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:125: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank_async", _data_->_tmp0_, _data_->_tmp1_);
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("tracker-backend.vala:144: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank_async", _data_->_tmp0_, _data_->_tmp1_);
+#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = NULL;
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->self->priv->bus;
-#line 126 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp2_ == NULL) {
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = NULL;
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp3_;
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 1870 "tracker-backend.c"
+#line 1934 "tracker-backend.c"
 			} else {
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 1874 "tracker-backend.c"
+#line 1938 "tracker-backend.c"
 			}
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1880 "tracker-backend.c"
+#line 1944 "tracker-backend.c"
 		} else {
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 127 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1888 "tracker-backend.c"
+#line 1952 "tracker-backend.c"
 		}
 	}
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = NULL;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = _data_->self->priv->bus;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = NULL;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = _data_->sparql;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = 0;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = _data_->priority;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp8_ = NULL;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp8_ = _data_->cancellable;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update_blank_async (_data_->_tmp5_, _data_->_tmp6_, _data_->_tmp7_, _data_->_tmp8_, tracker_sparql_backend_update_blank_async_ready, _data_);
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1913 "tracker-backend.c"
+#line 1977 "tracker-backend.c"
 	_state_1:
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp9_ = NULL;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp9_ = tracker_sparql_connection_update_blank_finish (_data_->_tmp5_, _data_->_res_, &_data_->_inner_error_);
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = _data_->_tmp9_;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 1933 "tracker-backend.c"
+#line 1997 "tracker-backend.c"
 			} else {
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 1937 "tracker-backend.c"
+#line 2001 "tracker-backend.c"
 			}
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1943 "tracker-backend.c"
+#line 2007 "tracker-backend.c"
 		} else {
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1951 "tracker-backend.c"
+#line 2015 "tracker-backend.c"
 		}
 	}
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp10_ = NULL;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp10_ = _data_->_tmp4_;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = NULL;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = _data_->_tmp10_;
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_variant_unref0 (_data_->_tmp4_);
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 1968 "tracker-backend.c"
+#line 2032 "tracker-backend.c"
 	} else {
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 1972 "tracker-backend.c"
+#line 2036 "tracker-backend.c"
 	}
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 129 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_variant_unref0 (_data_->_tmp4_);
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 1984 "tracker-backend.c"
+#line 2048 "tracker-backend.c"
 	} else {
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 1988 "tracker-backend.c"
+#line 2052 "tracker-backend.c"
 	}
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 124 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1994 "tracker-backend.c"
+#line 2058 "tracker-backend.c"
 }
 
 
@@ -2005,85 +2070,85 @@ static void tracker_sparql_backend_real_load (TrackerSparqlConnection* base, GFi
 	GFile* _tmp6_ = NULL;
 	GCancellable* _tmp7_ = NULL;
 	GError * _inner_error_ = NULL;
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_if_fail (file != NULL);
-#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 152 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = file;
-#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 152 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = g_file_get_uri (_tmp0_);
-#line 133 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 152 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	uri = _tmp1_;
-#line 134 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = uri;
-#line 134 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:134: %s(): '%s'", "Tracker.Sparql.Backend.load", _tmp2_);
-#line 135 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("tracker-backend.vala:153: %s(): '%s'", "Tracker.Sparql.Backend.load", _tmp2_);
+#line 154 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = self->priv->bus;
-#line 135 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 154 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp3_ == NULL) {
-#line 2027 "tracker-backend.c"
+#line 2091 "tracker-backend.c"
 		GError* _tmp4_ = NULL;
-#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = _tmp4_;
-#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (uri);
-#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
-#line 2041 "tracker-backend.c"
+#line 2105 "tracker-backend.c"
 		} else {
-#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (uri);
-#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 136 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
-#line 2051 "tracker-backend.c"
+#line 2115 "tracker-backend.c"
 		}
 	}
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = self->priv->bus;
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp6_ = file;
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp7_ = cancellable;
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_load (_tmp5_, _tmp6_, _tmp7_, &_inner_error_);
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (uri);
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
-#line 2072 "tracker-backend.c"
+#line 2136 "tracker-backend.c"
 		} else {
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (uri);
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 138 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
-#line 2082 "tracker-backend.c"
+#line 2146 "tracker-backend.c"
 		}
 	}
-#line 132 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (uri);
-#line 2087 "tracker-backend.c"
+#line 2151 "tracker-backend.c"
 }
 
 
@@ -2098,7 +2163,7 @@ static void tracker_sparql_backend_real_load_async_data_free (gpointer _data) {
 	_g_object_unref0 (_data_->self);
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendLoadAsyncData, _data_);
-#line 2102 "tracker-backend.c"
+#line 2166 "tracker-backend.c"
 }
 
 
@@ -2140,7 +2205,7 @@ static void tracker_sparql_backend_real_load_async (TrackerSparqlConnection* bas
 	_data_->cancellable = _tmp4_;
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_load_async_co (_data_);
-#line 2144 "tracker-backend.c"
+#line 2208 "tracker-backend.c"
 }
 
 
@@ -2150,184 +2215,184 @@ static void tracker_sparql_backend_real_load_finish (TrackerSparqlConnection* ba
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return;
-#line 2154 "tracker-backend.c"
+#line 2218 "tracker-backend.c"
 	}
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 2158 "tracker-backend.c"
+#line 2222 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_load_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendLoadAsyncData* _data_;
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_load_async_co (_data_);
-#line 2172 "tracker-backend.c"
+#line 2236 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_load_async_co (TrackerSparqlBackendLoadAsyncData* _data_) {
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 2181 "tracker-backend.c"
+#line 2245 "tracker-backend.c"
 		goto _state_0;
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 2185 "tracker-backend.c"
+#line 2249 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 2190 "tracker-backend.c"
+#line 2254 "tracker-backend.c"
 	}
 	_state_0:
-#line 142 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = NULL;
-#line 142 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->file;
-#line 142 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = NULL;
-#line 142 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = g_file_get_uri (_data_->_tmp0_);
-#line 142 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->uri = _data_->_tmp1_;
-#line 143 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = NULL;
-#line 143 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->uri;
-#line 143 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:143: %s(): '%s'", "Tracker.Sparql.Backend.load_async", _data_->_tmp2_);
-#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("tracker-backend.vala:162: %s(): '%s'", "Tracker.Sparql.Backend.load_async", _data_->_tmp2_);
+#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = NULL;
-#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = _data_->self->priv->bus;
-#line 144 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp3_ == NULL) {
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp4_ = NULL;
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp4_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp4_;
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (_data_->uri);
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 2233 "tracker-backend.c"
+#line 2297 "tracker-backend.c"
 			} else {
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 2237 "tracker-backend.c"
+#line 2301 "tracker-backend.c"
 			}
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 2243 "tracker-backend.c"
+#line 2307 "tracker-backend.c"
 		} else {
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (_data_->uri);
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 145 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 164 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 2253 "tracker-backend.c"
+#line 2317 "tracker-backend.c"
 		}
 	}
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = NULL;
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = _data_->self->priv->bus;
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = NULL;
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = _data_->file;
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = NULL;
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = _data_->cancellable;
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_load_async (_data_->_tmp5_, _data_->_tmp6_, _data_->_tmp7_, tracker_sparql_backend_load_async_ready, _data_);
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 2274 "tracker-backend.c"
+#line 2338 "tracker-backend.c"
 	_state_1:
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_load_finish (_data_->_tmp5_, _data_->_res_, &_data_->_inner_error_);
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (_data_->uri);
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 2292 "tracker-backend.c"
+#line 2356 "tracker-backend.c"
 			} else {
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 2296 "tracker-backend.c"
+#line 2360 "tracker-backend.c"
 			}
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 2302 "tracker-backend.c"
+#line 2366 "tracker-backend.c"
 		} else {
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (_data_->uri);
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 147 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 2312 "tracker-backend.c"
+#line 2376 "tracker-backend.c"
 		}
 	}
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (_data_->uri);
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 2321 "tracker-backend.c"
+#line 2385 "tracker-backend.c"
 	} else {
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 2325 "tracker-backend.c"
+#line 2389 "tracker-backend.c"
 	}
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 141 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 2331 "tracker-backend.c"
+#line 2395 "tracker-backend.c"
 }
 
 
@@ -2341,75 +2406,75 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_statistics (TrackerSparq
 	TrackerSparqlCursor* _tmp5_ = NULL;
 	TrackerSparqlCursor* _tmp6_ = NULL;
 	GError * _inner_error_ = NULL;
-#line 150 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 169 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 151 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:151: %s()", "Tracker.Sparql.Backend.statistics");
-#line 152 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 170 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("tracker-backend.vala:170: %s()", "Tracker.Sparql.Backend.statistics");
+#line 171 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = self->priv->bus;
-#line 152 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 171 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp0_ == NULL) {
-#line 2353 "tracker-backend.c"
+#line 2417 "tracker-backend.c"
 		GError* _tmp1_ = NULL;
-#line 153 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Statistics support not available for direct-only connection");
-#line 153 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = _tmp1_;
-#line 153 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 153 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 153 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 2365 "tracker-backend.c"
+#line 2429 "tracker-backend.c"
 		} else {
-#line 153 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 153 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 153 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 2373 "tracker-backend.c"
+#line 2437 "tracker-backend.c"
 		}
 	}
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = self->priv->bus;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = cancellable;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = tracker_sparql_connection_statistics (_tmp3_, _tmp4_, &_inner_error_);
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = _tmp5_;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 2392 "tracker-backend.c"
+#line 2456 "tracker-backend.c"
 		} else {
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 2400 "tracker-backend.c"
+#line 2464 "tracker-backend.c"
 		}
 	}
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp6_ = _tmp2_;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = NULL;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _tmp6_;
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_tmp2_);
-#line 155 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 2413 "tracker-backend.c"
+#line 2477 "tracker-backend.c"
 }
 
 
@@ -2424,7 +2489,7 @@ static void tracker_sparql_backend_real_statistics_async_data_free (gpointer _da
 	_g_object_unref0 (_data_->self);
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendStatisticsAsyncData, _data_);
-#line 2428 "tracker-backend.c"
+#line 2492 "tracker-backend.c"
 }
 
 
@@ -2456,7 +2521,7 @@ static void tracker_sparql_backend_real_statistics_async (TrackerSparqlConnectio
 	_data_->cancellable = _tmp2_;
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_statistics_async_co (_data_);
-#line 2460 "tracker-backend.c"
+#line 2524 "tracker-backend.c"
 }
 
 
@@ -2467,7 +2532,7 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_statistics_finish (Track
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 2471 "tracker-backend.c"
+#line 2535 "tracker-backend.c"
 	}
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
@@ -2477,657 +2542,594 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_statistics_finish (Track
 	_data_->result = NULL;
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 2481 "tracker-backend.c"
+#line 2545 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_statistics_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendStatisticsAsyncData* _data_;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_statistics_async_co (_data_);
-#line 2495 "tracker-backend.c"
+#line 2559 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_statistics_async_co (TrackerSparqlBackendStatisticsAsyncData* _data_) {
-#line 158 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 177 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 158 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 177 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 2504 "tracker-backend.c"
+#line 2568 "tracker-backend.c"
 		goto _state_0;
-#line 158 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 177 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 2508 "tracker-backend.c"
+#line 2572 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 158 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 177 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 2513 "tracker-backend.c"
+#line 2577 "tracker-backend.c"
 	}
 	_state_0:
-#line 159 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:159: %s()", "Tracker.Sparql.Backend.statistics_async");
-#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 178 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("tracker-backend.vala:178: %s()", "Tracker.Sparql.Backend.statistics_async");
+#line 179 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = NULL;
-#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 179 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->self->priv->bus;
-#line 160 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 179 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp0_ == NULL) {
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp1_ = NULL;
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp1_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Statistics support not available for direct-only connection");
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp1_;
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 2540 "tracker-backend.c"
+#line 2604 "tracker-backend.c"
 			} else {
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 2544 "tracker-backend.c"
+#line 2608 "tracker-backend.c"
 			}
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 2550 "tracker-backend.c"
+#line 2614 "tracker-backend.c"
 		} else {
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 161 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 180 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 2558 "tracker-backend.c"
+#line 2622 "tracker-backend.c"
 		}
 	}
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = NULL;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = _data_->self->priv->bus;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = NULL;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = _data_->cancellable;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_statistics_async (_data_->_tmp3_, _data_->_tmp4_, tracker_sparql_backend_statistics_async_ready, _data_);
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 2575 "tracker-backend.c"
+#line 2639 "tracker-backend.c"
 	_state_1:
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = NULL;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = tracker_sparql_connection_statistics_finish (_data_->_tmp3_, _data_->_res_, &_data_->_inner_error_);
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->_tmp5_;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 2595 "tracker-backend.c"
+#line 2659 "tracker-backend.c"
 			} else {
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 2599 "tracker-backend.c"
+#line 2663 "tracker-backend.c"
 			}
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 2605 "tracker-backend.c"
+#line 2669 "tracker-backend.c"
 		} else {
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 2613 "tracker-backend.c"
+#line 2677 "tracker-backend.c"
 		}
 	}
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = NULL;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = _data_->_tmp2_;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = NULL;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = _data_->_tmp6_;
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->_tmp2_);
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 2630 "tracker-backend.c"
+#line 2694 "tracker-backend.c"
 	} else {
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 2634 "tracker-backend.c"
+#line 2698 "tracker-backend.c"
 	}
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 163 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 158 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 177 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->_tmp2_);
-#line 158 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 177 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 158 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 177 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 2646 "tracker-backend.c"
+#line 2710 "tracker-backend.c"
 	} else {
-#line 158 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 177 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 2650 "tracker-backend.c"
+#line 2714 "tracker-backend.c"
 	}
-#line 158 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 177 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 158 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 177 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 2656 "tracker-backend.c"
+#line 2720 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self, GError** error) {
-	gchar* env_bus_type = NULL;
+	gchar* env_backend = NULL;
 	const gchar* _tmp0_ = NULL;
 	gchar* _tmp1_ = NULL;
-	const gchar* _tmp2_ = NULL;
-	gchar* env_backend = NULL;
-	const gchar* _tmp8_ = NULL;
-	gchar* _tmp9_ = NULL;
 	TrackerSparqlBackendBackend backend = 0;
-	const gchar* _tmp10_ = NULL;
-	TrackerSparqlBackendBackend _tmp16_ = 0;
-	TrackerSparqlBackendBackend _tmp17_ = 0;
+	const gchar* _tmp2_ = NULL;
+	TrackerSparqlBackendBackend _tmp8_ = 0;
+	TrackerSparqlBackendBackend _tmp9_ = 0;
 	GError * _inner_error_ = NULL;
-#line 167 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 186 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_if_fail (self != NULL);
-#line 168 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp0_ = g_getenv ("TRACKER_BUS_TYPE");
-#line 168 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 187 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp0_ = g_getenv ("TRACKER_SPARQL_BACKEND");
+#line 187 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = g_strdup (_tmp0_);
-#line 168 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	env_bus_type = _tmp1_;
-#line 170 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp2_ = env_bus_type;
-#line 170 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 187 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	env_backend = _tmp1_;
+#line 188 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	backend = TRACKER_SPARQL_BACKEND_BACKEND_AUTO;
+#line 190 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp2_ = env_backend;
+#line 190 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp2_ != NULL) {
-#line 2685 "tracker-backend.c"
+#line 2747 "tracker-backend.c"
 		const gchar* _tmp3_ = NULL;
 		gint _tmp4_ = 0;
-#line 171 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp3_ = env_bus_type;
-#line 171 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp4_ = g_ascii_strcasecmp (_tmp3_, "system");
-#line 171 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp3_ = env_backend;
+#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp4_ = g_ascii_strcasecmp (_tmp3_, "direct");
+#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_tmp4_ == 0) {
-#line 172 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			self->priv->bus_type = G_BUS_TYPE_SYSTEM;
-#line 173 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_debug ("tracker-backend.vala:173: Using bus = 'SYSTEM'");
-#line 2698 "tracker-backend.c"
+#line 192 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			backend = TRACKER_SPARQL_BACKEND_BACKEND_DIRECT;
+#line 193 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			g_debug ("tracker-backend.vala:193: Using backend = 'DIRECT'");
+#line 2760 "tracker-backend.c"
 		} else {
 			const gchar* _tmp5_ = NULL;
 			gint _tmp6_ = 0;
-#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp5_ = env_bus_type;
-#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp6_ = g_ascii_strcasecmp (_tmp5_, "session");
-#line 174 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 194 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp5_ = env_backend;
+#line 194 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp6_ = g_ascii_strcasecmp (_tmp5_, "bus");
+#line 194 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_tmp6_ == 0) {
-#line 175 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				self->priv->bus_type = G_BUS_TYPE_SESSION;
-#line 176 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_debug ("tracker-backend.vala:176: Using bus = 'SESSION'");
-#line 2712 "tracker-backend.c"
+#line 195 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				backend = TRACKER_SPARQL_BACKEND_BACKEND_BUS;
+#line 196 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_debug ("tracker-backend.vala:196: Using backend = 'BUS'");
+#line 2774 "tracker-backend.c"
 			} else {
 				const gchar* _tmp7_ = NULL;
-#line 178 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp7_ = env_bus_type;
-#line 178 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_warning ("tracker-backend.vala:178: Environment variable TRACKER_BUS_TYPE set to" \
-" unknown value '%s'", _tmp7_);
-#line 2719 "tracker-backend.c"
-			}
-		}
-	}
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp8_ = g_getenv ("TRACKER_SPARQL_BACKEND");
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp9_ = g_strdup (_tmp8_);
-#line 182 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	env_backend = _tmp9_;
-#line 183 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	backend = TRACKER_SPARQL_BACKEND_BACKEND_AUTO;
-#line 185 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp10_ = env_backend;
-#line 185 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	if (_tmp10_ != NULL) {
-#line 2735 "tracker-backend.c"
-		const gchar* _tmp11_ = NULL;
-		gint _tmp12_ = 0;
-#line 186 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp11_ = env_backend;
-#line 186 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp12_ = g_ascii_strcasecmp (_tmp11_, "direct");
-#line 186 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		if (_tmp12_ == 0) {
-#line 187 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			backend = TRACKER_SPARQL_BACKEND_BACKEND_DIRECT;
-#line 188 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_debug ("tracker-backend.vala:188: Using backend = 'DIRECT'");
-#line 2748 "tracker-backend.c"
-		} else {
-			const gchar* _tmp13_ = NULL;
-			gint _tmp14_ = 0;
-#line 189 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp13_ = env_backend;
-#line 189 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp14_ = g_ascii_strcasecmp (_tmp13_, "bus");
-#line 189 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			if (_tmp14_ == 0) {
-#line 190 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				backend = TRACKER_SPARQL_BACKEND_BACKEND_BUS;
-#line 191 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_debug ("tracker-backend.vala:191: Using backend = 'BUS'");
-#line 2762 "tracker-backend.c"
-			} else {
-				const gchar* _tmp15_ = NULL;
-#line 193 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp15_ = env_backend;
-#line 193 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_warning ("tracker-backend.vala:193: Environment variable TRACKER_SPARQL_BACKEND " \
-"set to unknown value '%s'", _tmp15_);
-#line 2769 "tracker-backend.c"
-			}
-		}
-	}
-#line 197 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp16_ = backend;
-#line 197 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	if (_tmp16_ == TRACKER_SPARQL_BACKEND_BACKEND_AUTO) {
 #line 198 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_debug ("tracker-backend.vala:198: Using backend = 'AUTO'");
-#line 2779 "tracker-backend.c"
+				_tmp7_ = env_backend;
+#line 198 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_warning ("tracker-backend.vala:198: Environment variable TRACKER_SPARQL_BACKEND " \
+"set to unknown value '%s'", _tmp7_);
+#line 2781 "tracker-backend.c"
+			}
+		}
 	}
-#line 201 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp17_ = backend;
-#line 201 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	switch (_tmp17_) {
-#line 201 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp8_ = backend;
+#line 202 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	if (_tmp8_ == TRACKER_SPARQL_BACKEND_BACKEND_AUTO) {
+#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		g_debug ("tracker-backend.vala:203: Using backend = 'AUTO'");
+#line 2791 "tracker-backend.c"
+	}
+#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp9_ = backend;
+#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	switch (_tmp9_) {
+#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case TRACKER_SPARQL_BACKEND_BACKEND_AUTO:
-#line 2787 "tracker-backend.c"
+#line 2799 "tracker-backend.c"
 		{
-			TrackerBusConnection* _tmp25_ = NULL;
-			TrackerBusConnection* _tmp26_ = NULL;
-			TrackerBusConnection* _tmp27_ = NULL;
+			TrackerBusConnection* _tmp17_ = NULL;
+			TrackerBusConnection* _tmp18_ = NULL;
+			TrackerBusConnection* _tmp19_ = NULL;
 			{
-				TrackerDirectConnection* _tmp18_ = NULL;
-				TrackerDirectConnection* _tmp19_ = NULL;
-				TrackerDirectConnection* _tmp20_ = NULL;
-#line 204 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp19_ = tracker_direct_connection_new (&_inner_error_);
-#line 204 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp18_ = _tmp19_;
-#line 204 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				TrackerDirectConnection* _tmp10_ = NULL;
+				TrackerDirectConnection* _tmp11_ = NULL;
+				TrackerDirectConnection* _tmp12_ = NULL;
+#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp11_ = tracker_direct_connection_new (&_inner_error_);
+#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp10_ = _tmp11_;
+#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				if (_inner_error_ != NULL) {
-#line 204 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 2804 "tracker-backend.c"
+#line 2816 "tracker-backend.c"
 						goto __catch2_tracker_sparql_error;
 					}
 					goto __finally2;
 				}
-#line 204 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp20_ = _tmp18_;
-#line 204 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp18_ = NULL;
-#line 204 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp12_ = _tmp10_;
+#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp10_ = NULL;
+#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_object_unref0 (self->priv->direct);
-#line 204 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				self->priv->direct = (TrackerSparqlConnection*) _tmp20_;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_g_object_unref0 (_tmp18_);
-#line 2819 "tracker-backend.c"
+#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				self->priv->direct = (TrackerSparqlConnection*) _tmp12_;
+#line 208 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_g_object_unref0 (_tmp10_);
+#line 2831 "tracker-backend.c"
 			}
 			goto __finally2;
 			__catch2_tracker_sparql_error:
 			{
 				GError* e = NULL;
-				GError* _tmp21_ = NULL;
-				const gchar* _tmp22_ = NULL;
-				gchar* _tmp23_ = NULL;
-				gchar* _tmp24_ = NULL;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				GError* _tmp13_ = NULL;
+				const gchar* _tmp14_ = NULL;
+				gchar* _tmp15_ = NULL;
+				gchar* _tmp16_ = NULL;
+#line 208 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				e = _inner_error_;
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 208 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_inner_error_ = NULL;
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp21_ = e;
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp22_ = _tmp21_->message;
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp23_ = g_strconcat ("Unable to initialize direct backend: ", _tmp22_, NULL);
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp24_ = _tmp23_;
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_debug ("tracker-backend.vala:206: %s", _tmp24_);
-#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_g_free0 (_tmp24_);
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 211 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp13_ = e;
+#line 211 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp14_ = _tmp13_->message;
+#line 211 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp15_ = g_strconcat ("Unable to initialize direct backend: ", _tmp14_, NULL);
+#line 211 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp16_ = _tmp15_;
+#line 211 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_debug ("tracker-backend.vala:211: %s", _tmp16_);
+#line 211 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_g_free0 (_tmp16_);
+#line 208 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_error_free0 (e);
-#line 2847 "tracker-backend.c"
+#line 2859 "tracker-backend.c"
 			}
 			__finally2:
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 208 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_ != NULL) {
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 208 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 208 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_free0 (env_backend);
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_g_free0 (env_bus_type);
-#line 203 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 208 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return;
-#line 2860 "tracker-backend.c"
+#line 2870 "tracker-backend.c"
 			}
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp26_ = tracker_bus_connection_new (&_inner_error_);
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp25_ = _tmp26_;
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp18_ = tracker_bus_connection_new (&_inner_error_);
+#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp17_ = _tmp18_;
+#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_ != NULL) {
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_free0 (env_backend);
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_g_free0 (env_bus_type);
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return;
-#line 2876 "tracker-backend.c"
+#line 2884 "tracker-backend.c"
 			}
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp27_ = _tmp25_;
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp25_ = NULL;
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp19_ = _tmp17_;
+#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp17_ = NULL;
+#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (self->priv->bus);
-#line 209 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			self->priv->bus = (TrackerSparqlConnection*) _tmp27_;
-#line 210 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (_tmp25_);
-#line 210 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			self->priv->bus = (TrackerSparqlConnection*) _tmp19_;
+#line 215 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (_tmp17_);
+#line 215 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
-#line 2890 "tracker-backend.c"
+#line 2898 "tracker-backend.c"
 		}
-#line 201 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case TRACKER_SPARQL_BACKEND_BACKEND_DIRECT:
-#line 2894 "tracker-backend.c"
+#line 2902 "tracker-backend.c"
 		{
-			TrackerDirectConnection* _tmp28_ = NULL;
-			TrackerDirectConnection* _tmp29_ = NULL;
-			TrackerDirectConnection* _tmp30_ = NULL;
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp29_ = tracker_direct_connection_new (&_inner_error_);
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp28_ = _tmp29_;
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			TrackerDirectConnection* _tmp20_ = NULL;
+			TrackerDirectConnection* _tmp21_ = NULL;
+			TrackerDirectConnection* _tmp22_ = NULL;
+#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp21_ = tracker_direct_connection_new (&_inner_error_);
+#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp20_ = _tmp21_;
+#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_ != NULL) {
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_free0 (env_backend);
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_g_free0 (env_bus_type);
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return;
-#line 2913 "tracker-backend.c"
+#line 2919 "tracker-backend.c"
 			}
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp30_ = _tmp28_;
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp28_ = NULL;
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp22_ = _tmp20_;
+#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp20_ = NULL;
+#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (self->priv->direct);
-#line 213 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			self->priv->direct = (TrackerSparqlConnection*) _tmp30_;
-#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (_tmp28_);
-#line 214 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			self->priv->direct = (TrackerSparqlConnection*) _tmp22_;
+#line 219 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (_tmp20_);
+#line 219 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
-#line 2927 "tracker-backend.c"
+#line 2933 "tracker-backend.c"
 		}
-#line 201 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 206 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case TRACKER_SPARQL_BACKEND_BACKEND_BUS:
-#line 2931 "tracker-backend.c"
+#line 2937 "tracker-backend.c"
 		{
-			TrackerBusConnection* _tmp31_ = NULL;
-			TrackerBusConnection* _tmp32_ = NULL;
-			TrackerBusConnection* _tmp33_ = NULL;
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp32_ = tracker_bus_connection_new (&_inner_error_);
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp31_ = _tmp32_;
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			TrackerBusConnection* _tmp23_ = NULL;
+			TrackerBusConnection* _tmp24_ = NULL;
+			TrackerBusConnection* _tmp25_ = NULL;
+#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp24_ = tracker_bus_connection_new (&_inner_error_);
+#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp23_ = _tmp24_;
+#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_ != NULL) {
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_free0 (env_backend);
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_g_free0 (env_bus_type);
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return;
-#line 2950 "tracker-backend.c"
+#line 2954 "tracker-backend.c"
 			}
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp33_ = _tmp31_;
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp31_ = NULL;
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp25_ = _tmp23_;
+#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp23_ = NULL;
+#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (self->priv->bus);
-#line 217 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			self->priv->bus = (TrackerSparqlConnection*) _tmp33_;
-#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (_tmp31_);
-#line 218 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 222 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			self->priv->bus = (TrackerSparqlConnection*) _tmp25_;
+#line 223 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (_tmp23_);
+#line 223 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
-#line 2964 "tracker-backend.c"
+#line 2968 "tracker-backend.c"
 		}
 		default:
 		{
-#line 221 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 226 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_assert_not_reached ();
-#line 2970 "tracker-backend.c"
+#line 2974 "tracker-backend.c"
 		}
 	}
-#line 167 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 186 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (env_backend);
-#line 167 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_g_free0 (env_bus_type);
-#line 2977 "tracker-backend.c"
+#line 2979 "tracker-backend.c"
 }
 
 
 static TrackerSparqlConnection* tracker_sparql_backend_get (GCancellable* cancellable, GError** error) {
 	TrackerSparqlConnection* result = NULL;
 	GError * _inner_error_ = NULL;
-#line 230 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 235 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_mutex_lock (&tracker_sparql_backend_door);
-#line 2986 "tracker-backend.c"
+#line 2988 "tracker-backend.c"
 	{
 		TrackerSparqlConnection* _result_ = NULL;
 		TrackerSparqlConnection* _tmp0_ = NULL;
 		TrackerSparqlConnection* _tmp1_ = NULL;
 		TrackerSparqlConnection* _tmp2_ = NULL;
-#line 234 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 239 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp0_ = tracker_sparql_backend_singleton;
-#line 234 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 239 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 234 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 239 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_result_ = _tmp1_;
-#line 236 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 241 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = _result_;
-#line 236 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 241 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_tmp2_ == NULL) {
-#line 3002 "tracker-backend.c"
+#line 3004 "tracker-backend.c"
 			TrackerSparqlBackend* _tmp3_ = NULL;
 			TrackerSparqlBackend* _tmp4_ = NULL;
 			TrackerSparqlBackend* _tmp5_ = NULL;
 			gboolean _tmp6_ = FALSE;
 			GCancellable* _tmp7_ = NULL;
 			TrackerSparqlConnection* _tmp11_ = NULL;
-#line 237 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			tracker_sparql_backend_log_init ();
-#line 239 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp4_ = tracker_sparql_backend_new (&_inner_error_);
-#line 239 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp3_ = _tmp4_;
-#line 239 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_ != NULL) {
-#line 239 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_object_unref0 (_result_);
-#line 3019 "tracker-backend.c"
+#line 3021 "tracker-backend.c"
 				goto __finally3;
 			}
-#line 239 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp5_ = _tmp3_;
-#line 239 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp3_ = NULL;
-#line 239 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (_result_);
-#line 239 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_result_ = (TrackerSparqlConnection*) _tmp5_;
-#line 241 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 246 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp7_ = cancellable;
-#line 241 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 246 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_tmp7_ != NULL) {
-#line 3034 "tracker-backend.c"
+#line 3036 "tracker-backend.c"
 				GCancellable* _tmp8_ = NULL;
 				gboolean _tmp9_ = FALSE;
-#line 241 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 246 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp8_ = cancellable;
-#line 241 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 246 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp9_ = g_cancellable_is_cancelled (_tmp8_);
-#line 241 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 246 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp6_ = _tmp9_;
-#line 3043 "tracker-backend.c"
+#line 3045 "tracker-backend.c"
 			} else {
-#line 241 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 246 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp6_ = FALSE;
-#line 3047 "tracker-backend.c"
+#line 3049 "tracker-backend.c"
 			}
-#line 241 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 246 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_tmp6_) {
-#line 3051 "tracker-backend.c"
+#line 3053 "tracker-backend.c"
 				GError* _tmp10_ = NULL;
-#line 242 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp10_ = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Operation was cancelled");
-#line 242 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_inner_error_ = _tmp10_;
-#line 242 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_object_unref0 (_tmp3_);
-#line 242 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_object_unref0 (_result_);
-#line 3061 "tracker-backend.c"
+#line 3063 "tracker-backend.c"
 				goto __finally3;
 			}
-#line 245 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp11_ = _result_;
-#line 245 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			tracker_sparql_backend_singleton = _tmp11_;
-#line 236 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (_tmp3_);
-#line 3070 "tracker-backend.c"
-		}
-#line 248 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		result = _result_;
-#line 3074 "tracker-backend.c"
-		{
 #line 250 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_mutex_unlock (&tracker_sparql_backend_door);
-#line 3078 "tracker-backend.c"
+			_tmp11_ = _result_;
+#line 250 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			tracker_sparql_backend_singleton = _tmp11_;
+#line 241 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (_tmp3_);
+#line 3072 "tracker-backend.c"
 		}
-#line 248 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 253 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		result = _result_;
+#line 3076 "tracker-backend.c"
+		{
+#line 255 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			g_mutex_unlock (&tracker_sparql_backend_door);
+#line 3080 "tracker-backend.c"
+		}
+#line 253 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return result;
-#line 3082 "tracker-backend.c"
+#line 3084 "tracker-backend.c"
 	}
 	__finally3:
 	{
-#line 250 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 255 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_mutex_unlock (&tracker_sparql_backend_door);
-#line 3088 "tracker-backend.c"
+#line 3090 "tracker-backend.c"
 	}
-#line 232 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 237 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 232 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 237 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_propagate_error (error, _inner_error_);
-#line 232 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 237 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 3096 "tracker-backend.c"
+#line 3098 "tracker-backend.c"
 	} else {
-#line 232 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 237 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 232 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 237 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_clear_error (&_inner_error_);
-#line 232 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 237 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 3104 "tracker-backend.c"
+#line 3106 "tracker-backend.c"
 	}
 }
 
 
 static Block1Data* block1_data_ref (Block1Data* _data1_) {
-#line 254 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 259 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_atomic_int_inc (&_data1_->_ref_count_);
-#line 254 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 259 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return _data1_;
-#line 3114 "tracker-backend.c"
+#line 3116 "tracker-backend.c"
 }
 
 
 static void block1_data_unref (void * _userdata_) {
 	Block1Data* _data1_;
 	_data1_ = (Block1Data*) _userdata_;
-#line 254 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 259 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (g_atomic_int_dec_and_test (&_data1_->_ref_count_)) {
-#line 254 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 259 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data1_->async_result);
-#line 254 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 259 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_main_loop_unref0 (_data1_->loop);
-#line 254 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 259 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_slice_free (Block1Data, _data1_);
-#line 3129 "tracker-backend.c"
+#line 3131 "tracker-backend.c"
 	}
 }
 
@@ -3136,30 +3138,30 @@ static void __lambda5_ (Block1Data* _data1_, GObject* obj, GAsyncResult* res) {
 	GAsyncResult* _tmp0_ = NULL;
 	GAsyncResult* _tmp1_ = NULL;
 	GMainLoop* _tmp2_ = NULL;
-#line 267 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 272 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_if_fail (res != NULL);
-#line 268 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = res;
-#line 268 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 268 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data1_->async_result);
-#line 268 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_->async_result = _tmp1_;
-#line 269 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 274 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = _data1_->loop;
-#line 269 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 274 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_main_loop_quit (_tmp2_);
-#line 3152 "tracker-backend.c"
+#line 3154 "tracker-backend.c"
 }
 
 
 static void ___lambda5__gasync_ready_callback (GObject* source_object, GAsyncResult* res, gpointer self) {
-#line 267 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 272 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	__lambda5_ (self, source_object, res);
-#line 267 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 272 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	block1_data_unref (self);
-#line 3161 "tracker-backend.c"
+#line 3163 "tracker-backend.c"
 }
 
 
@@ -3180,150 +3182,150 @@ TrackerSparqlConnection* tracker_sparql_backend_get_internal (GCancellable* canc
 	TrackerSparqlConnection* _tmp14_ = NULL;
 	TrackerSparqlConnection* _tmp15_ = NULL;
 	GError * _inner_error_ = NULL;
-#line 254 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 259 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_ = g_slice_new0 (Block1Data);
-#line 254 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 259 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_->_ref_count_ = 1;
-#line 255 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 260 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = g_main_context_get_thread_default ();
-#line 255 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 260 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp0_ == NULL) {
-#line 3190 "tracker-backend.c"
+#line 3192 "tracker-backend.c"
 		TrackerSparqlConnection* _tmp1_ = NULL;
 		GCancellable* _tmp2_ = NULL;
 		TrackerSparqlConnection* _tmp3_ = NULL;
 		TrackerSparqlConnection* _tmp4_ = NULL;
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = cancellable;
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = tracker_sparql_backend_get (_tmp2_, &_inner_error_);
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = _tmp3_;
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				block1_data_unref (_data1_);
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data1_ = NULL;
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return NULL;
-#line 3213 "tracker-backend.c"
+#line 3215 "tracker-backend.c"
 			} else {
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				block1_data_unref (_data1_);
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data1_ = NULL;
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_clear_error (&_inner_error_);
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return NULL;
-#line 3225 "tracker-backend.c"
+#line 3227 "tracker-backend.c"
 			}
 		}
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = _tmp1_;
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = NULL;
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		result = _tmp4_;
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_tmp1_);
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		block1_data_unref (_data1_);
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data1_ = NULL;
-#line 257 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return result;
-#line 3242 "tracker-backend.c"
+#line 3244 "tracker-backend.c"
 	}
-#line 261 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = g_main_context_new ();
-#line 261 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	context = _tmp5_;
-#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 267 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp6_ = context;
-#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 267 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp7_ = g_main_loop_new (_tmp6_, FALSE);
-#line 262 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 267 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_->loop = _tmp7_;
-#line 263 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 268 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_->async_result = NULL;
-#line 265 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 270 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp8_ = context;
-#line 265 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 270 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_main_context_push_thread_default (_tmp8_);
-#line 267 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 272 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp9_ = cancellable;
-#line 267 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 272 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_get_internal_async (_tmp9_, ___lambda5__gasync_ready_callback, block1_data_ref (_data1_));
-#line 272 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 277 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp10_ = _data1_->loop;
-#line 272 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 277 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_main_loop_run (_tmp10_);
-#line 274 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp11_ = context;
-#line 274 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_main_context_pop_thread_default (_tmp11_);
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp13_ = _data1_->async_result;
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp14_ = tracker_sparql_backend_get_internal_finish (_tmp13_, &_inner_error_);
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp12_ = _tmp14_;
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_main_context_unref0 (context);
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			block1_data_unref (_data1_);
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data1_ = NULL;
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 3292 "tracker-backend.c"
+#line 3294 "tracker-backend.c"
 		} else {
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_main_context_unref0 (context);
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			block1_data_unref (_data1_);
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data1_ = NULL;
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 3306 "tracker-backend.c"
+#line 3308 "tracker-backend.c"
 		}
 	}
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp15_ = _tmp12_;
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp12_ = NULL;
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _tmp15_;
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_tmp12_);
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_main_context_unref0 (context);
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	block1_data_unref (_data1_);
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_ = NULL;
-#line 276 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 3325 "tracker-backend.c"
+#line 3327 "tracker-backend.c"
 }
 
 
@@ -3334,7 +3336,7 @@ static void tracker_sparql_backend_get_internal_async_data_free (gpointer _data)
 	_g_object_unref0 (_data_->result);
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendGetInternalAsyncData, _data_);
-#line 3336 "tracker-backend.c"
+#line 3338 "tracker-backend.c"
 }
 
 
@@ -3358,7 +3360,7 @@ void tracker_sparql_backend_get_internal_async (GCancellable* cancellable, GAsyn
 	_data_->cancellable = _tmp1_;
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_get_internal_async_co (_data_);
-#line 3360 "tracker-backend.c"
+#line 3362 "tracker-backend.c"
 }
 
 
@@ -3369,7 +3371,7 @@ TrackerSparqlConnection* tracker_sparql_backend_get_internal_finish (GAsyncResul
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 3371 "tracker-backend.c"
+#line 3373 "tracker-backend.c"
 	}
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
@@ -3379,77 +3381,77 @@ TrackerSparqlConnection* tracker_sparql_backend_get_internal_finish (GAsyncResul
 	_data_->result = NULL;
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 3381 "tracker-backend.c"
+#line 3383 "tracker-backend.c"
 }
 
 
 static Block2Data* block2_data_ref (Block2Data* _data2_) {
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_atomic_int_inc (&_data2_->_ref_count_);
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return _data2_;
-#line 3390 "tracker-backend.c"
+#line 3392 "tracker-backend.c"
 }
 
 
 static void block2_data_unref (void * _userdata_) {
 	Block2Data* _data2_;
 	_data2_ = (Block2Data*) _userdata_;
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (g_atomic_int_dec_and_test (&_data2_->_ref_count_)) {
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_main_context_unref0 (_data2_->context);
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data2_->_result_);
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->spawn_error);
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->dbus_error);
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->io_error);
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->sparql_error);
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data2_->cancellable);
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_slice_free (Block2Data, _data2_);
-#line 3415 "tracker-backend.c"
+#line 3417 "tracker-backend.c"
 	}
 }
 
 
 static gpointer _g_main_context_ref0 (gpointer self) {
-#line 298 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 303 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return self ? g_main_context_ref (self) : NULL;
-#line 3423 "tracker-backend.c"
+#line 3425 "tracker-backend.c"
 }
 
 
 static gpointer _g_error_copy0 (gpointer self) {
-#line 304 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 309 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return self ? g_error_copy (self) : NULL;
-#line 3430 "tracker-backend.c"
+#line 3432 "tracker-backend.c"
 }
 
 
 static gboolean __lambda4_ (Block2Data* _data2_) {
 	gboolean result = FALSE;
-#line 315 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 320 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_get_internal_async_co (_data2_->_async_data_);
-#line 316 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = FALSE;
-#line 316 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 3442 "tracker-backend.c"
+#line 3444 "tracker-backend.c"
 }
 
 
 static gboolean ___lambda4__gsource_func (gpointer self) {
 	gboolean result;
 	result = __lambda4_ (self);
-#line 314 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 3451 "tracker-backend.c"
+#line 3453 "tracker-backend.c"
 }
 
 
@@ -3459,61 +3461,61 @@ static gboolean __lambda3_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 	GSource* _tmp12_ = NULL;
 	GMainContext* _tmp13_ = NULL;
 	GError * _inner_error_ = NULL;
-#line 300 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 305 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_val_if_fail (job != NULL, FALSE);
-#line 3463 "tracker-backend.c"
+#line 3465 "tracker-backend.c"
 	{
 		TrackerSparqlConnection* _tmp0_ = NULL;
 		GCancellable* _tmp1_ = NULL;
 		TrackerSparqlConnection* _tmp2_ = NULL;
 		TrackerSparqlConnection* _tmp3_ = NULL;
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = _data2_->cancellable;
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = tracker_sparql_backend_get (_tmp1_, &_inner_error_);
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp0_ = _tmp2_;
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_->domain == G_IO_ERROR) {
-#line 3479 "tracker-backend.c"
+#line 3481 "tracker-backend.c"
 				goto __catch4_g_io_error;
 			}
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 3484 "tracker-backend.c"
+#line 3486 "tracker-backend.c"
 				goto __catch4_tracker_sparql_error;
 			}
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_->domain == G_DBUS_ERROR) {
-#line 3489 "tracker-backend.c"
+#line 3491 "tracker-backend.c"
 				goto __catch4_g_dbus_error;
 			}
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_->domain == G_SPAWN_ERROR) {
-#line 3494 "tracker-backend.c"
+#line 3496 "tracker-backend.c"
 				goto __catch4_g_spawn_error;
 			}
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 3503 "tracker-backend.c"
+#line 3505 "tracker-backend.c"
 		}
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = _tmp0_;
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp0_ = NULL;
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data2_->_result_);
-#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->_result_ = _tmp3_;
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_tmp0_);
-#line 3515 "tracker-backend.c"
+#line 3517 "tracker-backend.c"
 	}
 	goto __finally4;
 	__catch4_g_io_error:
@@ -3521,21 +3523,21 @@ static gboolean __lambda3_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_io = NULL;
 		GError* _tmp4_ = NULL;
 		GError* _tmp5_ = NULL;
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		e_io = _inner_error_;
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 304 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 309 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = e_io;
-#line 304 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 309 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp5_ = _g_error_copy0 (_tmp4_);
-#line 304 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 309 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->io_error);
-#line 304 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 309 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->io_error = _tmp5_;
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e_io);
-#line 3537 "tracker-backend.c"
+#line 3539 "tracker-backend.c"
 	}
 	goto __finally4;
 	__catch4_tracker_sparql_error:
@@ -3543,21 +3545,21 @@ static gboolean __lambda3_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_spql = NULL;
 		GError* _tmp6_ = NULL;
 		GError* _tmp7_ = NULL;
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		e_spql = _inner_error_;
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 311 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp6_ = e_spql;
-#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 311 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp7_ = _g_error_copy0 (_tmp6_);
-#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 311 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->sparql_error);
-#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 311 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->sparql_error = _tmp7_;
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e_spql);
-#line 3559 "tracker-backend.c"
+#line 3561 "tracker-backend.c"
 	}
 	goto __finally4;
 	__catch4_g_dbus_error:
@@ -3565,21 +3567,21 @@ static gboolean __lambda3_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_dbus = NULL;
 		GError* _tmp8_ = NULL;
 		GError* _tmp9_ = NULL;
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		e_dbus = _inner_error_;
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 308 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 313 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp8_ = e_dbus;
-#line 308 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 313 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp9_ = _g_error_copy0 (_tmp8_);
-#line 308 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 313 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->dbus_error);
-#line 308 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 313 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->dbus_error = _tmp9_;
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e_dbus);
-#line 3581 "tracker-backend.c"
+#line 3583 "tracker-backend.c"
 	}
 	goto __finally4;
 	__catch4_g_spawn_error:
@@ -3587,451 +3589,451 @@ static gboolean __lambda3_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_spawn = NULL;
 		GError* _tmp10_ = NULL;
 		GError* _tmp11_ = NULL;
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		e_spawn = _inner_error_;
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 310 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp10_ = e_spawn;
-#line 310 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp11_ = _g_error_copy0 (_tmp10_);
-#line 310 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->spawn_error);
-#line 310 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->spawn_error = _tmp11_;
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e_spawn);
-#line 3603 "tracker-backend.c"
+#line 3605 "tracker-backend.c"
 	}
 	__finally4:
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_clear_error (&_inner_error_);
-#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
-#line 3614 "tracker-backend.c"
+#line 3616 "tracker-backend.c"
 	}
-#line 313 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 318 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp12_ = g_idle_source_new ();
-#line 313 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 318 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	source = _tmp12_;
-#line 314 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_source_set_callback (source, ___lambda4__gsource_func, block2_data_ref (_data2_), block2_data_unref);
-#line 318 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp13_ = _data2_->context;
-#line 318 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_source_attach (source, _tmp13_);
-#line 320 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = FALSE;
-#line 320 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_source_unref0 (source);
-#line 320 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 3632 "tracker-backend.c"
+#line 3634 "tracker-backend.c"
 }
 
 
 static gboolean ___lambda3__gio_scheduler_job_func (GIOSchedulerJob* job, GCancellable* cancellable, gpointer self) {
 	gboolean result;
 	result = __lambda3_ (self, job);
-#line 300 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 305 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 3641 "tracker-backend.c"
+#line 3643 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_get_internal_async_co (TrackerSparqlBackendGetInternalAsyncData* _data_) {
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 3650 "tracker-backend.c"
+#line 3652 "tracker-backend.c"
 		goto _state_0;
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 3654 "tracker-backend.c"
+#line 3656 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 3659 "tracker-backend.c"
+#line 3661 "tracker-backend.c"
 	}
 	_state_0:
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_ = g_slice_new0 (Block2Data);
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->_ref_count_ = 1;
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = NULL;
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->cancellable;
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->_data2_->cancellable);
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->cancellable = _data_->_tmp0_;
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->_async_data_ = _data_;
-#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = FALSE;
-#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = g_mutex_trylock (&tracker_sparql_backend_door);
-#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp1_) {
-#line 283 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 288 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp2_ = NULL;
-#line 283 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 288 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp2_ = tracker_sparql_backend_singleton;
-#line 283 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 288 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = NULL;
-#line 283 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 288 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = _g_object_ref0 (_data_->_tmp2_);
-#line 283 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 288 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_result_ = _data_->_tmp3_;
-#line 285 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 290 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_mutex_unlock (&tracker_sparql_backend_door);
-#line 287 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp4_ = NULL;
-#line 287 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp4_ = _data_->_result_;
-#line 287 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_tmp4_ != NULL) {
-#line 288 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_data_->result = _data_->_result_;
-#line 288 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			block2_data_unref (_data_->_data2_);
-#line 288 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_data_->_data2_ = NULL;
-#line 288 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			if (_data_->_state_ == 0) {
-#line 288 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 3710 "tracker-backend.c"
-			} else {
-#line 288 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_simple_async_result_complete (_data_->_async_result);
-#line 3714 "tracker-backend.c"
-			}
-#line 288 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_object_unref (_data_->_async_result);
-#line 288 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			return FALSE;
-#line 3720 "tracker-backend.c"
-		}
-#line 281 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_g_object_unref0 (_data_->_result_);
-#line 3724 "tracker-backend.c"
-	}
 #line 293 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_data_->result = _data_->_result_;
+#line 293 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			block2_data_unref (_data_->_data2_);
+#line 293 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_data_->_data2_ = NULL;
+#line 293 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			if (_data_->_state_ == 0) {
+#line 293 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 3712 "tracker-backend.c"
+			} else {
+#line 293 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 3716 "tracker-backend.c"
+			}
+#line 293 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			g_object_unref (_data_->_async_result);
+#line 293 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			return FALSE;
+#line 3722 "tracker-backend.c"
+		}
+#line 286 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_g_object_unref0 (_data_->_result_);
+#line 3726 "tracker-backend.c"
+	}
+#line 298 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->sparql_error = NULL;
-#line 294 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 299 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->io_error = NULL;
-#line 295 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_data2_->dbus_error = NULL;
-#line 296 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_data2_->spawn_error = NULL;
-#line 297 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_data2_->_result_ = NULL;
-#line 298 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_tmp5_ = NULL;
-#line 298 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_tmp5_ = g_main_context_get_thread_default ();
-#line 298 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_tmp6_ = NULL;
-#line 298 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_tmp6_ = _g_main_context_ref0 (_data_->_tmp5_);
-#line 298 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_data2_->context = _data_->_tmp6_;
 #line 300 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_data2_->dbus_error = NULL;
+#line 301 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_data2_->spawn_error = NULL;
+#line 302 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_data2_->_result_ = NULL;
+#line 303 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_tmp5_ = NULL;
+#line 303 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_tmp5_ = g_main_context_get_thread_default ();
+#line 303 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_tmp6_ = NULL;
+#line 303 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_tmp6_ = _g_main_context_ref0 (_data_->_tmp5_);
+#line 303 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_data2_->context = _data_->_tmp6_;
+#line 305 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_io_scheduler_push_job (___lambda3__gio_scheduler_job_func, block2_data_ref (_data_->_data2_), block2_data_unref, G_PRIORITY_DEFAULT, NULL);
-#line 322 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 322 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 3752 "tracker-backend.c"
+#line 3754 "tracker-backend.c"
 	_state_1:
 	;
-#line 324 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = NULL;
-#line 324 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = _data_->_data2_->sparql_error;
-#line 324 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp7_ != NULL) {
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp8_ = NULL;
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp8_ = _data_->_data2_->sparql_error;
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp9_ = NULL;
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp9_ = _g_error_copy0 (_data_->_tmp8_);
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp9_;
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			block2_data_unref (_data_->_data2_);
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_data2_ = NULL;
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 3785 "tracker-backend.c"
+#line 3787 "tracker-backend.c"
 			} else {
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 3789 "tracker-backend.c"
+#line 3791 "tracker-backend.c"
 			}
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 3795 "tracker-backend.c"
+#line 3797 "tracker-backend.c"
 		} else {
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			block2_data_unref (_data_->_data2_);
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_data2_ = NULL;
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 325 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 3807 "tracker-backend.c"
+#line 3809 "tracker-backend.c"
 		}
 	} else {
-#line 326 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp10_ = NULL;
-#line 326 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp10_ = _data_->_data2_->io_error;
-#line 326 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_tmp10_ != NULL) {
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_tmp11_ = NULL;
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_tmp11_ = _data_->_data2_->io_error;
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_tmp12_ = NULL;
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_tmp12_ = _g_error_copy0 (_data_->_tmp11_);
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_inner_error_ = _data_->_tmp12_;
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_error_free (_data_->_inner_error_);
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				block2_data_unref (_data_->_data2_);
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_data2_ = NULL;
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				if (_data_->_state_ == 0) {
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 3840 "tracker-backend.c"
+#line 3842 "tracker-backend.c"
 				} else {
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_simple_async_result_complete (_data_->_async_result);
-#line 3844 "tracker-backend.c"
+#line 3846 "tracker-backend.c"
 				}
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_object_unref (_data_->_async_result);
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return FALSE;
-#line 3850 "tracker-backend.c"
+#line 3852 "tracker-backend.c"
 			} else {
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				block2_data_unref (_data_->_data2_);
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_data2_ = NULL;
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_clear_error (&_data_->_inner_error_);
-#line 327 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return FALSE;
-#line 3862 "tracker-backend.c"
+#line 3864 "tracker-backend.c"
 			}
 		} else {
-#line 328 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_tmp13_ = NULL;
-#line 328 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_tmp13_ = _data_->_data2_->dbus_error;
-#line 328 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_tmp13_ != NULL) {
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_tmp14_ = NULL;
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_tmp14_ = _data_->_data2_->dbus_error;
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_tmp15_ = NULL;
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_tmp15_ = _g_error_copy0 (_data_->_tmp14_);
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_inner_error_ = _data_->_tmp15_;
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_error_free (_data_->_inner_error_);
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					block2_data_unref (_data_->_data2_);
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_data2_ = NULL;
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					if (_data_->_state_ == 0) {
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 3895 "tracker-backend.c"
+#line 3897 "tracker-backend.c"
 					} else {
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_simple_async_result_complete (_data_->_async_result);
-#line 3899 "tracker-backend.c"
+#line 3901 "tracker-backend.c"
 					}
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_object_unref (_data_->_async_result);
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					return FALSE;
-#line 3905 "tracker-backend.c"
+#line 3907 "tracker-backend.c"
 				} else {
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					block2_data_unref (_data_->_data2_);
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_data2_ = NULL;
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_clear_error (&_data_->_inner_error_);
-#line 329 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 334 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					return FALSE;
-#line 3917 "tracker-backend.c"
+#line 3919 "tracker-backend.c"
 				}
 			} else {
-#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 335 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_tmp16_ = NULL;
-#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 335 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_tmp16_ = _data_->_data2_->spawn_error;
-#line 330 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 335 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				if (_data_->_tmp16_ != NULL) {
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp17_ = NULL;
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp17_ = _data_->_data2_->spawn_error;
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp18_ = NULL;
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp18_ = _g_error_copy0 (_data_->_tmp17_);
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_inner_error_ = _data_->_tmp18_;
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_error_free (_data_->_inner_error_);
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						block2_data_unref (_data_->_data2_);
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						_data_->_data2_ = NULL;
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						if (_data_->_state_ == 0) {
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 							g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 3950 "tracker-backend.c"
+#line 3952 "tracker-backend.c"
 						} else {
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 							g_simple_async_result_complete (_data_->_async_result);
-#line 3954 "tracker-backend.c"
+#line 3956 "tracker-backend.c"
 						}
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_object_unref (_data_->_async_result);
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						return FALSE;
-#line 3960 "tracker-backend.c"
+#line 3962 "tracker-backend.c"
 					} else {
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						block2_data_unref (_data_->_data2_);
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						_data_->_data2_ = NULL;
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_clear_error (&_data_->_inner_error_);
-#line 331 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 336 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						return FALSE;
-#line 3972 "tracker-backend.c"
+#line 3974 "tracker-backend.c"
 					}
 				} else {
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp19_ = NULL;
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp19_ = _data_->_data2_->_result_;
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp20_ = NULL;
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp20_ = _g_object_ref0 (_data_->_tmp19_);
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->result = _data_->_tmp20_;
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					block2_data_unref (_data_->_data2_);
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_data2_ = NULL;
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					if (_data_->_state_ == 0) {
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 3993 "tracker-backend.c"
+#line 3995 "tracker-backend.c"
 					} else {
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_simple_async_result_complete (_data_->_async_result);
-#line 3997 "tracker-backend.c"
+#line 3999 "tracker-backend.c"
 					}
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_object_unref (_data_->_async_result);
-#line 333 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					return FALSE;
-#line 4003 "tracker-backend.c"
+#line 4005 "tracker-backend.c"
 				}
 			}
 		}
 	}
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	block2_data_unref (_data_->_data2_);
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_ = NULL;
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4016 "tracker-backend.c"
+#line 4018 "tracker-backend.c"
 	} else {
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 4020 "tracker-backend.c"
+#line 4022 "tracker-backend.c"
 	}
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 279 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 4026 "tracker-backend.c"
+#line 4028 "tracker-backend.c"
 }
 
 
 static void _tracker_sparql_backend_remove_log_handler_glog_func (const gchar* log_domain, GLogLevelFlags log_levels, const gchar* message, gpointer self) {
-#line 383 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 388 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_remove_log_handler (log_domain, log_levels, message);
-#line 4033 "tracker-backend.c"
+#line 4035 "tracker-backend.c"
 }
 
 
@@ -4046,115 +4048,115 @@ static void tracker_sparql_backend_log_init (void) {
 	gint _tmp6_ = 0;
 	gint _tmp7_ = 0;
 	GLogLevelFlags _tmp8_ = 0;
-#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 343 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = tracker_sparql_backend_log_initialized;
-#line 338 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 343 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp0_) {
-#line 339 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 344 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return;
-#line 4054 "tracker-backend.c"
+#line 4056 "tracker-backend.c"
 	}
-#line 342 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 347 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_log_initialized = TRUE;
-#line 345 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 350 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	verbosity = 0;
-#line 346 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 351 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = g_getenv ("TRACKER_VERBOSITY");
-#line 346 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 351 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 346 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 351 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	env_verbosity = _tmp2_;
-#line 347 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 352 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = env_verbosity;
-#line 347 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 352 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp3_ != NULL) {
-#line 4070 "tracker-backend.c"
+#line 4072 "tracker-backend.c"
 		const gchar* _tmp4_ = NULL;
 		gint _tmp5_ = 0;
-#line 348 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 353 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = env_verbosity;
-#line 348 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 353 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp5_ = atoi (_tmp4_);
-#line 348 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 353 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		verbosity = _tmp5_;
-#line 4079 "tracker-backend.c"
+#line 4081 "tracker-backend.c"
 	}
-#line 350 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	remove_levels = 0;
-#line 354 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp6_ = verbosity;
-#line 354 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	if (_tmp6_ > 2) {
 #line 355 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
-#line 4089 "tracker-backend.c"
-	}
-#line 357 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp7_ = verbosity;
-#line 357 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	switch (_tmp7_) {
-#line 357 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		case 3:
-#line 4097 "tracker-backend.c"
-		{
+	remove_levels = 0;
+#line 359 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp6_ = verbosity;
+#line 359 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	if (_tmp6_ > 2) {
 #line 360 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			break;
-#line 4101 "tracker-backend.c"
-		}
-#line 357 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		case 2:
-#line 4105 "tracker-backend.c"
+		g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
+#line 4091 "tracker-backend.c"
+	}
+#line 362 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp7_ = verbosity;
+#line 362 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	switch (_tmp7_) {
+#line 362 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		case 3:
+#line 4099 "tracker-backend.c"
 		{
-#line 364 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			remove_levels = G_LOG_LEVEL_DEBUG;
 #line 365 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
-#line 4111 "tracker-backend.c"
+#line 4103 "tracker-backend.c"
 		}
-#line 357 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		case 1:
-#line 4115 "tracker-backend.c"
+#line 362 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		case 2:
+#line 4107 "tracker-backend.c"
 		{
 #line 369 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			remove_levels = G_LOG_LEVEL_DEBUG | G_LOG_LEVEL_MESSAGE;
-#line 371 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			remove_levels = G_LOG_LEVEL_DEBUG;
+#line 370 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
-#line 4121 "tracker-backend.c"
+#line 4113 "tracker-backend.c"
+		}
+#line 362 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		case 1:
+#line 4117 "tracker-backend.c"
+		{
+#line 374 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			remove_levels = G_LOG_LEVEL_DEBUG | G_LOG_LEVEL_MESSAGE;
+#line 376 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			break;
+#line 4123 "tracker-backend.c"
 		}
 		default:
-#line 357 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 362 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 4126 "tracker-backend.c"
+#line 4128 "tracker-backend.c"
 		{
-#line 376 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			remove_levels = (G_LOG_LEVEL_DEBUG | G_LOG_LEVEL_MESSAGE) | G_LOG_LEVEL_INFO;
-#line 379 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 384 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
-#line 4132 "tracker-backend.c"
+#line 4134 "tracker-backend.c"
 		}
 	}
-#line 382 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 387 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp8_ = remove_levels;
-#line 382 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 387 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp8_ != 0) {
-#line 4139 "tracker-backend.c"
+#line 4141 "tracker-backend.c"
 		GLogLevelFlags _tmp9_ = 0;
-#line 383 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 388 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp9_ = remove_levels;
-#line 383 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 388 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_log_set_handler ("Tracker", _tmp9_, _tracker_sparql_backend_remove_log_handler_glog_func, NULL);
-#line 4145 "tracker-backend.c"
+#line 4147 "tracker-backend.c"
 	}
-#line 337 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 342 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (env_verbosity);
-#line 4149 "tracker-backend.c"
+#line 4151 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_remove_log_handler (const gchar* log_domain, GLogLevelFlags log_level, const gchar* message) {
-#line 387 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 392 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_if_fail (message != NULL);
-#line 4156 "tracker-backend.c"
+#line 4158 "tracker-backend.c"
 }
 
 
@@ -4201,7 +4203,7 @@ static void tracker_sparql_backend_class_init (TrackerSparqlBackendClass * klass
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->statistics_finish = tracker_sparql_backend_real_statistics_finish;
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	G_OBJECT_CLASS (klass)->finalize = tracker_sparql_backend_finalize;
-#line 4203 "tracker-backend.c"
+#line 4205 "tracker-backend.c"
 }
 
 
@@ -4214,7 +4216,7 @@ static void tracker_sparql_backend_instance_init (TrackerSparqlBackend * self) {
 	self->priv->bus = NULL;
 #line 29 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self->priv->bus_type = G_BUS_TYPE_SESSION;
-#line 4216 "tracker-backend.c"
+#line 4218 "tracker-backend.c"
 }
 
 
@@ -4228,7 +4230,7 @@ static void tracker_sparql_backend_finalize (GObject* obj) {
 	_g_object_unref0 (self->priv->bus);
 #line 20 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	G_OBJECT_CLASS (tracker_sparql_backend_parent_class)->finalize (obj);
-#line 4230 "tracker-backend.c"
+#line 4232 "tracker-backend.c"
 }
 
 
@@ -4283,127 +4285,127 @@ TrackerSparqlConnection* tracker_sparql_connection_get_finish (GAsyncResult* _re
 
 static void tracker_sparql_connection_get_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlConnectionGetAsyncData* _data_;
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_get_async_co (_data_);
-#line 4293 "tracker-backend.c"
+#line 4295 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_connection_get_async_co (TrackerSparqlConnectionGetAsyncData* _data_) {
-#line 392 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 392 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 4302 "tracker-backend.c"
+#line 4304 "tracker-backend.c"
 		goto _state_0;
-#line 392 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 4306 "tracker-backend.c"
+#line 4308 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 392 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 4311 "tracker-backend.c"
+#line 4313 "tracker-backend.c"
 	}
 	_state_0:
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = NULL;
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = _data_->cancellable;
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_get_internal_async (_data_->_tmp1_, tracker_sparql_connection_get_async_ready, _data_);
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 4324 "tracker-backend.c"
+#line 4326 "tracker-backend.c"
 	_state_1:
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = NULL;
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = tracker_sparql_backend_get_internal_finish (_data_->_res_, &_data_->_inner_error_);
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->_tmp2_;
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4344 "tracker-backend.c"
+#line 4346 "tracker-backend.c"
 			} else {
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 4348 "tracker-backend.c"
+#line 4350 "tracker-backend.c"
 			}
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 4354 "tracker-backend.c"
+#line 4356 "tracker-backend.c"
 		} else {
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 4362 "tracker-backend.c"
+#line 4364 "tracker-backend.c"
 		}
 	}
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = NULL;
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = _data_->_tmp0_;
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = NULL;
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = _data_->_tmp3_;
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->_tmp0_);
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4379 "tracker-backend.c"
+#line 4381 "tracker-backend.c"
 	} else {
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 4383 "tracker-backend.c"
+#line 4385 "tracker-backend.c"
 	}
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 393 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 398 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 392 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->_tmp0_);
-#line 392 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 392 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4395 "tracker-backend.c"
+#line 4397 "tracker-backend.c"
 	} else {
-#line 392 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 4399 "tracker-backend.c"
+#line 4401 "tracker-backend.c"
 	}
-#line 392 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 392 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 4405 "tracker-backend.c"
+#line 4407 "tracker-backend.c"
 }
 
 
@@ -4414,42 +4416,42 @@ TrackerSparqlConnection* tracker_sparql_connection_get (GCancellable* cancellabl
 	TrackerSparqlConnection* _tmp2_ = NULL;
 	TrackerSparqlConnection* _tmp3_ = NULL;
 	GError * _inner_error_ = NULL;
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = cancellable;
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = tracker_sparql_backend_get_internal (_tmp1_, &_inner_error_);
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _tmp2_;
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 4430 "tracker-backend.c"
+#line 4432 "tracker-backend.c"
 		} else {
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 4438 "tracker-backend.c"
+#line 4440 "tracker-backend.c"
 		}
 	}
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = _tmp0_;
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = NULL;
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _tmp3_;
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_tmp0_);
-#line 397 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 402 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 4451 "tracker-backend.c"
+#line 4453 "tracker-backend.c"
 }
 
 
@@ -4492,127 +4494,127 @@ TrackerSparqlConnection* tracker_sparql_connection_get_direct_finish (GAsyncResu
 
 static void tracker_sparql_connection_get_direct_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlConnectionGetDirectAsyncData* _data_;
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_get_direct_async_co (_data_);
-#line 4502 "tracker-backend.c"
+#line 4504 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_connection_get_direct_async_co (TrackerSparqlConnectionGetDirectAsyncData* _data_) {
-#line 400 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 400 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 4511 "tracker-backend.c"
+#line 4513 "tracker-backend.c"
 		goto _state_0;
-#line 400 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 4515 "tracker-backend.c"
+#line 4517 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 400 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 4520 "tracker-backend.c"
+#line 4522 "tracker-backend.c"
 	}
 	_state_0:
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = NULL;
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = _data_->cancellable;
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_get_internal_async (_data_->_tmp1_, tracker_sparql_connection_get_direct_async_ready, _data_);
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 4533 "tracker-backend.c"
+#line 4535 "tracker-backend.c"
 	_state_1:
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = NULL;
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = tracker_sparql_backend_get_internal_finish (_data_->_res_, &_data_->_inner_error_);
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->_tmp2_;
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4553 "tracker-backend.c"
+#line 4555 "tracker-backend.c"
 			} else {
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 4557 "tracker-backend.c"
+#line 4559 "tracker-backend.c"
 			}
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 4563 "tracker-backend.c"
+#line 4565 "tracker-backend.c"
 		} else {
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 4571 "tracker-backend.c"
+#line 4573 "tracker-backend.c"
 		}
 	}
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = NULL;
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = _data_->_tmp0_;
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = NULL;
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = _data_->_tmp3_;
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->_tmp0_);
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4588 "tracker-backend.c"
+#line 4590 "tracker-backend.c"
 	} else {
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 4592 "tracker-backend.c"
+#line 4594 "tracker-backend.c"
 	}
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 401 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 406 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 400 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->_tmp0_);
-#line 400 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 400 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4604 "tracker-backend.c"
+#line 4606 "tracker-backend.c"
 	} else {
-#line 400 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 4608 "tracker-backend.c"
+#line 4610 "tracker-backend.c"
 	}
-#line 400 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 400 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 4614 "tracker-backend.c"
+#line 4616 "tracker-backend.c"
 }
 
 
@@ -4623,42 +4625,42 @@ TrackerSparqlConnection* tracker_sparql_connection_get_direct (GCancellable* can
 	TrackerSparqlConnection* _tmp2_ = NULL;
 	TrackerSparqlConnection* _tmp3_ = NULL;
 	GError * _inner_error_ = NULL;
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = cancellable;
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = tracker_sparql_backend_get_internal (_tmp1_, &_inner_error_);
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _tmp2_;
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 4639 "tracker-backend.c"
+#line 4641 "tracker-backend.c"
 		} else {
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 4647 "tracker-backend.c"
+#line 4649 "tracker-backend.c"
 		}
 	}
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = _tmp0_;
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = NULL;
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _tmp3_;
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_tmp0_);
-#line 405 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 410 "/home/martyn/Source/checkout/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 4660 "tracker-backend.c"
+#line 4662 "tracker-backend.c"
 }
 
 

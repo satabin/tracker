@@ -61,6 +61,7 @@
     <keyword type="signal" name="The “connected” signal" link="TrackerMinerOnline.html#TrackerMinerOnline-connected"/>
     <keyword type="signal" name="The “disconnected” signal" link="TrackerMinerOnline.html#TrackerMinerOnline-disconnected"/>
     <keyword type="function" name="tracker_decorator_get_type ()" link="TrackerDecorator.html#tracker-decorator-get-type"/>
+    <keyword type="function" name="tracker_decorator_error_quark ()" link="TrackerDecorator.html#tracker-decorator-error-quark"/>
     <keyword type="function" name="tracker_decorator_get_class_names ()" link="TrackerDecorator.html#tracker-decorator-get-class-names" since="0.18"/>
     <keyword type="function" name="tracker_decorator_get_data_source ()" link="TrackerDecorator.html#tracker-decorator-get-data-source" since="0.18"/>
     <keyword type="function" name="tracker_decorator_get_n_items ()" link="TrackerDecorator.html#tracker-decorator-get-n-items" since="0.18"/>
@@ -79,6 +80,7 @@
     <keyword type="function" name="tracker_decorator_info_get_urn ()" link="TrackerDecorator.html#tracker-decorator-info-get-urn" since="0.18"/>
     <keyword type="struct" name="struct TrackerDecorator" link="TrackerDecorator.html#TrackerDecorator-struct"/>
     <keyword type="struct" name="struct TrackerDecoratorClass" link="TrackerDecorator.html#TrackerDecoratorClass"/>
+    <keyword type="enum" name="enum TrackerDecoratorError" link="TrackerDecorator.html#TrackerDecoratorError"/>
     <keyword type="struct" name="TrackerDecoratorInfo" link="TrackerDecorator.html#TrackerDecoratorInfo"/>
     <keyword type="property" name="The “class-names” property" link="TrackerDecorator.html#TrackerDecorator--class-names"/>
     <keyword type="property" name="The “commit-batch-size” property" link="TrackerDecorator.html#TrackerDecorator--commit-batch-size"/>

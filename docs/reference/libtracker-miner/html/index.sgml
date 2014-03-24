@@ -72,6 +72,7 @@
 <ANCHOR id="TrackerDecorator.description" href="libtracker-miner/TrackerDecorator.html#TrackerDecorator.description">
 <ANCHOR id="TrackerDecorator.functions_details" href="libtracker-miner/TrackerDecorator.html#TrackerDecorator.functions_details">
 <ANCHOR id="tracker-decorator-get-type" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-get-type">
+<ANCHOR id="tracker-decorator-error-quark" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-error-quark">
 <ANCHOR id="tracker-decorator-get-class-names" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-get-class-names">
 <ANCHOR id="tracker-decorator-get-data-source" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-get-data-source">
 <ANCHOR id="tracker-decorator-get-n-items" href="libtracker-miner/TrackerDecorator.html#tracker-decorator-get-n-items">
@@ -91,6 +92,7 @@
 <ANCHOR id="TrackerDecorator.other_details" href="libtracker-miner/TrackerDecorator.html#TrackerDecorator.other_details">
 <ANCHOR id="TrackerDecorator-struct" href="libtracker-miner/TrackerDecorator.html#TrackerDecorator-struct">
 <ANCHOR id="TrackerDecoratorClass" href="libtracker-miner/TrackerDecorator.html#TrackerDecoratorClass">
+<ANCHOR id="TrackerDecoratorError" href="libtracker-miner/TrackerDecorator.html#TrackerDecoratorError">
 <ANCHOR id="TrackerDecoratorInfo" href="libtracker-miner/TrackerDecorator.html#TrackerDecoratorInfo">
 <ANCHOR id="TrackerDecorator.property-details" href="libtracker-miner/TrackerDecorator.html#TrackerDecorator.property-details">
 <ANCHOR id="TrackerDecorator--class-names" href="libtracker-miner/TrackerDecorator.html#TrackerDecorator--class-names">

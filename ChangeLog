@@ -1,4 +1,29 @@
+2014-03-24  Martyn Russell  <martyn@lanedo.com>
+
+	Release 1.0.0
+
+2014-03-24  Haithem Ben Ghorbal  <haithem.benghorbal_ext@softathome.com>
+
+	libtracker-sparql: Make sure we check the env before choosing the bus type
+	Previously we would check the env for the plugins (backends), but not for
+	checking if the store was available or not, which is quite important because
+	it can cause the store to be instantiated!
+
+2014-03-24  Duarte Loreto  <happyguy_pt@hotmail.com>
+
+	Updated Portuguese translation
+
+2014-03-23  Ask H. Larsen  <asklarsen@gmail.com>
+
+	Updated Danish translation
+
+2014-03-22  Chao-Hsiung Liao  <j_h_liau@yahoo.com.tw>
+
+	Updated Traditional Chinese translation(Hong Kong and Taiwan)
+
 2014-03-21  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'make-decorator-errors-public'
 
 	Release 0.17.8
 
@@ -26,6 +51,11 @@
 
 	build: Fix warning for --with-compile-warnings, which mentions --enable-compile-warnings
 	https://bugzilla.gnome.org/show_bug.cgi?id=705315
+
+	libtracker-miner, tracker-extract: Don't g_warning() on decorator items we don't process
+	In normal circumstances, we may get TRACKER_DECORATOR_ERROR_{EMPTY|PAUSED},
+	but tracker-extract issues a g_warning(). We want to avoid using a warning for
+	these warnings because they're normal and expected operations.
 
 2014-03-21  Andika Triwidada  <andika@gmail.com>
 

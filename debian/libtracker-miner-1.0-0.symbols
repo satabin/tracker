@@ -1,5 +1,6 @@
 libtracker-miner-1.0.so.0 libtracker-miner-1.0-0 #MINVER#
  tracker_decorator_delete_id@Base 0.17.4
+ tracker_decorator_error_quark@Base 1.0.0
  tracker_decorator_fs_get_type@Base 0.17.4
  tracker_decorator_get_class_names@Base 0.17.4
  tracker_decorator_get_data_source@Base 0.17.4

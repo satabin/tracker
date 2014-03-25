@@ -1,6 +1,7 @@
 tracker (1.0.0-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Update symbols file for libtracker-miner.
 
  -- Michael Biebl <biebl@debian.org>  Mon, 24 Mar 2014 18:56:26 +0100
 

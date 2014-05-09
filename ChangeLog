@@ -1,3 +1,231 @@
+2014-05-09  Martyn Russell  <martyn@lanedo.com>
+
+	Release 1.0.1
+
+2014-05-09  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Pass parent flags when reindexing a previously ignored folder
+	If a folder with the "ignored" flag is removed from the configuration, and its
+	parent folder indexing is recursive, the folder contents must be indexed
+	recursively obeying the parent folder configuration flags, so pass those when
+	queueing the directory for crawling.
+
+	libtracker-miner: Pass flags explicitly when creating crawling root data
+	Those might differ from the flags reported by the TrackerIndexingTree,
+	specially during ::directory-removed.
+
+2014-05-09  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Call check_directory() on root dir to crawl
+	Unit tests were failing, pre-release because the count of directories we
+	notify about finding was 1 less than we expected.
+
+2014-05-08  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Fallback to URN querying on UPDATE events and API requests
+	Otherwise the item is mistaken as new, which trigger warnings due to
+	the duplicate insert.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=729708
+
+	libtracker-miner: Perform leveled notification in TrackerFileNotifier
+	The current notification process involves crawling over index roots
+	without restrictions, and querying the state of every file in the
+	store. This is fastest, but can get memory hungry on huge directory
+	trees.
+
+	So split the process in 3 sequencial steps, that are repeated from
+	top to bottom over the directory hierarchy:
+
+	- A directory is crawled, contents that currently exist in the
+	  filesystem are extracted.
+	- Only if the directory is an index root, or was checked to exist
+	  in the store through previous iterations, the directory and all
+	  contents found are looked up on the store by their uri, new and
+	  updated contents are detected by comparing mtimes.
+	- Only if the directory passed #2, and its mtime changed (which
+	  usually implies something was added or removed, at this stage we
+	  only have to care of the latter), query all elements in the store
+	  that nfo:belongsToContainer to it, and check for those files that
+	  existed in the store but don't exist anymore. Deleted contents
+	  are detected in this stage.
+
+	The change has been done so there is certain compile-time granularity
+	on the directory processing, currently controlled through the MAX_DEPTH
+	define. This switch controls the maximum depth on crawled/queried chunks,
+	which establishes some indirect limit on the number of GFiles (and all
+	misc data around) that are in memory at the same time.
+
+	From testing, first-time crawling performance is completely unaffected,
+	and second-time crawling on an unchanged directory tree has negligible
+	decreases. The IN() match on an indexed property like nie:url looks
+	near constant, and the third more expensive step will only happen
+	when it is very likely that there are actual changes to process. So
+	the MAX_DEPTH value has been set to 1 to keep memory usage to a minimum
+	(tracker-miner-fs now peaks on massif at 24MB when it previously early
+	grew to ~180MB, indexing 11304 folders and 123428 files)
+
+	libtracker-miner: Store iri transiently as GFile qdata
+	For regular files, the data stored in TrackerFileNotifier (and
+	TrackerFileSystem below) will soon go away after the files are
+	notified through TrackerFileNotifier signals. In order to avoid
+	later synchronous queries to check for basic data, just preserve
+	it as GObject qdata.
+
+	This reduces the number of queries performed at the time of
+	processing those files. Especially noticeable on ::file-created
+	events, as these queries were done regardless of Tracker knowing
+	these files are brand new...
+
+	libtracker-miner: Add tracker_file_system_get_file_type()
+	This function is useful to find out the GFileType as stored in the
+	TrackerFileSystem, as that's stored there from crawling time.
+
+	libtracker-miner: Make crawler take a maximum recursion depth
+	TrackerCrawler gets now the maximum depth to recurse into as a parameter
+	to tracker_crawler_start(), this can be used to divide crawling into
+	units bigger than individual folders. A value of -1 can be passed
+	to have it recurse with no restrictions as with the previous recurse=TRUE
+	argument.
+
+2014-05-08  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract: MP3s with ID3v23 tags should not hit infinite loop
+	The extraction was using a while() loop with pos < size, but would never be
+	FALSE and continued forever. The size is the size of the file, but actually,
+	it should be using tsize, which is the tag size.
+
+	What was happening, was the while() loop would increment over sizes of +10
+	+content-size, but if there was padding, there was no tag frame and so no
+	content size and the increment of 10 eventually would step into the RAW MP3
+	data.
+
+	Fixes:
+	https://bugzilla.gnome.org/show_bug.cgi?id=728252
+
+	Specification details:
+	http://id3.org/id3v2.3.0
+
+2014-05-08  Roberto Guido  <rguido@src.gnome.org>
+
+	tracker-miner-rss: Fixed subclassing from TrackerMinerOnline
+
+2014-05-08  Pau Iranzo  <paugnu@gmail.com>
+
+	[l10n] Update Catalan translation
+
+2014-05-07  Andika Triwidada  <andika@gmail.com>
+
+	Updated Indonesian translation
+
+2014-05-06  Christian Kirbach  <Christian.Kirbach@gmail.com>
+
+	Updated German translation
+
+2014-05-03  Aurimas Černius  <aurisc4@gmail.com>
+
+	Updated Lithuanian translation
+
+2014-04-30  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2014-04-30  Fran Diéguez  <fran.dieguez@mabishu.com>
+
+	Updated Galician translations
+
+2014-04-30  Rafael Ferreira  <rafael.f.f1@gmail.com>
+
+	Updated Brazilian Portuguese translation
+
+2014-04-29  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-search: Fix output for email searching
+	- Make sure resource links are shown in green
+	- Make sure snippets are always shown (shows in red matches)
+
+2014-04-29  Daniel Korostil  <ted.korostiled@gmail.com>
+
+	Updated Ukrainian translation
+
+2014-04-29  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Decorator causes crash on _update_array_finish() failures.
+	https://bugzilla.gnome.org/show_bug.cgi?id=728546
+
+2014-04-29  Xavier Claessens  <xavier.claessens@collabora.com>
+
+	Make sure vorbis extractor builds without libmediaart
+	https://bugzilla.gnome.org/show_bug.cgi?id=728370
+
+2014-04-29  Martyn Russell  <martyn@lanedo.com>
+
+	build: Add SQLite version warning for 3.8.4.2
+	See: https://mail.gnome.org/archives/tracker-list/2014-April/msg00001.html
+
+2014-04-29  Piotr Drąg  <piotrdrag@gmail.com>
+
+	doap: update URLs
+
+2014-04-29  Philip Van Hoof  <philip@codeminded.be>
+
+	Fix handling when no match is found by libicu charset detector
+
+	Make it possible to disable libicu and libenca based charset detectors
+
+	giflib 4.2.x doesn't have PrintGifError
+
+2014-04-29  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-tag: Replace --or-operator with --and-operator for --list option
+	Currently all arguments supplied for --list are handled with an OR condition,
+	making the existing --or-operator redundant.
+
+	This makes --and-operator useful for querying for files matching 1 or more tag
+	labels.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=725717
+
+2014-04-23  Dirgita  <dirgitadevina@gmail.com>
+
+	Updated Indonesian translation
+
+2014-04-21  Christian Kirbach  <Christian.Kirbach@gmail.com>
+
+	Updated German translation
+
+2014-04-21  Daniel Korostil  <ted.korostiled@gmail.com>
+
+	Updated Ukrainian translation
+
+2014-04-20  Tom Tryfonidis  <tomtryf@gmail.com>
+
+	Updated Greek translation
+
+2014-04-10  Yuri Myasoedov  <ymyasoedov@yandex.ru>
+
+	Updated Russian translation
+
+2014-04-05  Daniel Korostil  <ted.korostiled@gmail.com>
+
+	Updated Ukrainian translation
+
+2014-03-31  Stas Solovey  <whats_up@tut.by>
+
+	Updated Russian translation
+
+2014-03-30  Inaki Larranaga Murgoitio  <dooteo@zundan.com>
+
+	Added Basque language\nAdded 'eu' (Basque) to LINGUAS
+
+2014-03-29  Seong-ho Cho  <darkcircle.0426@gmail.com>
+
+	Updated Korean translation
+
+2014-03-26  YunQiang Su  <wzssyqa@gmail.com>
+
+	update zh_CN translation
+
 2014-03-24  Martyn Russell  <martyn@lanedo.com>
 
 	Release 1.0.0

@@ -113,6 +113,9 @@
 /* libicu Unicode support library */
 #undef HAVE_LIBICU
 
+/* ICU language detection aid */
+#undef HAVE_LIBICU_CHARSET_DETECTION
+
 /* Define if we have libiptcdata */
 #undef HAVE_LIBIPTCDATA
 

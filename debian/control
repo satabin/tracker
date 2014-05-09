@@ -83,8 +83,9 @@ Description: metadata database, indexer and search tool - library
 Package: libtracker-sparql-1.0-dev
 Architecture: any
 Section: libdevel
-Depends: libtracker-sparql-1.0-0 (= ${binary:Version}),
+Depends: ${shlibs:Depends},
          ${misc:Depends},
+         libtracker-sparql-1.0-0 (= ${binary:Version}),
          libglib2.0-dev,
          gir1.2-tracker-1.0 (= ${binary:Version})
 Suggests: libtracker-sparql-doc
@@ -134,8 +135,9 @@ Description: tracker data miner library
 Package: libtracker-miner-1.0-dev
 Architecture: any
 Section: libdevel
-Depends: libtracker-miner-1.0-0 (= ${binary:Version}),
+Depends: ${shlibs:Depends},
          ${misc:Depends},
+         libtracker-miner-1.0-0 (= ${binary:Version}),
          libtracker-sparql-1.0-dev,
          libglib2.0-dev,
          libmediaart-1.0-dev,
@@ -185,8 +187,9 @@ Description: library to control/monitor tracker miners
 Package: libtracker-control-1.0-dev
 Architecture: any
 Section: libdevel
-Depends: libtracker-control-1.0-0 (= ${binary:Version}),
+Depends: ${shlibs:Depends},
          ${misc:Depends},
+         libtracker-control-1.0-0 (= ${binary:Version}),
          libglib2.0-dev,
          gir1.2-tracker-1.0 (= ${binary:Version})
 Suggests: libtracker-control-doc

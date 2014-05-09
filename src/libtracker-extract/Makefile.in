@@ -43,15 +43,15 @@ host_triplet = @host@
 @HAVE_MEEGOTOUCH_TRUE@	tracker-encoding-meegotouch.cpp                \
 @HAVE_MEEGOTOUCH_TRUE@	tracker-encoding-meegotouch.h
 
-@HAVE_LIBICU_TRUE@am__append_3 = \
-@HAVE_LIBICU_TRUE@	tracker-encoding-libicu.c                      \
-@HAVE_LIBICU_TRUE@	tracker-encoding-libicu.h
+@HAVE_LIBICU_CHARSET_DETECTION_TRUE@am__append_3 = \
+@HAVE_LIBICU_CHARSET_DETECTION_TRUE@	tracker-encoding-libicu.c                      \
+@HAVE_LIBICU_CHARSET_DETECTION_TRUE@	tracker-encoding-libicu.h
 
-@HAVE_LIBICU_TRUE@am__append_4 = \
-@HAVE_LIBICU_TRUE@	$(LIBICU_CFLAGS)
+@HAVE_LIBICU_CHARSET_DETECTION_TRUE@am__append_4 = \
+@HAVE_LIBICU_CHARSET_DETECTION_TRUE@	$(LIBICU_CFLAGS)
 
-@HAVE_LIBICU_TRUE@am__append_5 = \
-@HAVE_LIBICU_TRUE@	$(LIBICU_LIBS)
+@HAVE_LIBICU_CHARSET_DETECTION_TRUE@am__append_5 = \
+@HAVE_LIBICU_CHARSET_DETECTION_TRUE@	$(LIBICU_LIBS)
 
 subdir = src/libtracker-extract
 DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
@@ -105,7 +105,8 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libtracker_extractdir)"
 LTLIBRARIES = $(libtracker_extract_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-@HAVE_LIBICU_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
+@HAVE_LIBICU_CHARSET_DETECTION_TRUE@am__DEPENDENCIES_2 =  \
+@HAVE_LIBICU_CHARSET_DETECTION_TRUE@	$(am__DEPENDENCIES_1)
 libtracker_extract_la_DEPENDENCIES = $(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
@@ -123,7 +124,7 @@ am__libtracker_extract_la_SOURCES_DIST = tracker-data.h \
 	tracker-encoding-libicu.h
 @HAVE_ENCA_TRUE@am__objects_1 = tracker-encoding-enca.lo
 @HAVE_MEEGOTOUCH_TRUE@am__objects_2 = tracker-encoding-meegotouch.lo
-@HAVE_LIBICU_TRUE@am__objects_3 = tracker-encoding-libicu.lo
+@HAVE_LIBICU_CHARSET_DETECTION_TRUE@am__objects_3 = tracker-encoding-libicu.lo
 am_libtracker_extract_la_OBJECTS = tracker-encoding.lo tracker-exif.lo \
 	tracker-extract-client.lo tracker-extract-info.lo \
 	tracker-guarantee.lo tracker-iptc.lo tracker-module-manager.lo \

@@ -1125,37 +1125,37 @@ tracker-monitor.obj: $(top_srcdir)/src/libtracker-miner/tracker-monitor.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$(top_srcdir)/src/libtracker-miner/tracker-monitor.c' object='tracker-monitor.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o tracker-monitor.obj `if test -f '$(top_srcdir)/src/libtracker-miner/tracker-monitor.c'; then $(CYGPATH_W) '$(top_srcdir)/src/libtracker-miner/tracker-monitor.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/libtracker-miner/tracker-monitor.c'; fi`
-$(srcdir)/tracker_file_system_test_vala.stamp: $(tracker_file_system_test_SOURCES)
-	$(AM_V_at)rm -f $@ && echo stamp > $@-t
-	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_file_system_test_SOURCES)
-	$(AM_V_at)mv -f $@-t $@
-$(srcdir)/tracker_monitor_test_vala.stamp: $(tracker_monitor_test_SOURCES)
-	$(AM_V_at)rm -f $@ && echo stamp > $@-t
-	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_monitor_test_SOURCES)
-	$(AM_V_at)mv -f $@-t $@
 $(srcdir)/tracker_thumbnailer_test_vala.stamp: $(tracker_thumbnailer_test_SOURCES)
 	$(AM_V_at)rm -f $@ && echo stamp > $@-t
 	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_thumbnailer_test_SOURCES)
+	$(AM_V_at)mv -f $@-t $@
+$(srcdir)/tracker_crawler_test_vala.stamp: $(tracker_crawler_test_SOURCES)
+	$(AM_V_at)rm -f $@ && echo stamp > $@-t
+	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_crawler_test_SOURCES)
 	$(AM_V_at)mv -f $@-t $@
 $(srcdir)/tracker_task_pool_test_vala.stamp: $(tracker_task_pool_test_SOURCES)
 	$(AM_V_at)rm -f $@ && echo stamp > $@-t
 	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_task_pool_test_SOURCES)
 	$(AM_V_at)mv -f $@-t $@
-$(srcdir)/tracker_priority_queue_test_vala.stamp: $(tracker_priority_queue_test_SOURCES)
-	$(AM_V_at)rm -f $@ && echo stamp > $@-t
-	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_priority_queue_test_SOURCES)
-	$(AM_V_at)mv -f $@-t $@
 $(srcdir)/tracker_indexing_tree_test_vala.stamp: $(tracker_indexing_tree_test_SOURCES)
 	$(AM_V_at)rm -f $@ && echo stamp > $@-t
 	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_indexing_tree_test_SOURCES)
 	$(AM_V_at)mv -f $@-t $@
+$(srcdir)/tracker_monitor_test_vala.stamp: $(tracker_monitor_test_SOURCES)
+	$(AM_V_at)rm -f $@ && echo stamp > $@-t
+	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_monitor_test_SOURCES)
+	$(AM_V_at)mv -f $@-t $@
+$(srcdir)/tracker_priority_queue_test_vala.stamp: $(tracker_priority_queue_test_SOURCES)
+	$(AM_V_at)rm -f $@ && echo stamp > $@-t
+	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_priority_queue_test_SOURCES)
+	$(AM_V_at)mv -f $@-t $@
+$(srcdir)/tracker_file_system_test_vala.stamp: $(tracker_file_system_test_SOURCES)
+	$(AM_V_at)rm -f $@ && echo stamp > $@-t
+	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_file_system_test_SOURCES)
+	$(AM_V_at)mv -f $@-t $@
 $(srcdir)/tracker_file_notifier_test_vala.stamp: $(tracker_file_notifier_test_SOURCES)
 	$(AM_V_at)rm -f $@ && echo stamp > $@-t
 	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_file_notifier_test_SOURCES)
-	$(AM_V_at)mv -f $@-t $@
-$(srcdir)/tracker_crawler_test_vala.stamp: $(tracker_crawler_test_SOURCES)
-	$(AM_V_at)rm -f $@ && echo stamp > $@-t
-	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_crawler_test_SOURCES)
 	$(AM_V_at)mv -f $@-t $@
 $(srcdir)/tracker-miner-mock.c: $(srcdir)/libtracker_miner_tests_la_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/libtracker_miner_tests_la_vala.stamp; fi

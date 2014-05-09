@@ -1,6 +1,7 @@
 tracker (1.0.1-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Update configure switch for enca charset detection support.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 09 May 2014 23:07:38 +0200
 

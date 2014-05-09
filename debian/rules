@@ -18,7 +18,7 @@ override_dh_autoreconf:
 override_dh_auto_configure:
 	dh_auto_configure -- \
 		--with-unicode-support=libunistring \
-		--with-enca \
+		--enable-enca \
 		--enable-introspection \
 		--enable-generic-media-extractor=gstreamer \
 		--enable-tracker-fts \

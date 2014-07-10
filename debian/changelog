@@ -1,8 +1,10 @@
 tracker (1.0.2-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Do no longer explicitly set the compression since xz is the default
+    nowadays.
 
- -- Michael Biebl <biebl@debian.org>  Thu, 10 Jul 2014 16:00:44 +0200
+ -- Michael Biebl <biebl@debian.org>  Thu, 10 Jul 2014 16:02:12 +0200
 
 tracker (1.0.1-2) unstable; urgency=medium
 

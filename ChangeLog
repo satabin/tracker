@@ -1,3 +1,97 @@
+2014-07-10  Martyn Russell  <martyn@lanedo.com>
+
+	docs/reference: Use FULL paths for DOC_SOURCE_DIR to avoid undefined warnings
+	This only occurs during distcheck because the path is not relative any more,
+	but it should be referenced from $(top_srcdir) anyway to avoid these warnings.
+
+	all: Switch out GSettings "schema" property for "schema-id"
+	Was causing unit tests to fail and made distcheck impossible
+
+2014-07-10  Martin Kampas  <martin.kampas@tieto.com>
+
+	libtracker-data: Limit error message length
+	When a very long error message is eventually sent over D-Bus and the
+	original method call involves file descriptor passing, it hits Gnome bug
+	732615 and the sending process gets aborted.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=732839
+
+2014-07-10  Karl Relton  <karllinuxtest.relton@ntlworld.com>
+
+	tracker-extract-oasis: Continue extracting if we find embedded tabs + line breaks
+	The following patch improves the oasis extractor on odt documents so
+	that it keeps extracting plain text content even when there are embedded
+	tab and line-break xml tags. Without this patch the extractor stops when
+	such a tag is encountered, and resumes typically at the next paragraph
+	or style/format change. This means extractable text is missed.
+
+2014-07-10  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-control: _CFLAGS and _LIBS were not defined properly
+	This was causing the docs to fail to build in sandbox conditions
+
+	tracker-search: Don't show "(null)" for nie:InformationElements with no nie:url
+
+2014-07-10  Aleksander Morgado  <aleksander@aleksander.es>
+
+	build: use pkg-config to look for which gdbus-codegen to use
+
+2014-07-10  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract: Fix build with libav when libmediaaart is disabled
+	https://bugzilla.gnome.org/show_bug.cgi?id=728370
+
+2014-07-10  Ralph Boehme  <rb@sernet.de>
+
+	libtracker-common: memory limits on systems with large amounts of RAM
+	On systems with large amounts of RAM get_memory_total() could overflow
+	and return a negative value, as a result memory would be limited to
+	MEM_LIMIT_MIN (which is 256 MB atm).
+
+2014-07-10  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-control: Don't error with g_file_enumerator_next_file()
+	This has been happening lately for some people and it seems to be when
+	$prefix/share/tracker/miners/ doesn't exist. This is a broken install to be
+	fair, but Tracker should handle it more gracefully.
+
+	Added a NULL check on enumerator returned from g_file_enumerate_children().
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=729968
+
+	libtracker-control: Fix remnants of libtracker-miner in sources
+	Noticed by Michael Biebl. Thanks! :)
+
+2014-06-20  Daniel Mustieles  <dnaiel.mustieles@gmail.com>
+
+	Updated Spanish Translation
+
+2014-06-02  Gil Forcada  <gforcada@gnome.org>
+
+	[l10n] Update Catalan translation
+
+2014-05-31  Milo Casagrande  <milo@ubuntu.com>
+
+	Updated Italian translation
+
+2014-05-14  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2014-05-12  Tom Tryfonidis  <tomtryf@gmail.com>
+
+	Updated Greek translation
+
+2014-05-12  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+	Updated Slovenian translation
+
+2014-05-12  Мирослав Николић  <miroslavnikolic@rocketmail.com>
+
+	Updated Serbian translation
+
 2014-05-09  Martyn Russell  <martyn@lanedo.com>
 
 	Release 1.0.1

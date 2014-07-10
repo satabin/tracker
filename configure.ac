@@ -13,8 +13,8 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [1])
 m4_define([tracker_minor_version], [0])
-m4_define([tracker_micro_version], [1])
-m4_define([tracker_interface_age], [1])
+m4_define([tracker_micro_version], [2])
+m4_define([tracker_interface_age], [2])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -274,6 +274,12 @@ LIBTRACKER_MINER_REQUIRED="glib-2.0        >= $GLIB_REQUIRED
                            gio-unix-2.0    >= $GLIB_REQUIRED"
 
 PKG_CHECK_MODULES(LIBTRACKER_MINER, [$LIBTRACKER_MINER_REQUIRED])
+
+# Check requirements for libtracker-control
+LIBTRACKER_CONTROL_REQUIRED="glib-2.0        >= $GLIB_REQUIRED
+                             gio-unix-2.0    >= $GLIB_REQUIRED"
+
+PKG_CHECK_MODULES(LIBTRACKER_CONTROL, [$LIBTRACKER_CONTROL_REQUIRED])
 
 # Check requirements for libtracker-sparql
 LIBTRACKER_SPARQL_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
@@ -748,9 +754,15 @@ fi
 DBUS_SERVICES_DIR="$services_dir"
 AC_SUBST(DBUS_SERVICES_DIR)
 
-# Introduced with GSettings
+####################################################################
+# GLib/GIO utilities
+####################################################################
+
 GLIB_MKENUMS=`$PKG_CONFIG glib-2.0 --variable=glib_mkenums`
 AC_SUBST(GLIB_MKENUMS)
+
+GDBUS_CODEGEN=`$PKG_CONFIG --variable=gdbus_codegen gio-2.0`
+AC_SUBST(GDBUS_CODEGEN)
 
 ####################################################################
 # Should we build GLib based unit tests

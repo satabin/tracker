@@ -31,7 +31,7 @@
 /**
  * SECTION:tracker-miner-manager
  * @short_description: External control and monitoring of miners
- * @include: libtracker-miner/tracker-miner.h
+ * @include: libtracker-control/tracker-control.h
  *
  * #TrackerMinerManager keeps track of available miners, their current
  * progress/status, and also allows basic external control on them, such
@@ -746,8 +746,15 @@ directory_foreach (GFile    *file,
 	GFileInfo *info;
 	GFile *child;
 
-	enumerator = g_file_enumerate_children (file, G_FILE_ATTRIBUTE_STANDARD_NAME,
-	                                        G_FILE_QUERY_INFO_NONE, NULL, NULL);
+	enumerator = g_file_enumerate_children (file,
+	                                        G_FILE_ATTRIBUTE_STANDARD_NAME,
+	                                        G_FILE_QUERY_INFO_NONE,
+	                                        NULL,
+	                                        NULL);
+
+	if (!enumerator) {
+		return;
+	}
 
 	while ((info = g_file_enumerator_next_file (enumerator, NULL, NULL)) != NULL) {
 

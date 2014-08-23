@@ -1,11 +1,11 @@
-tracker (1.0.3-1) UNRELEASED; urgency=medium
+tracker (1.0.3-1) unstable; urgency=medium
 
   * New upstream release.
   * Use gnome-autogen.sh in dh_autoreconf. Add Build-Depends on gnome-common
     for that.
   * Disable building of static libraries since we don't install them anyway.
 
- -- Michael Biebl <biebl@debian.org>  Sat, 23 Aug 2014 20:13:11 +0200
+ -- Michael Biebl <biebl@debian.org>  Sun, 24 Aug 2014 00:41:24 +0200
 
 tracker (1.0.2-1) unstable; urgency=medium
 

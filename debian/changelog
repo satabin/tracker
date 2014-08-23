@@ -1,6 +1,8 @@
 tracker (1.0.3-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Use gnome-autogen.sh in dh_autoreconf. Add Build-Depends on gnome-common
+    for that.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 23 Aug 2014 20:13:11 +0200
 

@@ -8,9 +8,7 @@ DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 export LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed -Wl,-Bsymbolic
 
 autoreconf:
-	gtkdocize --flavour no-tmpl
-	autopoint --force
-	AUTOPOINT='intltoolize --automake --copy' autoreconf --verbose --force --install
+	NOCONFIGURE=true gnome-autogen.sh
 
 override_dh_autoreconf:
 	dh_autoreconf debian/rules -- autoreconf

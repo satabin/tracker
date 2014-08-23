@@ -1,0 +1,100 @@
+<!-- ##### SECTION Title ##### -->
+TrackerMinerOnline
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT TrackerMinerOnline ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SIGNAL TrackerMinerOnline::connected ##### -->
+<para>
+
+</para>
+
+@trackermineronline: the object which received the signal.
+@arg1: 
+@Returns: 
+
+<!-- ##### SIGNAL TrackerMinerOnline::disconnected ##### -->
+<para>
+
+</para>
+
+@trackermineronline: the object which received the signal.
+
+<!-- ##### ARG TrackerMinerOnline:network-type ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT TrackerMinerOnlineClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@connected: 
+@disconnected: 
+@padding: 
+
+<!-- ##### FUNCTION tracker_miner_online_get_type ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_online_get_network_type ##### -->
+<para>
+
+</para>
+
+@miner: 
+@Returns: 
+
+
+<!-- ##### ENUM TrackerNetworkType ##### -->
+<para>
+
+</para>
+
+@TRACKER_NETWORK_TYPE_NONE: 
+@TRACKER_NETWORK_TYPE_UNKNOWN: 
+@TRACKER_NETWORK_TYPE_GPRS: 
+@TRACKER_NETWORK_TYPE_EDGE: 
+@TRACKER_NETWORK_TYPE_3G: 
+@TRACKER_NETWORK_TYPE_LAN: 
+
+<!-- ##### FUNCTION tracker_network_type_get_type ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+

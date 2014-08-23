@@ -20,6 +20,39 @@ You have another version of autoconf.  It may work, but is not guaranteed to.
 If you have problems, you may need to regenerate the build system entirely.
 To do so, use the procedure documented by the package, typically 'autoreconf'.])])
 
+# nls.m4 serial 5 (gettext-0.18)
+dnl Copyright (C) 1995-2003, 2005-2006, 2008-2013 Free Software Foundation,
+dnl Inc.
+dnl This file is free software; the Free Software Foundation
+dnl gives unlimited permission to copy and/or distribute it,
+dnl with or without modifications, as long as this notice is preserved.
+dnl
+dnl This file can can be used in projects which are not available under
+dnl the GNU General Public License or the GNU Library General Public
+dnl License but which still want to provide support for the GNU gettext
+dnl functionality.
+dnl Please note that the actual code of the GNU gettext library is covered
+dnl by the GNU Library General Public License, and the rest of the GNU
+dnl gettext package package is covered by the GNU General Public License.
+dnl They are *not* in the public domain.
+
+dnl Authors:
+dnl   Ulrich Drepper <drepper@cygnus.com>, 1995-2000.
+dnl   Bruno Haible <haible@clisp.cons.org>, 2000-2003.
+
+AC_PREREQ([2.50])
+
+AC_DEFUN([AM_NLS],
+[
+  AC_MSG_CHECKING([whether NLS is requested])
+  dnl Default is enabled NLS
+  AC_ARG_ENABLE([nls],
+    [  --disable-nls           do not use Native Language Support],
+    USE_NLS=$enableval, USE_NLS=yes)
+  AC_MSG_RESULT([$USE_NLS])
+  AC_SUBST([USE_NLS])
+])
+
 # pkg.m4 - Macros to locate and utilise pkg-config.            -*- Autoconf -*-
 # serial 1 (pkg-config-0.24)
 # 
@@ -1072,38 +1105,6 @@ else
 fi
 ])
 
-# Copyright (C) 2003-2013 Free Software Foundation, Inc.
-#
-# This file is free software; the Free Software Foundation
-# gives unlimited permission to copy and/or distribute it,
-# with or without modifications, as long as this notice is preserved.
-
-# AM_PROG_MKDIR_P
-# ---------------
-# Check for 'mkdir -p'.
-AC_DEFUN([AM_PROG_MKDIR_P],
-[AC_PREREQ([2.60])dnl
-AC_REQUIRE([AC_PROG_MKDIR_P])dnl
-dnl FIXME we are no longer going to remove this! adjust warning
-dnl FIXME message accordingly.
-AC_DIAGNOSE([obsolete],
-[$0: this macro is deprecated, and will soon be removed.
-You should use the Autoconf-provided 'AC][_PROG_MKDIR_P' macro instead,
-and use '$(MKDIR_P)' instead of '$(mkdir_p)'in your Makefile.am files.])
-dnl Automake 1.8 to 1.9.6 used to define mkdir_p.  We now use MKDIR_P,
-dnl while keeping a definition of mkdir_p for backward compatibility.
-dnl @MKDIR_P@ is magic: AC_OUTPUT adjusts its value for each Makefile.
-dnl However we cannot define mkdir_p as $(MKDIR_P) for the sake of
-dnl Makefile.ins that do not define MKDIR_P, so we do our own
-dnl adjustment using top_builddir (which is defined more often than
-dnl MKDIR_P).
-AC_SUBST([mkdir_p], ["$MKDIR_P"])dnl
-case $mkdir_p in
-  [[\\/$]]* | ?:[[\\/]]*) ;;
-  */*) mkdir_p="\$(top_builddir)/$mkdir_p" ;;
-esac
-])
-
 # Helper functions for option handling.                     -*- Autoconf -*-
 
 # Copyright (C) 2001-2013 Free Software Foundation, Inc.
@@ -1755,22 +1756,52 @@ AC_SUBST([am__tar])
 AC_SUBST([am__untar])
 ]) # _AM_PROG_TAR
 
-m4_include([m4/gettext.m4])
+# Autoconf support for the Vala compiler
+
+# Copyright (C) 2008-2013 Free Software Foundation, Inc.
+#
+# This file is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# Check whether the Vala compiler exists in $PATH.  If it is found, the
+# variable VALAC is set pointing to its absolute path.  Otherwise, it is
+# simply set to 'valac'.
+# Optionally a minimum release number of the compiler can be requested.
+# If the ACTION-IF-FOUND parameter is given, it will be run if a proper
+# Vala compiler is found.
+# Similarly, if the ACTION-IF-FOUND is given, it will be run if no proper
+# Vala compiler is found.  It defaults to simply print a warning about the
+# situation, but otherwise proceeding with the configuration.
+#
+# AM_PROG_VALAC([MINIMUM-VERSION], [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+# --------------------------------------------------------------------------
+AC_DEFUN([AM_PROG_VALAC],
+  [AC_PATH_PROG([VALAC], [valac], [valac])
+   AS_IF([test "$VALAC" != valac && test -n "$1"],
+      [AC_MSG_CHECKING([whether $VALAC is at least version $1])
+       am__vala_version=`$VALAC --version | sed 's/Vala  *//'`
+       AS_VERSION_COMPARE([$1], ["$am__vala_version"],
+         [AC_MSG_RESULT([yes])],
+         [AC_MSG_RESULT([yes])],
+         [AC_MSG_RESULT([no])
+          VALAC=valac])])
+    if test "$VALAC" = valac; then
+      m4_default([$3],
+        [AC_MSG_WARN([no proper vala compiler found])
+         AC_MSG_WARN([you will not be able to compile vala source files])])
+    else
+      m4_default([$2], [:])
+    fi])
+
+m4_include([m4/attributes.m4])
 m4_include([m4/gtk-doc.m4])
-m4_include([m4/iconv.m4])
-m4_include([m4/intlmacosx.m4])
 m4_include([m4/intltool.m4])
-m4_include([m4/lib-ld.m4])
-m4_include([m4/lib-link.m4])
-m4_include([m4/lib-prefix.m4])
 m4_include([m4/libtool.m4])
 m4_include([m4/ltoptions.m4])
 m4_include([m4/ltsugar.m4])
 m4_include([m4/ltversion.m4])
 m4_include([m4/lt~obsolete.m4])
-m4_include([m4/nls.m4])
-m4_include([m4/po.m4])
-m4_include([m4/progtest.m4])
 m4_include([m4/sqlite-builtin-fts4.m4])
 m4_include([m4/sqlite-threadsafe.m4])
-m4_include([acinclude.m4])
+m4_include([m4/tracker.m4])

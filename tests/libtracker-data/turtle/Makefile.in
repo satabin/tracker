@@ -14,8 +14,6 @@
 
 @SET_MAKE@
 
-# Stolen from: https://git.gnome.org/browse/glib/tree/glib.mk
-
 
 
 
@@ -84,11 +82,11 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(top_srcdir)/Makefile.decl $(srcdir)/Makefile.in \
-	$(srcdir)/Makefile.am $(top_srcdir)/test-driver
+	$(srcdir)/Makefile.am $(top_srcdir)/build-aux/test-driver
+TESTS =
 installed_test_PROGRAMS = $(am__EXEEXT_1)
 noinst_PROGRAMS = $(am__EXEEXT_3)
 check_PROGRAMS = $(am__EXEEXT_2)
-TESTS =
 @ENABLE_ALWAYS_BUILD_TESTS_TRUE@am__append_1 = $(all_test_ltlibs)
 @ENABLE_ALWAYS_BUILD_TESTS_TRUE@am__append_2 = $(all_test_programs)
 @ENABLE_ALWAYS_BUILD_TESTS_TRUE@am__append_3 = $(all_test_scripts)
@@ -116,18 +114,14 @@ TESTS =
 @ENABLE_INSTALLED_TESTS_TRUE@am__append_13 = $(installed_test_meta_DATA)
 subdir = tests/libtracker-data/turtle
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/intltool.m4 \
-	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
-	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
-	$(top_srcdir)/m4/progtest.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/m4/attributes.m4 \
+	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/intltool.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 \
 	$(top_srcdir)/m4/sqlite-builtin-fts4.m4 \
 	$(top_srcdir)/m4/sqlite-threadsafe.m4 \
-	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/tracker.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -356,7 +350,7 @@ TEST_EXTENSIONS = @EXEEXT@ .test
 am__test_logs1 = $(TESTS:=.log)
 am__test_logs2 = $(am__test_logs1:@EXEEXT@.log=.log)
 TEST_LOGS = $(am__test_logs2:.test.log=.log)
-TEST_LOG_DRIVER = $(SHELL) $(top_srcdir)/test-driver
+TEST_LOG_DRIVER = $(SHELL) $(top_srcdir)/build-aux/test-driver
 TEST_LOG_COMPILE = $(TEST_LOG_COMPILER) $(AM_TEST_LOG_FLAGS) \
 	$(TEST_LOG_FLAGS)
 am__set_b = \
@@ -425,13 +419,11 @@ GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
-GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
 GLIB_MKENUMS = @GLIB_MKENUMS@
 GLIB_PREFIX = @GLIB_PREFIX@
 GMSGFMT = @GMSGFMT@
-GMSGFMT_015 = @GMSGFMT_015@
 GRAPHVIZ_FDP = @GRAPHVIZ_FDP@
 GREP = @GREP@
 GSETTINGS_DISABLE_SCHEMAS_COMPILE = @GSETTINGS_DISABLE_SCHEMAS_COMPILE@
@@ -460,7 +452,6 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-INTLLIBS = @INTLLIBS@
 INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
@@ -469,7 +460,6 @@ INTLTOOL_V_MERGE = @INTLTOOL_V_MERGE@
 INTLTOOL_V_MERGE_OPTIONS = @INTLTOOL_V_MERGE_OPTIONS@
 INTLTOOL__v_MERGE_ = @INTLTOOL__v_MERGE_@
 INTLTOOL__v_MERGE_0 = @INTLTOOL__v_MERGE_0@
-INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
 INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
 INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
 INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
@@ -492,10 +482,8 @@ LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
 LIBGXPS_CFLAGS = @LIBGXPS_CFLAGS@
 LIBGXPS_LIBS = @LIBGXPS_LIBS@
-LIBICONV = @LIBICONV@
 LIBICU_CFLAGS = @LIBICU_CFLAGS@
 LIBICU_LIBS = @LIBICU_LIBS@
-LIBINTL = @LIBINTL@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
 LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
@@ -536,8 +524,6 @@ LIBXML2_CFLAGS = @LIBXML2_CFLAGS@
 LIBXML2_LIBS = @LIBXML2_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
-LTLIBICONV = @LTLIBICONV@
-LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
@@ -552,7 +538,6 @@ MKDIR_P = @MKDIR_P@
 MP3_CFLAGS = @MP3_CFLAGS@
 MP3_LIBS = @MP3_LIBS@
 MSGFMT = @MSGFMT@
-MSGFMT_015 = @MSGFMT_015@
 MSGMERGE = @MSGMERGE@
 NETWORK_MANAGER_CFLAGS = @NETWORK_MANAGER_CFLAGS@
 NETWORK_MANAGER_LIBS = @NETWORK_MANAGER_LIBS@
@@ -575,7 +560,7 @@ PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 POPPLER_CFLAGS = @POPPLER_CFLAGS@
 POPPLER_LIBS = @POPPLER_LIBS@
-POSUB = @POSUB@
+POW_LIB = @POW_LIB@
 PS_CFLAGS = @PS_CFLAGS@
 PS_LIBS = @PS_LIBS@
 PYTHON = @PYTHON@
@@ -642,8 +627,6 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
-XGETTEXT_015 = @XGETTEXT_015@
-XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -703,10 +686,15 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-GTESTER = gtester 			# for non-GLIB packages
-GTESTER_REPORT = gtester-report        # for non-GLIB packages
-#GTESTER = $(top_builddir)/glib/gtester			# for the GLIB package
-#GTESTER_REPORT = $(top_builddir)/glib/gtester-report	# for the GLIB package
+TESTS_ENVIRONMENT = \
+	G_TEST_SRCDIR="$(abs_srcdir)" 		\
+	G_TEST_BUILDDIR="$(abs_builddir)" 	\
+	G_DEBUG=gc-friendly 			\
+	MALLOC_CHECK_=2 			\
+	MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256))
+
+LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) $(top_srcdir)/tap-driver.sh
+LOG_COMPILER = $(top_srcdir)/tap-test
 NULL = 
 
 # initialize variables for unconditional += appending
@@ -720,51 +708,6 @@ EXTRA_DIST = $(all_dist_test_scripts) $(all_dist_test_data) \
 	turtle-query-001.out turtle-query-001.rq \
 	turtle-data-002.ontology turtle-data-002.ttl \
 	turtle-query-002.out turtle-query-002.rq
-
-# We support a fairly large range of possible variables.  It is expected that all types of files in a test suite
-# will belong in exactly one of the following variables.
-#
-# First, we support the usual automake suffixes, but in lowercase, with the customary meaning:
-#
-#   test_programs, test_scripts, test_data, test_ltlibraries
-#
-# The above are used to list files that are involved in both uninstalled and installed testing.  The
-# test_programs and test_scripts are taken to be actual testcases and will be run as part of the test suite.
-# Note that _data is always used with the nobase_ automake variable name to ensure that installed test data is
-# installed in the same way as it appears in the package layout.
-#
-# In order to mark a particular file as being only for one type of testing, use 'installed' or 'uninstalled',
-# like so:
-#
-#   installed_test_programs, uninstalled_test_programs
-#   installed_test_scripts, uninstalled_test_scripts
-#   installed_test_data, uninstalled_test_data
-#   installed_test_ltlibraries, uninstalled_test_ltlibraries
-#
-# Additionally, we support 'extra' infixes for programs and scripts.  This is used for support programs/scripts
-# that should not themselves be run as testcases (but exist to be used from other testcases):
-#
-#   test_extra_programs, installed_test_extra_programs, uninstalled_test_extra_programs
-#   test_extra_scripts, installed_test_extra_scripts, uninstalled_test_extra_scripts
-#
-# Additionally, for _scripts and _data, we support the customary dist_ prefix so that the named script or data
-# file automatically end up in the tarball.
-#
-#   dist_test_scripts, dist_test_data, dist_test_extra_scripts
-#   dist_installed_test_scripts, dist_installed_test_data, dist_installed_test_extra_scripts
-#   dist_uninstalled_test_scripts, dist_uninstalled_test_data, dist_uninstalled_test_extra_scripts
-#
-# Note that no file is automatically disted unless it appears in one of the dist_ variables.  This follows the
-# standard automake convention of not disting programs scripts or data by default.
-#
-# test_programs, test_scripts, uninstalled_test_programs and uninstalled_test_scripts (as well as their disted
-# variants) will be run as part of the in-tree 'make check'.  These are all assumed to be runnable under
-# gtester.  That's a bit strange for scripts, but it's possible.
-
-# we use test -z "$(TEST_PROGS)" above, so make sure we have no extra whitespace...
-TEST_PROGS = $(strip $(test_programs) $(test_scripts) \
-	$(uninstalled_test_programs) $(uninstalled_test_scripts) \
-	$(dist_test_scripts) $(dist_uninstalled_test_scripts))
 installed_test_LTLIBRARIES = $(am__append_12)
 installed_test_SCRIPTS = $(am__append_10)
 nobase_installed_test_DATA = $(am__append_11)
@@ -774,11 +717,6 @@ noinst_DATA = $(am__append_4)
 check_LTLIBRARIES = $(am__append_5)
 check_SCRIPTS = $(am__append_7)
 check_DATA = $(am__append_8)
-
-#if OS_WIN32
-#TESTS += $(test_programs) $(test_scripts) $(uninstalled_test_programs) $(uninstalled_test_scripts) \
-#         $(dist_test_scripts) $(dist_uninstalled_test_scripts)
-#endif
 
 # Note: build even the installed-only targets during 'make check' to ensure that they still work.
 # We need to do a bit of trickery here and manage disting via EXTRA_DIST instead of using dist_ prefixes to
@@ -1245,7 +1183,7 @@ distdir: $(DISTFILES)
 check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) $(check_LTLIBRARIES) $(check_PROGRAMS) \
 	  $(check_SCRIPTS) $(check_DATA)
-	$(MAKE) $(AM_MAKEFLAGS) check-TESTS check-local
+	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
 check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(SCRIPTS) $(DATA)
@@ -1369,7 +1307,7 @@ uninstall-am: uninstall-installed_testLTLIBRARIES \
 
 .MAKE: all check check-am install install-am install-strip
 
-.PHONY: all all-am check check-TESTS check-am check-local clean \
+.PHONY: all all-am check check-TESTS check-am clean \
 	clean-checkLTLIBRARIES clean-checkPROGRAMS clean-generic \
 	clean-installed_testLTLIBRARIES clean-installed_testPROGRAMS \
 	clean-libtool clean-noinstLTLIBRARIES clean-noinstPROGRAMS \
@@ -1393,44 +1331,11 @@ uninstall-am: uninstall-installed_testLTLIBRARIES \
 	uninstall-nobase_installed_testDATA
 
 
-# test-nonrecursive: run tests only in cwd
-#if OS_UNIX
-test-nonrecursive: ${TEST_PROGS}
-	@test -z "${TEST_PROGS}" || G_TEST_SRCDIR="$(abs_srcdir)" G_TEST_BUILDDIR="$(abs_builddir)" G_DEBUG=gc-friendly MALLOC_CHECK_=2 MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256)) ${GTESTER} --verbose ${TEST_PROGS}
-#else
-test-nonrecursive:
-#endif
-
-.PHONY: test-nonrecursive
-
-.PHONY: lcov genlcov lcov-clean
-# use recursive makes in order to ignore errors during check
-lcov:
-	-$(MAKE) $(AM_MAKEFLAGS) -k check
-	$(MAKE) $(AM_MAKEFLAGS) genlcov
-
-# we have to massage the lcov.info file slightly to hide the effect of libtool
-# placing the objects files in the .libs/ directory separate from the *.c
-# we also have to delete tests/.libs/libmoduletestplugin_*.gcda
-genlcov:
-	$(AM_V_GEN) rm -f $(top_builddir)/tests/.libs/libmoduletestplugin_*.gcda; \
-	  $(LTP) --quiet --directory $(top_builddir) --capture --output-file glib-lcov.info --test-name GLIB_PERF --no-checksum --compat-libtool --ignore-errors source; \
-	  $(LTP) --quiet --output-file glib-lcov.info --remove glib-lcov.info docs/reference/\* /tmp/\*  gio/tests/gdbus-object-manager-example/\* ; \
-	  LANG=C $(LTP_GENHTML) --quiet --prefix $(top_builddir) --output-directory glib-lcov --title "GLib Code Coverage" --legend --frames --show-details glib-lcov.info --ignore-errors source
-	@echo "file://$(abs_top_builddir)/glib-lcov/index.html"
-
-lcov-clean:
-	if test -n "$(LTP)"; then \
-	  $(LTP) --quiet --directory $(top_builddir) -z; \
-	fi
-
-# run tests in cwd as part of make check
-check-local: test-nonrecursive
-
 @ENABLE_INSTALLED_TESTS_TRUE@%.test: %$(EXEEXT) Makefile
 @ENABLE_INSTALLED_TESTS_TRUE@	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
 @ENABLE_INSTALLED_TESTS_TRUE@	echo 'Type=session' >> $@.tmp; \
-@ENABLE_INSTALLED_TESTS_TRUE@	echo 'Exec=$(installed_testdir)/$(notdir $<)' >> $@.tmp; \
+@ENABLE_INSTALLED_TESTS_TRUE@	echo 'Exec=$(installed_testdir)/$(notdir $<) --tap' >> $@.tmp; \
+@ENABLE_INSTALLED_TESTS_TRUE@	echo 'Output=TAP' >> $@.tmp; \
 @ENABLE_INSTALLED_TESTS_TRUE@	mv $@.tmp $@)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -1,4 +1,283 @@
+2014-08-22  Martyn Russell  <martyn@lanedo.com>
+
+	Release 1.0.3
+
+	tests: Re-write guarantee metadata test to separate tests better
+	Conflicts:
+		tests/libtracker-extract/tracker-guarantee-test.c
+
+2014-08-22  Tim Lunn  <tim@feathertop.org>
+
+	tests: add missing newline in test_guarantee_title that caused a test failure with the new tap driver
+	https://bugzilla.gnome.org/show_bug.cgi?id=734464
+
+	Conflicts:
+		tests/libtracker-extract/tracker-guarantee-test.c
+
+2014-08-22  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-data: Fixed unit tests so files are not left around failing distcheck
+
+	build: Imported attributes.m4 was html version, not RAW version
+
+	build: Use CC_CHECK_FLAGS_APPEND m4 macro to make sure GCC supports flags
+	This is after finding out that some platforms or versions of GCC don't support
+	flags like -Wmaybe-uninitialized
+
+	The attributes.m4 is stolen from systemd who stole it from xine-lib.
+
+	The CFLAGS used for Vala based sources and C only sources are printed in the
+	summary in configure now too. While it may look like we use more flags for
+	Vala based sources, we don't it's just -Wall with some flags omitted.
+
+	Conflicts:
+		configure.ac
+
+	tracker-extract: Added rule for source code files for nfo:SourceCode type
+
+2014-08-22  Andres Gomez  <agomez@igalia.com>
+
+	libtracker-extract: Only use FallbackRdfTypes from the first matching module
+	https://bugzilla.gnome.org/show_bug.cgi?id=733573
+
+2014-08-22  Giovanni Campagna  <gcampagna@src.gnome.org>
+
+	tracker-extract: recognize application/vnd.ms-asf for the gstreamer plugin
+	application/vnd.ms-asf is the new standard name for video/x-ms-asf.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=733317
+
+	tracker-extract: remove application/vnd.ms-* catchall from msoffice
+	Otherwise we match on application/vnd.ms-asf (the .asf video container
+	format), which is not an OLE2 file and msoffice cannot handle.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=733317
+
+2014-08-22  Chao-Hsiung Liao  <j_h_liau@yahoo.com.tw>
+
+	Updated Traditional Chinese translation(Hong Kong and Taiwan)
+
+2014-08-22  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-data: Fix tracker-backup unit test failures
+
+2014-08-22  Lasse Liehu  <lasse.liehu@gmail.com>
+
+	Finnish translation update
+
+2014-08-22  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-fts: Make private functions static
+
+	build: Updated official website in AC_INIT
+
+	build: Reorder AutoConf directives to avoid build failures
+	- Using AC_CONFIG_AUX_DIR([build-aux]) too late results in docs/reference/*
+	  not finding install-sh which is in $top_srcdir/build-aux
+	- Using AC_USE_SYSTEM_EXTENSIONS too late results in warnings about using
+	  AC_RUN_IF_ELSE (and others) before AC_USE_SYSTEM_EXTENSIONS
+
+	Now build and make install works without warnings
+
+	configure: Use AC_USE_SYSTEM_EXTENSIONS before m4 dir to avoid warnings
+
+	libtracker-miner: Chain parent constructed() in TrackerDecorator
+
+	libtracker-miner: Document TRACKER_MINER_DBUS_* defines
+
+	libtracker-common: Enable G_MESSAGES_DEBUG for verbosity > 1, not 2
+	g_info() or G_LOG_LEVEL_INFO requires this to see output.
+
+	tracker-extract: MP3 id3v23, id3v24 functions documented and v23 fixed
+	- The padding logic in v23 was incorrect.
+	- Also the frame reading would continue while < total file size, which lead to
+	  infinite loops and issues for some files, now we go only while < tsize (tag
+	  size).
+	- Instead of +10 here and there, now we use a defined integer to know why
+	  we're increasing the iteration through the file for maintainability
+	- Added debugging so we know when there is a failure and what frames we're
+	  processing/ignoring
+	- Smaller improvements (no docs) for id3v20 function, same logic applies.
+
+	libtracker-extract: Fixed TRACKER_EXTRACTORS_DIR env var
+	It's in the man pages but was removed during recent libtracker-extract work.
+	It's now been added back
+
+	Revert "tracker-extract: MP3s with ID3v23 tags should not hit infinite loop"
+	This reverts commit a1d73a9582111158b5ea838ef0fd545dc7970c0c.
+
+	tests: Add a .gitignore to not show logs and trs files in git status
+
+2014-08-22  Tim Lunn  <tim@feathertop.org>
+
+	build: link with --enable-new-dtags if available, this replaces the hardcoded RPATH with RUNPATH
+	https://bugzilla.gnome.org/show_bug.cgi?id=733857
+
+2014-08-22  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-data: Improve unit tests calling g_test_add()
+	This includes a setup and teardown function to clean up properly.
+	This was needed because the new framework seems to run tests in parallel and
+	was randomly failing because the same data dir was being used for all tests.
+
+	tests: Use tap automake testing scripts, fixes output summaries
+	https://bugzilla.gnome.org/show_bug.cgi?id=734089
+
+2014-08-22  Dominique Leuenberger  <dimstar@opensuse.org>
+
+	build: update firefox and thunderbird detection
+
+2014-08-22  Martyn Russell  <martyn@lanedo.com>
+
+	all: Remove GNU_SOURCE definitions now we use AC_USE_SYSTEM_EXTENSIONS
+	Conflicts:
+		src/tracker-extract/tracker-extract-bmp.c
+
+	build: Large update to configure.ac including new --enable-minimal option
+	Updates include:
+
+	1. Now you can use --enable-minimal, and only tracker-store is built and
+	   command line utilities, everything else is disabled.
+	2. All ./configure arguments have been updated to use $enableval and $withval.
+	   This fixes cases where the --disable-* variant is used. This has also fixed
+	   some cases where the AC_ARG_ENABLE or AC_ARG_WITH 'if-not-given' was used
+	   incorrectly.
+	3. There is now a --enable-tracker-extract (default is enabled), now it can be
+	   disabled.
+	4. There is now a --enable-tracker-writeback (default is enabled), now it can
+	   be disabled.
+	5. Summary now reflects what is built more concisely and is much smaller when
+	   using --enable-minimal.
+	6. After running autoscan, ./configure now has more checks for PROGS, HEADERS
+	   and FUNCS that are being used.
+	7. AC_USE_SYSTEM_EXTENSIONS is now used adding C extensions where available
+	   (like _GNU_SOURCE).
+
+	Conflicts:
+		configure.ac
+
+2014-08-22  Sam Thursfield  <sam@afuera.me.uk>
+
+	tracker-extract: Use default signal handler for SIGALRM and SIGABRT
+	The ALRM handler was introduced in commit
+	d9d1881c2548e5d6d55fad1e897f8f058ef28696. The alarm() function seems to
+	no longer be used, so we can remove it.
+
+	The ABRT handler was introduced in commit
+	3f42a4390d48c6a4840a7bcfce74673ebfd23479. I'm not sure of the reason.
+	Other Tracker processes use the default handler for ABRT, so let's be
+	consistent.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=734144
+
+2014-08-22  Giovanni Campagna  <gcampagna@src.gnome.org>
+
+	writeback: support saving metadata for GIFs
+	GIFs support XMP metadata just fine, there is no reason not to
+	implement it.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=733316
+
+2014-08-22  Piotr Drąg  <piotrdrag@gmail.com>
+
+	doap: add <programming-language>
+
+2014-08-22  Sam Thursfield  <sam@afuera.me.uk>
+
+	functional-tests: Rework 400-extractor.py test
+	Tests now call the tracker-extract process manually and parse its
+	ouput. This is necessary because the D-Bus interface it used to expose
+	has been removed. It'd be better to run the tests with a store and
+	miner and check that the correct data is inserted in the store, but
+	for now this approach is OK, and it does have the advantage that the
+	extractor is tested independently of the store & filesystem miner.
+
+	functional-tests: Tweaks to process helpers
+	Note the bug I found where if you send TERM to tracker-extract while it's
+	initialising, it hangs. I'll fix this in a separate commit.
+
+	functional-tests: Fix tests that use ExtractorHelper
+	The DBus name of the tracker-extract process has changed, so some of the
+	functional tests were hanging forever as they were watching the wrong bus name.
+
+	There's also no longer a tracker extract interface at all.
+
+	This fixes a bunch of tests that were hanging forever waiting for the
+	extractor's object to appear.
+
+	functional-tests: Watch for Tracker processes crashing
+	Tests should notice straight away if a Tracker process crashes,
+	and raise an exception.
+
+	functional-tests: Rewrite DConf code to use GObject introspection
+	The tests will now detect if the DConf backend is not in use and raise
+	an error, where previously tests would fail for confusing reasons. Also,
+	we no longer have to shell out to 'gsettings' to set up the
+	configuration.
+
+	Configuration values now have to be specified as GLib.Variant instances
+	instead of Python types. That's a bit of a pain. PyGI should have a way
+	of creating a GVariant from an arbitrary Python value, but I didn't find
+	one.
+
+	functional-tests: Replace use of PyGObject and PyGTK with PyGI
+	If we do 'import gobject' anywhere then we cannot use the new
+	GObject-introspection based Python bindings, because they conflict.
+
+	This change means the functional tests can now use PyGI, instead of the
+	deprecated and out-of-date PyGObject and PyGTK.
+
+	Note that the dbus-python bindings are still widely used in the
+	functional-tests. These work fine but are deprecated. We should
+	switch to using GDBus through GObject-introspection instead when possible.
+
+2014-08-22  Olav Vitters  <olav@vitters.nl>
+
+	doap category core
+
+2014-08-22  Yanko Kaneti  <yaneti@declera.com>
+
+	libtracker-miner: .pc Requires.priv libmediaart
+
+2014-08-22  Sam Thursfield  <sam@afuera.me.uk>
+
+	Correct typo in comment
+
+2014-08-22  Tim Lunn  <tim@feathertop.org>
+
+	clean up COPYING
+
+	Move COPYING to COPYING.GPL and provide a general overview of Licenses in COPYING
+
+	add COPYING.LGPL since there are LGPL licensed files in the tree
+	https://bugzilla.gnome.org/show_bug.cgi?id=733439
+
+2014-08-22  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-control: Added .gitignore for VAPI and other generated content
+
+	libtracker-control: Added missing sections.txt for documentation
+
+	libtracker-extract: Remove from examples/ this library is now private
+
+2014-08-22  Rico Tzschichholz  <ricotz@ubuntu.com>
+
+	build: Require gnome-common and build a proper Changelog
+	Includes further fixes for "make distcheck"
+
+2014-07-29  YunQiang Su  <wzssyqa@gmail.com>
+
+	update zh_CN translation
+
+2014-07-11  Dominique Leuenberger  <dimstar@opensuse.org>
+
+	libtracker-data: fix missing include
+	Since we make use of 'tracker_utf8_truncate', we must include
+	libtracker-common/tracker-utils.h now.
+
 2014-07-10  Martyn Russell  <martyn@lanedo.com>
+
+	Release 1.0.2
 
 	docs/reference: Use FULL paths for DOC_SOURCE_DIR to avoid undefined warnings
 	This only occurs during distcheck because the path is not relative any more,

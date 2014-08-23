@@ -1,0 +1,254 @@
+<!-- ##### SECTION Title ##### -->
+TrackerDecorator
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT TrackerDecorator ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SIGNAL TrackerDecorator::finished ##### -->
+<para>
+
+</para>
+
+@trackerdecorator: the object which received the signal.
+
+<!-- ##### SIGNAL TrackerDecorator::items-available ##### -->
+<para>
+
+</para>
+
+@trackerdecorator: the object which received the signal.
+
+<!-- ##### ARG TrackerDecorator:class-names ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerDecorator:commit-batch-size ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerDecorator:data-source ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerDecorator:priority-rdf-types ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT TrackerDecoratorClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@items_available: 
+@finished: 
+@padding: 
+
+<!-- ##### ENUM TrackerDecoratorError ##### -->
+<para>
+
+</para>
+
+@TRACKER_DECORATOR_ERROR_EMPTY: 
+@TRACKER_DECORATOR_ERROR_PAUSED: 
+
+<!-- ##### STRUCT TrackerDecoratorInfo ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION tracker_decorator_get_type ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_decorator_error_quark ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_decorator_get_class_names ##### -->
+<para>
+
+</para>
+
+@decorator: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_decorator_get_data_source ##### -->
+<para>
+
+</para>
+
+@decorator: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_decorator_get_n_items ##### -->
+<para>
+
+</para>
+
+@decorator: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_decorator_set_priority_rdf_types ##### -->
+<para>
+
+</para>
+
+@decorator: 
+@rdf_types: 
+
+
+<!-- ##### FUNCTION tracker_decorator_prepend_id ##### -->
+<para>
+
+</para>
+
+@decorator: 
+@id: 
+@class_name_id: 
+
+
+<!-- ##### FUNCTION tracker_decorator_delete_id ##### -->
+<para>
+
+</para>
+
+@decorator: 
+@id: 
+
+
+<!-- ##### FUNCTION tracker_decorator_next ##### -->
+<para>
+
+</para>
+
+@decorator: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION tracker_decorator_next_finish ##### -->
+<para>
+
+</para>
+
+@decorator: 
+@result: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_decorator_info_get_type ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_decorator_info_ref ##### -->
+<para>
+
+</para>
+
+@info: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_decorator_info_unref ##### -->
+<para>
+
+</para>
+
+@info: 
+
+
+<!-- ##### FUNCTION tracker_decorator_info_get_mimetype ##### -->
+<para>
+
+</para>
+
+@info: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_decorator_info_get_sparql ##### -->
+<para>
+
+</para>
+
+@info: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_decorator_info_get_task ##### -->
+<para>
+
+</para>
+
+@info: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_decorator_info_get_url ##### -->
+<para>
+
+</para>
+
+@info: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_decorator_info_get_urn ##### -->
+<para>
+
+</para>
+
+@info: 
+@Returns: 
+
+

@@ -795,9 +795,9 @@ CLEANFILES = *.log *.trs $(am__append_13)
 DISTCLEANFILES = intltool-extract intltool-merge intltool-update
 MAINTAINERCLEANFILES = 
 EXTRA_DIST = $(all_dist_test_scripts) $(all_dist_test_data) \
-	ChangeLog.pre-0-6-93 gitlog-to-changelog intltool-extract.in \
-	intltool-merge.in intltool-update.in tracker.doap \
-	tap-driver.sh tap-test
+	ChangeLog.pre-0-6-93 COPYING.GPL COPYING.LGPL \
+	gitlog-to-changelog intltool-extract.in intltool-merge.in \
+	intltool-update.in tracker.doap tap-driver.sh tap-test
 installed_test_LTLIBRARIES = $(am__append_12)
 installed_test_SCRIPTS = $(am__append_10)
 nobase_installed_test_DATA = $(am__append_11)

@@ -1,3 +1,50 @@
+2014-09-02  Tim Lunn  <tim@feathertop.org>
+
+	Release 1.0.4
+
+2014-09-02  Nilamdyuti Goswami  <ngoswami@redhat.com>
+
+	Added Assamese translation
+
+2014-09-02  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Don't use g_hash_table_destroy() in TrackerTaskPool
+	Use g_hash_table_unref() instead.
+
+	tracker-preferences: Remove fixed column width for indexed locations
+	Was cutting off part of the text
+	Also use 'true' not '1' for 'active' column attribute
+
+	libtracker-data: Fixed compiler warning with tracker_db_interface_sqlite_fts_update_text()
+
+	tracker-needle: Fixed deprecations where possible
+
+2014-09-02  Rico Tzschichholz  <ricotz@ubuntu.com>
+
+	miner: Add make target to generate vala-bindings from GIR
+	https://bugzilla.gnome.org/show_bug.cgi?id=735339
+
+	control: Add make target to generate vala-bindings from GIR
+
+	control/miner: Add some nullable annotations
+
+	Update */.gitignore
+
+2014-09-02  Alexandre Franke  <alexandre.franke@gmail.com>
+
+	Updated French translation
+
+2014-08-28  Tim Lunn  <tim@feathertop.org>
+
+	build: include COPYING*GPL files in tarball
+	https://bugzilla.gnome.org/show_bug.cgi?id=735567
+
+2014-08-23  Yuri Myasoedov  <ymyasoedov@yandex.ru>
+
+	Updated Russian translation
+
+	Updated Russian translation
+
 2014-08-22  Martyn Russell  <martyn@lanedo.com>
 
 	Release 1.0.3

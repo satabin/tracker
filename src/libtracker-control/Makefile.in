@@ -597,7 +597,7 @@ INTROSPECTION_SCANNER_ARGS = \
 @HAVE_INTROSPECTION_TRUE@TrackerControl_@TRACKER_API_VERSION_UNDERSCORES@_gir_INCLUDES = Gio-2.0
 @HAVE_INTROSPECTION_TRUE@TrackerControl_@TRACKER_API_VERSION_UNDERSCORES@_gir_CFLAGS = $(INCLUDES)
 @HAVE_INTROSPECTION_TRUE@TrackerControl_@TRACKER_API_VERSION_UNDERSCORES@_gir_NAMESPACE = "TrackerControl"
-@HAVE_INTROSPECTION_TRUE@TrackerControl_@TRACKER_API_VERSION_UNDERSCORES@_gir_LIBS = $(lib_LTLIBRARIES)
+@HAVE_INTROSPECTION_TRUE@TrackerControl_@TRACKER_API_VERSION_UNDERSCORES@_gir_LIBS = libtracker-control-$(TRACKER_API_VERSION).la
 @HAVE_INTROSPECTION_TRUE@TrackerControl_@TRACKER_API_VERSION_UNDERSCORES@_gir_FILES = $(introspection_sources)
 @HAVE_INTROSPECTION_TRUE@girdir = $(datadir)/gir-1.0
 @HAVE_INTROSPECTION_TRUE@gir_DATA = $(INTROSPECTION_GIRS)
@@ -1025,7 +1025,10 @@ tracker-control-$(TRACKER_API_VERSION).deps: tracker-control.deps
 # Introspection foo
 -include $(INTROSPECTION_MAKEFILE)
 
-@HAVE_INTROSPECTION_TRUE@TrackerControl-@TRACKER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) $(lib_LTLIBRARIES) Makefile
+@HAVE_INTROSPECTION_TRUE@TrackerControl-@TRACKER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libtracker-control-$(TRACKER_API_VERSION).la Makefile
+
+@HAVE_INTROSPECTION_TRUE@build-vapi: TrackerControl-$(TRACKER_API_VERSION).gir
+@HAVE_INTROSPECTION_TRUE@	@vapigen --library tracker-control --metadatadir $(top_srcdir) --pkg gio-2.0 TrackerControl-$(TRACKER_API_VERSION).gir
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -189,6 +189,7 @@ am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
 am__EXEEXT_1 = tracker-crawler-test$(EXEEXT) \
+	tracker-file-enumerator-test$(EXEEXT) \
 	tracker-file-notifier-test$(EXEEXT) \
 	tracker-file-system-test$(EXEEXT) \
 	tracker-thumbnailer-test$(EXEEXT) \
@@ -208,6 +209,15 @@ am_tracker_crawler_test_OBJECTS = $(am__objects_1) $(am__objects_2) \
 tracker_crawler_test_OBJECTS = $(am_tracker_crawler_test_OBJECTS)
 tracker_crawler_test_LDADD = $(LDADD)
 tracker_crawler_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+tracker_file_enumerator_test_SOURCES = tracker-file-enumerator-test.c
+tracker_file_enumerator_test_OBJECTS =  \
+	tracker-file-enumerator-test.$(OBJEXT)
+tracker_file_enumerator_test_LDADD = $(LDADD)
+tracker_file_enumerator_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
@@ -328,7 +338,7 @@ am__v_VALAC_ = $(am__v_VALAC_@AM_DEFAULT_V@)
 am__v_VALAC_0 = @echo "  VALAC   " $@;
 am__v_VALAC_1 = 
 SOURCES = $(libtracker_miner_tests_la_SOURCES) \
-	$(tracker_crawler_test_SOURCES) \
+	$(tracker_crawler_test_SOURCES) tracker-file-enumerator-test.c \
 	$(tracker_file_notifier_test_SOURCES) \
 	$(tracker_file_system_test_SOURCES) \
 	$(tracker_indexing_tree_test_SOURCES) \
@@ -337,7 +347,7 @@ SOURCES = $(libtracker_miner_tests_la_SOURCES) \
 	$(tracker_task_pool_test_SOURCES) \
 	$(tracker_thumbnailer_test_SOURCES)
 DIST_SOURCES = $(libtracker_miner_tests_la_SOURCES) \
-	$(tracker_crawler_test_SOURCES) \
+	$(tracker_crawler_test_SOURCES) tracker-file-enumerator-test.c \
 	$(tracker_file_notifier_test_SOURCES) \
 	$(tracker_file_system_test_SOURCES) \
 	$(tracker_indexing_tree_test_SOURCES) \
@@ -778,6 +788,8 @@ TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
+TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
+TRACKER_MINER_APPS_LIBS = @TRACKER_MINER_APPS_LIBS@
 TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
 TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
 TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
@@ -787,6 +799,8 @@ TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
 TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
+TRACKER_MINER_USER_GUIDES_CFLAGS = @TRACKER_MINER_USER_GUIDES_CFLAGS@
+TRACKER_MINER_USER_GUIDES_LIBS = @TRACKER_MINER_USER_GUIDES_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
 TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
 TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
@@ -956,6 +970,7 @@ libtracker_miner_crawler_headers = \
 
 test_programs = \
 	tracker-crawler-test                           \
+	tracker-file-enumerator-test		       \
 	tracker-file-notifier-test		       \
 	tracker-file-system-test		       \
 	tracker-thumbnailer-test                       \
@@ -1204,6 +1219,10 @@ tracker-crawler-test$(EXEEXT): $(tracker_crawler_test_OBJECTS) $(tracker_crawler
 	@rm -f tracker-crawler-test$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_crawler_test_OBJECTS) $(tracker_crawler_test_LDADD) $(LIBS)
 
+tracker-file-enumerator-test$(EXEEXT): $(tracker_file_enumerator_test_OBJECTS) $(tracker_file_enumerator_test_DEPENDENCIES) $(EXTRA_tracker_file_enumerator_test_DEPENDENCIES) 
+	@rm -f tracker-file-enumerator-test$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_file_enumerator_test_OBJECTS) $(tracker_file_enumerator_test_LDADD) $(LIBS)
+
 tracker-file-notifier-test$(EXEEXT): $(tracker_file_notifier_test_OBJECTS) $(tracker_file_notifier_test_DEPENDENCIES) $(EXTRA_tracker_file_notifier_test_DEPENDENCIES) 
 	@rm -f tracker-file-notifier-test$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_file_notifier_test_OBJECTS) $(tracker_file_notifier_test_LDADD) $(LIBS)
@@ -1278,6 +1297,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-connection-mock.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crawler-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crawler.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-enumerator-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-notifier-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-system-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-indexing-tree-test.Po@am__quote@
@@ -1603,6 +1623,13 @@ recheck: all $(check_LTLIBRARIES) $(check_PROGRAMS) $(check_SCRIPTS) $(check_DAT
 tracker-crawler-test.log: tracker-crawler-test$(EXEEXT)
 	@p='tracker-crawler-test$(EXEEXT)'; \
 	b='tracker-crawler-test'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+tracker-file-enumerator-test.log: tracker-file-enumerator-test$(EXEEXT)
+	@p='tracker-file-enumerator-test$(EXEEXT)'; \
+	b='tracker-file-enumerator-test'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \

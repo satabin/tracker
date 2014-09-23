@@ -80,14 +80,12 @@ build_triplet = @build@
 host_triplet = @host@
 @HAVE_TRACKER_MINER_FS_TRUE@am__append_1 = \
 @HAVE_TRACKER_MINER_FS_TRUE@	tracker-miner-extract.desktop                  \
-@HAVE_TRACKER_MINER_FS_TRUE@	tracker-miner-applications.desktop             \
 @HAVE_TRACKER_MINER_FS_TRUE@	tracker-miner-files.desktop
 
-
-# Userguides are done in the miner-fs process
-@HAVE_MAEMO_TRUE@@HAVE_TRACKER_MINER_FS_TRUE@am__append_2 = tracker-miner-userguides.desktop
-@HAVE_TRACKER_MINER_EVOLUTION_TRUE@am__append_3 = tracker-miner-evolution.desktop
-@HAVE_TRACKER_MINER_RSS_TRUE@am__append_4 = tracker-miner-rss.desktop
+@HAVE_TRACKER_MINER_APPS_TRUE@am__append_2 = tracker-miner-applications.desktop
+@HAVE_TRACKER_MINER_USER_GUIDES_TRUE@am__append_3 = tracker-miner-userguides.desktop
+@HAVE_TRACKER_MINER_EVOLUTION_TRUE@am__append_4 = tracker-miner-evolution.desktop
+@HAVE_TRACKER_MINER_RSS_TRUE@am__append_5 = tracker-miner-rss.desktop
 subdir = data/miners
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -384,6 +382,8 @@ TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
+TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
+TRACKER_MINER_APPS_LIBS = @TRACKER_MINER_APPS_LIBS@
 TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
 TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
 TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
@@ -393,6 +393,8 @@ TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
 TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
+TRACKER_MINER_USER_GUIDES_CFLAGS = @TRACKER_MINER_USER_GUIDES_CFLAGS@
+TRACKER_MINER_USER_GUIDES_LIBS = @TRACKER_MINER_USER_GUIDES_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
 TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
 TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
@@ -495,7 +497,7 @@ desktop_in_files = \
 
 tracker_minersdir = $(datadir)/tracker/miners
 tracker_miners_DATA = $(am__append_1) $(am__append_2) $(am__append_3) \
-	$(am__append_4)
+	$(am__append_4) $(am__append_5)
 EXTRA_DIST = $(desktop_in_in_files)
 CLEANFILES = \
 	$(tracker_miners_DATA)                         \

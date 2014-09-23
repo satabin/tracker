@@ -12,9 +12,9 @@ AC_PREREQ([2.64])
 # if backwards compatibility has been broken,
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [1])
-m4_define([tracker_minor_version], [0])
-m4_define([tracker_micro_version], [4])
-m4_define([tracker_interface_age], [3])
+m4_define([tracker_minor_version], [2])
+m4_define([tracker_micro_version], [1])
+m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -231,7 +231,7 @@ NETWORK_MANAGER_REQUIRED=0.8
 GSTREAMER_REQUIRED=0.10.31
 GUPNP_DLNA_REQUIRED=0.9.4
 LIBPNG_REQUIRED=0.89
-LIBMEDIAART_REQUIRED=0.1.0
+LIBMEDIAART_REQUIRED=0.5.0
 
 # 3.6.11 for sqlite_backup API
 # 3.6.16 to fix test failures
@@ -381,6 +381,19 @@ TRACKER_MINER_FS_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
 PKG_CHECK_MODULES(TRACKER_MINER_FS, [$TRACKER_MINER_FS_REQUIRED])
 
 TRACKER_MINER_FS_LIBS="$TRACKER_MINER_FS_LIBS -lz -lm"
+
+# Check requirements for tracker-miner-apps
+TRACKER_MINER_APPS_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
+                             gio-unix-2.0 >= $GLIB_REQUIRED"
+
+PKG_CHECK_MODULES(TRACKER_MINER_APPS, [$TRACKER_MINER_APPS_REQUIRED])
+
+# Check requirements for tracker-miner-user-guides
+TRACKER_MINER_USER_GUIDES_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
+                                    gio-unix-2.0 >= $GLIB_REQUIRED
+                                    libxml-2.0   >= $LIBXML2_REQUIRED"
+
+PKG_CHECK_MODULES(TRACKER_MINER_USER_GUIDES, [$TRACKER_MINER_USER_GUIDES_REQUIRED])
 
 # Check requirements for tracker-miner-evolution
 evolution_plugin_name=""
@@ -1073,8 +1086,14 @@ if test "x$enable_libmediaart" != "xno" ; then
    LIBTRACKER_MINER_CFLAGS="$LIBTRACKER_MINER_CFLAGS $LIBMEDIAART_CFLAGS"
    LIBTRACKER_MINER_LIBS="$LIBTRACKER_MINER_LIBS $LIBMEDIAART_LIBS"
 
+   LIBTRACKER_EXTRACT_CFLAGS="$LIBTRACKER_EXTRACT_CFLAGS $LIBMEDIAART_CFLAGS"
+   LIBTRACKER_EXTRACT_LIBS="$LIBTRACKER_EXTRACT_LIBS $LIBMEDIAART_LIBS"
+
    TRACKER_EXTRACT_CFLAGS="$TRACKER_EXTRACT_CFLAGS $LIBMEDIAART_CFLAGS"
    TRACKER_EXTRACT_LIBS="$TRACKER_EXTRACT_LIBS $LIBMEDIAART_LIBS"
+
+   TRACKER_MINER_FS_CFLAGS="$TRACKER_MINER_FS_CFLAGS $LIBMEDIAART_CFLAGS"
+   TRACKER_MINER_FS_LIBS="$TRACKER_MINER_FS_LIBS $LIBMEDIAART_LIBS"
 
    # Used for .pc file...
    LIBTRACKER_MINER_PC_REQUIRES="libmediaart-1.0"
@@ -1215,6 +1234,9 @@ if test "x$enable_meegotouch" != "xno"; then
                      [meegotouch >= $MEEGOTOUCH_REQUIRED],
                      [have_meegotouch=yes],
                      [have_meegotouch=no])
+
+   LIBTRACKER_COMMON_CFLAGS="$LIBTRACKER_COMMON_CFLAGS $MEEGOTOUCH_CFLAGS"
+   LIBTRACKER_COMMON_LIBS="$LIBTRACKER_COMMON_LIBS $MEEGOTOUCH_LIBS"
 
    LIBTRACKER_EXTRACT_CFLAGS="$LIBTRACKER_EXTRACT_CFLAGS $MEEGOTOUCH_CFLAGS"
    LIBTRACKER_EXTRACT_LIBS="$LIBTRACKER_EXTRACT_LIBS $MEEGOTOUCH_LIBS"
@@ -1697,13 +1719,6 @@ AC_ARG_ENABLE(libxml2,
               [enable_libxml2=$enableval],
               [enable_libxml2=yes])
 
-# Force libxml requirement for HAVE_MAEMO,
-# given the miner-fs needs it for the userguide extraction.
-if test "x$enable_maemo" = "xyes" ; then
-  enable_libxml2="yes"
-fi
-
-
 if test "x$enable_libxml2" != "xno"; then
    PKG_CHECK_MODULES(LIBXML2,
                      [libxml-2.0 >= $LIBXML2_REQUIRED],
@@ -1762,7 +1777,7 @@ PKG_CHECK_MODULES(AVCODEC,
 AC_SUBST(AVCODEC_CFLAGS)
 AC_SUBST(AVCODEC_LIBS)
 
-PKG_CHECK_MODULES(AVCODEC,
+PKG_CHECK_MODULES(AVUTIL,
                   [libavutil >= 0.8.4],
                   [have_libavutil=yes],
                   [have_libavutil=no])
@@ -2478,24 +2493,6 @@ fi
 
 AM_CONDITIONAL(HAVE_TOTEM_PL_PARSER, test "x$have_playlist" = "xyes")
 
-#####################################################################
-# Check for tracker-extract: Guarantee existence of certain metadata
-#####################################################################
-
-# Currently guarantees (for extraction):
-# - nie:title for music and video files
-# - nie:contentCreated for music, video and image files
-
-AC_ARG_ENABLE(guarantee-metadata,
-              AS_HELP_STRING([--enable-guarantee-metadata],
-                             [enable guaranteed existence of some metadata, e.g. nie:title from files [[default=no]]]),
-              [enable_guarantee_metadata=$enableval],
-              [enable_guarantee_metadata=no])
-
-if test "x$enable_guarantee_metadata" != "xno"; then
-  AC_DEFINE(GUARANTEE_METADATA, 1, [Guarantee existence of some metadata])
-fi
-
 ####################################################################
 # Check if we should use initctl or sysvinit
 ####################################################################
@@ -2576,7 +2573,9 @@ AC_CONFIG_FILES([
 	src/Makefile
 	src/miners/Makefile
 	src/miners/fs/Makefile
+	src/miners/apps/Makefile
 	src/miners/rss/Makefile
+	src/miners/user-guides/Makefile
 	src/tracker-store/Makefile
 	src/tracker-control/Makefile
 	src/tracker-extract/Makefile
@@ -2690,8 +2689,8 @@ Build Configuration:
 	Source code location:                   ${srcdir}
 	Compiler:                               ${CC}
 	Compiler Warnings:                      $enable_compile_warnings
-          C    Flags:                             $warning_cflags
-          VALA Flags:                             $warning_valaflags
+          C    Flags:                            $warning_cflags
+          VALA Flags:                            $warning_valacflags
 
 	Win32:                                  $native_win32
 
@@ -2775,7 +2774,6 @@ Frameworks / Options:
         Support GNOME's Nautilus                $have_tracker_nautilus_extension ($tracker_nautilus_extension_install_dir)
 	Support Maemo                           $enable_maemo
 	Support libmeegotouch                   $have_meegotouch
-	Support Guaranteed Metadata             $enable_guarantee_metadata (e.g. guess nie:title from files)
 
 "
 

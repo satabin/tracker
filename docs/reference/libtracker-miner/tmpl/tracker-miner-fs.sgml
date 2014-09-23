@@ -40,6 +40,14 @@ TrackerMinerFS
 @arg4: 
 @arg5: 
 
+<!-- ##### SIGNAL TrackerMinerFS::finished-root ##### -->
+<para>
+
+</para>
+
+@trackerminerfs: the object which received the signal.
+@arg1: 
+
 <!-- ##### SIGNAL TrackerMinerFS::ignore-next-update-file ##### -->
 <para>
 
@@ -85,6 +93,11 @@ TrackerMinerFS
 @arg4: 
 @Returns: 
 
+<!-- ##### ARG TrackerMinerFS:data-provider ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG TrackerMinerFS:initial-crawling ##### -->
 <para>
 
@@ -105,6 +118,11 @@ TrackerMinerFS
 
 </para>
 
+<!-- ##### ARG TrackerMinerFS:root ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG TrackerMinerFS:throttle ##### -->
 <para>
 
@@ -121,7 +139,96 @@ TrackerMinerFS
 @finished: 
 @process_file_attributes: 
 @writeback_file: 
+@finished_root: 
 @padding: 
+
+<!-- ##### ENUM TrackerMinerFSError ##### -->
+<para>
+
+</para>
+
+@TRACKER_MINER_FS_ERROR_INIT: 
+
+<!-- ##### FUNCTION tracker_miner_fs_error_quark ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_get_indexing_tree ##### -->
+<para>
+
+</para>
+
+@fs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_get_data_provider ##### -->
+<para>
+
+</para>
+
+@fs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_get_throttle ##### -->
+<para>
+
+</para>
+
+@fs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_get_mtime_checking ##### -->
+<para>
+
+</para>
+
+@fs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_get_initial_crawling ##### -->
+<para>
+
+</para>
+
+@fs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_set_throttle ##### -->
+<para>
+
+</para>
+
+@fs: 
+@throttle: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_set_mtime_checking ##### -->
+<para>
+
+</para>
+
+@fs: 
+@mtime_checking: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_set_initial_crawling ##### -->
+<para>
+
+</para>
+
+@fs: 
+@do_initial_crawling: 
+
 
 <!-- ##### FUNCTION tracker_miner_fs_add_directory_without_parent ##### -->
 <para>
@@ -130,48 +237,6 @@ TrackerMinerFS
 
 @fs: 
 @file: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_check_directory ##### -->
-<para>
-
-</para>
-
-@fs: 
-@file: 
-@check_parents: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_check_directory_with_priority ##### -->
-<para>
-
-</para>
-
-@fs: 
-@file: 
-@priority: 
-@check_parents: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_check_file ##### -->
-<para>
-
-</para>
-
-@fs: 
-@file: 
-@check_parents: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_check_file_with_priority ##### -->
-<para>
-
-</para>
-
-@fs: 
-@file: 
-@priority: 
-@check_parents: 
 
 
 <!-- ##### FUNCTION tracker_miner_fs_directory_add ##### -->
@@ -204,16 +269,6 @@ TrackerMinerFS
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_miner_fs_file_notify ##### -->
-<para>
-
-</para>
-
-@fs: 
-@file: 
-@error: 
-
-
 <!-- ##### FUNCTION tracker_miner_fs_force_mtime_checking ##### -->
 <para>
 
@@ -223,114 +278,54 @@ TrackerMinerFS
 @directory: 
 
 
+<!-- ##### FUNCTION tracker_miner_fs_check_file ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@check_parents: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_check_file_with_priority ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@priority: 
+@check_parents: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_check_directory ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@check_parents: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_check_directory_with_priority ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@priority: 
+@check_parents: 
+
+
 <!-- ##### FUNCTION tracker_miner_fs_force_recheck ##### -->
 <para>
 
 </para>
 
 @fs: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_get_indexing_tree ##### -->
-<para>
-
-</para>
-
-@fs: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_get_initial_crawling ##### -->
-<para>
-
-</para>
-
-@fs: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_get_mtime_checking ##### -->
-<para>
-
-</para>
-
-@fs: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_get_parent_urn ##### -->
-<para>
-
-</para>
-
-@fs: 
-@file: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_get_throttle ##### -->
-<para>
-
-</para>
-
-@fs: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_get_urn ##### -->
-<para>
-
-</para>
-
-@fs: 
-@file: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_has_items_to_process ##### -->
-<para>
-
-</para>
-
-@fs: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_query_urn ##### -->
-<para>
-
-</para>
-
-@fs: 
-@file: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_set_initial_crawling ##### -->
-<para>
-
-</para>
-
-@fs: 
-@do_initial_crawling: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_set_mtime_checking ##### -->
-<para>
-
-</para>
-
-@fs: 
-@mtime_checking: 
-
-
-<!-- ##### FUNCTION tracker_miner_fs_set_throttle ##### -->
-<para>
-
-</para>
-
-@fs: 
-@throttle: 
 
 
 <!-- ##### FUNCTION tracker_miner_fs_writeback_file ##### -->
@@ -352,5 +347,54 @@ TrackerMinerFS
 @fs: 
 @file: 
 @error: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_file_notify ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@error: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_get_urn ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_get_parent_urn ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_query_urn ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_has_items_to_process ##### -->
+<para>
+
+</para>
+
+@fs: 
+@Returns: 
 
 

@@ -79,15 +79,6 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 libexec_PROGRAMS = tracker-miner-fs$(EXEEXT)
-@HAVE_MAEMO_TRUE@am__append_1 = \
-@HAVE_MAEMO_TRUE@	tracker-miner-userguides.c \
-@HAVE_MAEMO_TRUE@	tracker-miner-userguides.h
-
-@HAVE_MAEMO_TRUE@am__append_2 = $(LIBXML2_LIBS)
-@HAVE_MEEGOTOUCH_TRUE@am__append_3 = \
-@HAVE_MEEGOTOUCH_TRUE@	tracker-miner-meego.cpp \
-@HAVE_MEEGOTOUCH_TRUE@	tracker-miner-meego.h
-
 subdir = src/miners/fs
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/build-aux/depcomp
@@ -110,42 +101,31 @@ am__installdirs = "$(DESTDIR)$(libexecdir)"
 PROGRAMS = $(libexec_PROGRAMS)
 am__tracker_miner_fs_SOURCES_DIST = tracker-power-hal.c \
 	tracker-power-upower.c tracker-power.h tracker-config.c \
-	tracker-config.h tracker-main.c tracker-miner-applications.c \
-	tracker-miner-applications.h tracker-miner-locale.c \
-	tracker-miner-locale.h tracker-miner-files.c \
+	tracker-config.h tracker-main.c tracker-miner-files.c \
 	tracker-miner-files.h tracker-miner-files-index.c \
 	tracker-miner-files-index.h tracker-writeback-listener.c \
 	tracker-writeback-listener.h tracker-writeback-dispatcher.c \
 	tracker-writeback-dispatcher.h tracker-writeback.c \
-	tracker-writeback.h tracker-miner-userguides.c \
-	tracker-miner-userguides.h tracker-miner-meego.cpp \
-	tracker-miner-meego.h
-@HAVE_HAL_TRUE@@HAVE_UPOWER_FALSE@am__objects_1 = tracker_miner_fs-tracker-power-hal.$(OBJEXT)
-@HAVE_UPOWER_TRUE@am__objects_1 = tracker_miner_fs-tracker-power-upower.$(OBJEXT)
+	tracker-writeback.h
+@HAVE_HAL_TRUE@@HAVE_UPOWER_FALSE@am__objects_1 =  \
+@HAVE_HAL_TRUE@@HAVE_UPOWER_FALSE@	tracker-power-hal.$(OBJEXT)
+@HAVE_UPOWER_TRUE@am__objects_1 = tracker-power-upower.$(OBJEXT)
 am__objects_2 =
-@HAVE_MAEMO_TRUE@am__objects_3 = tracker_miner_fs-tracker-miner-userguides.$(OBJEXT)
-@HAVE_MEEGOTOUCH_TRUE@am__objects_4 = tracker-miner-meego.$(OBJEXT)
 am_tracker_miner_fs_OBJECTS = $(am__objects_1) $(am__objects_2) \
-	tracker_miner_fs-tracker-config.$(OBJEXT) \
-	tracker_miner_fs-tracker-main.$(OBJEXT) \
-	tracker_miner_fs-tracker-miner-applications.$(OBJEXT) \
-	tracker_miner_fs-tracker-miner-locale.$(OBJEXT) \
-	tracker_miner_fs-tracker-miner-files.$(OBJEXT) \
-	tracker_miner_fs-tracker-miner-files-index.$(OBJEXT) \
-	tracker_miner_fs-tracker-writeback-listener.$(OBJEXT) \
-	tracker_miner_fs-tracker-writeback-dispatcher.$(OBJEXT) \
-	tracker_miner_fs-tracker-writeback.$(OBJEXT) $(am__objects_3) \
-	$(am__objects_4)
+	tracker-config.$(OBJEXT) tracker-main.$(OBJEXT) \
+	tracker-miner-files.$(OBJEXT) \
+	tracker-miner-files-index.$(OBJEXT) \
+	tracker-writeback-listener.$(OBJEXT) \
+	tracker-writeback-dispatcher.$(OBJEXT) \
+	tracker-writeback.$(OBJEXT)
 tracker_miner_fs_OBJECTS = $(am_tracker_miner_fs_OBJECTS)
 am__DEPENDENCIES_1 =
-@HAVE_MAEMO_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
 tracker_miner_fs_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -184,24 +164,6 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
-LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) \
-	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
-	$(AM_CXXFLAGS) $(CXXFLAGS)
-AM_V_CXX = $(am__v_CXX_@AM_V@)
-am__v_CXX_ = $(am__v_CXX_@AM_DEFAULT_V@)
-am__v_CXX_0 = @echo "  CXX     " $@;
-am__v_CXX_1 = 
-CXXLD = $(CXX)
-CXXLINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
-	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
-am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
-am__v_CXXLD_0 = @echo "  CXXLD   " $@;
-am__v_CXXLD_1 = 
 SOURCES = $(tracker_miner_fs_SOURCES)
 DIST_SOURCES = $(am__tracker_miner_fs_SOURCES_DIST)
 am__can_run_installinfo = \
@@ -458,6 +420,8 @@ TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
+TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
+TRACKER_MINER_APPS_LIBS = @TRACKER_MINER_APPS_LIBS@
 TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
 TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
 TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
@@ -467,6 +431,8 @@ TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
 TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
+TRACKER_MINER_USER_GUIDES_CFLAGS = @TRACKER_MINER_USER_GUIDES_CFLAGS@
+TRACKER_MINER_USER_GUIDES_LIBS = @TRACKER_MINER_USER_GUIDES_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
 TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
 TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
@@ -574,27 +540,36 @@ AM_CPPFLAGS = \
 @HAVE_UPOWER_TRUE@power_sources = \
 @HAVE_UPOWER_TRUE@	tracker-power-upower.c
 
-tracker_miner_fs_SOURCES = $(power_sources) $(power_headers) \
-	tracker-config.c tracker-config.h tracker-main.c \
-	tracker-miner-applications.c tracker-miner-applications.h \
-	tracker-miner-locale.c tracker-miner-locale.h \
-	tracker-miner-files.c tracker-miner-files.h \
-	tracker-miner-files-index.c tracker-miner-files-index.h \
-	tracker-writeback-listener.c tracker-writeback-listener.h \
-	tracker-writeback-dispatcher.c tracker-writeback-dispatcher.h \
-	tracker-writeback.c tracker-writeback.h $(am__append_1) \
-	$(am__append_3)
-tracker_miner_fs_LDADD = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+tracker_miner_fs_SOURCES = \
+	$(power_sources)                               \
+	$(power_headers)                               \
+	tracker-config.c                               \
+	tracker-config.h                               \
+	tracker-main.c                                 \
+	tracker-miner-files.c                          \
+	tracker-miner-files.h                          \
+	tracker-miner-files-index.c                    \
+	tracker-miner-files-index.h                    \
+	tracker-writeback-listener.c                   \
+	tracker-writeback-listener.h                   \
+	tracker-writeback-dispatcher.c                 \
+	tracker-writeback-dispatcher.h                 \
+	tracker-writeback.c                            \
+	tracker-writeback.h
+
+tracker_miner_fs_LDADD = \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(BUILD_LIBS) $(TRACKER_MINER_FS_LIBS) $(am__append_2)
-@HAVE_MAEMO_TRUE@tracker_miner_fs_CFLAGS = $(LIBXML2_CFLAGS)
+	$(BUILD_LIBS)                                  \
+	$(TRACKER_MINER_FS_LIBS)
+
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .cpp .lo .o .obj
+.SUFFIXES: .c .lo .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -677,7 +652,7 @@ clean-libexecPROGRAMS:
 
 tracker-miner-fs$(EXEEXT): $(tracker_miner_fs_OBJECTS) $(tracker_miner_fs_DEPENDENCIES) $(EXTRA_tracker_miner_fs_DEPENDENCIES) 
 	@rm -f tracker-miner-fs$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(tracker_miner_fs_OBJECTS) $(tracker_miner_fs_LDADD) $(LIBS)
+	$(AM_V_CCLD)$(LINK) $(tracker_miner_fs_OBJECTS) $(tracker_miner_fs_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -685,19 +660,15 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-meego.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_miner_fs-tracker-config.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_miner_fs-tracker-main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_miner_fs-tracker-miner-applications.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_miner_fs-tracker-miner-files-index.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_miner_fs-tracker-miner-files.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_miner_fs-tracker-miner-locale.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_miner_fs-tracker-miner-userguides.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_miner_fs-tracker-power-hal.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_miner_fs-tracker-power-upower.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_miner_fs-tracker-writeback-dispatcher.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_miner_fs-tracker-writeback-listener.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_miner_fs-tracker-writeback.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-config.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-files-index.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-files.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-power-hal.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-power-upower.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-writeback-dispatcher.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-writeback-listener.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-writeback.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -719,195 +690,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
-
-tracker_miner_fs-tracker-power-hal.o: tracker-power-hal.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-power-hal.o -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-power-hal.Tpo -c -o tracker_miner_fs-tracker-power-hal.o `test -f 'tracker-power-hal.c' || echo '$(srcdir)/'`tracker-power-hal.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-power-hal.Tpo $(DEPDIR)/tracker_miner_fs-tracker-power-hal.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-power-hal.c' object='tracker_miner_fs-tracker-power-hal.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-power-hal.o `test -f 'tracker-power-hal.c' || echo '$(srcdir)/'`tracker-power-hal.c
-
-tracker_miner_fs-tracker-power-hal.obj: tracker-power-hal.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-power-hal.obj -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-power-hal.Tpo -c -o tracker_miner_fs-tracker-power-hal.obj `if test -f 'tracker-power-hal.c'; then $(CYGPATH_W) 'tracker-power-hal.c'; else $(CYGPATH_W) '$(srcdir)/tracker-power-hal.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-power-hal.Tpo $(DEPDIR)/tracker_miner_fs-tracker-power-hal.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-power-hal.c' object='tracker_miner_fs-tracker-power-hal.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-power-hal.obj `if test -f 'tracker-power-hal.c'; then $(CYGPATH_W) 'tracker-power-hal.c'; else $(CYGPATH_W) '$(srcdir)/tracker-power-hal.c'; fi`
-
-tracker_miner_fs-tracker-power-upower.o: tracker-power-upower.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-power-upower.o -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-power-upower.Tpo -c -o tracker_miner_fs-tracker-power-upower.o `test -f 'tracker-power-upower.c' || echo '$(srcdir)/'`tracker-power-upower.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-power-upower.Tpo $(DEPDIR)/tracker_miner_fs-tracker-power-upower.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-power-upower.c' object='tracker_miner_fs-tracker-power-upower.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-power-upower.o `test -f 'tracker-power-upower.c' || echo '$(srcdir)/'`tracker-power-upower.c
-
-tracker_miner_fs-tracker-power-upower.obj: tracker-power-upower.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-power-upower.obj -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-power-upower.Tpo -c -o tracker_miner_fs-tracker-power-upower.obj `if test -f 'tracker-power-upower.c'; then $(CYGPATH_W) 'tracker-power-upower.c'; else $(CYGPATH_W) '$(srcdir)/tracker-power-upower.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-power-upower.Tpo $(DEPDIR)/tracker_miner_fs-tracker-power-upower.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-power-upower.c' object='tracker_miner_fs-tracker-power-upower.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-power-upower.obj `if test -f 'tracker-power-upower.c'; then $(CYGPATH_W) 'tracker-power-upower.c'; else $(CYGPATH_W) '$(srcdir)/tracker-power-upower.c'; fi`
-
-tracker_miner_fs-tracker-config.o: tracker-config.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-config.o -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-config.Tpo -c -o tracker_miner_fs-tracker-config.o `test -f 'tracker-config.c' || echo '$(srcdir)/'`tracker-config.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-config.Tpo $(DEPDIR)/tracker_miner_fs-tracker-config.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-config.c' object='tracker_miner_fs-tracker-config.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-config.o `test -f 'tracker-config.c' || echo '$(srcdir)/'`tracker-config.c
-
-tracker_miner_fs-tracker-config.obj: tracker-config.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-config.obj -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-config.Tpo -c -o tracker_miner_fs-tracker-config.obj `if test -f 'tracker-config.c'; then $(CYGPATH_W) 'tracker-config.c'; else $(CYGPATH_W) '$(srcdir)/tracker-config.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-config.Tpo $(DEPDIR)/tracker_miner_fs-tracker-config.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-config.c' object='tracker_miner_fs-tracker-config.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-config.obj `if test -f 'tracker-config.c'; then $(CYGPATH_W) 'tracker-config.c'; else $(CYGPATH_W) '$(srcdir)/tracker-config.c'; fi`
-
-tracker_miner_fs-tracker-main.o: tracker-main.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-main.o -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-main.Tpo -c -o tracker_miner_fs-tracker-main.o `test -f 'tracker-main.c' || echo '$(srcdir)/'`tracker-main.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-main.Tpo $(DEPDIR)/tracker_miner_fs-tracker-main.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-main.c' object='tracker_miner_fs-tracker-main.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-main.o `test -f 'tracker-main.c' || echo '$(srcdir)/'`tracker-main.c
-
-tracker_miner_fs-tracker-main.obj: tracker-main.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-main.obj -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-main.Tpo -c -o tracker_miner_fs-tracker-main.obj `if test -f 'tracker-main.c'; then $(CYGPATH_W) 'tracker-main.c'; else $(CYGPATH_W) '$(srcdir)/tracker-main.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-main.Tpo $(DEPDIR)/tracker_miner_fs-tracker-main.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-main.c' object='tracker_miner_fs-tracker-main.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-main.obj `if test -f 'tracker-main.c'; then $(CYGPATH_W) 'tracker-main.c'; else $(CYGPATH_W) '$(srcdir)/tracker-main.c'; fi`
-
-tracker_miner_fs-tracker-miner-applications.o: tracker-miner-applications.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-miner-applications.o -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-miner-applications.Tpo -c -o tracker_miner_fs-tracker-miner-applications.o `test -f 'tracker-miner-applications.c' || echo '$(srcdir)/'`tracker-miner-applications.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-miner-applications.Tpo $(DEPDIR)/tracker_miner_fs-tracker-miner-applications.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-miner-applications.c' object='tracker_miner_fs-tracker-miner-applications.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-miner-applications.o `test -f 'tracker-miner-applications.c' || echo '$(srcdir)/'`tracker-miner-applications.c
-
-tracker_miner_fs-tracker-miner-applications.obj: tracker-miner-applications.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-miner-applications.obj -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-miner-applications.Tpo -c -o tracker_miner_fs-tracker-miner-applications.obj `if test -f 'tracker-miner-applications.c'; then $(CYGPATH_W) 'tracker-miner-applications.c'; else $(CYGPATH_W) '$(srcdir)/tracker-miner-applications.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-miner-applications.Tpo $(DEPDIR)/tracker_miner_fs-tracker-miner-applications.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-miner-applications.c' object='tracker_miner_fs-tracker-miner-applications.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-miner-applications.obj `if test -f 'tracker-miner-applications.c'; then $(CYGPATH_W) 'tracker-miner-applications.c'; else $(CYGPATH_W) '$(srcdir)/tracker-miner-applications.c'; fi`
-
-tracker_miner_fs-tracker-miner-locale.o: tracker-miner-locale.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-miner-locale.o -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-miner-locale.Tpo -c -o tracker_miner_fs-tracker-miner-locale.o `test -f 'tracker-miner-locale.c' || echo '$(srcdir)/'`tracker-miner-locale.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-miner-locale.Tpo $(DEPDIR)/tracker_miner_fs-tracker-miner-locale.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-miner-locale.c' object='tracker_miner_fs-tracker-miner-locale.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-miner-locale.o `test -f 'tracker-miner-locale.c' || echo '$(srcdir)/'`tracker-miner-locale.c
-
-tracker_miner_fs-tracker-miner-locale.obj: tracker-miner-locale.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-miner-locale.obj -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-miner-locale.Tpo -c -o tracker_miner_fs-tracker-miner-locale.obj `if test -f 'tracker-miner-locale.c'; then $(CYGPATH_W) 'tracker-miner-locale.c'; else $(CYGPATH_W) '$(srcdir)/tracker-miner-locale.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-miner-locale.Tpo $(DEPDIR)/tracker_miner_fs-tracker-miner-locale.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-miner-locale.c' object='tracker_miner_fs-tracker-miner-locale.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-miner-locale.obj `if test -f 'tracker-miner-locale.c'; then $(CYGPATH_W) 'tracker-miner-locale.c'; else $(CYGPATH_W) '$(srcdir)/tracker-miner-locale.c'; fi`
-
-tracker_miner_fs-tracker-miner-files.o: tracker-miner-files.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-miner-files.o -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-miner-files.Tpo -c -o tracker_miner_fs-tracker-miner-files.o `test -f 'tracker-miner-files.c' || echo '$(srcdir)/'`tracker-miner-files.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-miner-files.Tpo $(DEPDIR)/tracker_miner_fs-tracker-miner-files.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-miner-files.c' object='tracker_miner_fs-tracker-miner-files.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-miner-files.o `test -f 'tracker-miner-files.c' || echo '$(srcdir)/'`tracker-miner-files.c
-
-tracker_miner_fs-tracker-miner-files.obj: tracker-miner-files.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-miner-files.obj -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-miner-files.Tpo -c -o tracker_miner_fs-tracker-miner-files.obj `if test -f 'tracker-miner-files.c'; then $(CYGPATH_W) 'tracker-miner-files.c'; else $(CYGPATH_W) '$(srcdir)/tracker-miner-files.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-miner-files.Tpo $(DEPDIR)/tracker_miner_fs-tracker-miner-files.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-miner-files.c' object='tracker_miner_fs-tracker-miner-files.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-miner-files.obj `if test -f 'tracker-miner-files.c'; then $(CYGPATH_W) 'tracker-miner-files.c'; else $(CYGPATH_W) '$(srcdir)/tracker-miner-files.c'; fi`
-
-tracker_miner_fs-tracker-miner-files-index.o: tracker-miner-files-index.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-miner-files-index.o -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-miner-files-index.Tpo -c -o tracker_miner_fs-tracker-miner-files-index.o `test -f 'tracker-miner-files-index.c' || echo '$(srcdir)/'`tracker-miner-files-index.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-miner-files-index.Tpo $(DEPDIR)/tracker_miner_fs-tracker-miner-files-index.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-miner-files-index.c' object='tracker_miner_fs-tracker-miner-files-index.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-miner-files-index.o `test -f 'tracker-miner-files-index.c' || echo '$(srcdir)/'`tracker-miner-files-index.c
-
-tracker_miner_fs-tracker-miner-files-index.obj: tracker-miner-files-index.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-miner-files-index.obj -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-miner-files-index.Tpo -c -o tracker_miner_fs-tracker-miner-files-index.obj `if test -f 'tracker-miner-files-index.c'; then $(CYGPATH_W) 'tracker-miner-files-index.c'; else $(CYGPATH_W) '$(srcdir)/tracker-miner-files-index.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-miner-files-index.Tpo $(DEPDIR)/tracker_miner_fs-tracker-miner-files-index.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-miner-files-index.c' object='tracker_miner_fs-tracker-miner-files-index.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-miner-files-index.obj `if test -f 'tracker-miner-files-index.c'; then $(CYGPATH_W) 'tracker-miner-files-index.c'; else $(CYGPATH_W) '$(srcdir)/tracker-miner-files-index.c'; fi`
-
-tracker_miner_fs-tracker-writeback-listener.o: tracker-writeback-listener.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-writeback-listener.o -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-writeback-listener.Tpo -c -o tracker_miner_fs-tracker-writeback-listener.o `test -f 'tracker-writeback-listener.c' || echo '$(srcdir)/'`tracker-writeback-listener.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-writeback-listener.Tpo $(DEPDIR)/tracker_miner_fs-tracker-writeback-listener.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-writeback-listener.c' object='tracker_miner_fs-tracker-writeback-listener.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-writeback-listener.o `test -f 'tracker-writeback-listener.c' || echo '$(srcdir)/'`tracker-writeback-listener.c
-
-tracker_miner_fs-tracker-writeback-listener.obj: tracker-writeback-listener.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-writeback-listener.obj -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-writeback-listener.Tpo -c -o tracker_miner_fs-tracker-writeback-listener.obj `if test -f 'tracker-writeback-listener.c'; then $(CYGPATH_W) 'tracker-writeback-listener.c'; else $(CYGPATH_W) '$(srcdir)/tracker-writeback-listener.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-writeback-listener.Tpo $(DEPDIR)/tracker_miner_fs-tracker-writeback-listener.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-writeback-listener.c' object='tracker_miner_fs-tracker-writeback-listener.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-writeback-listener.obj `if test -f 'tracker-writeback-listener.c'; then $(CYGPATH_W) 'tracker-writeback-listener.c'; else $(CYGPATH_W) '$(srcdir)/tracker-writeback-listener.c'; fi`
-
-tracker_miner_fs-tracker-writeback-dispatcher.o: tracker-writeback-dispatcher.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-writeback-dispatcher.o -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-writeback-dispatcher.Tpo -c -o tracker_miner_fs-tracker-writeback-dispatcher.o `test -f 'tracker-writeback-dispatcher.c' || echo '$(srcdir)/'`tracker-writeback-dispatcher.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-writeback-dispatcher.Tpo $(DEPDIR)/tracker_miner_fs-tracker-writeback-dispatcher.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-writeback-dispatcher.c' object='tracker_miner_fs-tracker-writeback-dispatcher.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-writeback-dispatcher.o `test -f 'tracker-writeback-dispatcher.c' || echo '$(srcdir)/'`tracker-writeback-dispatcher.c
-
-tracker_miner_fs-tracker-writeback-dispatcher.obj: tracker-writeback-dispatcher.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-writeback-dispatcher.obj -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-writeback-dispatcher.Tpo -c -o tracker_miner_fs-tracker-writeback-dispatcher.obj `if test -f 'tracker-writeback-dispatcher.c'; then $(CYGPATH_W) 'tracker-writeback-dispatcher.c'; else $(CYGPATH_W) '$(srcdir)/tracker-writeback-dispatcher.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-writeback-dispatcher.Tpo $(DEPDIR)/tracker_miner_fs-tracker-writeback-dispatcher.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-writeback-dispatcher.c' object='tracker_miner_fs-tracker-writeback-dispatcher.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-writeback-dispatcher.obj `if test -f 'tracker-writeback-dispatcher.c'; then $(CYGPATH_W) 'tracker-writeback-dispatcher.c'; else $(CYGPATH_W) '$(srcdir)/tracker-writeback-dispatcher.c'; fi`
-
-tracker_miner_fs-tracker-writeback.o: tracker-writeback.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-writeback.o -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-writeback.Tpo -c -o tracker_miner_fs-tracker-writeback.o `test -f 'tracker-writeback.c' || echo '$(srcdir)/'`tracker-writeback.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-writeback.Tpo $(DEPDIR)/tracker_miner_fs-tracker-writeback.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-writeback.c' object='tracker_miner_fs-tracker-writeback.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-writeback.o `test -f 'tracker-writeback.c' || echo '$(srcdir)/'`tracker-writeback.c
-
-tracker_miner_fs-tracker-writeback.obj: tracker-writeback.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-writeback.obj -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-writeback.Tpo -c -o tracker_miner_fs-tracker-writeback.obj `if test -f 'tracker-writeback.c'; then $(CYGPATH_W) 'tracker-writeback.c'; else $(CYGPATH_W) '$(srcdir)/tracker-writeback.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-writeback.Tpo $(DEPDIR)/tracker_miner_fs-tracker-writeback.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-writeback.c' object='tracker_miner_fs-tracker-writeback.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-writeback.obj `if test -f 'tracker-writeback.c'; then $(CYGPATH_W) 'tracker-writeback.c'; else $(CYGPATH_W) '$(srcdir)/tracker-writeback.c'; fi`
-
-tracker_miner_fs-tracker-miner-userguides.o: tracker-miner-userguides.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-miner-userguides.o -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-miner-userguides.Tpo -c -o tracker_miner_fs-tracker-miner-userguides.o `test -f 'tracker-miner-userguides.c' || echo '$(srcdir)/'`tracker-miner-userguides.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-miner-userguides.Tpo $(DEPDIR)/tracker_miner_fs-tracker-miner-userguides.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-miner-userguides.c' object='tracker_miner_fs-tracker-miner-userguides.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-miner-userguides.o `test -f 'tracker-miner-userguides.c' || echo '$(srcdir)/'`tracker-miner-userguides.c
-
-tracker_miner_fs-tracker-miner-userguides.obj: tracker-miner-userguides.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -MT tracker_miner_fs-tracker-miner-userguides.obj -MD -MP -MF $(DEPDIR)/tracker_miner_fs-tracker-miner-userguides.Tpo -c -o tracker_miner_fs-tracker-miner-userguides.obj `if test -f 'tracker-miner-userguides.c'; then $(CYGPATH_W) 'tracker-miner-userguides.c'; else $(CYGPATH_W) '$(srcdir)/tracker-miner-userguides.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_miner_fs-tracker-miner-userguides.Tpo $(DEPDIR)/tracker_miner_fs-tracker-miner-userguides.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-miner-userguides.c' object='tracker_miner_fs-tracker-miner-userguides.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_miner_fs_CFLAGS) $(CFLAGS) -c -o tracker_miner_fs-tracker-miner-userguides.obj `if test -f 'tracker-miner-userguides.c'; then $(CYGPATH_W) 'tracker-miner-userguides.c'; else $(CYGPATH_W) '$(srcdir)/tracker-miner-userguides.c'; fi`
-
-.cpp.o:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ $<
-
-.cpp.obj:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-
-.cpp.lo:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
 
 mostlyclean-libtool:
 	-rm -f *.lo

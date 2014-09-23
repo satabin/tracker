@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-tracker-miner
+TrackerFileEnumerator
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -20,5 +20,27 @@ tracker-miner
 
 
 <!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT TrackerFileEnumeratorClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+
+<!-- ##### FUNCTION tracker_file_enumerator_new ##### -->
+<para>
+
+</para>
+
+@file_enumerator: 
+@Returns: 
+
+
+<!-- ##### STRUCT TrackerFileEnumerator ##### -->
+<para>
+
+</para>
 
 

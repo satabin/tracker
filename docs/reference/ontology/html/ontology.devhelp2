@@ -245,6 +245,7 @@
     <keyword type="" name="nfo:Visual" link="nfo-ontology.html#nfo-Visual"/>
     <keyword type="" name="nfo:Icon" link="nfo-ontology.html#nfo-Icon"/>
     <keyword type="" name="nfo:RegionOfInterestContent" link="nfo-ontology.html#nfo-RegionOfInterestContent"/>
+    <keyword type="" name="nfo:EBook" link="nfo-ontology.html#nfo-EBook"/>
     <keyword type="" name="nfo:Bookmark" link="nfo-ontology.html#nfo-Bookmark"/>
     <keyword type="" name="nfo:SoftwareApplication" link="nfo-ontology.html#nfo-SoftwareApplication"/>
     <keyword type="" name="nfo:RegionOfInterest" link="nfo-ontology.html#nfo-RegionOfInterest"/>
@@ -286,6 +287,7 @@
     <keyword type="" name="nfo:isBootable" link="nfo-properties.html#nfo-isBootable"/>
     <keyword type="" name="nfo:listDuration" link="nfo-properties.html#nfo-listDuration"/>
     <keyword type="" name="nfo:regionOfInterestHeight" link="nfo-properties.html#nfo-regionOfInterestHeight"/>
+    <keyword type="" name="nfo:depiction" link="nfo-properties.html#nfo-depiction"/>
     <keyword type="" name="nfo:model" link="nfo-properties.html#nfo-model"/>
     <keyword type="" name="nfo:aspectRatio" link="nfo-properties.html#nfo-aspectRatio"/>
     <keyword type="" name="nfo:hashValue" link="nfo-properties.html#nfo-hashValue"/>
@@ -787,9 +789,10 @@
     <keyword type="" name="nmm:albumTitle" link="nmm-properties.html#nmm-albumTitle"/>
     <keyword type="" name="nmm:exposureTime" link="nmm-properties.html#nmm-exposureTime"/>
     <keyword type="" name="nmm:dlnaProfile" link="nmm-properties.html#nmm-dlnaProfile"/>
-    <keyword type="" name="nmm:meteringMode" link="nmm-properties.html#nmm-meteringMode"/>
+    <keyword type="" name="nmm:artwork" link="nmm-properties.html#nmm-artwork"/>
     <keyword type="" name="nmm:radioPTY" link="nmm-properties.html#nmm-radioPTY"/>
     <keyword type="" name="nmm:fnumber" link="nmm-properties.html#nmm-fnumber"/>
+    <keyword type="" name="nmm:meteringMode" link="nmm-properties.html#nmm-meteringMode"/>
     <keyword type="" name="nmm:MPAARating" link="nmm-properties.html#nmm-MPAARating"/>
     <keyword type="" name="nmm:episodeNumber" link="nmm-properties.html#nmm-episodeNumber"/>
     <keyword type="" name="nmm:isColorCorrected" link="nmm-properties.html#nmm-isColorCorrected"/>

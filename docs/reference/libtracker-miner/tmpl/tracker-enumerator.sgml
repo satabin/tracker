@@ -1,0 +1,74 @@
+<!-- ##### SECTION Title ##### -->
+TrackerEnumerator
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT TrackerEnumeratorIface ##### -->
+<para>
+
+</para>
+
+@g_iface: 
+@next: 
+@next_async: 
+@next_finish: 
+
+<!-- ##### FUNCTION tracker_enumerator_next ##### -->
+<para>
+
+</para>
+
+@enumerator: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_enumerator_next_async ##### -->
+<para>
+
+</para>
+
+@enumerator: 
+@io_priority: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION tracker_enumerator_next_finish ##### -->
+<para>
+
+</para>
+
+@enumerator: 
+@result: 
+@error: 
+@Returns: 
+
+
+<!-- ##### STRUCT TrackerEnumerator ##### -->
+<para>
+
+</para>
+
+

@@ -1,0 +1,119 @@
+<!-- ##### SECTION Title ##### -->
+TrackerDataProvider
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT TrackerDataProviderIface ##### -->
+<para>
+
+</para>
+
+@g_iface: 
+@begin: 
+@begin_async: 
+@begin_finish: 
+@end: 
+@end_async: 
+@end_finish: 
+
+<!-- ##### FUNCTION tracker_data_provider_begin ##### -->
+<para>
+
+</para>
+
+@data_provider: 
+@url: 
+@attributes: 
+@flags: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_data_provider_begin_async ##### -->
+<para>
+
+</para>
+
+@data_provider: 
+@url: 
+@attributes: 
+@flags: 
+@io_priority: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION tracker_data_provider_begin_finish ##### -->
+<para>
+
+</para>
+
+@data_provider: 
+@result: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_data_provider_end ##### -->
+<para>
+
+</para>
+
+@data_provider: 
+@enumerator: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_data_provider_end_async ##### -->
+<para>
+
+</para>
+
+@data_provider: 
+@enumerator: 
+@io_priority: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION tracker_data_provider_end_finish ##### -->
+<para>
+
+</para>
+
+@data_provider: 
+@result: 
+@error: 
+@Returns: 
+
+
+<!-- ##### STRUCT TrackerDataProvider ##### -->
+<para>
+
+</para>
+
+

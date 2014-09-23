@@ -38,6 +38,9 @@ rules_files = \
 	10-vorbis.rule \
 	10-xmp.rule \
 	10-xps.rule \
+	10-bmp.rule \
+	10-ebooks.rule \
+	10-comics.rule \
 	11-iso.rule \
 	11-msoffice-xml.rule \
 	15-gstreamer-guess.rule \
@@ -180,6 +183,14 @@ if HAVE_LIBAV
 extractmodules_LTLIBRARIES += libextract-libav.la
 rules_DATA += 90-libav-audio-generic.rule 90-libav-video-generic.rule
 endif
+
+extractmodules_LTLIBRARIES += libextract-bmp.la
+rules_DATA += 10-bmp.rule
+
+extractmodules_LTLIBRARIES += libextract-dummy.la
+# Rule files using the dummy extractor
+rules_DATA += 10-comics.rule
+rules_DATA += 10-ebooks.rule
 
 # ABW
 libextract_abw_la_SOURCES = tracker-extract-abw.c
@@ -493,6 +504,28 @@ libextract_libav_la_LIBADD = \
 	$(AVCODEC_LIBS)
 
 
+# BMP
+libextract_bmp_la_SOURCES = tracker-extract-bmp.c
+libextract_bmp_la_CFLAGS = \
+	$(TRACKER_EXTRACT_MODULES_CFLAGS)
+libextract_bmp_la_LDFLAGS = $(module_flags)
+libextract_bmp_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(BUILD_LIBS) \
+	$(TRACKER_EXTRACT_MODULES_LIBS)
+
+# Dummy
+libextract_dummy_la_SOURCES = tracker-extract-dummy.c
+libextract_dummy_la_CFLAGS = \
+	$(TRACKER_EXTRACT_MODULES_CFLAGS)
+libextract_dummy_la_LDFLAGS = $(module_flags)
+libextract_dummy_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(BUILD_LIBS) \
+	$(TRACKER_EXTRACT_MODULES_LIBS)
+
 #
 # Binaries
 #
@@ -507,6 +540,8 @@ tracker_extract_SOURCES = \
 	tracker-extract-controller.h \
 	tracker-extract-decorator.c \
 	tracker-extract-decorator.h \
+	tracker-extract-persistence.c \
+	tracker-extract-persistence.h \
 	tracker-extract-priority-dbus.c \
 	tracker-extract-priority-dbus.h \
 	tracker-read.c \

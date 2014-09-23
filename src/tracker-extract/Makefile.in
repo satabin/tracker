@@ -209,6 +209,28 @@ libextract_abw_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(libextract_abw_la_LDFLAGS) $(LDFLAGS) -o $@
 @HAVE_ABIWORD_TRUE@am_libextract_abw_la_rpath = -rpath \
 @HAVE_ABIWORD_TRUE@	$(extractmodulesdir)
+libextract_bmp_la_DEPENDENCIES =  \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_libextract_bmp_la_OBJECTS =  \
+	libextract_bmp_la-tracker-extract-bmp.lo
+libextract_bmp_la_OBJECTS = $(am_libextract_bmp_la_OBJECTS)
+libextract_bmp_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(libextract_bmp_la_CFLAGS) $(CFLAGS) \
+	$(libextract_bmp_la_LDFLAGS) $(LDFLAGS) -o $@
+libextract_dummy_la_DEPENDENCIES =  \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_libextract_dummy_la_OBJECTS =  \
+	libextract_dummy_la-tracker-extract-dummy.lo
+libextract_dummy_la_OBJECTS = $(am_libextract_dummy_la_OBJECTS)
+libextract_dummy_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(libextract_dummy_la_CFLAGS) $(CFLAGS) \
+	$(libextract_dummy_la_LDFLAGS) $(LDFLAGS) -o $@
 libextract_dvi_la_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
@@ -541,6 +563,7 @@ am__tracker_extract_SOURCES_DIST = tracker-config.c tracker-config.h \
 	tracker-extract.c tracker-extract.h \
 	tracker-extract-controller.c tracker-extract-controller.h \
 	tracker-extract-decorator.c tracker-extract-decorator.h \
+	tracker-extract-persistence.c tracker-extract-persistence.h \
 	tracker-extract-priority-dbus.c \
 	tracker-extract-priority-dbus.h tracker-read.c tracker-read.h \
 	tracker-main.c tracker-main.h tracker-gsf.c tracker-gsf.h
@@ -550,6 +573,7 @@ am_tracker_extract_OBJECTS = tracker_extract-tracker-config.$(OBJEXT) \
 	tracker_extract-tracker-extract.$(OBJEXT) \
 	tracker_extract-tracker-extract-controller.$(OBJEXT) \
 	tracker_extract-tracker-extract-decorator.$(OBJEXT) \
+	tracker_extract-tracker-extract-persistence.$(OBJEXT) \
 	tracker_extract-tracker-extract-priority-dbus.$(OBJEXT) \
 	tracker_extract-tracker-read.$(OBJEXT) \
 	tracker_extract-tracker-main.$(OBJEXT) $(am__objects_1)
@@ -600,7 +624,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libextract_abw_la_SOURCES) $(libextract_dvi_la_SOURCES) \
+SOURCES = $(libextract_abw_la_SOURCES) $(libextract_bmp_la_SOURCES) \
+	$(libextract_dummy_la_SOURCES) $(libextract_dvi_la_SOURCES) \
 	$(libextract_epub_la_SOURCES) $(libextract_flac_la_SOURCES) \
 	$(libextract_gif_la_SOURCES) \
 	$(libextract_gstreamer_la_SOURCES) \
@@ -617,6 +642,7 @@ SOURCES = $(libextract_abw_la_SOURCES) $(libextract_dvi_la_SOURCES) \
 	$(libextract_xmp_la_SOURCES) $(libextract_xps_la_SOURCES) \
 	$(tracker_extract_SOURCES)
 DIST_SOURCES = $(libextract_abw_la_SOURCES) \
+	$(libextract_bmp_la_SOURCES) $(libextract_dummy_la_SOURCES) \
 	$(libextract_dvi_la_SOURCES) $(libextract_epub_la_SOURCES) \
 	$(libextract_flac_la_SOURCES) $(libextract_gif_la_SOURCES) \
 	$(libextract_gstreamer_la_SOURCES) \
@@ -887,6 +913,8 @@ TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
+TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
+TRACKER_MINER_APPS_LIBS = @TRACKER_MINER_APPS_LIBS@
 TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
 TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
 TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
@@ -896,6 +924,8 @@ TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
 TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
+TRACKER_MINER_USER_GUIDES_CFLAGS = @TRACKER_MINER_USER_GUIDES_CFLAGS@
+TRACKER_MINER_USER_GUIDES_LIBS = @TRACKER_MINER_USER_GUIDES_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
 TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
 TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
@@ -1020,6 +1050,9 @@ rules_files = \
 	10-vorbis.rule \
 	10-xmp.rule \
 	10-xps.rule \
+	10-bmp.rule \
+	10-ebooks.rule \
+	10-comics.rule \
 	11-iso.rule \
 	11-msoffice-xml.rule \
 	15-gstreamer-guess.rule \
@@ -1049,7 +1082,9 @@ extractmodules_LTLIBRARIES = $(am__append_1) $(am__append_3) \
 	$(am__append_24) $(am__append_26) $(am__append_28) \
 	$(am__append_30) $(am__append_32) $(am__append_34) \
 	$(am__append_36) $(am__append_38) $(am__append_40) \
-	$(am__append_42) $(am__append_44)
+	$(am__append_42) $(am__append_44) libextract-bmp.la \
+	libextract-dummy.la
+# Rule files using the dummy extractor
 rules_DATA = $(am__append_2) $(am__append_4) $(am__append_6) \
 	$(am__append_8) $(am__append_10) $(am__append_12) \
 	$(am__append_14) $(am__append_16) $(am__append_18) \
@@ -1057,7 +1092,8 @@ rules_DATA = $(am__append_2) $(am__append_4) $(am__append_6) \
 	$(am__append_25) $(am__append_27) $(am__append_29) \
 	$(am__append_31) $(am__append_33) $(am__append_35) \
 	$(am__append_37) $(am__append_39) $(am__append_41) \
-	$(am__append_43) $(am__append_45)
+	$(am__append_43) $(am__append_45) 10-bmp.rule 10-comics.rule \
+	10-ebooks.rule
 
 # ABW
 libextract_abw_la_SOURCES = tracker-extract-abw.c
@@ -1393,10 +1429,37 @@ libextract_libav_la_LIBADD = \
 	$(AVUTIL_LIBS) \
 	$(AVCODEC_LIBS)
 
+
+# BMP
+libextract_bmp_la_SOURCES = tracker-extract-bmp.c
+libextract_bmp_la_CFLAGS = \
+	$(TRACKER_EXTRACT_MODULES_CFLAGS)
+
+libextract_bmp_la_LDFLAGS = $(module_flags)
+libextract_bmp_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(BUILD_LIBS) \
+	$(TRACKER_EXTRACT_MODULES_LIBS)
+
+
+# Dummy
+libextract_dummy_la_SOURCES = tracker-extract-dummy.c
+libextract_dummy_la_CFLAGS = \
+	$(TRACKER_EXTRACT_MODULES_CFLAGS)
+
+libextract_dummy_la_LDFLAGS = $(module_flags)
+libextract_dummy_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(BUILD_LIBS) \
+	$(TRACKER_EXTRACT_MODULES_LIBS)
+
 tracker_extract_SOURCES = tracker-config.c tracker-config.h \
 	tracker-extract.c tracker-extract.h \
 	tracker-extract-controller.c tracker-extract-controller.h \
 	tracker-extract-decorator.c tracker-extract-decorator.h \
+	tracker-extract-persistence.c tracker-extract-persistence.h \
 	tracker-extract-priority-dbus.c \
 	tracker-extract-priority-dbus.h tracker-read.c tracker-read.h \
 	tracker-main.c tracker-main.h $(am__append_50)
@@ -1490,6 +1553,12 @@ clean-extractmodulesLTLIBRARIES:
 
 libextract-abw.la: $(libextract_abw_la_OBJECTS) $(libextract_abw_la_DEPENDENCIES) $(EXTRA_libextract_abw_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libextract_abw_la_LINK) $(am_libextract_abw_la_rpath) $(libextract_abw_la_OBJECTS) $(libextract_abw_la_LIBADD) $(LIBS)
+
+libextract-bmp.la: $(libextract_bmp_la_OBJECTS) $(libextract_bmp_la_DEPENDENCIES) $(EXTRA_libextract_bmp_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libextract_bmp_la_LINK) -rpath $(extractmodulesdir) $(libextract_bmp_la_OBJECTS) $(libextract_bmp_la_LIBADD) $(LIBS)
+
+libextract-dummy.la: $(libextract_dummy_la_OBJECTS) $(libextract_dummy_la_DEPENDENCIES) $(EXTRA_libextract_dummy_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libextract_dummy_la_LINK) -rpath $(extractmodulesdir) $(libextract_dummy_la_OBJECTS) $(libextract_dummy_la_LIBADD) $(LIBS)
 
 libextract-dvi.la: $(libextract_dvi_la_OBJECTS) $(libextract_dvi_la_DEPENDENCIES) $(EXTRA_libextract_dvi_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libextract_dvi_la_LINK) $(am_libextract_dvi_la_rpath) $(libextract_dvi_la_OBJECTS) $(libextract_dvi_la_LIBADD) $(LIBS)
@@ -1623,6 +1692,8 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_abw_la-tracker-extract-abw.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_bmp_la-tracker-extract-bmp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_dummy_la-tracker-extract-dummy.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_dvi_la-tracker-extract-dvi.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_epub_la-tracker-extract-epub.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_flac_la-tracker-extract-flac.Plo@am__quote@
@@ -1651,6 +1722,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_extract-tracker-config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_extract-tracker-extract-controller.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_extract-tracker-extract-decorator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_extract-tracker-extract-persistence.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_extract-tracker-extract-priority-dbus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_extract-tracker-extract.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_extract-tracker-gsf.Po@am__quote@
@@ -1684,6 +1756,20 @@ libextract_abw_la-tracker-extract-abw.lo: tracker-extract-abw.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-extract-abw.c' object='libextract_abw_la-tracker-extract-abw.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_abw_la_CFLAGS) $(CFLAGS) -c -o libextract_abw_la-tracker-extract-abw.lo `test -f 'tracker-extract-abw.c' || echo '$(srcdir)/'`tracker-extract-abw.c
+
+libextract_bmp_la-tracker-extract-bmp.lo: tracker-extract-bmp.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_bmp_la_CFLAGS) $(CFLAGS) -MT libextract_bmp_la-tracker-extract-bmp.lo -MD -MP -MF $(DEPDIR)/libextract_bmp_la-tracker-extract-bmp.Tpo -c -o libextract_bmp_la-tracker-extract-bmp.lo `test -f 'tracker-extract-bmp.c' || echo '$(srcdir)/'`tracker-extract-bmp.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libextract_bmp_la-tracker-extract-bmp.Tpo $(DEPDIR)/libextract_bmp_la-tracker-extract-bmp.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-extract-bmp.c' object='libextract_bmp_la-tracker-extract-bmp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_bmp_la_CFLAGS) $(CFLAGS) -c -o libextract_bmp_la-tracker-extract-bmp.lo `test -f 'tracker-extract-bmp.c' || echo '$(srcdir)/'`tracker-extract-bmp.c
+
+libextract_dummy_la-tracker-extract-dummy.lo: tracker-extract-dummy.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_dummy_la_CFLAGS) $(CFLAGS) -MT libextract_dummy_la-tracker-extract-dummy.lo -MD -MP -MF $(DEPDIR)/libextract_dummy_la-tracker-extract-dummy.Tpo -c -o libextract_dummy_la-tracker-extract-dummy.lo `test -f 'tracker-extract-dummy.c' || echo '$(srcdir)/'`tracker-extract-dummy.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libextract_dummy_la-tracker-extract-dummy.Tpo $(DEPDIR)/libextract_dummy_la-tracker-extract-dummy.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-extract-dummy.c' object='libextract_dummy_la-tracker-extract-dummy.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_dummy_la_CFLAGS) $(CFLAGS) -c -o libextract_dummy_la-tracker-extract-dummy.lo `test -f 'tracker-extract-dummy.c' || echo '$(srcdir)/'`tracker-extract-dummy.c
 
 libextract_dvi_la-tracker-extract-dvi.lo: tracker-extract-dvi.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_dvi_la_CFLAGS) $(CFLAGS) -MT libextract_dvi_la-tracker-extract-dvi.lo -MD -MP -MF $(DEPDIR)/libextract_dvi_la-tracker-extract-dvi.Tpo -c -o libextract_dvi_la-tracker-extract-dvi.lo `test -f 'tracker-extract-dvi.c' || echo '$(srcdir)/'`tracker-extract-dvi.c
@@ -1915,6 +2001,20 @@ tracker_extract-tracker-extract-decorator.obj: tracker-extract-decorator.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-extract-decorator.c' object='tracker_extract-tracker-extract-decorator.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_extract_CFLAGS) $(CFLAGS) -c -o tracker_extract-tracker-extract-decorator.obj `if test -f 'tracker-extract-decorator.c'; then $(CYGPATH_W) 'tracker-extract-decorator.c'; else $(CYGPATH_W) '$(srcdir)/tracker-extract-decorator.c'; fi`
+
+tracker_extract-tracker-extract-persistence.o: tracker-extract-persistence.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_extract_CFLAGS) $(CFLAGS) -MT tracker_extract-tracker-extract-persistence.o -MD -MP -MF $(DEPDIR)/tracker_extract-tracker-extract-persistence.Tpo -c -o tracker_extract-tracker-extract-persistence.o `test -f 'tracker-extract-persistence.c' || echo '$(srcdir)/'`tracker-extract-persistence.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_extract-tracker-extract-persistence.Tpo $(DEPDIR)/tracker_extract-tracker-extract-persistence.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-extract-persistence.c' object='tracker_extract-tracker-extract-persistence.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_extract_CFLAGS) $(CFLAGS) -c -o tracker_extract-tracker-extract-persistence.o `test -f 'tracker-extract-persistence.c' || echo '$(srcdir)/'`tracker-extract-persistence.c
+
+tracker_extract-tracker-extract-persistence.obj: tracker-extract-persistence.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_extract_CFLAGS) $(CFLAGS) -MT tracker_extract-tracker-extract-persistence.obj -MD -MP -MF $(DEPDIR)/tracker_extract-tracker-extract-persistence.Tpo -c -o tracker_extract-tracker-extract-persistence.obj `if test -f 'tracker-extract-persistence.c'; then $(CYGPATH_W) 'tracker-extract-persistence.c'; else $(CYGPATH_W) '$(srcdir)/tracker-extract-persistence.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_extract-tracker-extract-persistence.Tpo $(DEPDIR)/tracker_extract-tracker-extract-persistence.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-extract-persistence.c' object='tracker_extract-tracker-extract-persistence.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_extract_CFLAGS) $(CFLAGS) -c -o tracker_extract-tracker-extract-persistence.obj `if test -f 'tracker-extract-persistence.c'; then $(CYGPATH_W) 'tracker-extract-persistence.c'; else $(CYGPATH_W) '$(srcdir)/tracker-extract-persistence.c'; fi`
 
 tracker_extract-tracker-extract-priority-dbus.o: tracker-extract-priority-dbus.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_extract_CFLAGS) $(CFLAGS) -MT tracker_extract-tracker-extract-priority-dbus.o -MD -MP -MF $(DEPDIR)/tracker_extract-tracker-extract-priority-dbus.Tpo -c -o tracker_extract-tracker-extract-priority-dbus.o `test -f 'tracker-extract-priority-dbus.c' || echo '$(srcdir)/'`tracker-extract-priority-dbus.c

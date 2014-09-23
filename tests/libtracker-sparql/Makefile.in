@@ -162,22 +162,27 @@ am__installdirs = "$(DESTDIR)$(installed_testdir)" \
 	"$(DESTDIR)$(installed_test_metadir)" \
 	"$(DESTDIR)$(installed_testdir)"
 LTLIBRARIES = $(installed_test_LTLIBRARIES) $(noinst_LTLIBRARIES)
-am__EXEEXT_1 = tracker-test$(EXEEXT)
+am__EXEEXT_1 = tracker-test$(EXEEXT) tracker-gb-737023$(EXEEXT)
 am__EXEEXT_2 = $(am__EXEEXT_1)
 @ENABLE_ALWAYS_BUILD_TESTS_FALSE@am__EXEEXT_3 = $(am__EXEEXT_2)
 @ENABLE_INSTALLED_TESTS_TRUE@am__EXEEXT_4 = $(am__EXEEXT_1)
 @ENABLE_ALWAYS_BUILD_TESTS_TRUE@am__EXEEXT_5 = $(am__EXEEXT_2)
 PROGRAMS = $(installed_test_PROGRAMS) $(noinst_PROGRAMS)
-am_tracker_test_OBJECTS = tracker-test.$(OBJEXT)
-tracker_test_OBJECTS = $(am_tracker_test_OBJECTS)
-tracker_test_LDADD = $(LDADD)
+tracker_gb_737023_SOURCES = tracker-gb-737023.c
+tracker_gb_737023_OBJECTS = tracker-gb-737023.$(OBJEXT)
+tracker_gb_737023_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
-tracker_test_DEPENDENCIES = $(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+tracker_gb_737023_DEPENDENCIES = $(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+am_tracker_test_OBJECTS = tracker-test.$(OBJEXT)
+tracker_test_OBJECTS = $(am_tracker_test_OBJECTS)
+tracker_test_LDADD = $(LDADD)
+tracker_test_DEPENDENCIES = $(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 SCRIPTS = $(installed_test_SCRIPTS) $(noinst_SCRIPTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -213,8 +218,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(tracker_test_SOURCES)
-DIST_SOURCES = $(tracker_test_SOURCES)
+SOURCES = tracker-gb-737023.c $(tracker_test_SOURCES)
+DIST_SOURCES = tracker-gb-737023.c $(tracker_test_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -647,6 +652,8 @@ TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
+TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
+TRACKER_MINER_APPS_LIBS = @TRACKER_MINER_APPS_LIBS@
 TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
 TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
 TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
@@ -656,6 +663,8 @@ TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
 TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
+TRACKER_MINER_USER_GUIDES_CFLAGS = @TRACKER_MINER_USER_GUIDES_CFLAGS@
+TRACKER_MINER_USER_GUIDES_LIBS = @TRACKER_MINER_USER_GUIDES_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
 TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
 TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
@@ -791,7 +800,10 @@ all_test_ltlibs = $(test_ltlibraries) $(uninstalled_test_ltlibraries) $(installe
 @ENABLE_INSTALLED_TESTS_TRUE@                      $(dist_test_scripts) $(dist_installed_test_scripts)
 
 @ENABLE_INSTALLED_TESTS_TRUE@installed_test_meta_DATA = $(installed_testcases:=.test)
-test_programs = tracker-test
+test_programs = \
+	tracker-test                                   \
+	tracker-gb-737023
+
 AM_CPPFLAGS = \
 	$(BUILD_CFLAGS)                                \
 	-I$(top_srcdir)/src                            \
@@ -805,6 +817,7 @@ LDADD = \
 	$(LIBTRACKER_SPARQL_LIBS)
 
 tracker_test_SOURCES = tracker-test.c
+tracker_gb_737023_test_SOURCES = tracker-gb-737023.c
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -966,6 +979,10 @@ clean-noinstPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
+tracker-gb-737023$(EXEEXT): $(tracker_gb_737023_OBJECTS) $(tracker_gb_737023_DEPENDENCIES) $(EXTRA_tracker_gb_737023_DEPENDENCIES) 
+	@rm -f tracker-gb-737023$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_gb_737023_OBJECTS) $(tracker_gb_737023_LDADD) $(LIBS)
+
 tracker-test$(EXEEXT): $(tracker_test_OBJECTS) $(tracker_test_DEPENDENCIES) $(EXTRA_tracker_test_DEPENDENCIES) 
 	@rm -f tracker-test$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_test_OBJECTS) $(tracker_test_LDADD) $(LIBS)
@@ -1011,6 +1028,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-gb-737023.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-test.Po@am__quote@
 
 .c.o:
@@ -1281,6 +1299,13 @@ recheck: all $(check_LTLIBRARIES) $(check_PROGRAMS) $(check_SCRIPTS) $(check_DAT
 tracker-test.log: tracker-test$(EXEEXT)
 	@p='tracker-test$(EXEEXT)'; \
 	b='tracker-test'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+tracker-gb-737023.log: tracker-gb-737023$(EXEEXT)
+	@p='tracker-gb-737023$(EXEEXT)'; \
+	b='tracker-gb-737023'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \

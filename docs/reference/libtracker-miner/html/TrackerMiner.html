@@ -5,8 +5,8 @@
 <title>Tracker Miner Library Reference Manual: TrackerMiner</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
-<link rel="up" href="ch02.html" title="Base abstract miner classes">
-<link rel="prev" href="ch02.html" title="Base abstract miner classes">
+<link rel="up" href="ch03.html" title="Base abstract miner classes">
+<link rel="prev" href="ch03.html" title="Base abstract miner classes">
 <link rel="next" href="TrackerMinerOnline.html" title="TrackerMinerOnline">
 <meta name="generator" content="GTK-Doc V1.21.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -22,8 +22,8 @@
                   <a href="#TrackerMiner.signals" class="shortcut">Signals</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<td><a accesskey="u" href="ch02.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="ch02.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="ch03.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="TrackerMinerOnline.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
@@ -53,7 +53,71 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlConnection.html"><span class="returnvalue">TrackerSparqlConnection</span></a> *
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="TrackerMiner.html#tracker-miner-start" title="tracker_miner_start ()">tracker_miner_start</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="TrackerMiner.html#tracker-miner-stop" title="tracker_miner_stop ()">tracker_miner_stop</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="TrackerMiner.html#tracker-miner-ignore-next-update" title="tracker_miner_ignore_next_update ()">tracker_miner_ignore_next_update</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="TrackerMiner.html#tracker-miner-is-started" title="tracker_miner_is_started ()">tracker_miner_is_started</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="TrackerMiner.html#tracker-miner-is-paused" title="tracker_miner_is_paused ()">tracker_miner_is_paused</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="TrackerMiner.html#tracker-miner-get-n-pause-reasons" title="tracker_miner_get_n_pause_reasons ()">tracker_miner_get_n_pause_reasons</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="TrackerMiner.html#tracker-miner-pause" title="tracker_miner_pause ()">tracker_miner_pause</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="TrackerMiner.html#tracker-miner-resume" title="tracker_miner_resume ()">tracker_miner_resume</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../libtracker-sparql/TrackerSparqlConnection.html"><span class="returnvalue">TrackerSparqlConnection</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="TrackerMiner.html#tracker-miner-get-connection" title="tracker_miner_get_connection ()">tracker_miner_get_connection</a> <span class="c_punctuation">()</span>
@@ -81,70 +145,6 @@
 <a class="link" href="TrackerMiner.html#tracker-miner-get-dbus-full-path" title="tracker_miner_get_dbus_full_path ()">tracker_miner_get_dbus_full_path</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
-<tr>
-<td class="function_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
-</td>
-<td class="function_name">
-<a class="link" href="TrackerMiner.html#tracker-miner-get-n-pause-reasons" title="tracker_miner_get_n_pause_reasons ()">tracker_miner_get_n_pause_reasons</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<span class="returnvalue">void</span>
-</td>
-<td class="function_name">
-<a class="link" href="TrackerMiner.html#tracker-miner-ignore-next-update" title="tracker_miner_ignore_next_update ()">tracker_miner_ignore_next_update</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-</td>
-<td class="function_name">
-<a class="link" href="TrackerMiner.html#tracker-miner-is-paused" title="tracker_miner_is_paused ()">tracker_miner_is_paused</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-</td>
-<td class="function_name">
-<a class="link" href="TrackerMiner.html#tracker-miner-is-started" title="tracker_miner_is_started ()">tracker_miner_is_started</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
-</td>
-<td class="function_name">
-<a class="link" href="TrackerMiner.html#tracker-miner-pause" title="tracker_miner_pause ()">tracker_miner_pause</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-</td>
-<td class="function_name">
-<a class="link" href="TrackerMiner.html#tracker-miner-resume" title="tracker_miner_resume ()">tracker_miner_resume</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<span class="returnvalue">void</span>
-</td>
-<td class="function_name">
-<a class="link" href="TrackerMiner.html#tracker-miner-start" title="tracker_miner_start ()">tracker_miner_start</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<span class="returnvalue">void</span>
-</td>
-<td class="function_name">
-<a class="link" href="TrackerMiner.html#tracker-miner-stop" title="tracker_miner_stop ()">tracker_miner_stop</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
 </tbody>
 </table></div>
 </div>
@@ -157,6 +157,17 @@
 <col width="200px" class="properties_flags">
 </colgroup>
 <tbody>
+<tr>
+<td class="property_type"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a></td>
+<td class="property_name"><a class="link" href="TrackerMiner.html#TrackerMiner--introspection-handler" title="The “introspection-handler” property">introspection-handler</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<td class="property_name"><a class="link" href="TrackerMiner.html#TrackerMiner--introspection-xml" title="The “introspection-xml” property">introspection-xml</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
 <tr>
 <td class="property_type">
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
@@ -234,11 +245,23 @@
 <tbody>
 <tr>
 <td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="TrackerMiner.html#TRACKER-MINER-ERROR:CAPS" title="TRACKER_MINER_ERROR">TRACKER_MINER_ERROR</a></td>
+<td class="function_name"><a class="link" href="TrackerMiner.html#TRACKER-MINER-DBUS-INTERFACE:CAPS" title="TRACKER_MINER_DBUS_INTERFACE">TRACKER_MINER_DBUS_INTERFACE</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="TrackerMiner.html#TRACKER-MINER-DBUS-NAME-PREFIX:CAPS" title="TRACKER_MINER_DBUS_NAME_PREFIX">TRACKER_MINER_DBUS_NAME_PREFIX</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="TrackerMiner.html#TRACKER-MINER-DBUS-PATH-PREFIX:CAPS" title="TRACKER_MINER_DBUS_PATH_PREFIX">TRACKER_MINER_DBUS_PATH_PREFIX</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="TrackerMiner.html#TRACKER-MINER-ERROR-DOMAIN:CAPS" title="TRACKER_MINER_ERROR_DOMAIN">TRACKER_MINER_ERROR_DOMAIN</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="TrackerMiner.html#TRACKER-MINER-ERROR:CAPS" title="TRACKER_MINER_ERROR">TRACKER_MINER_ERROR</a></td>
 </tr>
 <tr>
 <td class="datatype_keyword">struct</td>
@@ -247,6 +270,10 @@
 <tr>
 <td class="datatype_keyword"> </td>
 <td class="function_name"><a class="link" href="TrackerMiner.html#TrackerMinerClass" title="TrackerMinerClass">TrackerMinerClass</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="TrackerMiner.html#TrackerMinerError" title="enum TrackerMinerError">TrackerMinerError</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -277,7 +304,7 @@ TrackerMiner implements
 for tracker-store, being an abstract class it doesn't do much by itself,
 but provides the basic signaling and operation control so the miners
 implementing this class are properly recognized by Tracker, and can be
-controlled properly by external means such as <a href="http://library.gnome.org/devel/libtracker-miner/unstable/TrackerMinerManager.html"><span class="type">TrackerMinerManager</span></a>.</p>
+controlled properly by external means such as <a href="../libtracker-control/TrackerMinerManager.html"><span class="type">TrackerMinerManager</span></a>.</p>
 <p><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> implements the <a href="http://library.gnome.org/devel/gio/unstable/GInitable.html"><span class="type">GInitable</span></a> interface, and thus, all objects of
 types inheriting from <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> must be initialized with <a href="http://library.gnome.org/devel/gio/unstable/GInitable.html#g-initable-init"><code class="function">g_initable_init()</code></a>
 just after creation (or directly created with <a href="http://library.gnome.org/devel/gio/unstable/GInitable.html#g-initable-new"><code class="function">g_initable_new()</code></a>).</p>
@@ -288,9 +315,10 @@ just after creation (or directly created with <a href="http://library.gnome.org/
 <a name="tracker-miner-error-quark"></a><h3>tracker_miner_error_quark ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>
 tracker_miner_error_quark (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>Returns the <a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="type">GQuark</span></a> used to identify miner errors in GError structures.</p>
+<p>Gives the caller the <a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="type">GQuark</span></a> used to identify miner errors in
+GError structures.</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.11.2.5"></a><h4>Returns</h4>
+<a name="id-1.3.4.2.11.2.5"></a><h4>Returns</h4>
 <p> the error <a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="type">GQuark</span></a></p>
 <p></p>
 </div>
@@ -298,13 +326,12 @@ tracker_miner_error_quark (<em class="parameter"><code><span class="type">void</
 </div>
 <hr>
 <div class="refsect2">
-<a name="tracker-miner-get-connection"></a><h3>tracker_miner_get_connection ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlConnection.html"><span class="returnvalue">TrackerSparqlConnection</span></a> *
-tracker_miner_get_connection (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
-<p>Gets the <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlConnection.html"><span class="type">TrackerSparqlConnection</span></a> initialized by <em class="parameter"><code>miner</code></em>
-</p>
+<a name="tracker-miner-start"></a><h3>tracker_miner_start ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+tracker_miner_start (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
+<p>Tells the miner to start processing data.</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.11.3.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.11.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -318,22 +345,16 @@ tracker_miner_get_connection (<em class="parameter"><code><a class="link" href="
 </tr></tbody>
 </table></div>
 </div>
-<div class="refsect3">
-<a name="id-1.3.3.2.11.3.6"></a><h4>Returns</h4>
-<p> a <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlConnection.html"><span class="type">TrackerSparqlConnection</span></a>. </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
-</div>
-<p class="since">Since 0.10</p>
+<p class="since">Since 0.8</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="tracker-miner-get-dbus-connection"></a><h3>tracker_miner_get_dbus_connection ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/gio/unstable/GDBusConnection.html"><span class="returnvalue">GDBusConnection</span></a> *
-tracker_miner_get_dbus_connection (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
-<p>Gets the <a href="http://library.gnome.org/devel/gio/unstable/GDBusConnection.html"><span class="type">GDBusConnection</span></a> initialized by <em class="parameter"><code>miner</code></em>
-</p>
+<a name="tracker-miner-stop"></a><h3>tracker_miner_stop ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+tracker_miner_stop (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
+<p>Tells the miner to stop processing data.</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.11.4.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.11.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -347,100 +368,7 @@ tracker_miner_get_dbus_connection (<em class="parameter"><code><a class="link" h
 </tr></tbody>
 </table></div>
 </div>
-<div class="refsect3">
-<a name="id-1.3.3.2.11.4.6"></a><h4>Returns</h4>
-<p> a <a href="http://library.gnome.org/devel/gio/unstable/GDBusConnection.html"><span class="type">GDBusConnection</span></a>. </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
-</div>
-<p class="since">Since 0.10</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="tracker-miner-get-dbus-full-name"></a><h3>tracker_miner_get_dbus_full_name ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-tracker_miner_get_dbus_full_name (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
-<p>Gets the DBus name registered by <em class="parameter"><code>miner</code></em>
-</p>
-<div class="refsect3">
-<a name="id-1.3.3.2.11.5.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>miner</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.3.3.2.11.5.6"></a><h4>Returns</h4>
-<p> a constant string which should not be modified by the caller.</p>
-<p></p>
-</div>
-<p class="since">Since 0.10</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="tracker-miner-get-dbus-full-path"></a><h3>tracker_miner_get_dbus_full_path ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-tracker_miner_get_dbus_full_path (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
-<p>Gets the DBus path registered by <em class="parameter"><code>miner</code></em>
-</p>
-<div class="refsect3">
-<a name="id-1.3.3.2.11.6.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>miner</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.3.3.2.11.6.6"></a><h4>Returns</h4>
-<p> a constant string which should not be modified by the caller.</p>
-<p></p>
-</div>
-<p class="since">Since 0.10</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="tracker-miner-get-n-pause-reasons"></a><h3>tracker_miner_get_n_pause_reasons ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
-tracker_miner_get_n_pause_reasons (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
-<p>Returns the number of pause reasons holding <em class="parameter"><code>miner</code></em>
- from
-indexing contents.</p>
-<div class="refsect3">
-<a name="id-1.3.3.2.11.7.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>miner</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.3.3.2.11.7.6"></a><h4>Returns</h4>
-<p> The number of current pause reasons</p>
-<p></p>
-</div>
-<p class="since">Since 0.10.5</p>
+<p class="since">Since 0.8</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -451,7 +379,7 @@ tracker_miner_ignore_next_update (<em class="parameter"><code><a class="link" hr
 <p>Tells the miner to mark <em class="parameter"><code>urls</code></em>
  are to ignore on next update.</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.11.8.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.11.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -476,12 +404,12 @@ tracker_miner_ignore_next_update (<em class="parameter"><code><a class="link" hr
 </div>
 <hr>
 <div class="refsect2">
-<a name="tracker-miner-is-paused"></a><h3>tracker_miner_is_paused ()</h3>
+<a name="tracker-miner-is-started"></a><h3>tracker_miner_is_started ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-tracker_miner_is_paused (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
-<p>Returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the miner is paused.</p>
+tracker_miner_is_started (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
+<p>Returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the miner has been started.</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.11.9.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.11.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -496,7 +424,35 @@ tracker_miner_is_paused (<em class="parameter"><code><a class="link" href="Track
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.3.2.11.9.6"></a><h4>Returns</h4>
+<a name="id-1.3.4.2.11.6.6"></a><h4>Returns</h4>
+<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the miner is already started.</p>
+<p></p>
+</div>
+<p class="since">Since 0.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-miner-is-paused"></a><h3>tracker_miner_is_paused ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+tracker_miner_is_paused (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
+<p>Returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the miner is paused.</p>
+<div class="refsect3">
+<a name="id-1.3.4.2.11.7.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>miner</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.4.2.11.7.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the miner is paused.</p>
 <p></p>
 </div>
@@ -504,12 +460,14 @@ tracker_miner_is_paused (<em class="parameter"><code><a class="link" href="Track
 </div>
 <hr>
 <div class="refsect2">
-<a name="tracker-miner-is-started"></a><h3>tracker_miner_is_started ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
-tracker_miner_is_started (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
-<p>Returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the miner has been started.</p>
+<a name="tracker-miner-get-n-pause-reasons"></a><h3>tracker_miner_get_n_pause_reasons ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+tracker_miner_get_n_pause_reasons (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
+<p>Returns the number of pause reasons holding <em class="parameter"><code>miner</code></em>
+ from
+indexing contents.</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.11.10.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.11.8.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -524,11 +482,11 @@ tracker_miner_is_started (<em class="parameter"><code><a class="link" href="Trac
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.3.2.11.10.6"></a><h4>Returns</h4>
-<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the miner is already started.</p>
+<a name="id-1.3.4.2.11.8.6"></a><h4>Returns</h4>
+<p> The number of current pause reasons</p>
 <p></p>
 </div>
-<p class="since">Since 0.8</p>
+<p class="since">Since 0.10.5</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -543,7 +501,7 @@ this is what must be used in <a class="link" href="TrackerMiner.html#tracker-min
 operations. On failure <em class="parameter"><code>error</code></em>
  will be set and -1 will be returned.</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.11.11.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.11.9.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -570,7 +528,7 @@ operations. On failure <em class="parameter"><code>error</code></em>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.3.2.11.11.6"></a><h4>Returns</h4>
+<a name="id-1.3.4.2.11.9.6"></a><h4>Returns</h4>
 <p> The pause cookie ID.</p>
 <p></p>
 </div>
@@ -587,7 +545,7 @@ tracker_miner_resume (<em class="parameter"><code><a class="link" href="TrackerM
 returned by <a class="link" href="TrackerMiner.html#tracker-miner-pause" title="tracker_miner_pause ()"><code class="function">tracker_miner_pause()</code></a>. The miner won't actually resume
 operations until all pause requests have been resumed.</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.11.12.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.11.10.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -614,7 +572,7 @@ operations until all pause requests have been resumed.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.3.2.11.12.6"></a><h4>Returns</h4>
+<a name="id-1.3.4.2.11.10.6"></a><h4>Returns</h4>
 <p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the cookie was valid.</p>
 <p></p>
 </div>
@@ -622,12 +580,13 @@ operations until all pause requests have been resumed.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="tracker-miner-start"></a><h3>tracker_miner_start ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>
-tracker_miner_start (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
-<p>Tells the miner to start processing data.</p>
+<a name="tracker-miner-get-connection"></a><h3>tracker_miner_get_connection ()</h3>
+<pre class="programlisting"><a href="../libtracker-sparql/TrackerSparqlConnection.html"><span class="returnvalue">TrackerSparqlConnection</span></a> *
+tracker_miner_get_connection (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
+<p>Gets the <a href="../libtracker-sparql/TrackerSparqlConnection.html"><span class="type">TrackerSparqlConnection</span></a> initialized by <em class="parameter"><code>miner</code></em>
+</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.11.13.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.11.11.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -641,16 +600,22 @@ tracker_miner_start (<em class="parameter"><code><a class="link" href="TrackerMi
 </tr></tbody>
 </table></div>
 </div>
-<p class="since">Since 0.8</p>
+<div class="refsect3">
+<a name="id-1.3.4.2.11.11.6"></a><h4>Returns</h4>
+<p> a <a href="../libtracker-sparql/TrackerSparqlConnection.html"><span class="type">TrackerSparqlConnection</span></a>. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+<p class="since">Since 0.10</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="tracker-miner-stop"></a><h3>tracker_miner_stop ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>
-tracker_miner_stop (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
-<p>Tells the miner to stop processing data.</p>
+<a name="tracker-miner-get-dbus-connection"></a><h3>tracker_miner_get_dbus_connection ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gio/unstable/GDBusConnection.html"><span class="returnvalue">GDBusConnection</span></a> *
+tracker_miner_get_dbus_connection (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
+<p>Gets the <a href="http://library.gnome.org/devel/gio/unstable/GDBusConnection.html"><span class="type">GDBusConnection</span></a> initialized by <em class="parameter"><code>miner</code></em>
+</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.11.14.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.11.12.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -664,14 +629,93 @@ tracker_miner_stop (<em class="parameter"><code><a class="link" href="TrackerMin
 </tr></tbody>
 </table></div>
 </div>
-<p class="since">Since 0.8</p>
+<div class="refsect3">
+<a name="id-1.3.4.2.11.12.6"></a><h4>Returns</h4>
+<p> a <a href="http://library.gnome.org/devel/gio/unstable/GDBusConnection.html"><span class="type">GDBusConnection</span></a>. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+<p class="since">Since 0.10</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-miner-get-dbus-full-name"></a><h3>tracker_miner_get_dbus_full_name ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+tracker_miner_get_dbus_full_name (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
+<p>Gets the DBus name registered by <em class="parameter"><code>miner</code></em>
+</p>
+<div class="refsect3">
+<a name="id-1.3.4.2.11.13.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>miner</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.4.2.11.13.6"></a><h4>Returns</h4>
+<p> a constant string which should not be modified by the caller.</p>
+<p></p>
+</div>
+<p class="since">Since 0.10</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-miner-get-dbus-full-path"></a><h3>tracker_miner_get_dbus_full_path ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+tracker_miner_get_dbus_full_path (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
+<p>Gets the DBus path registered by <em class="parameter"><code>miner</code></em>
+</p>
+<div class="refsect3">
+<a name="id-1.3.4.2.11.14.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>miner</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.4.2.11.14.6"></a><h4>Returns</h4>
+<p> a constant string which should not be modified by the caller.</p>
+<p></p>
+</div>
+<p class="since">Since 0.10</p>
 </div>
 </div>
 <div class="refsect1">
 <a name="TrackerMiner.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
-<a name="TRACKER-MINER-ERROR:CAPS"></a><h3>TRACKER_MINER_ERROR</h3>
-<pre class="programlisting">#define TRACKER_MINER_ERROR        tracker_miner_error_quark()
+<a name="TRACKER-MINER-DBUS-INTERFACE:CAPS"></a><h3>TRACKER_MINER_DBUS_INTERFACE</h3>
+<pre class="programlisting">#define TRACKER_MINER_DBUS_INTERFACE   "org.freedesktop.Tracker1.Miner"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="TRACKER-MINER-DBUS-NAME-PREFIX:CAPS"></a><h3>TRACKER_MINER_DBUS_NAME_PREFIX</h3>
+<pre class="programlisting">#define TRACKER_MINER_DBUS_NAME_PREFIX "org.freedesktop.Tracker1.Miner."
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="TRACKER-MINER-DBUS-PATH-PREFIX:CAPS"></a><h3>TRACKER_MINER_DBUS_PATH_PREFIX</h3>
+<pre class="programlisting">#define TRACKER_MINER_DBUS_PATH_PREFIX "/org/freedesktop/Tracker1/Miner/"
 </pre>
 <p>
 </p>
@@ -680,6 +724,14 @@ tracker_miner_stop (<em class="parameter"><code><a class="link" href="TrackerMin
 <div class="refsect2">
 <a name="TRACKER-MINER-ERROR-DOMAIN:CAPS"></a><h3>TRACKER_MINER_ERROR_DOMAIN</h3>
 <pre class="programlisting">#define TRACKER_MINER_ERROR_DOMAIN "TrackerMiner"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="TRACKER-MINER-ERROR:CAPS"></a><h3>TRACKER_MINER_ERROR</h3>
+<pre class="programlisting">#define TRACKER_MINER_ERROR        tracker_miner_error_quark()
 </pre>
 <p>
 </p>
@@ -716,7 +768,7 @@ tracker_miner_stop (<em class="parameter"><code><a class="link" href="TrackerMin
 </pre>
 <p>Virtual methods left to implement.</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.12.5.5"></a><h4>Members</h4>
+<a name="id-1.3.4.2.12.8.5"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -768,9 +820,89 @@ tracker_miner_stop (<em class="parameter"><code><a class="link" href="TrackerMin
 </table></div>
 </div>
 </div>
+<hr>
+<div class="refsect2">
+<a name="TrackerMinerError"></a><h3>enum TrackerMinerError</h3>
+<p>Possible errors returned when calling <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> APIs or
+subclassed miners where the error is generic to all miners.</p>
+<div class="refsect3">
+<a name="id-1.3.4.2.12.9.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="TRACKER-MINER-ERROR-NAME-MISSING:CAPS"></a>TRACKER_MINER_ERROR_NAME_MISSING</p></td>
+<td class="enum_member_description">
+<p>No name was given when creating
+the miner. The name is crucial for D-Bus presence and a host of
+other things.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="TRACKER-MINER-ERROR-NAME-UNAVAILABLE:CAPS"></a>TRACKER_MINER_ERROR_NAME_UNAVAILABLE</p></td>
+<td class="enum_member_description">
+<p>The name trying to be used
+for the miner was not available, possibly because the miner is
+already running with the same name in another process.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="TRACKER-MINER-ERROR-PAUSED:CAPS"></a>TRACKER_MINER_ERROR_PAUSED</p></td>
+<td class="enum_member_description">
+<p>Given by miners when an API is used at
+the time the miner itself is paused and such actions should be avoided.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="TRACKER-MINER-ERROR-PAUSED-ALREADY:CAPS"></a>TRACKER_MINER_ERROR_PAUSED_ALREADY</p></td>
+<td class="enum_member_description">
+<p>The pause request has already
+been given by the same application with the same reason. Duplicate
+pause calls with the same reason by the same application can not
+be carried out.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="TRACKER-MINER-ERROR-INVALID-COOKIE:CAPS"></a>TRACKER_MINER_ERROR_INVALID_COOKIE</p></td>
+<td class="enum_member_description">
+<p>When pausing a miner, a cookie
+(or <em class="parameter"><code>gint</code></em>
+ based ID) is given. That cookie must be used to resume a
+previous pause request. If the cookie is unrecognised, this error
+is given.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
 </div>
 <div class="refsect1">
 <a name="TrackerMiner.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="TrackerMiner--introspection-handler"></a><h3>The <code class="literal">“introspection-handler”</code> property</h3>
+<pre class="programlisting">  “introspection-handler”    <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a></pre>
+<p>Introspection Method Handler function, expected to be a pointer to GDBusInterfaceVTable.</p>
+<p>Flags: Read / Write / Construct</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="TrackerMiner--introspection-xml"></a><h3>The <code class="literal">“introspection-xml”</code> property</h3>
+<pre class="programlisting">  “introspection-xml”        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<p>Introspection XML to *append* to the standard miner interface provided.</p>
+<p>Flags: Read / Write / Construct</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
 <div class="refsect2">
 <a name="TrackerMiner--name"></a><h3>The <code class="literal">“name”</code> property</h3>
 <pre class="programlisting">  “name”                     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
@@ -818,7 +950,7 @@ right after it has been asked to mark <em class="parameter"><code>urls</code></e
  as to ignore on next update
 through <a class="link" href="TrackerMiner.html#tracker-miner-ignore-next-update" title="tracker_miner_ignore_next_update ()"><code class="function">tracker_miner_ignore_next_update()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.14.2.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.14.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -856,9 +988,9 @@ user_function (<a class="link" href="TrackerMiner.html" title="TrackerMiner"><sp
 <p>the ::paused signal is emitted whenever
 there is any reason to pause, either
 internal (through <a class="link" href="TrackerMiner.html#tracker-miner-pause" title="tracker_miner_pause ()"><code class="function">tracker_miner_pause()</code></a>) or
-external (through DBus, see <a href="http://library.gnome.org/devel/libtracker-miner/unstable/TrackerMinerManager.html"><span class="type">TrackerMinerManager</span></a>).</p>
+external (through DBus, see <a href="../libtracker-control/TrackerMinerManager.html"><span class="type">TrackerMinerManager</span></a>).</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.14.3.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.14.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -901,7 +1033,7 @@ will indicate how much has been processed so far. <em class="parameter"><code>re
 give the number expected of seconds to finish processing, 0 if the
 value cannot be estimated, and -1 if its not applicable.</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.14.4.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.14.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -949,9 +1081,9 @@ user_function (<a class="link" href="TrackerMiner.html" title="TrackerMiner"><sp
                <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>      user_data)</pre>
 <p>the ::resumed signal is emitted whenever
 all reasons to pause have disappeared, see
-<a class="link" href="TrackerMiner.html#tracker-miner-resume" title="tracker_miner_resume ()"><code class="function">tracker_miner_resume()</code></a> and <a href="http://library.gnome.org/devel/libtracker-miner/unstable/TrackerMinerManager.html"><span class="type">TrackerMinerManager</span></a>.</p>
+<a class="link" href="TrackerMiner.html#tracker-miner-resume" title="tracker_miner_resume ()"><code class="function">tracker_miner_resume()</code></a> and <a href="../libtracker-control/TrackerMinerManager.html"><span class="type">TrackerMinerManager</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.14.5.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.14.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -985,7 +1117,7 @@ user_function (<a class="link" href="TrackerMiner.html" title="TrackerMiner"><sp
 right after it has been started through
 <a class="link" href="TrackerMiner.html#tracker-miner-start" title="tracker_miner_start ()"><code class="function">tracker_miner_start()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.14.6.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.14.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1019,7 +1151,7 @@ user_function (<a class="link" href="TrackerMiner.html" title="TrackerMiner"><sp
 right after it has been stopped through
 <a class="link" href="TrackerMiner.html#tracker-miner-stop" title="tracker_miner_stop ()"><code class="function">tracker_miner_stop()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.3.2.14.7.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.2.14.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">

@@ -1,4 +1,4 @@
-tracker (1.2.1-1) UNRELEASED; urgency=medium
+tracker (1.2.1-1) unstable; urgency=medium
 
   * New upstream release.
   * Bump Build-Depends on libmediaart-1.0-dev to (>= 0.5.0) as per
@@ -9,7 +9,7 @@ tracker (1.2.1-1) UNRELEASED; urgency=medium
     tracker-miner-fs package. That functionality was split of tracker-miner-fs
     into separate processes. We keep them in a single binary package for now.
 
- -- Michael Biebl <biebl@debian.org>  Tue, 23 Sep 2014 21:25:45 +0200
+ -- Michael Biebl <biebl@debian.org>  Tue, 23 Sep 2014 23:21:07 +0200
 
 tracker (1.0.4-1) unstable; urgency=medium
 

@@ -36,12 +36,13 @@ TrackerDecoratorFS
 @parent_class: 
 @padding: 
 
-<!-- ##### FUNCTION tracker_decorator_fs_get_type ##### -->
+<!-- ##### FUNCTION tracker_decorator_fs_prepend_file ##### -->
 <para>
 
 </para>
 
-@void: 
+@decorator: 
+@file: 
 @Returns: 
 
 

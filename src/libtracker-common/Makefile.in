@@ -81,8 +81,11 @@ build_triplet = @build@
 host_triplet = @host@
 @HAVE_TRACKER_FTS_TRUE@am__append_1 = tracker-language.c
 @HAVE_TRACKER_FTS_TRUE@am__append_2 = tracker-language.h
-@HAVE_MEEGOTOUCH_TRUE@am__append_3 = tracker-locale-gconfdbus.c
-@HAVE_MEEGOTOUCH_TRUE@am__append_4 = tracker-locale-gconfdbus.h
+@HAVE_MEEGOTOUCH_TRUE@am__append_3 = 
+@HAVE_MEEGOTOUCH_TRUE@am__append_4 = \
+@HAVE_MEEGOTOUCH_TRUE@	tracker-locale-gconfdbus.h \
+@HAVE_MEEGOTOUCH_TRUE@	tracker-meego.h
+
 @HAVE_TRACKER_FTS_TRUE@am__append_5 = $(top_builddir)/src/libstemmer/libstemmer.la
 subdir = src/libtracker-common
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
@@ -142,19 +145,19 @@ am__libtracker_common_la_SOURCES_DIST = tracker-enum-types.c \
 	tracker-ioprio.c tracker-keyfile-object.c tracker-log.c \
 	tracker-sched.c tracker-storage.c tracker-type-utils.c \
 	tracker-utils.c tracker-crc32.c tracker-locale.c \
-	tracker-language.c tracker-locale-gconfdbus.c
+	tracker-miner-locale.c tracker-language.c
 am__objects_1 = tracker-enum-types.lo
 @OS_WIN32_FALSE@am__objects_2 = tracker-os-dependant-unix.lo
 @OS_WIN32_TRUE@am__objects_2 = tracker-os-dependant-win.lo
 @HAVE_TRACKER_FTS_TRUE@am__objects_3 = tracker-language.lo
-@HAVE_MEEGOTOUCH_TRUE@am__objects_4 = tracker-locale-gconfdbus.lo
+am__objects_4 =
 am_libtracker_common_la_OBJECTS = $(am__objects_1) $(am__objects_2) \
 	tracker-config-file.lo tracker-date-time.lo tracker-dbus.lo \
 	tracker-file-utils.lo tracker-ioprio.lo \
 	tracker-keyfile-object.lo tracker-log.lo tracker-sched.lo \
 	tracker-storage.lo tracker-type-utils.lo tracker-utils.lo \
-	tracker-crc32.lo tracker-locale.lo $(am__objects_3) \
-	$(am__objects_4)
+	tracker-crc32.lo tracker-locale.lo tracker-miner-locale.lo \
+	$(am__objects_3) $(am__objects_4)
 libtracker_common_la_OBJECTS = $(am_libtracker_common_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -207,7 +210,8 @@ am__noinst_HEADERS_DIST = tracker-dbus.h tracker-enums.h \
 	tracker-file-utils.h tracker-keyfile-object.h \
 	tracker-ontologies.h tracker-sched.h tracker-storage.h \
 	tracker-type-utils.h tracker-utils.h tracker-crc32.h \
-	tracker-locale.h tracker-language.h tracker-locale-gconfdbus.h
+	tracker-locale.h tracker-miner-locale.h tracker-language.h \
+	tracker-locale-gconfdbus.h tracker-meego.h
 HEADERS = $(noinst_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
@@ -458,6 +462,8 @@ TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
+TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
+TRACKER_MINER_APPS_LIBS = @TRACKER_MINER_APPS_LIBS@
 TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
 TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
 TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
@@ -467,6 +473,8 @@ TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
 TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
+TRACKER_MINER_USER_GUIDES_CFLAGS = @TRACKER_MINER_USER_GUIDES_CFLAGS@
+TRACKER_MINER_USER_GUIDES_LIBS = @TRACKER_MINER_USER_GUIDES_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
 TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
 TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
@@ -566,14 +574,15 @@ libtracker_common_la_SOURCES = $(BUILT_SOURCES) $(os_sources) \
 	tracker-file-utils.c tracker-ioprio.c tracker-keyfile-object.c \
 	tracker-log.c tracker-sched.c tracker-storage.c \
 	tracker-type-utils.c tracker-utils.c tracker-crc32.c \
-	tracker-locale.c $(am__append_1) $(am__append_3)
+	tracker-locale.c tracker-miner-locale.c $(am__append_1) \
+	$(am__append_3)
 noinst_HEADERS = tracker-dbus.h tracker-enums.h tracker-ioprio.h \
 	tracker-log.h tracker-os-dependant.h tracker-config-file.h \
 	tracker-common.h tracker-date-time.h tracker-file-utils.h \
 	tracker-keyfile-object.h tracker-ontologies.h tracker-sched.h \
 	tracker-storage.h tracker-type-utils.h tracker-utils.h \
-	tracker-crc32.h tracker-locale.h $(am__append_2) \
-	$(am__append_4)
+	tracker-crc32.h tracker-locale.h tracker-miner-locale.h \
+	$(am__append_2) $(am__append_4)
 libtracker_common_la_LIBADD = $(BUILD_LIBS) $(LIBTRACKER_COMMON_LIBS) \
 	-lm $(am__append_5)
 BUILT_SOURCES = \
@@ -678,9 +687,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-ioprio.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-keyfile-object.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-language.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-locale-gconfdbus.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-locale.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-log.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-locale.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-os-dependant-unix.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-os-dependant-win.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-sched.Plo@am__quote@
@@ -926,6 +935,10 @@ uninstall-am: uninstall-libtracker_commonLTLIBRARIES
 	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-am uninstall \
 	uninstall-am uninstall-libtracker_commonLTLIBRARIES
 
+@HAVE_MEEGOTOUCH_TRUE@	tracker-locale-gconfdbus.c \
+@HAVE_MEEGOTOUCH_TRUE@	tracker-locale-gconfdbus.h \
+@HAVE_MEEGOTOUCH_TRUE@	tracker-meego.cpp \
+@HAVE_MEEGOTOUCH_TRUE@	tracker-meego.h
 
 tracker-enum-types.h: tracker-enum-types.h.template $(NOINST_H_FILES)
 	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template tracker-enum-types.h.template $(noinst_HEADERS)) > $@

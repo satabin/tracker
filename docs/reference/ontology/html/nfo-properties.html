@@ -93,10 +93,6 @@
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
 <td>--</td>
 </tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
 </tbody>
 </table></div>
 </div>
@@ -1463,6 +1459,41 @@
 </div>
 <hr>
 <div class="refsect2">
+<a name="nfo-depiction"></a><h3>nfo:depiction</h3>
+<p>Relates an information element to an image which depicts said element.</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+rdfs:Resource, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-Image" title="nfo:Image">nfo:Image</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="nfo-model"></a><h3>nfo:model</h3>
 <p>The model of the equipment</p>
 <div class="variablelist"><table border="0" class="variablelist">
@@ -2365,6 +2396,7 @@
 <hr>
 <div class="refsect2">
 <a name="nfo-depicts"></a><h3>nfo:depicts</h3>
+<p>Relates an image to the information elements it depicts.</p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -2383,7 +2415,7 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="nfo-ontology.html#http-//www.tracker-project.org/ontologies/poi#ObjectOfInterest" title="http://www.tracker-project.org/ontologies/poi#ObjectOfInterest">http://www.tracker-project.org/ontologies/poi#ObjectOfInterest</a>, </td>
+rdfs:Resource, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>

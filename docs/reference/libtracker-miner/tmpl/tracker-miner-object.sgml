@@ -22,7 +22,21 @@ TrackerMiner
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### MACRO TRACKER_MINER_ERROR ##### -->
+<!-- ##### MACRO TRACKER_MINER_DBUS_INTERFACE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO TRACKER_MINER_DBUS_NAME_PREFIX ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO TRACKER_MINER_DBUS_PATH_PREFIX ##### -->
 <para>
 
 </para>
@@ -30,6 +44,13 @@ TrackerMiner
 
 
 <!-- ##### MACRO TRACKER_MINER_ERROR_DOMAIN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO TRACKER_MINER_ERROR ##### -->
 <para>
 
 </para>
@@ -88,6 +109,16 @@ TrackerMiner
 
 @trackerminer: the object which received the signal.
 
+<!-- ##### ARG TrackerMiner:introspection-handler ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerMiner:introspection-xml ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG TrackerMiner:name ##### -->
 <para>
 
@@ -122,12 +153,97 @@ TrackerMiner
 @ignore_next_update: 
 @padding: 
 
+<!-- ##### ENUM TrackerMinerError ##### -->
+<para>
+
+</para>
+
+@TRACKER_MINER_ERROR_NAME_MISSING: 
+@TRACKER_MINER_ERROR_NAME_UNAVAILABLE: 
+@TRACKER_MINER_ERROR_PAUSED: 
+@TRACKER_MINER_ERROR_PAUSED_ALREADY: 
+@TRACKER_MINER_ERROR_INVALID_COOKIE: 
+
 <!-- ##### FUNCTION tracker_miner_error_quark ##### -->
 <para>
 
 </para>
 
 @void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_start ##### -->
+<para>
+
+</para>
+
+@miner: 
+
+
+<!-- ##### FUNCTION tracker_miner_stop ##### -->
+<para>
+
+</para>
+
+@miner: 
+
+
+<!-- ##### FUNCTION tracker_miner_ignore_next_update ##### -->
+<para>
+
+</para>
+
+@miner: 
+@urls: 
+
+
+<!-- ##### FUNCTION tracker_miner_is_started ##### -->
+<para>
+
+</para>
+
+@miner: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_is_paused ##### -->
+<para>
+
+</para>
+
+@miner: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_get_n_pause_reasons ##### -->
+<para>
+
+</para>
+
+@miner: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_pause ##### -->
+<para>
+
+</para>
+
+@miner: 
+@reason: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_resume ##### -->
+<para>
+
+</para>
+
+@miner: 
+@cookie: 
+@error: 
 @Returns: 
 
 
@@ -165,79 +281,5 @@ TrackerMiner
 
 @miner: 
 @Returns: 
-
-
-<!-- ##### FUNCTION tracker_miner_get_n_pause_reasons ##### -->
-<para>
-
-</para>
-
-@miner: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_miner_ignore_next_update ##### -->
-<para>
-
-</para>
-
-@miner: 
-@urls: 
-
-
-<!-- ##### FUNCTION tracker_miner_is_paused ##### -->
-<para>
-
-</para>
-
-@miner: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_miner_is_started ##### -->
-<para>
-
-</para>
-
-@miner: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_miner_pause ##### -->
-<para>
-
-</para>
-
-@miner: 
-@reason: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_miner_resume ##### -->
-<para>
-
-</para>
-
-@miner: 
-@cookie: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_miner_start ##### -->
-<para>
-
-</para>
-
-@miner: 
-
-
-<!-- ##### FUNCTION tracker_miner_stop ##### -->
-<para>
-
-</para>
-
-@miner: 
 
 

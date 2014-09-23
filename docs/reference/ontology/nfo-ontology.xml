@@ -306,7 +306,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-depicts'>nfo:depicts</link>, </simpara></listitem>
+<listitem><simpara>--</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -853,7 +853,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
+<listitem><simpara><link linkend='nfo-EBook'>nfo:EBook</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
@@ -949,11 +949,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-hasRegionOfInterest'>nfo:hasRegionOfInterest</link>, <link linkend='nfo-depicts'>nfo:depicts</link>, <link linkend='nfo-orientation'>nfo:orientation</link>, <link linkend='nfo-horizontalResolution'>nfo:horizontalResolution</link>, <link linkend='nfo-verticalResolution'>nfo:verticalResolution</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-hasRegionOfInterest'>nfo:hasRegionOfInterest</link>, <link linkend='nfo-orientation'>nfo:orientation</link>, <link linkend='nfo-depicts'>nfo:depicts</link>, <link linkend='nfo-horizontalResolution'>nfo:horizontalResolution</link>, <link linkend='nfo-verticalResolution'>nfo:verticalResolution</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-softwareIcon'>nfo:softwareIcon</link>, <link linkend='nfo-softwareCategoryIcon'>nfo:softwareCategoryIcon</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-softwareIcon'>nfo:softwareIcon</link>, <link linkend='nfo-softwareCategoryIcon'>nfo:softwareCategoryIcon</link>, <link linkend='nfo-depiction'>nfo:depiction</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
 <note>
@@ -1323,6 +1323,29 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='nfo-EBook'>
+<title>nfo:EBook</title>
+<para>Books which can be electronically viewed</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-PaginatedTextDocument'>nfo:PaginatedTextDocument</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='nfo-Bookmark'>
 <title>nfo:Bookmark</title>
 <para>A bookmark of a webbrowser. Use nie:title for the name/label, nie:contentCreated to represent the date when the user added the bookmark, and nie:contentLastModified for modifications. nfo:bookmarks to store the link.</para>
@@ -1484,10 +1507,6 @@
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -2563,6 +2582,33 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='nfo-depiction'>
+<title>nfo:depiction</title>
+<para>Relates an information element to an image which depicts said element.</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Image'>nfo:Image</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='nfo-model'>
 <title>nfo:model</title>
 <para>The model of the equipment</para>
@@ -3279,6 +3325,7 @@
 
 <refsect2 id='nfo-depicts'>
 <title>nfo:depicts</title>
+<para>Relates an image to the information elements it depicts.</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -3290,7 +3337,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='http-//www.tracker-project.org/ontologies/poi#ObjectOfInterest'>http://www.tracker-project.org/ontologies/poi#ObjectOfInterest</link>, </simpara></listitem>
+<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>

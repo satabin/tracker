@@ -1,0 +1,42 @@
+<!-- ##### SECTION Title ##### -->
+tracker-media-art
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION tracker_media_art_queue_remove ##### -->
+<para>
+
+</para>
+
+@uri: 
+@mime_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_media_art_queue_empty ##### -->
+<para>
+
+</para>
+
+@connection: 
+
+

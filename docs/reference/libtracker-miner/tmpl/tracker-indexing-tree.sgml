@@ -57,6 +57,11 @@ TrackerIndexingTree
 
 </para>
 
+<!-- ##### ARG TrackerIndexingTree:root ##### -->
+<para>
+
+</para>
+
 <!-- ##### STRUCT TrackerIndexingTreeClass ##### -->
 <para>
 
@@ -68,6 +73,15 @@ TrackerIndexingTree
 @directory_updated: 
 @padding: 
 
+<!-- ##### FUNCTION tracker_indexing_tree_new ##### -->
+<para>
+
+</para>
+
+@root: 
+@Returns: 
+
+
 <!-- ##### FUNCTION tracker_indexing_tree_add ##### -->
 <para>
 
@@ -76,6 +90,15 @@ TrackerIndexingTree
 @tree: 
 @directory: 
 @flags: 
+
+
+<!-- ##### FUNCTION tracker_indexing_tree_remove ##### -->
+<para>
+
+</para>
+
+@tree: 
+@directory: 
 
 
 <!-- ##### FUNCTION tracker_indexing_tree_add_filter ##### -->
@@ -97,27 +120,6 @@ TrackerIndexingTree
 @type: 
 
 
-<!-- ##### FUNCTION tracker_indexing_tree_file_is_indexable ##### -->
-<para>
-
-</para>
-
-@tree: 
-@file: 
-@file_type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_indexing_tree_file_is_root ##### -->
-<para>
-
-</para>
-
-@tree: 
-@file: 
-@Returns: 
-
-
 <!-- ##### FUNCTION tracker_indexing_tree_file_matches_filter ##### -->
 <para>
 
@@ -129,51 +131,14 @@ TrackerIndexingTree
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_indexing_tree_get_default_policy ##### -->
-<para>
-
-</para>
-
-@tree: 
-@filter: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_indexing_tree_get_filter_hidden ##### -->
-<para>
-
-</para>
-
-@tree: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_indexing_tree_get_root ##### -->
+<!-- ##### FUNCTION tracker_indexing_tree_file_is_indexable ##### -->
 <para>
 
 </para>
 
 @tree: 
 @file: 
-@directory_flags: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_indexing_tree_list_roots ##### -->
-<para>
-
-</para>
-
-@tree: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_indexing_tree_new ##### -->
-<para>
-
-</para>
-
-@void: 
+@file_type: 
 @Returns: 
 
 
@@ -188,13 +153,32 @@ TrackerIndexingTree
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_indexing_tree_remove ##### -->
+<!-- ##### FUNCTION tracker_indexing_tree_get_filter_hidden ##### -->
 <para>
 
 </para>
 
 @tree: 
-@directory: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_indexing_tree_set_filter_hidden ##### -->
+<para>
+
+</para>
+
+@tree: 
+@filter_hidden: 
+
+
+<!-- ##### FUNCTION tracker_indexing_tree_get_default_policy ##### -->
+<para>
+
+</para>
+
+@tree: 
+@filter: 
+@Returns: 
 
 
 <!-- ##### FUNCTION tracker_indexing_tree_set_default_policy ##### -->
@@ -207,12 +191,42 @@ TrackerIndexingTree
 @policy: 
 
 
-<!-- ##### FUNCTION tracker_indexing_tree_set_filter_hidden ##### -->
+<!-- ##### FUNCTION tracker_indexing_tree_get_root ##### -->
 <para>
 
 </para>
 
 @tree: 
-@filter_hidden: 
+@file: 
+@directory_flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_indexing_tree_get_master_root ##### -->
+<para>
+
+</para>
+
+@tree: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_indexing_tree_file_is_root ##### -->
+<para>
+
+</para>
+
+@tree: 
+@file: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_indexing_tree_list_roots ##### -->
+<para>
+
+</para>
+
+@tree: 
+@Returns: 
 
 

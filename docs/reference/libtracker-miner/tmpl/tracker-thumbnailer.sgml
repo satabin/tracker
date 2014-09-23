@@ -36,23 +36,21 @@ TrackerThumbnailer
 
 @parent: 
 
-<!-- ##### FUNCTION tracker_thumbnailer_cleanup ##### -->
-<para>
-
-</para>
-
-@thumbnailer: 
-@uri_prefix: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_thumbnailer_get_type ##### -->
+<!-- ##### FUNCTION tracker_thumbnailer_new ##### -->
 <para>
 
 </para>
 
 @void: 
 @Returns: 
+
+
+<!-- ##### FUNCTION tracker_thumbnailer_send ##### -->
+<para>
+
+</para>
+
+@thumbnailer: 
 
 
 <!-- ##### FUNCTION tracker_thumbnailer_move_add ##### -->
@@ -67,15 +65,6 @@ TrackerThumbnailer
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_thumbnailer_new ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
 <!-- ##### FUNCTION tracker_thumbnailer_remove_add ##### -->
 <para>
 
@@ -87,11 +76,13 @@ TrackerThumbnailer
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_thumbnailer_send ##### -->
+<!-- ##### FUNCTION tracker_thumbnailer_cleanup ##### -->
 <para>
 
 </para>
 
 @thumbnailer: 
+@uri_prefix: 
+@Returns: 
 
 

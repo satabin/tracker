@@ -5,9 +5,9 @@
 <title>Tracker Miner Library Reference Manual: TrackerDecorator</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
-<link rel="up" href="ch02.html" title="Base abstract miner classes">
-<link rel="prev" href="TrackerMinerOnline.html" title="TrackerMinerOnline">
-<link rel="next" href="ch03.html" title="Miner classes for file system">
+<link rel="up" href="ch03.html" title="Base abstract miner classes">
+<link rel="prev" href="libtracker-miner-TrackerEnumerator.html" title="TrackerEnumerator">
+<link rel="next" href="TrackerIndexingTree.html" title="TrackerIndexingTree">
 <meta name="generator" content="GTK-Doc V1.21.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -22,9 +22,9 @@
                   <a href="#TrackerDecorator.signals" class="shortcut">Signals</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<td><a accesskey="u" href="ch02.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="TrackerMinerOnline.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="ch03.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="libtracker-miner-TrackerEnumerator.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="TrackerIndexingTree.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="TrackerDecorator"></a><div class="titlepage"></div>
@@ -45,25 +45,10 @@
 <tbody>
 <tr>
 <td class="function_type">
-<a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="returnvalue">GType</span></a>
-</td>
-<td class="function_name">
-<a class="link" href="TrackerDecorator.html#tracker-decorator-get-type" title="tracker_decorator_get_type ()">tracker_decorator_get_type</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="TrackerDecorator.html#tracker-decorator-error-quark" title="tracker_decorator_error_quark ()">tracker_decorator_error_quark</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **
-</td>
-<td class="function_name">
-<a class="link" href="TrackerDecorator.html#tracker-decorator-get-class-names" title="tracker_decorator_get_class_names ()">tracker_decorator_get_class_names</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -74,19 +59,18 @@
 </td>
 </tr>
 <tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **
+</td>
+<td class="function_name">
+<a class="link" href="TrackerDecorator.html#tracker-decorator-get-class-names" title="tracker_decorator_get_class_names ()">tracker_decorator_get_class_names</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
 <td class="function_type">
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="TrackerDecorator.html#tracker-decorator-get-n-items" title="tracker_decorator_get_n_items ()">tracker_decorator_get_n_items</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<span class="returnvalue">void</span>
-</td>
-<td class="function_name">
-<a class="link" href="TrackerDecorator.html#tracker-decorator-set-priority-rdf-types" title="tracker_decorator_set_priority_rdf_types ()">tracker_decorator_set_priority_rdf_types</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -115,7 +99,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="returnvalue">TrackerDecoratorInfo</span></a> *
+<span class="returnvalue">TrackerDecoratorInfo</span> *
 </td>
 <td class="function_name">
 <a class="link" href="TrackerDecorator.html#tracker-decorator-next-finish" title="tracker_decorator_next_finish ()">tracker_decorator_next_finish</a> <span class="c_punctuation">()</span>
@@ -123,15 +107,15 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="returnvalue">GType</span></a>
+<span class="returnvalue">void</span>
 </td>
 <td class="function_name">
-<a class="link" href="TrackerDecorator.html#tracker-decorator-info-get-type" title="tracker_decorator_info_get_type ()">tracker_decorator_info_get_type</a> <span class="c_punctuation">()</span>
+<a class="link" href="TrackerDecorator.html#tracker-decorator-set-priority-rdf-types" title="tracker_decorator_set_priority_rdf_types ()">tracker_decorator_set_priority_rdf_types</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
 <td class="function_type">
-<a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="returnvalue">TrackerDecoratorInfo</span></a> *
+<span class="returnvalue">TrackerDecoratorInfo</span> *
 </td>
 <td class="function_name">
 <a class="link" href="TrackerDecorator.html#tracker-decorator-info-ref" title="tracker_decorator_info_ref ()">tracker_decorator_info_ref</a> <span class="c_punctuation">()</span>
@@ -149,23 +133,7 @@
 <td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
-<a class="link" href="TrackerDecorator.html#tracker-decorator-info-get-mimetype" title="tracker_decorator_info_get_mimetype ()">tracker_decorator_info_get_mimetype</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="returnvalue">TrackerSparqlBuilder</span></a> *
-</td>
-<td class="function_name">
-<a class="link" href="TrackerDecorator.html#tracker-decorator-info-get-sparql" title="tracker_decorator_info_get_sparql ()">tracker_decorator_info_get_sparql</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<a href="http://library.gnome.org/devel/gio/unstable/GTask.html"><span class="returnvalue">GTask</span></a> *
-</td>
-<td class="function_name">
-<a class="link" href="TrackerDecorator.html#tracker-decorator-info-get-task" title="tracker_decorator_info_get_task ()">tracker_decorator_info_get_task</a> <span class="c_punctuation">()</span>
+<a class="link" href="TrackerDecorator.html#tracker-decorator-info-get-urn" title="tracker_decorator_info_get_urn ()">tracker_decorator_info_get_urn</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -179,7 +147,23 @@
 <td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
-<a class="link" href="TrackerDecorator.html#tracker-decorator-info-get-urn" title="tracker_decorator_info_get_urn ()">tracker_decorator_info_get_urn</a> <span class="c_punctuation">()</span>
+<a class="link" href="TrackerDecorator.html#tracker-decorator-info-get-mimetype" title="tracker_decorator_info_get_mimetype ()">tracker_decorator_info_get_mimetype</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/gio/unstable/GTask.html"><span class="returnvalue">GTask</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="TrackerDecorator.html#tracker-decorator-info-get-task" title="tracker_decorator_info_get_task ()">tracker_decorator_info_get_task</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="returnvalue">TrackerSparqlBuilder</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="TrackerDecorator.html#tracker-decorator-info-get-sparql" title="tracker_decorator_info_get_sparql ()">tracker_decorator_info_get_sparql</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -260,10 +244,6 @@
 <td class="datatype_keyword">enum</td>
 <td class="function_name"><a class="link" href="TrackerDecorator.html#TrackerDecoratorError" title="enum TrackerDecoratorError">TrackerDecoratorError</a></td>
 </tr>
-<tr>
-<td class="datatype_keyword"> </td>
-<td class="function_name"><a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo">TrackerDecoratorInfo</a></td>
-</tr>
 </tbody>
 </table></div>
 </div>
@@ -292,56 +272,15 @@ TrackerDecorator implements
 <div class="refsect1">
 <a name="TrackerDecorator.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
-<a name="tracker-decorator-get-type"></a><h3>tracker_decorator_get_type ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="returnvalue">GType</span></a>
-tracker_decorator_get_type (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.3.3.4.11.2.5"></a><h4>Returns</h4>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="tracker-decorator-error-quark"></a><h3>tracker_decorator_error_quark ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>
 tracker_decorator_error_quark (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 </p>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.3.5"></a><h4>Returns</h4>
+<a name="id-1.3.4.6.11.2.5"></a><h4>Returns</h4>
 <p></p>
 </div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="tracker-decorator-get-class-names"></a><h3>tracker_decorator_get_class_names ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **
-tracker_decorator_get_class_names (<em class="parameter"><code><a class="link" href="TrackerDecorator.html" title="TrackerDecorator"><span class="type">TrackerDecorator</span></a> *decorator</code></em>);</pre>
-<p>This function returns a string list of class names which are being
-updated with extended metadata. An example would be 'nfo:Document'.</p>
-<div class="refsect3">
-<a name="id-1.3.3.4.11.4.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>decorator</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerDecorator.html" title="TrackerDecorator"><span class="type">TrackerDecorator</span></a>.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.3.3.4.11.4.6"></a><h4>Returns</h4>
-<p> a const gchar** or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>. </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
-</div>
-<p class="since">Since 0.18</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -352,7 +291,7 @@ tracker_decorator_get_data_source (<em class="parameter"><code><a class="link" h
 extracted the extended metadata. This is essentially an identifier
 so it's clear WHO has extracted this extended metadata.</p>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.5.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.6.11.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -367,9 +306,38 @@ so it's clear WHO has extracted this extended metadata.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.5.6"></a><h4>Returns</h4>
+<a name="id-1.3.4.6.11.3.6"></a><h4>Returns</h4>
 <p> a const gchar* or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if an error happened.</p>
 <p></p>
+</div>
+<p class="since">Since 0.18</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-decorator-get-class-names"></a><h3>tracker_decorator_get_class_names ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **
+tracker_decorator_get_class_names (<em class="parameter"><code><a class="link" href="TrackerDecorator.html" title="TrackerDecorator"><span class="type">TrackerDecorator</span></a> *decorator</code></em>);</pre>
+<p>This function returns a string list of class names which are being
+updated with extended metadata. An example would be 'nfo:Document'.</p>
+<div class="refsect3">
+<a name="id-1.3.4.6.11.4.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>decorator</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerDecorator.html" title="TrackerDecorator"><span class="type">TrackerDecorator</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.4.6.11.4.6"></a><h4>Returns</h4>
+<p> a const gchar** or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 <p class="since">Since 0.18</p>
 </div>
@@ -379,7 +347,7 @@ so it's clear WHO has extracted this extended metadata.</p>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
 tracker_decorator_get_n_items (<em class="parameter"><code><a class="link" href="TrackerDecorator.html" title="TrackerDecorator"><span class="type">TrackerDecorator</span></a> *decorator</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.6.4"></a><h4>Parameters</h4>
+<a name="id-1.3.4.6.11.5.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -394,21 +362,11 @@ tracker_decorator_get_n_items (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.6.5"></a><h4>Returns</h4>
+<a name="id-1.3.4.6.11.5.5"></a><h4>Returns</h4>
 <p> the number of items queued to be processed, always &gt;= 0.</p>
 <p></p>
 </div>
 <p class="since">Since 0.18</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="tracker-decorator-set-priority-rdf-types"></a><h3>tracker_decorator_set_priority_rdf_types ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>
-tracker_decorator_set_priority_rdf_types
-                               (<em class="parameter"><code><a class="link" href="TrackerDecorator.html" title="TrackerDecorator"><span class="type">TrackerDecorator</span></a> *decorator</code></em>,
-                                <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> * const *rdf_types</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -422,7 +380,7 @@ tracker_decorator_prepend_id (<em class="parameter"><code><a class="link" href="
  is the same IDs emitted by tracker-store when the database is updated for
 consistency. For details, see the GraphUpdated signal.</p>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.8.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.6.11.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -461,7 +419,7 @@ queue. <em class="parameter"><code>id</code></em>
  is the same IDs emitted by tracker-store when the database is
 updated for consistency. For details, see the GraphUpdated signal.</p>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.9.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.6.11.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -498,7 +456,7 @@ signals it's completion instead.</p>
 <p>This function will give a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> if the miner is paused at the
 time it is called.</p>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.10.6"></a><h4>Parameters</h4>
+<a name="id-1.3.4.6.11.8.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -535,7 +493,7 @@ time it is called.</p>
 <hr>
 <div class="refsect2">
 <a name="tracker-decorator-next-finish"></a><h3>tracker_decorator_next_finish ()</h3>
-<pre class="programlisting"><a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="returnvalue">TrackerDecoratorInfo</span></a> *
+<pre class="programlisting"><span class="returnvalue">TrackerDecoratorInfo</span> *
 tracker_decorator_next_finish (<em class="parameter"><code><a class="link" href="TrackerDecorator.html" title="TrackerDecorator"><span class="type">TrackerDecorator</span></a> *decorator</code></em>,
                                <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *result</code></em>,
                                <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
@@ -543,7 +501,7 @@ tracker_decorator_next_finish (<em class="parameter"><code><a class="link" href=
 <a class="link" href="TrackerDecorator.html#tracker-decorator-next" title="tracker_decorator_next ()"><code class="function">tracker_decorator_next()</code></a> to return the result of the task be it an
 error or not.</p>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.11.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.6.11.9.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -570,8 +528,8 @@ error or not.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.11.6"></a><h4>Returns</h4>
-<p> a <a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a> on success or
+<a name="id-1.3.4.6.11.9.6"></a><h4>Returns</h4>
+<p> a <span class="type">TrackerDecoratorInfo</span> on success or
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> on error. Free with <a class="link" href="TrackerDecorator.html#tracker-decorator-info-unref" title="tracker_decorator_info_unref ()"><code class="function">tracker_decorator_info_unref()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -579,25 +537,23 @@ error or not.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="tracker-decorator-info-get-type"></a><h3>tracker_decorator_info_get_type ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="returnvalue">GType</span></a>
-tracker_decorator_info_get_type (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<a name="tracker-decorator-set-priority-rdf-types"></a><h3>tracker_decorator_set_priority_rdf_types ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+tracker_decorator_set_priority_rdf_types
+                               (<em class="parameter"><code><a class="link" href="TrackerDecorator.html" title="TrackerDecorator"><span class="type">TrackerDecorator</span></a> *decorator</code></em>,
+                                <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> * const *rdf_types</code></em>);</pre>
 <p>
 </p>
-<div class="refsect3">
-<a name="id-1.3.3.4.11.12.5"></a><h4>Returns</h4>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="tracker-decorator-info-ref"></a><h3>tracker_decorator_info_ref ()</h3>
-<pre class="programlisting"><a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="returnvalue">TrackerDecoratorInfo</span></a> *
-tracker_decorator_info_ref (<em class="parameter"><code><a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a> *info</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">TrackerDecoratorInfo</span> *
+tracker_decorator_info_ref (<em class="parameter"><code><span class="type">TrackerDecoratorInfo</span> *info</code></em>);</pre>
 <p>
 </p>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.13.5"></a><h4>Returns</h4>
+<a name="id-1.3.4.6.11.11.5"></a><h4>Returns</h4>
 <p></p>
 </div>
 </div>
@@ -605,21 +561,19 @@ tracker_decorator_info_ref (<em class="parameter"><code><a class="link" href="Tr
 <div class="refsect2">
 <a name="tracker-decorator-info-unref"></a><h3>tracker_decorator_info_unref ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-tracker_decorator_info_unref (<em class="parameter"><code><a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a> *info</code></em>);</pre>
+tracker_decorator_info_unref (<em class="parameter"><code><span class="type">TrackerDecoratorInfo</span> *info</code></em>);</pre>
 <p>
 </p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="tracker-decorator-info-get-mimetype"></a><h3>tracker_decorator_info_get_mimetype ()</h3>
+<a name="tracker-decorator-info-get-urn"></a><h3>tracker_decorator_info_get_urn ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-tracker_decorator_info_get_mimetype (<em class="parameter"><code><a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a> *info</code></em>);</pre>
-<p>A MIME¹ type is a way of describing the content type of a file or
-set of data. An example would be 'text/plain' for a clear text
-document or file.</p>
-<p>¹: http://en.wikipedia.org/wiki/MIME</p>
+tracker_decorator_info_get_urn (<em class="parameter"><code><span class="type">TrackerDecoratorInfo</span> *info</code></em>);</pre>
+<p>A URN is a Uniform Resource Name and should be a unique identifier
+for a resource in the database.</p>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.15.6"></a><h4>Parameters</h4>
+<a name="id-1.3.4.6.11.13.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -628,78 +582,15 @@ document or file.</p>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>info</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a>.</p></td>
+<td class="parameter_description"><p>a <span class="type">TrackerDecoratorInfo</span>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.15.7"></a><h4>Returns</h4>
-<p> the MIME type for <a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a> on success or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> on error.</p>
+<a name="id-1.3.4.6.11.13.6"></a><h4>Returns</h4>
+<p> the URN for <span class="type">TrackerDecoratorInfo</span> on success or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> on error.</p>
 <p></p>
-</div>
-<p class="since">Since 0.18</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="tracker-decorator-info-get-sparql"></a><h3>tracker_decorator_info_get_sparql ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="returnvalue">TrackerSparqlBuilder</span></a> *
-tracker_decorator_info_get_sparql (<em class="parameter"><code><a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a> *info</code></em>);</pre>
-<p>A <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> allows the caller to extract the final
-SPARQL used to insert the extracted metadata into the database for
-the resource being processed.</p>
-<p>This function calls <a href="http://library.gnome.org/devel/gio/unstable/GTask.html#g-task-get-task-data"><code class="function">g_task_get_task_data()</code></a> on the return value of
-<a class="link" href="TrackerDecorator.html#tracker-decorator-info-get-task" title="tracker_decorator_info_get_task ()"><code class="function">tracker_decorator_info_get_task()</code></a>.</p>
-<div class="refsect3">
-<a name="id-1.3.3.4.11.16.6"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>info</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a>.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.3.3.4.11.16.7"></a><h4>Returns</h4>
-<p> a <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> on success or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> on error. </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
-</div>
-<p class="since">Since 0.18</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="tracker-decorator-info-get-task"></a><h3>tracker_decorator_info_get_task ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/gio/unstable/GTask.html"><span class="returnvalue">GTask</span></a> *
-tracker_decorator_info_get_task (<em class="parameter"><code><a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a> *info</code></em>);</pre>
-<p>When processing resource updates in the database, the <a href="http://library.gnome.org/devel/gio/unstable/GTask.html"><span class="type">GTask</span></a> APIs
-are used. This function returns the particular <a href="http://library.gnome.org/devel/gio/unstable/GTask.html"><span class="type">GTask</span></a> used for
-<em class="parameter"><code>info</code></em>
-.</p>
-<div class="refsect3">
-<a name="id-1.3.3.4.11.17.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>info</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a>.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.3.3.4.11.17.6"></a><h4>Returns</h4>
-<p> the <a href="http://library.gnome.org/devel/gio/unstable/GTask.html"><span class="type">GTask</span></a> on success or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> on error. </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 <p class="since">Since 0.18</p>
 </div>
@@ -707,11 +598,11 @@ are used. This function returns the particular <a href="http://library.gnome.org
 <div class="refsect2">
 <a name="tracker-decorator-info-get-url"></a><h3>tracker_decorator_info_get_url ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-tracker_decorator_info_get_url (<em class="parameter"><code><a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a> *info</code></em>);</pre>
+tracker_decorator_info_get_url (<em class="parameter"><code><span class="type">TrackerDecoratorInfo</span> *info</code></em>);</pre>
 <p>A URL is a Uniform Resource Locator and should be a location associated
 with a resource in the database. For example, 'file:///tmp/foo.txt'.</p>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.18.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.6.11.14.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -720,27 +611,29 @@ with a resource in the database. For example, 'file:///tmp/foo.txt'.</p>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>info</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a>.</p></td>
+<td class="parameter_description"><p>a <span class="type">TrackerDecoratorInfo</span>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.18.6"></a><h4>Returns</h4>
-<p> the URL for <a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a> on success or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> on error.</p>
+<a name="id-1.3.4.6.11.14.6"></a><h4>Returns</h4>
+<p> the URL for <span class="type">TrackerDecoratorInfo</span> on success or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> on error.</p>
 <p></p>
 </div>
 <p class="since">Since 0.18</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="tracker-decorator-info-get-urn"></a><h3>tracker_decorator_info_get_urn ()</h3>
+<a name="tracker-decorator-info-get-mimetype"></a><h3>tracker_decorator_info_get_mimetype ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
-tracker_decorator_info_get_urn (<em class="parameter"><code><a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a> *info</code></em>);</pre>
-<p>A URN is a Uniform Resource Name and should be a unique identifier
-for a resource in the database.</p>
+tracker_decorator_info_get_mimetype (<em class="parameter"><code><span class="type">TrackerDecoratorInfo</span> *info</code></em>);</pre>
+<p>A MIME¹ type is a way of describing the content type of a file or
+set of data. An example would be 'text/plain' for a clear text
+document or file.</p>
+<p>¹: http://en.wikipedia.org/wiki/MIME</p>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.19.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.6.11.15.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -749,15 +642,78 @@ for a resource in the database.</p>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>info</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a>.</p></td>
+<td class="parameter_description"><p>a <span class="type">TrackerDecoratorInfo</span>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.3.4.11.19.6"></a><h4>Returns</h4>
-<p> the URN for <a class="link" href="TrackerDecorator.html#TrackerDecoratorInfo" title="TrackerDecoratorInfo"><span class="type">TrackerDecoratorInfo</span></a> on success or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> on error.</p>
+<a name="id-1.3.4.6.11.15.7"></a><h4>Returns</h4>
+<p> the MIME type for <span class="type">TrackerDecoratorInfo</span> on success or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> on error.</p>
 <p></p>
+</div>
+<p class="since">Since 0.18</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-decorator-info-get-task"></a><h3>tracker_decorator_info_get_task ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gio/unstable/GTask.html"><span class="returnvalue">GTask</span></a> *
+tracker_decorator_info_get_task (<em class="parameter"><code><span class="type">TrackerDecoratorInfo</span> *info</code></em>);</pre>
+<p>When processing resource updates in the database, the <a href="http://library.gnome.org/devel/gio/unstable/GTask.html"><span class="type">GTask</span></a> APIs
+are used. This function returns the particular <a href="http://library.gnome.org/devel/gio/unstable/GTask.html"><span class="type">GTask</span></a> used for
+<em class="parameter"><code>info</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.3.4.6.11.16.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>info</p></td>
+<td class="parameter_description"><p>a <span class="type">TrackerDecoratorInfo</span>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.4.6.11.16.6"></a><h4>Returns</h4>
+<p> the <a href="http://library.gnome.org/devel/gio/unstable/GTask.html"><span class="type">GTask</span></a> on success or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> on error. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+<p class="since">Since 0.18</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-decorator-info-get-sparql"></a><h3>tracker_decorator_info_get_sparql ()</h3>
+<pre class="programlisting"><a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="returnvalue">TrackerSparqlBuilder</span></a> *
+tracker_decorator_info_get_sparql (<em class="parameter"><code><span class="type">TrackerDecoratorInfo</span> *info</code></em>);</pre>
+<p>A <a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> allows the caller to extract the final
+SPARQL used to insert the extracted metadata into the database for
+the resource being processed.</p>
+<p>This function calls <a href="http://library.gnome.org/devel/gio/unstable/GTask.html#g-task-get-task-data"><code class="function">g_task_get_task_data()</code></a> on the return value of
+<a class="link" href="TrackerDecorator.html#tracker-decorator-info-get-task" title="tracker_decorator_info_get_task ()"><code class="function">tracker_decorator_info_get_task()</code></a>.</p>
+<div class="refsect3">
+<a name="id-1.3.4.6.11.17.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>info</p></td>
+<td class="parameter_description"><p>a <span class="type">TrackerDecoratorInfo</span>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.4.6.11.17.7"></a><h4>Returns</h4>
+<p> a <a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> on success or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> on error. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 <p class="since">Since 0.18</p>
 </div>
@@ -786,7 +742,7 @@ for a resource in the database.</p>
 specific to file types by talking to tracker-extract.</p>
 <p>Based on <a class="link" href="TrackerMiner.html#TrackerMinerClass" title="TrackerMinerClass"><span class="type">TrackerMinerClass</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.3.4.12.3.6"></a><h4>Members</h4>
+<a name="id-1.3.4.6.12.3.6"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -823,7 +779,7 @@ specific to file types by talking to tracker-extract.</p>
 <a name="TrackerDecoratorError"></a><h3>enum TrackerDecoratorError</h3>
 <p>Possible errors returned when calling <a class="link" href="TrackerDecorator.html#tracker-decorator-next-finish" title="tracker_decorator_next_finish ()"><code class="function">tracker_decorator_next_finish()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.3.4.12.4.4"></a><h4>Members</h4>
+<a name="id-1.3.4.6.12.4.4"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -855,13 +811,6 @@ because the miner is currently paused.</p>
 </tbody>
 </table></div>
 </div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="TrackerDecoratorInfo"></a><h3>TrackerDecoratorInfo</h3>
-<pre class="programlisting">typedef struct _TrackerDecoratorInfo TrackerDecoratorInfo;</pre>
-<p>
-</p>
 </div>
 </div>
 <div class="refsect1">
@@ -908,7 +857,7 @@ user_function (<a class="link" href="TrackerDecorator.html" title="TrackerDecora
 <a class="link" href="TrackerDecorator.html" title="TrackerDecorator"><span class="type">TrackerDecorator</span></a> has finished extracted extended metadata
 for resources in the database.</p>
 <div class="refsect3">
-<a name="id-1.3.3.4.14.2.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.6.14.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -942,7 +891,7 @@ user_function (<a class="link" href="TrackerDecorator.html" title="TrackerDecora
 <a class="link" href="TrackerDecorator.html" title="TrackerDecorator"><span class="type">TrackerDecorator</span></a> sees resources that are available for
 extended metadata extraction.</p>
 <div class="refsect3">
-<a name="id-1.3.3.4.14.3.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.6.14.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">

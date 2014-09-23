@@ -78,8 +78,11 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@HAVE_TRACKER_MINER_FS_TRUE@am__append_1 = tracker-miner-fs.desktop tracker-extract.desktop
-@HAVE_TRACKER_MINER_RSS_TRUE@am__append_2 = tracker-miner-rss.desktop
+@HAVE_TRACKER_MINER_FS_TRUE@am__append_1 = tracker-miner-fs.desktop
+@HAVE_TRACKER_EXTRACT_TRUE@am__append_2 = tracker-extract.desktop
+@HAVE_TRACKER_MINER_APPS_TRUE@am__append_3 = tracker-miner-apps.desktop
+@HAVE_TRACKER_MINER_RSS_TRUE@am__append_4 = tracker-miner-rss.desktop
+@HAVE_TRACKER_MINER_USER_GUIDES_TRUE@am__append_5 = tracker-miner-user-guides.desktop
 subdir = data
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(srcdir)/tracker-control.pc.in $(srcdir)/tracker-sparql.pc.in \
@@ -440,6 +443,8 @@ TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
+TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
+TRACKER_MINER_APPS_LIBS = @TRACKER_MINER_APPS_LIBS@
 TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
 TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
 TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
@@ -449,6 +454,8 @@ TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
 TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
+TRACKER_MINER_USER_GUIDES_CFLAGS = @TRACKER_MINER_USER_GUIDES_CFLAGS@
+TRACKER_MINER_USER_GUIDES_LIBS = @TRACKER_MINER_USER_GUIDES_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
 TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
 TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
@@ -542,6 +549,8 @@ desktop_in_in_files = \
 	tracker-extract.desktop.in.in                  \
 	tracker-store.desktop.in.in                    \
 	tracker-miner-fs.desktop.in.in                 \
+	tracker-miner-apps.desktop.in.in               \
+	tracker-miner-user-guides.desktop.in.in        \
 	tracker-miner-rss.desktop.in.in
 
 
@@ -550,12 +559,15 @@ desktop_in_files = \
 	tracker-extract.desktop.in                     \
 	tracker-store.desktop.in                       \
 	tracker-miner-fs.desktop.in                    \
+	tracker-miner-apps.desktop.in                  \
+	tracker-miner-user-guides.desktop.in           \
 	tracker-miner-rss.desktop.in
 
 
 # Third we choose what we want installed based on config
 autostartdir = $(sysconfdir)/xdg/autostart
-autostart_DATA = tracker-store.desktop $(am__append_1) $(am__append_2)
+autostart_DATA = tracker-store.desktop $(am__append_1) $(am__append_2) \
+	$(am__append_3) $(am__append_4) $(am__append_5)
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = \
 	tracker-control-$(TRACKER_API_VERSION).pc      \
@@ -567,7 +579,6 @@ CLEANFILES = \
 	$(desktop_in_files)                            \
 	tracker-control-$(TRACKER_API_VERSION).pc      \
 	tracker-sparql-$(TRACKER_API_VERSION).pc       \
-	tracker-extract-$(TRACKER_API_VERSION).pc      \
 	tracker-miner-$(TRACKER_API_VERSION).pc
 
 EXTRA_DIST = $(desktop_in_in_files)
@@ -949,8 +960,16 @@ tracker-miner-fs.desktop.in: tracker-miner-fs.desktop.in.in
 	@sed -e "s|@libexecdir[@]|${libexecdir}|"      \
 	     -e "s|@VERSION[@]|${VERSION}|" $< > $@
 
+tracker-miner-apps.desktop.in: tracker-miner-apps.desktop.in.in
+	@sed -e "s|@libexecdir[@]|${libexecdir}|"      \
+	     -e "s|@VERSION[@]|${VERSION}|" $< > $@
+
 tracker-miner-rss.desktop.in: tracker-miner-rss.desktop.in.in
 	@$(SED) -e "s|@libexecdir[@]|${libexecdir}|"   \
+	     -e "s|@VERSION[@]|${VERSION}|" $< > $@
+
+tracker-miner-user-guides.desktop.in: tracker-miner-user-guides.desktop.in.in
+	@sed -e "s|@libexecdir[@]|${libexecdir}|"      \
 	     -e "s|@VERSION[@]|${VERSION}|" $< > $@
 
 @INTLTOOL_DESKTOP_RULE@

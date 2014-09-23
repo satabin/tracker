@@ -54,7 +54,6 @@ static void
 test_title (TestInfo      *info,
             gconstpointer  context)
 {
-#ifdef GUARANTEE_METADATA
 	gchar *sparql;
 	gchar *title_guaranteed;
 
@@ -70,16 +69,12 @@ test_title (TestInfo      *info,
 
 	g_free (title_guaranteed);
 	g_free (sparql);
-#else
-	g_test_skip ("Guarantee metadata API disabled, see ./configure --help for details");
-#endif
 }
 
 static void
 test_date (TestInfo      *info,
            gconstpointer  context)
 {
-#ifdef GUARANTEE_METADATA
 	tracker_sparql_builder_insert_open (info->builder, "test");
 	tracker_sparql_builder_subject_iri (info->builder, "test://resource");
 
@@ -88,9 +83,6 @@ test_date (TestInfo      *info,
 
 	/* mtime can change in the file so we just check that the property is in the output */
 	g_assert_nonnull (g_strstr_len (tracker_sparql_builder_get_result (info->builder), -1, "test:mtime"));
-#else
-	g_test_skip ("Guarantee metadata API disabled, see ./configure --help for details");
-#endif
 }
 
 static void

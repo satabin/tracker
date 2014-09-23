@@ -153,9 +153,9 @@ am__define_uniq_tagged_files = \
 ETAGS = etags
 CTAGS = ctags
 DIST_SUBDIRS = gvdb libstemmer libtracker-common libtracker-sparql \
-	libtracker-fts libtracker-bus libtracker-control \
-	libtracker-data libtracker-direct libtracker-sparql-backend \
-	libtracker-extract libtracker-miner miners plugins \
+	libtracker-fts libtracker-bus libtracker-data \
+	libtracker-direct libtracker-sparql-backend libtracker-extract \
+	libtracker-miner libtracker-control miners plugins \
 	tracker-store tracker-control tracker-utils tracker-extract \
 	tracker-writeback tracker-preferences tracker-needle
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -413,6 +413,8 @@ TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
+TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
+TRACKER_MINER_APPS_LIBS = @TRACKER_MINER_APPS_LIBS@
 TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
 TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
 TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
@@ -422,6 +424,8 @@ TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
 TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
+TRACKER_MINER_USER_GUIDES_CFLAGS = @TRACKER_MINER_USER_GUIDES_CFLAGS@
+TRACKER_MINER_USER_GUIDES_LIBS = @TRACKER_MINER_USER_GUIDES_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
 TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
 TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
@@ -509,9 +513,9 @@ top_srcdir = @top_srcdir@
 @HAVE_TRACKER_FTS_TRUE@libstemmer_dir = libstemmer
 @HAVE_TRACKER_FTS_TRUE@libtrackerfts_dir = libtracker-fts
 SUBDIRS = gvdb $(libstemmer_dir) libtracker-common libtracker-sparql \
-	$(libtrackerfts_dir) libtracker-bus libtracker-control \
-	libtracker-data libtracker-direct libtracker-sparql-backend \
-	libtracker-extract libtracker-miner miners plugins \
+	$(libtrackerfts_dir) libtracker-bus libtracker-data \
+	libtracker-direct libtracker-sparql-backend libtracker-extract \
+	libtracker-miner libtracker-control miners plugins \
 	tracker-store tracker-control tracker-utils $(am__append_1) \
 	$(am__append_2) $(am__append_3) $(am__append_4)
 all: all-recursive

@@ -80,21 +80,6 @@ TrackerDecorator
 @TRACKER_DECORATOR_ERROR_EMPTY: 
 @TRACKER_DECORATOR_ERROR_PAUSED: 
 
-<!-- ##### STRUCT TrackerDecoratorInfo ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION tracker_decorator_get_type ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
 <!-- ##### FUNCTION tracker_decorator_error_quark ##### -->
 <para>
 
@@ -104,7 +89,7 @@ TrackerDecorator
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_decorator_get_class_names ##### -->
+<!-- ##### FUNCTION tracker_decorator_get_data_source ##### -->
 <para>
 
 </para>
@@ -113,7 +98,7 @@ TrackerDecorator
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_decorator_get_data_source ##### -->
+<!-- ##### FUNCTION tracker_decorator_get_class_names ##### -->
 <para>
 
 </para>
@@ -129,15 +114,6 @@ TrackerDecorator
 
 @decorator: 
 @Returns: 
-
-
-<!-- ##### FUNCTION tracker_decorator_set_priority_rdf_types ##### -->
-<para>
-
-</para>
-
-@decorator: 
-@rdf_types: 
 
 
 <!-- ##### FUNCTION tracker_decorator_prepend_id ##### -->
@@ -181,13 +157,13 @@ TrackerDecorator
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_decorator_info_get_type ##### -->
+<!-- ##### FUNCTION tracker_decorator_set_priority_rdf_types ##### -->
 <para>
 
 </para>
 
-@void: 
-@Returns: 
+@decorator: 
+@rdf_types: 
 
 
 <!-- ##### FUNCTION tracker_decorator_info_ref ##### -->
@@ -207,25 +183,7 @@ TrackerDecorator
 @info: 
 
 
-<!-- ##### FUNCTION tracker_decorator_info_get_mimetype ##### -->
-<para>
-
-</para>
-
-@info: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_decorator_info_get_sparql ##### -->
-<para>
-
-</para>
-
-@info: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_decorator_info_get_task ##### -->
+<!-- ##### FUNCTION tracker_decorator_info_get_urn ##### -->
 <para>
 
 </para>
@@ -243,7 +201,25 @@ TrackerDecorator
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_decorator_info_get_urn ##### -->
+<!-- ##### FUNCTION tracker_decorator_info_get_mimetype ##### -->
+<para>
+
+</para>
+
+@info: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_decorator_info_get_task ##### -->
+<para>
+
+</para>
+
+@info: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_decorator_info_get_sparql ##### -->
 <para>
 
 </para>

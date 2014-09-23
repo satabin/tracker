@@ -15,7 +15,7 @@
 <div>
 <div><table class="navigation" id="top" width="100%" cellpadding="2" cellspacing="0"><tr><th valign="middle"><p class="title">Tracker Miner Library Reference Manual</p></th></tr></table></div>
 <div><p class="releaseinfo">
-	  for libtracker-miner 1.0.4
+	  for libtracker-miner 1.2.1
 .
 	  The latest version of this documentation can be found on-line at
 	  <a class="ulink" href="http://library.gnome.org/devel/libtracker-miner/unstable/" target="_top">
@@ -30,7 +30,16 @@
 <dd><dl><dt><span class="chapter"><a href="tracker-overview-compiling.html">Compiling applications</a></span></dt></dl></dd>
 <dt><span class="part"><a href="libtracker-miner-reference.html">II. Reference</a></span></dt>
 <dd><dl>
-<dt><span class="chapter"><a href="ch02.html">Base abstract miner classes</a></span></dt>
+<dt><span class="chapter"><a href="ch02.html">Basics and foundations</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="libtracker-miner-Enumerations.html">Enumerations</a></span><span class="refpurpose"> — Common enumerations</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libtracker-miner-tracker-miner-common.html">tracker-miner-common</a></span><span class="refpurpose"></span>
+</dt>
+</dl></dd>
+<dt><span class="chapter"><a href="ch03.html">Base abstract miner classes</a></span></dt>
 <dd><dl>
 <dt>
 <span class="refentrytitle"><a href="TrackerMiner.html">TrackerMiner</a></span><span class="refpurpose"> — Abstract base class for data miners</span>
@@ -40,29 +49,41 @@
   online resources</span>
 </dt>
 <dt>
+<span class="refentrytitle"><a href="TrackerDataProvider.html">TrackerDataProvider</a></span><span class="refpurpose"> — Provide data to be indexed</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libtracker-miner-TrackerEnumerator.html">TrackerEnumerator</a></span><span class="refpurpose"> — Enumerate resources</span>
+</dt>
+<dt>
 <span class="refentrytitle"><a href="TrackerDecorator.html">TrackerDecorator</a></span><span class="refpurpose"> — A miner tasked with listening for DB resource changes and extracting metadata</span>
 </dt>
+<dt>
+<span class="refentrytitle"><a href="TrackerIndexingTree.html">TrackerIndexingTree</a></span><span class="refpurpose"> — Indexing tree handling</span>
+</dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch03.html">Miner classes for file system</a></span></dt>
+<dt><span class="chapter"><a href="ch04.html">Miner classes for file system</a></span></dt>
 <dd><dl>
 <dt>
 <span class="refentrytitle"><a href="TrackerMinerFS.html">TrackerMinerFS</a></span><span class="refpurpose"> — Abstract base class for filesystem miners</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="TrackerIndexingTree.html">TrackerIndexingTree</a></span><span class="refpurpose"> — Indexing tree handling</span>
+<span class="refentrytitle"><a href="libtracker-miner-TrackerFileDataProvider.html">TrackerFileDataProvider</a></span><span class="refpurpose"> — File based data provider for file:// descendant URIs</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="libtracker-miner-TrackerFileEnumerator.html">TrackerFileEnumerator</a></span><span class="refpurpose"> — File based enumerator for file:// descendant URIs</span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="TrackerDecoratorFS.html">TrackerDecoratorFS</a></span><span class="refpurpose"> — Filesystem implementation for TrackerDecorator</span>
 </dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch04.html">Utilities</a></span></dt>
+<dt><span class="chapter"><a href="ch05.html">Utilities</a></span></dt>
 <dd><dl>
 <dt>
 <span class="refentrytitle"><a href="libtracker-miner-TrackerThumbnailer.html">TrackerThumbnailer</a></span><span class="refpurpose"> — Request the thumbnailer service creates or
 updates thumbnails.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="libtracker-miner-Enumerations.html">Enumerations</a></span><span class="refpurpose"> — Common enumerations</span>
+<span class="refentrytitle"><a href="libtracker-miner-Media-art-management.html">Media art management</a></span><span class="refpurpose"> — Media art request and management.</span>
 </dt>
 </dl></dd>
 </dl></dd>

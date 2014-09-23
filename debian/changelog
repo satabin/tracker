@@ -5,6 +5,9 @@ tracker (1.2.1-1) UNRELEASED; urgency=medium
     configure.ac.
   * Update symbols file for libtracker-miner.
   * Install AppData files for tracker-needle and tracker-preferences.
+  * Ship new tracker-miner-apps and tracker-miner-user-guides in the
+    tracker-miner-fs package. That functionality was split of tracker-miner-fs
+    into separate processes. We keep them in a single binary package for now.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 23 Sep 2014 21:25:45 +0200
 

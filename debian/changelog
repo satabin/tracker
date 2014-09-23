@@ -3,6 +3,7 @@ tracker (1.2.1-1) UNRELEASED; urgency=medium
   * New upstream release.
   * Bump Build-Depends on libmediaart-1.0-dev to (>= 0.5.0) as per
     configure.ac.
+  * Update symbols file for libtracker-miner.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 23 Sep 2014 21:25:45 +0200
 

@@ -113,7 +113,8 @@
     <keyword type="property" name="The “priority-rdf-types” property" link="TrackerDecorator.html#TrackerDecorator--priority-rdf-types"/>
     <keyword type="signal" name="The “finished” signal" link="TrackerDecorator.html#TrackerDecorator-finished"/>
     <keyword type="signal" name="The “items-available” signal" link="TrackerDecorator.html#TrackerDecorator-items-available"/>
-    <keyword type="function" name="tracker_indexing_tree_new ()" link="TrackerIndexingTree.html#tracker-indexing-tree-new"/>
+    <keyword type="function" name="tracker_indexing_tree_new ()" link="TrackerIndexingTree.html#tracker-indexing-tree-new" since="0.14.0"/>
+    <keyword type="function" name="tracker_indexing_tree_new_with_root ()" link="TrackerIndexingTree.html#tracker-indexing-tree-new-with-root" since="1.2.2"/>
     <keyword type="function" name="tracker_indexing_tree_add ()" link="TrackerIndexingTree.html#tracker-indexing-tree-add"/>
     <keyword type="function" name="tracker_indexing_tree_remove ()" link="TrackerIndexingTree.html#tracker-indexing-tree-remove"/>
     <keyword type="function" name="tracker_indexing_tree_add_filter ()" link="TrackerIndexingTree.html#tracker-indexing-tree-add-filter"/>

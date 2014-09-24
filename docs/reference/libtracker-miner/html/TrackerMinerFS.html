@@ -1633,13 +1633,13 @@ processed.</p>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>       *miner_fs,
                <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>                *file,
-               <a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *builder,
+               <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *builder,
                <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>         *cancellable,
                <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>              user_data)</pre>
 <p>The ::ignore-next-update-file signal is emitted whenever a file should
 be marked as to ignore on next update, and it's metadata prepared for that.</p>
 <p><em class="parameter"><code>builder</code></em>
- is the <a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
+ is the <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
 to be performed for <em class="parameter"><code>file</code></em>
  will be appended.</p>
 <div class="warning"><p><code class="literal">TrackerMinerFS::ignore-next-update-file</code> has been deprecated since version 0.12 and should not be used in newly-written code.</p></div>
@@ -1664,7 +1664,7 @@ to be performed for <em class="parameter"><code>file</code></em>
 </tr>
 <tr>
 <td class="parameter_name"><p>builder</p></td>
-<td class="parameter_description"><p>a <a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a></p></td>
+<td class="parameter_description"><p>a <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1695,13 +1695,13 @@ to be performed for <em class="parameter"><code>file</code></em>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>       *miner_fs,
                <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>                *file,
-               <a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *builder,
+               <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *builder,
                <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>         *cancellable,
                <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>              user_data)</pre>
 <p>The ::process-file signal is emitted whenever a file should
 be processed, and it's metadata extracted.</p>
 <p><em class="parameter"><code>builder</code></em>
- is the <a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
+ is the <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
 to be performed for <em class="parameter"><code>file</code></em>
  will be appended.</p>
 <p>This signal allows both synchronous and asynchronous extraction,
@@ -1733,7 +1733,7 @@ the SPARQL updates and continue processing other files.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>builder</p></td>
-<td class="parameter_description"><p>a <a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a></p></td>
+<td class="parameter_description"><p>a <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1764,13 +1764,13 @@ the SPARQL updates and continue processing other files.</p>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>       *miner_fs,
                <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>                *file,
-               <a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *builder,
+               <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *builder,
                <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>         *cancellable,
                <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>              user_data)</pre>
 <p>The ::process-file-attributes signal is emitted whenever a file should
 be processed, but only the attribute-related metadata extracted.</p>
 <p><em class="parameter"><code>builder</code></em>
- is the <a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
+ is the <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
 to be performed for <em class="parameter"><code>file</code></em>
  will be appended. For the properties being
 updated, the DELETE statements should be included as well.</p>
@@ -1803,7 +1803,7 @@ the SPARQL updates and continue processing other files.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>builder</p></td>
-<td class="parameter_description"><p>a <a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a></p></td>
+<td class="parameter_description"><p>a <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>

@@ -78,6 +78,15 @@ TrackerIndexingTree
 
 </para>
 
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_indexing_tree_new_with_root ##### -->
+<para>
+
+</para>
+
 @root: 
 @Returns: 
 

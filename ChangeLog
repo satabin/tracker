@@ -1,3 +1,16 @@
+2014-09-24  Martyn Russell  <martyn@lanedo.com>
+
+	Release 1.2.2
+
+2014-09-24  Rico Tzschichholz  <ricotz@ubuntu.com>
+
+	libtracker-miner: Fix API break with tracker_indexing_tree_new()
+	Previously it took void and it was changed to take a GFile.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=737243
+
+	libtracker-miner: Update vala binding
+
 2014-09-23  Martyn Russell  <martyn@lanedo.com>
 
 	Release 1.2.1

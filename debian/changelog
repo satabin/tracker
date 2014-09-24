@@ -1,6 +1,7 @@
 tracker (1.2.2-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Add new tracker_indexing_tree_new_with_root symbol for libtracker-miner.
 
  -- Michael Biebl <biebl@debian.org>  Wed, 24 Sep 2014 18:51:27 +0200
 

@@ -46,6 +46,7 @@ libtracker-miner-1.0.so.0 libtracker-miner-1.0-0 #MINVER#
  tracker_indexing_tree_get_type@Base 0.14.0
  tracker_indexing_tree_list_roots@Base 0.14.0
  tracker_indexing_tree_new@Base 0.14.0
+ tracker_indexing_tree_new_with_root@Base 1.2.2
  tracker_indexing_tree_parent_is_indexable@Base 0.14.0
  tracker_indexing_tree_remove@Base 0.14.0
  tracker_indexing_tree_set_default_policy@Base 0.14.0

@@ -48,6 +48,7 @@ Standards-Version: 3.9.5
 Vcs-Git: git://anonscm.debian.org/collab-maint/tracker.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/tracker.git;a=summary
 Homepage: http://projects.gnome.org/tracker/
+XS-Testsuite: autopkgtest
 
 Package: tracker
 Architecture: any

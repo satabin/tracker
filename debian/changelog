@@ -1,9 +1,13 @@
 tracker (1.2.2-2) UNRELEASED; urgency=medium
 
+  [ Tim Lunn ]
   * Drop lintian overrides, tracker now sets RUNPATH rather than RPATH
   * Drop Build-Dep on Dia, it is no longer used to regenerate pngs during build
   * Run unit tests as autopkgtests, since they require the tracker dbus services
     to be installed for tests to pass (BGO: #733201)
+
+  [ Michael Biebl ]
+  * Install typelib files into multiarch paths.
 
  -- Tim Lunn <tim@feathertop.org>  Mon, 13 Oct 2014 13:39:02 +1100
 

@@ -1,3 +1,149 @@
+2014-11-06  Martyn Russell  <martyn@lanedo.com>
+
+	Release 1.2.4
+
+2014-11-06  Philip Van Hoof  <philip@codeminded.be>
+
+	Take ownership of the GFile in the GPtrArray
+	https://bugzilla.gnome.org/show_bug.cgi?id=739237
+
+2014-10-23  Gábor Kelemen  <kelemeng@openscope.org>
+
+	Updated Hungarian translation
+
+2014-10-17  Martyn Russell  <martyn@lanedo.com>
+
+	Release 1.2.3
+
+2014-10-17  Sam Thursfield  <sam@afuera.me.uk>
+
+	tracker-writeback: Remove broken code to set file attributes
+	Remove some code which tries to set attributes of a file which no
+	longer exists.
+
+	This code was added in the following commit:
+
+	    commit 16fe51de1e93016a122ab089b0e0201c18de7ebc
+	    Author: Philip Van Hoof <philip@codeminded.be>
+	    Date:   Wed Nov 9 12:56:59 2011 +0100
+
+	        tracker-writeback: Preserve file permissions
+
+	        Fixes NB#289953.
+
+	Seems that the intent was to preserve the permission bits of the
+	file after tracker-writeback rewrites it. The code already takes
+	care of this at the time the temporary file is created.
+
+	functional-tests: Clean up writebacktest base class
+
+	functional-tests: Clean up minertest base class
+
+	functional-tests: Remove IgnoreNextUpdate wrapper, nobody should be using this
+
+	functional-tests: Remove all remaining 'wait for miner to be idle' calls
+	We are running against a clean data directory when run by 'test-runner.sh', so
+	the miner should not have any initial crawling work to do. Therefore the tests
+	don't need to wait for it to be idle before starting.
+
+	Test cases should use the await_resource_inserted() and
+	await_resource_deleted() methods as these are (in theory) reliable. Waiting for
+	the miner to go idle and hoping this means that the desired file was crawled
+	and extracted is not reliable at all.
+
+	This should hopefully make the tests robust enough to be run continuously
+	without random failures occuring.
+
+	The tracker_miner_fs_wait_for_idle() functions are gone forever!
+
+	functional-tests: Allow waiting on a specific property, and fix tests that need this
+	Resources are created when the miner process sees them, but often we
+	want to wait until they have been processed by the extractor, too. We
+	can achieve that by waiting for the insertion of a specific triple that
+	we know is set by tracker-extract.
+
+	This required adding a new parameter to the await_resource_inserted()
+	function.
+
+	The 310-fts-indexing and the base writeback test have been fixed to make
+	use of this, instead of using tracker_miner_fs_wait_for_idle().
+
+	functional-tests: Await resource addition / removal properly in 300, 310, 600
+	The tracker_miner_fs_wait_for_idle() function is not a good way to
+	detect when something has changed. We should always be listening
+	to GraphUpdated instead.
+
+	Thanks to Martin Kampas who did some of this already in commit
+	853eb94d78aa269b3b1024c138387ead0c601080.
+
+	functional-tests: Improve the wait-for-change code in helpers.StoreHelper
+	Fixes a bug in await_resource_deleted() where it would stop waiting as soon
+	as any resource was deleted, even if it wasn't the correct one.
+
+	New get_resource_id() function which is useful when calling
+	await_resource_deleted().
+
+	Code is hopefully clearer too.
+
+	functional-tests: Partially fix writeback tests
+	Use the new way of getting tracker-extract output, as the old way does not work.
+
+	Wait for writeback to be done by waiting for the file's mtime to change, instead
+	of using time.sleep().
+
+	The writeback tests still fail at this point.
+
+2014-10-17  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: _NO_STAT breaks in FileNotifier without a GFileInfo
+	GFileInfo is ABSOLUTELY required in the Crawler, without it the
+	TrackerFileNotifier will that top level roots have been deleted because the
+	GFileInfo GQuark does not exist.
+
+	This is seen easily by mounting a removable device, indexing, then removing,
+	then re-inserting that same device.
+
+	The check is done later in the TrackerFileNotifier by looking up the qdata
+	that we set in both conditions below.
+
+	libtracker-miner: Handle multiple nfo:belongsToContainer properties to 1 nie:url
+	Previously we've expected this to be a 1:1 relationship, but it's not always
+	the case with data containers
+
+2014-10-14  Debarshi Ray  <debarshir@gnome.org>
+
+	libtracker-miner: Ensure that the async function uses owned data
+	https://bugzilla.gnome.org/show_bug.cgi?id=737768
+
+	libtracker-data: Guard against failure to create a FTS update statement
+	https://bugzilla.gnome.org/show_bug.cgi?id=738522
+
+2014-10-13  Debarshi Ray  <debarshir@gnome.org>
+
+	libtracker-data: Guard against invalid statements in public API
+	https://bugzilla.gnome.org/show_bug.cgi?id=738450
+
+	libtracker-data: Be more explicit in the error message
+	Add the sqlite3_errstr() to the error that is propagated from
+	sqlite3_open_v2 so that we have a clearer picture of the failure.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=738450
+
+	libtracker-data: Guard against failure to open the database
+	An error from sqlite3_open_v2 will lead to a failure to create a
+	TrackerDBInterface. This means that DBManager.get_db_interface will
+	fail.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=738450
+
+2014-10-10  Milo Casagrande  <milo@ubuntu.com>
+
+	Updated Italian translation
+
+2014-09-25  Мирослав Николић  <miroslavnikolic@rocketmail.com>
+
+	Updated Serbian translation
+
 2014-09-24  Martyn Russell  <martyn@lanedo.com>
 
 	Release 1.2.2

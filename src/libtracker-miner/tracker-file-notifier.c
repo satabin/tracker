@@ -158,7 +158,7 @@ root_data_new (TrackerFileNotifier *notifier,
 	data = g_new0 (RootData, 1);
 	data->root = g_object_ref (file);
 	data->pending_dirs = g_queue_new ();
-	data->query_files = g_ptr_array_new ();
+	data->query_files = g_ptr_array_new_with_free_func (g_object_unref);
 	data->updated_dirs = g_ptr_array_new ();
 	data->flags = flags;
 
@@ -424,7 +424,7 @@ file_notifier_add_node_foreach (GNode    *node,
 
 		if (depth != 0 || file == priv->current_index_root->root)
 			g_ptr_array_add (priv->current_index_root->query_files,
-					 canonical);
+					 g_object_ref (canonical));
 	}
 
 	return FALSE;
@@ -542,7 +542,20 @@ sparql_contents_check_deleted (TrackerFileNotifier *notifier,
 	priv = notifier->priv;
 
 	while (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
-		file = g_file_new_for_uri (tracker_sparql_cursor_get_string (cursor, 0, NULL));
+		const gchar *uri;
+
+		/* Sometimes URI can be NULL when nie:url and
+		 * nfo:belongsToContainer does not have a strictly 1:1
+		 * relationship, e.g. data containers where there is
+		 * only one nie:url but many nfo:belongsToContainer
+		 * cases.
+		 */
+		uri = tracker_sparql_cursor_get_string (cursor, 0, NULL);
+		if (!uri) {
+			continue;
+		}
+
+		file = g_file_new_for_uri (uri);
 		iri = tracker_sparql_cursor_get_string (cursor, 1, NULL);
 
 		if (!tracker_file_system_peek_file (priv->file_system, file)) {

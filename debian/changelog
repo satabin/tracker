@@ -1,9 +1,9 @@
-tracker (1.2.4-2) UNRELEASED; urgency=medium
+tracker (1.2.4-2) unstable; urgency=medium
 
   * libtracker-miner: Restrict the amount of data that is logged
     for errors. Patch cherry picked from upstream Git. (Closes: #754907)
 
- -- Michael Biebl <biebl@debian.org>  Fri, 06 Feb 2015 19:27:59 +0100
+ -- Michael Biebl <biebl@debian.org>  Fri, 06 Feb 2015 19:29:40 +0100
 
 tracker (1.2.4-1) unstable; urgency=medium
 

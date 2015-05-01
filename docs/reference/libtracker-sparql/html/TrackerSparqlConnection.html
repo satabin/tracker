@@ -474,8 +474,12 @@ tracker_sparql_connection_query (<em class="parameter"><code><a class="link" hre
                                  <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>Executes a SPARQL query on. The API call is completely synchronous, so
 it may block.</p>
+<p>The <em class="parameter"><code>sparql</code></em>
+ query should be built with <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>, or
+its parts correctly escaped using <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-string" title="tracker_sparql_escape_string ()"><code class="function">tracker_sparql_escape_string()</code></a>,
+otherwise SPARQL injection is possible.</p>
 <div class="refsect3">
-<a name="id-1.3.4.7.8.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.7.8.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -507,7 +511,7 @@ it may block.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.4.7.8.6"></a><h4>Returns</h4>
+<a name="id-1.3.4.7.8.7"></a><h4>Returns</h4>
 <p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <span class="type">NULL</span> otherwise.
 On error, <span class="type">NULL</span> is returned and the <em class="parameter"><code>error</code></em>
 is set accordingly.
@@ -585,8 +589,12 @@ tracker_sparql_connection_update (<em class="parameter"><code><a class="link" hr
                                   <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>Executes a SPARQL update. The API call is completely
 synchronous, so it may block.</p>
+<p>The <em class="parameter"><code>sparql</code></em>
+ query should be built with <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>, or
+its parts correctly escaped using <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-string" title="tracker_sparql_escape_string ()"><code class="function">tracker_sparql_escape_string()</code></a>,
+otherwise SPARQL injection is possible.</p>
 <div class="refsect3">
-<a name="id-1.3.4.7.11.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.7.11.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -901,8 +909,12 @@ tracker_sparql_connection_update_blank
                                 <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>Executes a SPARQL update and returns the URNs of the generated nodes,
 if any. The API call is completely synchronous, so it may block.</p>
+<p>The <em class="parameter"><code>sparql</code></em>
+ query should be built with <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>, or
+its parts correctly escaped using <a class="link" href="libtracker-sparql-Utilities.html#tracker-sparql-escape-string" title="tracker_sparql_escape_string ()"><code class="function">tracker_sparql_escape_string()</code></a>,
+otherwise SPARQL injection is possible.</p>
 <div class="refsect3">
-<a name="id-1.3.4.7.16.5"></a><h4>Parameters</h4>
+<a name="id-1.3.4.7.16.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -939,7 +951,7 @@ if any. The API call is completely synchronous, so it may block.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.4.7.16.6"></a><h4>Returns</h4>
+<a name="id-1.3.4.7.16.7"></a><h4>Returns</h4>
 <p> a <span class="type">GVariant</span> with the generated URNs, which should be freed with
 <code class="function">g_variant_unref()</code> when no longer used.</p>
 <p></p>

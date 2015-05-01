@@ -176,19 +176,15 @@ am__EXEEXT_2 = $(am__EXEEXT_1)
 @ENABLE_INSTALLED_TESTS_TRUE@am__EXEEXT_4 = $(am__EXEEXT_1)
 @ENABLE_ALWAYS_BUILD_TESTS_TRUE@am__EXEEXT_5 = $(am__EXEEXT_2)
 PROGRAMS = $(installed_test_PROGRAMS) $(noinst_PROGRAMS)
-am_gvdb_test_OBJECTS = gvdb_test-gvdb-test.$(OBJEXT)
+am_gvdb_test_OBJECTS = gvdb-test.$(OBJEXT)
 gvdb_test_OBJECTS = $(am_gvdb_test_OBJECTS)
 am__DEPENDENCIES_1 =
 gvdb_test_DEPENDENCIES = $(top_builddir)/src/gvdb/libgvdb.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-gvdb_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(gvdb_test_CFLAGS) \
-	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SCRIPTS = $(installed_test_SCRIPTS) $(noinst_SCRIPTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -463,6 +459,7 @@ CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATADIRNAME = @DATADIRNAME@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -649,8 +646,7 @@ TRACKER_API_VERSION = @TRACKER_API_VERSION@
 TRACKER_API_VERSION_UNDERSCORES = @TRACKER_API_VERSION_UNDERSCORES@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
-TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
-TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
+TRACKER_CFLAGS = @TRACKER_CFLAGS@
 TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
 TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
 TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
@@ -658,6 +654,7 @@ TRACKER_EXTRACT_MODULES_DIR = @TRACKER_EXTRACT_MODULES_DIR@
 TRACKER_EXTRACT_MODULES_LIBS = @TRACKER_EXTRACT_MODULES_LIBS@
 TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
+TRACKER_LIBS = @TRACKER_LIBS@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
@@ -685,8 +682,6 @@ TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
 TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
-TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
-TRACKER_UTILS_LIBS = @TRACKER_UTILS_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
 TRACKER_WRITEBACK_CFLAGS = @TRACKER_WRITEBACK_CFLAGS@
 TRACKER_WRITEBACK_LIBS = @TRACKER_WRITEBACK_LIBS@
@@ -698,6 +693,7 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
+XSLTPROC = @XSLTPROC@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -810,20 +806,17 @@ all_test_ltlibs = $(test_ltlibraries) $(uninstalled_test_ltlibraries) $(installe
 @ENABLE_INSTALLED_TESTS_TRUE@installed_test_meta_DATA = $(installed_testcases:=.test)
 test_programs = gvdb-test
 AM_CPPFLAGS = \
-	-I$(top_srcdir)/src                            \
-	-I$(top_builddir)/src                          \
-	-DSHAREDIR=\""$(datadir)"\"                    \
-	$(LIBTRACKER_DATA_CFLAGS)
+	$(BUILD_CFLAGS) \
+	-I$(top_srcdir)/src \
+	-I$(top_builddir)/src \
+	-DSHAREDIR=\""$(datadir)"\" \
+	$(GVDB_CFLAGS)
 
 gvdb_test_SOURCES = gvdb-test.c
-gvdb_test_LDADD = $(top_builddir)/src/gvdb/libgvdb.la 	\
-			$(BUILD_LIBS) 				\
-			$(GVDB_LIBS) 				\
-			$(TRACKER_UTILS_LIBS)
-
-gvdb_test_CFLAGS = $(BUILD_CFLAGS) \
-			$(GVDB_CFLAGS) 	\
-			$(TRACKER_UTILS_CFLAGS)
+gvdb_test_LDADD = \
+	$(top_builddir)/src/gvdb/libgvdb.la \
+	$(BUILD_LIBS) \
+	$(GVDB_LIBS)
 
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -987,7 +980,7 @@ clean-noinstPROGRAMS:
 
 gvdb-test$(EXEEXT): $(gvdb_test_OBJECTS) $(gvdb_test_DEPENDENCIES) $(EXTRA_gvdb_test_DEPENDENCIES) 
 	@rm -f gvdb-test$(EXEEXT)
-	$(AM_V_CCLD)$(gvdb_test_LINK) $(gvdb_test_OBJECTS) $(gvdb_test_LDADD) $(LIBS)
+	$(AM_V_CCLD)$(LINK) $(gvdb_test_OBJECTS) $(gvdb_test_LDADD) $(LIBS)
 install-installed_testSCRIPTS: $(installed_test_SCRIPTS)
 	@$(NORMAL_INSTALL)
 	@list='$(installed_test_SCRIPTS)'; test -n "$(installed_testdir)" || list=; \
@@ -1030,7 +1023,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gvdb_test-gvdb-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gvdb-test.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -1052,20 +1045,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
-
-gvdb_test-gvdb-test.o: gvdb-test.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gvdb_test_CFLAGS) $(CFLAGS) -MT gvdb_test-gvdb-test.o -MD -MP -MF $(DEPDIR)/gvdb_test-gvdb-test.Tpo -c -o gvdb_test-gvdb-test.o `test -f 'gvdb-test.c' || echo '$(srcdir)/'`gvdb-test.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/gvdb_test-gvdb-test.Tpo $(DEPDIR)/gvdb_test-gvdb-test.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gvdb-test.c' object='gvdb_test-gvdb-test.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gvdb_test_CFLAGS) $(CFLAGS) -c -o gvdb_test-gvdb-test.o `test -f 'gvdb-test.c' || echo '$(srcdir)/'`gvdb-test.c
-
-gvdb_test-gvdb-test.obj: gvdb-test.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gvdb_test_CFLAGS) $(CFLAGS) -MT gvdb_test-gvdb-test.obj -MD -MP -MF $(DEPDIR)/gvdb_test-gvdb-test.Tpo -c -o gvdb_test-gvdb-test.obj `if test -f 'gvdb-test.c'; then $(CYGPATH_W) 'gvdb-test.c'; else $(CYGPATH_W) '$(srcdir)/gvdb-test.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/gvdb_test-gvdb-test.Tpo $(DEPDIR)/gvdb_test-gvdb-test.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gvdb-test.c' object='gvdb_test-gvdb-test.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gvdb_test_CFLAGS) $(CFLAGS) -c -o gvdb_test-gvdb-test.obj `if test -f 'gvdb-test.c'; then $(CYGPATH_W) 'gvdb-test.c'; else $(CYGPATH_W) '$(srcdir)/gvdb-test.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

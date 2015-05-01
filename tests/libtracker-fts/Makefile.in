@@ -94,7 +94,7 @@ host_triplet = @host@
 TESTS = $(am__EXEEXT_1)
 installed_test_PROGRAMS = $(am__EXEEXT_4)
 noinst_PROGRAMS = $(am__EXEEXT_5) $(am__EXEEXT_1)
-check_PROGRAMS = $(am__EXEEXT_3) tracker-parser$(EXEEXT)
+check_PROGRAMS = $(am__EXEEXT_3)
 @ENABLE_ALWAYS_BUILD_TESTS_TRUE@am__append_1 = $(all_test_ltlibs)
 @ENABLE_ALWAYS_BUILD_TESTS_TRUE@am__append_2 = $(all_test_programs)
 @ENABLE_ALWAYS_BUILD_TESTS_TRUE@am__append_3 = $(all_test_scripts)
@@ -170,7 +170,7 @@ am__installdirs = "$(DESTDIR)$(installed_testdir)" \
 	"$(DESTDIR)$(installed_test_metadir)" \
 	"$(DESTDIR)$(installed_testdir)"
 LTLIBRARIES = $(installed_test_LTLIBRARIES) $(noinst_LTLIBRARIES)
-am__EXEEXT_1 = tracker-fts-test$(EXEEXT) tracker-parser-test$(EXEEXT)
+am__EXEEXT_1 = tracker-fts-test$(EXEEXT)
 am__EXEEXT_2 = $(am__EXEEXT_1)
 @ENABLE_ALWAYS_BUILD_TESTS_FALSE@am__EXEEXT_3 = $(am__EXEEXT_2)
 @ENABLE_INSTALLED_TESTS_TRUE@am__EXEEXT_4 = $(am__EXEEXT_1)
@@ -190,24 +190,6 @@ AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-am_tracker_parser_OBJECTS = tracker-parser.$(OBJEXT)
-tracker_parser_OBJECTS = $(am_tracker_parser_OBJECTS)
-tracker_parser_LDADD = $(LDADD)
-tracker_parser_DEPENDENCIES =  \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(top_builddir)/src/libtracker-data/libtracker-data.la \
-	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/tests/common/libtracker-testcommon.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_tracker_parser_test_OBJECTS = tracker-parser-test.$(OBJEXT)
-tracker_parser_test_OBJECTS = $(am_tracker_parser_test_OBJECTS)
-tracker_parser_test_LDADD = $(LDADD)
-tracker_parser_test_DEPENDENCIES =  \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(top_builddir)/src/libtracker-data/libtracker-data.la \
-	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/tests/common/libtracker-testcommon.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 SCRIPTS = $(installed_test_SCRIPTS) $(noinst_SCRIPTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -243,10 +225,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(tracker_fts_test_SOURCES) $(tracker_parser_SOURCES) \
-	$(tracker_parser_test_SOURCES)
-DIST_SOURCES = $(tracker_fts_test_SOURCES) $(tracker_parser_SOURCES) \
-	$(tracker_parser_test_SOURCES)
+SOURCES = $(tracker_fts_test_SOURCES)
+DIST_SOURCES = $(tracker_fts_test_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
 	ctags-recursive dvi-recursive html-recursive info-recursive \
 	install-data-recursive install-dvi-recursive \
@@ -525,6 +505,7 @@ CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATADIRNAME = @DATADIRNAME@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -711,8 +692,7 @@ TRACKER_API_VERSION = @TRACKER_API_VERSION@
 TRACKER_API_VERSION_UNDERSCORES = @TRACKER_API_VERSION_UNDERSCORES@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
-TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
-TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
+TRACKER_CFLAGS = @TRACKER_CFLAGS@
 TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
 TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
 TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
@@ -720,6 +700,7 @@ TRACKER_EXTRACT_MODULES_DIR = @TRACKER_EXTRACT_MODULES_DIR@
 TRACKER_EXTRACT_MODULES_LIBS = @TRACKER_EXTRACT_MODULES_LIBS@
 TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
+TRACKER_LIBS = @TRACKER_LIBS@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
@@ -747,8 +728,6 @@ TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
 TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
-TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
-TRACKER_UTILS_LIBS = @TRACKER_UTILS_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
 TRACKER_WRITEBACK_CFLAGS = @TRACKER_WRITEBACK_CFLAGS@
 TRACKER_WRITEBACK_LIBS = @TRACKER_WRITEBACK_LIBS@
@@ -760,6 +739,7 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
+XSLTPROC = @XSLTPROC@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -878,8 +858,7 @@ SUBDIRS = \
 	prefix
 
 test_programs = \
-	tracker-fts-test                               \
-	tracker-parser-test
+	tracker-fts-test
 
 AM_CPPFLAGS = \
 	$(BUILD_CFLAGS)                                \
@@ -899,8 +878,6 @@ LDADD = \
 	$(LIBTRACKER_FTS_LIBS)
 
 tracker_fts_test_SOURCES = tracker-fts-test.c
-tracker_parser_test_SOURCES = tracker-parser-test.c
-tracker_parser_SOURCES = tracker-parser.c
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -1064,14 +1041,6 @@ clean-noinstPROGRAMS:
 tracker-fts-test$(EXEEXT): $(tracker_fts_test_OBJECTS) $(tracker_fts_test_DEPENDENCIES) $(EXTRA_tracker_fts_test_DEPENDENCIES) 
 	@rm -f tracker-fts-test$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_fts_test_OBJECTS) $(tracker_fts_test_LDADD) $(LIBS)
-
-tracker-parser$(EXEEXT): $(tracker_parser_OBJECTS) $(tracker_parser_DEPENDENCIES) $(EXTRA_tracker_parser_DEPENDENCIES) 
-	@rm -f tracker-parser$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(tracker_parser_OBJECTS) $(tracker_parser_LDADD) $(LIBS)
-
-tracker-parser-test$(EXEEXT): $(tracker_parser_test_OBJECTS) $(tracker_parser_test_DEPENDENCIES) $(EXTRA_tracker_parser_test_DEPENDENCIES) 
-	@rm -f tracker-parser-test$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(tracker_parser_test_OBJECTS) $(tracker_parser_test_LDADD) $(LIBS)
 install-installed_testSCRIPTS: $(installed_test_SCRIPTS)
 	@$(NORMAL_INSTALL)
 	@list='$(installed_test_SCRIPTS)'; test -n "$(installed_testdir)" || list=; \
@@ -1115,8 +1084,6 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-fts-test.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-parser-test.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-parser.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -1433,13 +1400,6 @@ recheck: all $(check_LTLIBRARIES) $(check_PROGRAMS) $(check_SCRIPTS) $(check_DAT
 tracker-fts-test.log: tracker-fts-test$(EXEEXT)
 	@p='tracker-fts-test$(EXEEXT)'; \
 	b='tracker-fts-test'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tracker-parser-test.log: tracker-parser-test$(EXEEXT)
-	@p='tracker-parser-test$(EXEEXT)'; \
-	b='tracker-parser-test'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \

@@ -23,7 +23,7 @@
   </varlistentry>
   <varlistentry>
     <term>ChangeLog:</term>
- <listitem><para><ulink url="http://git.gnome.org/cgit/tracker/log/data/ontologies/36-scal.ontology">Tracker changes</ulink></para></listitem>
+ <listitem><para><ulink url="http://git.gnome.org/cgit/tracker/log/src/ontologies/36-scal.ontology">Tracker changes</ulink></para></listitem>
   </varlistentry>
 <varlistentry>
   <term>Copyright:</term>

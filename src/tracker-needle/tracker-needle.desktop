@@ -74,6 +74,7 @@ Comment[sl]=Poiščite kar iščete na tem računalniku po imenu ali vsebini z u
 Comment[sr]=Пронађите оно што тражите на овом рачунару према називу или садржају користећи Трагача
 Comment[sr@latin]=Pronađite ono što tražite na ovom računaru prema nazivu ili sadržaju koristeći Tragača
 Comment[sv]=Sök det du letar efter på denna dator, efter namn eller innehåll med Tracker
+Comment[tr]=İzleyici'yi kullanarak bu bilgisayarda aradığınızı isim veya içeriğe göre bulun.
 Comment[uk]=Пошук даних на цьому комп’ютері за ім’ям або вмістом за допомогою Tracker
 Comment[zh_CN]=在计算机上用 Tracker 按名称或内容查找需要的内容
 Comment[zh_HK]=使用 Tracker 根據名稱或內容找出你在這臺電腦上要找的東西
@@ -87,5 +88,5 @@ StartupNotify=true
 X-GNOME-Bugzilla-Bugzilla=GNOME
 X-GNOME-Bugzilla-Product=tracker
 X-GNOME-Bugzilla-Component=Tracker Needle
-X-GNOME-Bugzilla-Version=1.2.6
+X-GNOME-Bugzilla-Version=1.4.0
 

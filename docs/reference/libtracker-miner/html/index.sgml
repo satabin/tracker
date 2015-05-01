@@ -9,12 +9,6 @@
 <ANCHOR id="TrackerFilterType" href="libtracker-miner/libtracker-miner-Enumerations.html#TrackerFilterType">
 <ANCHOR id="TrackerFilterPolicy" href="libtracker-miner/libtracker-miner-Enumerations.html#TrackerFilterPolicy">
 <ANCHOR id="TrackerNetworkType" href="libtracker-miner/libtracker-miner-Enumerations.html#TrackerNetworkType">
-<ANCHOR id="libtracker-miner-tracker-miner-common" href="libtracker-miner/libtracker-miner-tracker-miner-common.html">
-<ANCHOR id="libtracker-miner-tracker-miner-common.other" href="libtracker-miner/libtracker-miner-tracker-miner-common.html#libtracker-miner-tracker-miner-common.other">
-<ANCHOR id="libtracker-miner-tracker-miner-common.description" href="libtracker-miner/libtracker-miner-tracker-miner-common.html#libtracker-miner-tracker-miner-common.description">
-<ANCHOR id="libtracker-miner-tracker-miner-common.functions_details" href="libtracker-miner/libtracker-miner-tracker-miner-common.html#libtracker-miner-tracker-miner-common.functions_details">
-<ANCHOR id="libtracker-miner-tracker-miner-common.other_details" href="libtracker-miner/libtracker-miner-tracker-miner-common.html#libtracker-miner-tracker-miner-common.other_details">
-<ANCHOR id="TRACKER-MINER-FS-GRAPH-URN:CAPS" href="libtracker-miner/libtracker-miner-tracker-miner-common.html#TRACKER-MINER-FS-GRAPH-URN:CAPS">
 <ANCHOR id="TrackerMiner" href="libtracker-miner/TrackerMiner.html">
 <ANCHOR id="TrackerMiner.functions" href="libtracker-miner/TrackerMiner.html#TrackerMiner.functions">
 <ANCHOR id="TrackerMiner.properties" href="libtracker-miner/TrackerMiner.html#TrackerMiner.properties">
@@ -67,11 +61,13 @@
 <ANCHOR id="TrackerMinerOnline.signals" href="libtracker-miner/TrackerMinerOnline.html#TrackerMinerOnline.signals">
 <ANCHOR id="TrackerMinerOnline.other" href="libtracker-miner/TrackerMinerOnline.html#TrackerMinerOnline.other">
 <ANCHOR id="TrackerMinerOnline.object-hierarchy" href="libtracker-miner/TrackerMinerOnline.html#TrackerMinerOnline.object-hierarchy">
+<ANCHOR id="TrackerMinerOnline.implemented-interfaces" href="libtracker-miner/TrackerMinerOnline.html#TrackerMinerOnline.implemented-interfaces">
 <ANCHOR id="TrackerMinerOnline.includes" href="libtracker-miner/TrackerMinerOnline.html#TrackerMinerOnline.includes">
 <ANCHOR id="TrackerMinerOnline.description" href="libtracker-miner/TrackerMinerOnline.html#TrackerMinerOnline.description">
 <ANCHOR id="TrackerMinerOnline.functions_details" href="libtracker-miner/TrackerMinerOnline.html#TrackerMinerOnline.functions_details">
 <ANCHOR id="tracker-miner-online-get-network-type" href="libtracker-miner/TrackerMinerOnline.html#tracker-miner-online-get-network-type">
 <ANCHOR id="TrackerMinerOnline.other_details" href="libtracker-miner/TrackerMinerOnline.html#TrackerMinerOnline.other_details">
+<ANCHOR id="TrackerMinerOnline-struct" href="libtracker-miner/TrackerMinerOnline.html#TrackerMinerOnline-struct">
 <ANCHOR id="TrackerMinerOnlineClass" href="libtracker-miner/TrackerMinerOnline.html#TrackerMinerOnlineClass">
 <ANCHOR id="TrackerMinerOnline.property-details" href="libtracker-miner/TrackerMinerOnline.html#TrackerMinerOnline.property-details">
 <ANCHOR id="TrackerMinerOnline--network-type" href="libtracker-miner/TrackerMinerOnline.html#TrackerMinerOnline--network-type">

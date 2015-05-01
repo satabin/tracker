@@ -37,7 +37,7 @@
   </varlistentry>
   <varlistentry>
     <term>ChangeLog:</term>
- <listitem><para><ulink url="http://git.gnome.org/cgit/tracker/log/data/ontologies/33-nfo.ontology">Tracker changes</ulink></para></listitem>
+ <listitem><para><ulink url="http://git.gnome.org/cgit/tracker/log/src/ontologies/33-nfo.ontology">Tracker changes</ulink></para></listitem>
   </varlistentry>
 <varlistentry>
   <term>Copyright:</term>
@@ -1507,10 +1507,6 @@
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>

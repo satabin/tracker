@@ -1,22 +1,81 @@
-NEW in 1.2.6: 2015-04-09
-========================
+NEW in 1.4.0 - 2014-03-24
+=========================
 
-  * Fixes #746401, Fix possible maxCardinality constraint breaks in epub extractor
-  * Fixes #746194, Ambiguous vala references
-  * Fixes #735406, Restrict the amount of data that is logged for errors
-  * Fixes #742035, Fix logic in guarantee title from file
-  * Fixes #678986, Fix item_move() if source file does not exist
+  * Fix ambiguous GListModel vs GtkListModel references in vala (#746194)
+  * Fix compiler warnings (#746381)
+  * Ignore "." recursing through compressed content (#746437)
 
-Translations: bs, cs, de, hu, id, lt, pl, pt_BR, sk, sl, sr, sr@latin, sv
+Translations: id, it, sv, tr
 
-NEW in 1.2.5: 2014-12-10
-========================
+NEW in 1.3.6 - 2015-03-17
+=========================
 
+  * Fix spurious folder deletes/reindexes (#741852)
+  * Fix nie:url UNIQUE constraint asserts on downloaded files (RH#1192224)
+  * Clear tracker-store watchdog timeout (#745565)
+  * Support fn:replace (#745917)
+  * Spam stderr less for not-so-uncommon error conditions (#746256)
+
+Translations: ko, bs, sr, sl, da
+
+
+NEW in 1.3.5 - 2015-03-06
+=========================
+
+  * Fix major database migration bug, skip Tracker 1.3.4. (#745737)
+  * Build only libiptc test if libjpeg is enabled (#745583)
+  * Put absolute path in shell script (#743738)
+
+Translations: ru
+
+
+NEW in 1.3.4 - 2015-03-03
+=========================
+
+  * Fixed playlists being processed by tracker-extract
+  * Fixes: #743727, Account for cardinality=0 on DB migration
+  * Fixes: #745219, mp3 passes album instead of song title to libmediaart
+
+Translations: zh_TW, sk, eo, nb, lt, eu, po
+
+
+NEW in 1.3.3 - 2015-02-05
+=========================
+
+  * Fixes: GB#681698, Disc number may be incorrect for multi-disc vorbis / flac albums
+  * Fixes: GB#741109, BMP extractor doesn't retrieve image height and width
+  * Fixes: GB#743250, libmediart-2.0 support
+  * Fixes: GB#735406, Tracker spams my log with "Unable to insert multiple values for subject ..."
+  * Fixes: GB#742391, applications, userguides: Don't detect locale changes if we failed to create the miner
+  * Fixes: GB#742035, 1.2.5 unit test failures
+  * Fixes: GB#739234, Tracker sometimes ignores SIGINT/SIGTERM
+  * Fixes: GB#663687, Missing accessible label names on tracker-needle widgets
+  * Fixes: GB#741777, libtracker-sparql: Document requirement to escape constructed queries
+  * Fixes: GB#678986, item_move() creates invalid SPARQL if source file does not exist
+  * Reverted: GB#733536, Remove --enable-guarantee metadata, always guarantee nie:title and nie:contentCreated
+
+Translations:
+
+  * Updated cs: Marek Černocký
+  * Updated de: Christian Kirbach, Bernd Homuth
+  * Updated el: Dimitris Spingos, Dimitris Spingos (Δημήτρης Σπίγγος)
+  * Updated es: Daniel Mustieles
+  * Updated eu: Inaki Larranaga Murgoitio, Iñaki Larrañaga Murgoitio
+  * Updated gl: Fran Dieguez
+  * Updated hu: Balázs Úr
+  * Updated pt_BR: Rafael Ferreira
+
+
+NEW in 1.3.2 - 2014-12-11
+=========================
+
+  * New Feature: 'tracker' binary: All pre-existing tracker-* command line tools have been merged into this new binary. Man pages are shown for 'help' sub-commands. This brings more of a "git" feel to the tracker's command line tools. There is a backwards compatible 'tracker-command' script and compatibility layer provided to ensure existing commands still work for a limited time. The old 'tracker-control' actions are now part of 'tracker daemon', 'tracker reset' and 'tracker index'. Additionally, the 'tracker-sql' utility has been integrated to allow SQL operations directly on the DB.
+  * Fixes: GB#741317, miner-fs: use GFile to check for homedir
   * Fixes: GB#741141, Tracker crashes every 5-10 minutes
-  * Fixes: GB#733536, Remove --enable-guarantee metadata, always guarantee nie:title and nie:contentCreated
-  * Fixes: GB#740268, System tab - very ambiguous about what is being removed
-  * Fixes: GB#739149, Bump glib version (g_str_match_string is only in glib >= 2.40)
   * Fixes: RH#1133042, [abrt] tracker: persistence_store_file(): tracker-extract killed by SIGSEGV
+  * all: Move all code from tracker_info() to g_info() new in GLib 2.40.
+  * gvdb: Fixed LDFLAGS and CFLAGS, was using unused variables
+  * gvdb: Move away from g_file_delete() to unlink() to avoid GIO dep for one line in unit tests
   * libtracker-fts: Make property list per-thread data to fix uninitialisation issues
   * libtracker-fts: Fixed compilation errors when --disable-tracker-fts is used
   * tracker-extract: Fixed potential use of uninitialised hash table in persistence_invalidate()
@@ -26,67 +85,67 @@ NEW in 1.2.5: 2014-12-10
 
 Translations:
 
-  * Updated fi: Lasse Liehu, Jiri Grönroos
+  * Updated pl: Piotr Drąg
+
+
+NEW in 1.3.1 - 2014-12-03
+=========================
+
+  * Fixes: GB#733536, Remove --enable-guarantee metadata, always guarantee nie:title and nie:contentCreated
+  * Fixes: GB#739260, srcdir != builddir issue with latest git
+  * Fixes: GB#741012, should not override "all" target
+  * Fixes: GB#740268, System tab - very ambiguous about what is being removed
+  * Fixes: GB#740864, Symlink target for D-Bus service files includes DESTDIR
+
+Translations:
+
+  * Updated cs: Marek Černocký
+  * Updated es: Daniel Mustieles
+  * Updated hu: Balázs Úr
+  * Updated nb: Kjartan Maraas
   * Updated pt: Duarte Loreto, Pedro Albuquerque
 
 
-NEW in 1.2.4: 2014-11-06
-========================
+NEW in 1.3.0 - 2014-11-06
+=========================
 
-  * Fixes: GB#739237, Ownership reference not added in tracker-file-notifier.c
+The main changes since 1.2.x are:
+
+  * build: Require GLib >= 2.4.0, for g_str_match_string() and g_info()
+  * all: Migrate to GKeyfileSettingsBackend, including:
+   * Now when using TRACKER_USE_CONFIG_FILES env var, we use this backend
+   * MAN pages which previously didn't exist for configurations are generated from xml gschemas
+  * libstemmer: Removed imported code and depend on external version
+  * libtracker-miner: Major update to Vala bindings
+  * libtracker-common: Major clean up and removal of unused internal APIs, including:
+    * Removed os-dependent APIs (mainly process spawning GLib does now anyway)
+    * Removed tracker_file_(un)lock() API which was unused
+    * Removed all run-time locale management, GNOME handles this between logins, so do we
+    * Removed TrackerConfigFile and TrackerKeyfileObject classes, use GSettings instead
+    * Removed unused type utils functions (e.g. tracker_*_to_string() and more)
+    * Moved tracker-ontologies.h (with prefix, etc definitions) into libtracker-sparql
+    * Moved CRC32 API into libtracker-data (the only place it's used)
+    * Moved TrackerStorage class to tracker-miner-fs (only place it's used)
+  * data: Now moved into their respective binary dirs, including:
+    * .desktop: Desktop files (moved from data/ into src/tracker-store, etc)
+    * .pc: Pkgconfig files (moved from data/ into src/libtracker-miner, etc)
+    * .service: DBus files (moved from data/dbus/* to src/tracker-store, etc)
+    * .png, .svg: Moved artwork into src/tracker-needle)
+    * .gschema.xml: GSettings files (moved from data/gschemas into src, tracker-store, etc)
+    * .ontology: Ontologies are now in src/ontologies
+    * stopwords.*: Stop words per language (moved from data/stopwords into src/libtracker-common for TrackerLanguage)
+  * data: Merged all data miner .desktop files with existing DBus .service files
+  * functional-tests: Many updates to fix broken functional tests, including:
+    * Writeback and miner base class clean ups
+    * Removing IgnoreNextUpdate wrapper and 'wait for miner to be idle' calls
+    * Waiting properly for resource addition / removal
+  * Fixes GB#737663, Avoid the use of setrlimit() causing SIGABRT in tracker-extract
 
 Translations:
 
+  * Updated fi: Timo Jyrinki, Jiri Grönroos
   * Updated hu: Gábor Kelemen, Gabor Kelemen
-
-
-NEW in 1.2.3: 2014-10-17
-========================
-
-  * Fixes: GB#737768, fs: TrackerCrawler can crash due to invalid container pointers
-  * Fixes: GB#738522, libtracker-data: Guard against failure to create a FTS update statement
-  * Fixes: GB#738450, libtracker-data: Guard against failure to open the database
-  * libtracker-miner: _NO_STAT breaks in FileNotifier without a GFileInfo
-  * libtracker-miner: Handle multiple nfo:belongsToContainer properties to 1 nie:url
-  * tracker-writeback: Remove broken code to set file attributes
-  * functional-tests: Clean up writebacktest base class
-  * functional-tests: Clean up minertest base class
-  * functional-tests: Remove IgnoreNextUpdate wrapper, nobody should be using this
-  * functional-tests: Remove all remaining 'wait for miner to be idle' calls
-  * functional-tests: Allow waiting on a specific property, and fix tests that need this
-  * functional-tests: Await resource addition / removal properly in 300, 310, 600
-  * functional-tests: Improve the wait-for-change code in helpers.StoreHelper
-  * functional-tests: Partially fix writeback tests
-
-Translations:
-
   * Updated it: Milo Casagrande
-  * Updated sr: Мирослав Николић
-  * Updated sr@latin: Мирослав Николић, Miroslav Nikolić
-
-
-NEW in 1.2.2 - 2014-09-24
-=========================
-
-The main changes since 1.2.1 are:
-
-  * Fixes: GB#737243, API break with tracker_indexing_tree_new()
-  * libtracker-miner: Fixed missing Vala bindings for new DirectoryFlags.{PRIORITY|NO_STAT} enums
-
-
-NEW in 1.2.1 - 2014-09-23
-=========================
-
-The main changes since 1.2.0 are:
-
-  * ontology: Revert nfo:hasMediaStream max cardinality change until
-    Philip merges his feature branch to allow database migration and
-    coping for it. This won't be in the 1.2.x releases but likely in
-    1.4. and master branch.
-
-    For packagers, skipping 1.2.0 and using 1.2.1 should avoid data
-    loss by way of a reindex that may be forced when users upgrade.
-    This is highly important and something we want to avoid.
 
 
 NEW in 1.2.0 - 2014-09-22

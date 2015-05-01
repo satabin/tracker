@@ -483,7 +483,7 @@ tracker_indexing_tree_file_matches_filter
 <div class="refsect3">
 <a name="id-1.3.4.7.9.8.6"></a><h4>Returns</h4>
 <p> <code class="literal">TRUE</code> if <em class="parameter"><code>file</code></em>
-is filtered</p>
+is filtered.</p>
 <p></p>
 </div>
 </div>
@@ -587,12 +587,30 @@ should be indexed.</p>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
 tracker_indexing_tree_get_filter_hidden
                                (<em class="parameter"><code><a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *tree</code></em>);</pre>
-<p>
-</p>
+<p>Describes if the <em class="parameter"><code>tree</code></em>
+ should index hidden content. To change this
+setting, see <a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-set-filter-hidden" title="tracker_indexing_tree_set_filter_hidden ()"><code class="function">tracker_indexing_tree_set_filter_hidden()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.4.7.9.11.5"></a><h4>Returns</h4>
+<a name="id-1.3.4.7.9.11.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>tree</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.4.7.9.11.6"></a><h4>Returns</h4>
+<p> <code class="literal">FALSE</code> if hidden files are indexed, otherwise <code class="literal">TRUE</code>.</p>
 <p></p>
 </div>
+<p class="since">Since 0.18.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -601,8 +619,38 @@ tracker_indexing_tree_get_filter_hidden
 tracker_indexing_tree_set_filter_hidden
                                (<em class="parameter"><code><a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *tree</code></em>,
                                 <em class="parameter"><code><span class="type">gboolean</span> filter_hidden</code></em>);</pre>
-<p>
-</p>
+<p>When indexing content, sometimes it is preferable to ignore hidden
+content, for example, files prefixed with ".". This is
+common for files in a home directory which are usually config
+files.</p>
+<p>Sets the indexing policy for <em class="parameter"><code>tree</code></em>
+ with hidden files and content.
+To ignore hidden files, <em class="parameter"><code>filter_hidden</code></em>
+ should be <code class="literal">TRUE</code>, otherwise
+<code class="literal">FALSE</code>.</p>
+<div class="refsect3">
+<a name="id-1.3.4.7.9.12.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>tree</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filter_hidden</p></td>
+<td class="parameter_description"><p>a boolean</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since 0.18.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -611,12 +659,42 @@ tracker_indexing_tree_set_filter_hidden
 tracker_indexing_tree_get_default_policy
                                (<em class="parameter"><code><a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *tree</code></em>,
                                 <em class="parameter"><code><a class="link" href="libtracker-miner-Enumerations.html#TrackerFilterType" title="enum TrackerFilterType"><span class="type">TrackerFilterType</span></a> filter</code></em>);</pre>
-<p>
-</p>
+<p>Get the default filtering policies for <em class="parameter"><code>tree</code></em>
+ when indexing content.
+Some content is black listed or white listed and the default policy
+for that is returned here. The <em class="parameter"><code>filter</code></em>
+ allows specific type of
+policies to be returned, for example, the default policy for files
+(<a class="link" href="libtracker-miner-Enumerations.html#TRACKER-FILTER-FILE:CAPS"><span class="type">TRACKER_FILTER_FILE</span></a>).</p>
 <div class="refsect3">
-<a name="id-1.3.4.7.9.13.5"></a><h4>Returns</h4>
+<a name="id-1.3.4.7.9.13.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>tree</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filter</p></td>
+<td class="parameter_description"><p>a <a class="link" href="libtracker-miner-Enumerations.html#TrackerFilterType" title="enum TrackerFilterType"><span class="type">TrackerFilterType</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.4.7.9.13.6"></a><h4>Returns</h4>
+<p> Either <a class="link" href="libtracker-miner-Enumerations.html#TRACKER-FILTER-POLICY-DENY:CAPS"><span class="type">TRACKER_FILTER_POLICY_DENY</span></a> or
+<span class="type">TRACKER_FILTER_POLICY_ALLOW</span>.</p>
 <p></p>
 </div>
+<p class="since">Since 0.18.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -626,8 +704,43 @@ tracker_indexing_tree_set_default_policy
                                (<em class="parameter"><code><a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *tree</code></em>,
                                 <em class="parameter"><code><a class="link" href="libtracker-miner-Enumerations.html#TrackerFilterType" title="enum TrackerFilterType"><span class="type">TrackerFilterType</span></a> filter</code></em>,
                                 <em class="parameter"><code><a class="link" href="libtracker-miner-Enumerations.html#TrackerFilterPolicy" title="enum TrackerFilterPolicy"><span class="type">TrackerFilterPolicy</span></a> policy</code></em>);</pre>
-<p>
-</p>
+<p>Set the default <em class="parameter"><code>policy</code></em>
+ (to allow or deny) for content in <em class="parameter"><code>tree</code></em>
+
+based on the type - in this case <em class="parameter"><code>filter</code></em>
+. Here, <em class="parameter"><code>filter</code></em>
+ is a file
+or directory and there are some other options too.</p>
+<p>For example, you can (by default), disable indexing all directories
+using this function.</p>
+<div class="refsect3">
+<a name="id-1.3.4.7.9.14.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>tree</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filter</p></td>
+<td class="parameter_description"><p>a <a class="link" href="libtracker-miner-Enumerations.html#TrackerFilterType" title="enum TrackerFilterType"><span class="type">TrackerFilterType</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>policy</p></td>
+<td class="parameter_description"><p>a <a class="link" href="libtracker-miner-Enumerations.html#TrackerFilterPolicy" title="enum TrackerFilterPolicy"><span class="type">TrackerFilterPolicy</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since 0.18.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -735,12 +848,39 @@ It can be referenced using <code class="function">g_object_ref()</code>. </p>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
 tracker_indexing_tree_file_is_root (<em class="parameter"><code><a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *tree</code></em>,
                                     <em class="parameter"><code><span class="type">GFile</span> *file</code></em>);</pre>
-<p>
-</p>
+<p>Evaluates if the URL represented by <em class="parameter"><code>file</code></em>
+ is the same of that for
+the root of the <em class="parameter"><code>tree</code></em>
+.</p>
 <div class="refsect3">
-<a name="id-1.3.4.7.9.17.5"></a><h4>Returns</h4>
+<a name="id-1.3.4.7.9.17.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>tree</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>file</p></td>
+<td class="parameter_description"><p>a <span class="type">GFile</span> to compare</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.4.7.9.17.6"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if <em class="parameter"><code>file</code></em>
+matches the URL canonically, otherwise <code class="literal">FALSE</code>.</p>
 <p></p>
 </div>
+<p class="since">Since 1.2.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -861,11 +1001,14 @@ freed. </p>
 <div class="refsect2">
 <a name="TrackerIndexingTree-directory-added"></a><h3>The <code class="literal">“directory-added”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-user_function (<a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *trackerindexingtree,
-               <span class="type">GFile</span>               *arg1,
+user_function (<a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *indexing_tree,
+               <span class="type">GFile</span>               *directory,
                <span class="type">gpointer</span>             user_data)</pre>
-<p>
-</p>
+<p>the ::directory-added signal is emitted when a new
+directory is added to the list of other directories which
+are to be considered for indexing. Typically this is
+signalled when the <a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-add" title="tracker_indexing_tree_add ()"><code class="function">tracker_indexing_tree_add()</code></a> API is
+called.</p>
 <div class="refsect3">
 <a name="id-1.3.4.7.12.2.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -876,8 +1019,13 @@ user_function (<a class="link" href="TrackerIndexingTree.html" title="TrackerInd
 </colgroup>
 <tbody>
 <tr>
-<td class="parameter_name"><p>trackerindexingtree</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
+<td class="parameter_name"><p>indexing_tree</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>directory</p></td>
+<td class="parameter_description"><p>a <span class="type">GFile</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -889,16 +1037,20 @@ user_function (<a class="link" href="TrackerIndexingTree.html" title="TrackerInd
 </table></div>
 </div>
 <p>Flags: Run Last</p>
+<p class="since">Since 0.14.0</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="TrackerIndexingTree-directory-removed"></a><h3>The <code class="literal">“directory-removed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-user_function (<a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *trackerindexingtree,
-               <span class="type">GFile</span>               *arg1,
+user_function (<a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *indexing_tree,
+               <span class="type">GFile</span>               *directory,
                <span class="type">gpointer</span>             user_data)</pre>
-<p>
-</p>
+<p>the ::directory-removed signal is emitted when a
+directory is removed from the list of other directories
+which are to be considered for indexing. Typically this is
+signalled when the <a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-remove" title="tracker_indexing_tree_remove ()"><code class="function">tracker_indexing_tree_remove()</code></a> API is
+called.</p>
 <div class="refsect3">
 <a name="id-1.3.4.7.12.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -909,8 +1061,13 @@ user_function (<a class="link" href="TrackerIndexingTree.html" title="TrackerInd
 </colgroup>
 <tbody>
 <tr>
-<td class="parameter_name"><p>trackerindexingtree</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
+<td class="parameter_name"><p>indexing_tree</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>directory</p></td>
+<td class="parameter_description"><p>a <span class="type">GFile</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -922,16 +1079,22 @@ user_function (<a class="link" href="TrackerIndexingTree.html" title="TrackerInd
 </table></div>
 </div>
 <p>Flags: Run Last</p>
+<p class="since">Since 0.14.0</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="TrackerIndexingTree-directory-updated"></a><h3>The <code class="literal">“directory-updated”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-user_function (<a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *trackerindexingtree,
-               <span class="type">GFile</span>               *arg1,
+user_function (<a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *indexing_tree,
+               <span class="type">GFile</span>               *directory,
                <span class="type">gpointer</span>             user_data)</pre>
-<p>
-</p>
+<p>the ::directory-updated signal is emitted when <em class="parameter"><code>directory</code></em>
+
+that was previously added has had its indexing flags
+updated due to another directory that is a parent of
+<em class="parameter"><code>directory</code></em>
+ changing. This tends to happen uppon
+<a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-add" title="tracker_indexing_tree_add ()"><code class="function">tracker_indexing_tree_add()</code></a> API calls.</p>
 <div class="refsect3">
 <a name="id-1.3.4.7.12.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -942,8 +1105,13 @@ user_function (<a class="link" href="TrackerIndexingTree.html" title="TrackerInd
 </colgroup>
 <tbody>
 <tr>
-<td class="parameter_name"><p>trackerindexingtree</p></td>
-<td class="parameter_description"><p>the object which received the signal.</p></td>
+<td class="parameter_name"><p>indexing_tree</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>directory</p></td>
+<td class="parameter_description"><p>a <span class="type">GFile</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -955,6 +1123,7 @@ user_function (<a class="link" href="TrackerIndexingTree.html" title="TrackerInd
 </table></div>
 </div>
 <p>Flags: Run Last</p>
+<p class="since">Since 0.14.0</p>
 </div>
 </div>
 </div>

@@ -9,18 +9,43 @@ TrackerMinerOnline
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### SECTION Stability_Level ##### -->
 
 
 <!-- ##### SECTION Image ##### -->
 
+
+<!-- ##### STRUCT TrackerMinerOnline ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SIGNAL TrackerMinerOnline::connected ##### -->
+<para>
+
+</para>
+
+@trackermineronline: the object which received the signal.
+@arg1: 
+@Returns: 
+
+<!-- ##### SIGNAL TrackerMinerOnline::disconnected ##### -->
+<para>
+
+</para>
+
+@trackermineronline: the object which received the signal.
+
+<!-- ##### ARG TrackerMinerOnline:network-type ##### -->
+<para>
+
+</para>
 
 <!-- ##### STRUCT TrackerMinerOnlineClass ##### -->
 <para>

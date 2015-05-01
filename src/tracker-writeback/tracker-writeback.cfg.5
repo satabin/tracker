@@ -1,0 +1,40 @@
+
+.TH tracker-writeback.cfg 5 "marzo 2015" 1.3.6 "Tracker Manual"
+
+.SH NAME
+tracker-writeback.cfg
+
+.SH SYNOPSIS
+$HOME/.config/tracker/tracker-writeback.cfg
+
+.SH DESCRIPTION
+Tracker's configuration is built on top of GSettings, part of GLib. This means that there is a proper schema for configurations and they can be viewed (normally) using the \fBdconf-editor\fR tool.
+
+Tracker also allows switching from the GSettings database, used by most (cross) desktop applications, to a key/value formatted files (like Microsoft's INI format). To do this, the environment variable \fBTRACKER_USE_CONFIG_FILES\fR must be defined before running the application using that configuration.
+
+So where is this configuration? Well, normally they're stored in \fI$HOME/.config/tracker/\fR, however, default values are not stored to config files, only \fBdifferent\fR values are. This man page describes what keys and values can be used.
+
+See EXAMPLES for a general overview.
+
+.SH OPTIONS
+
+.TP
+\fBverbosity\fR='errors'
+.nf
+
+Log verbosity.
+.fi
+
+
+
+.SH EXAMPLES
+The top level group is "General". The default configuration (if saved to tracker-writeback.cfg), would look like:
+
+.nf
+    [General]
+    verbosity='errors';
+    
+.fi
+
+.SH SEE ALSO
+.BR tracker-writeback\cfg

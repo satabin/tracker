@@ -12,9 +12,9 @@ AC_PREREQ([2.64])
 # if backwards compatibility has been broken,
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [1])
-m4_define([tracker_minor_version], [2])
-m4_define([tracker_micro_version], [6])
-m4_define([tracker_interface_age], [3])
+m4_define([tracker_minor_version], [4])
+m4_define([tracker_micro_version], [0])
+m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -55,7 +55,7 @@ AC_CONFIG_HEADERS([config.h])
 # See: https://www.gnu.org/software/autoconf/manual/autoconf-2.64/html_node/Posix-Variants.html
 AC_USE_SYSTEM_EXTENSIONS
 
-AM_INIT_AUTOMAKE([1.11 no-define tar-ustar -Wno-portability])
+AM_INIT_AUTOMAKE([1.11 no-define tar-ustar -Wno-portability no-dist-gzip dist-xz])
 
 AC_PROG_LIBTOOL
 
@@ -231,7 +231,7 @@ NETWORK_MANAGER_REQUIRED=0.8
 GSTREAMER_REQUIRED=0.10.31
 GUPNP_DLNA_REQUIRED=0.9.4
 LIBPNG_REQUIRED=0.89
-LIBMEDIAART_REQUIRED=0.5.0
+LIBMEDIAART_REQUIRED=1.9.0
 
 # 3.6.11 for sqlite_backup API
 # 3.6.16 to fix test failures
@@ -323,12 +323,13 @@ LIBTRACKER_SPARQL_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
 PKG_CHECK_MODULES(LIBTRACKER_SPARQL, [$LIBTRACKER_SPARQL_REQUIRED])
 
 # Check requirements for tracker-control
-TRACKER_CONTROL_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
-                          gio-unix-2.0 >= $GLIB_REQUIRED
-                          uuid"
+TRACKER_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
+                  gio-unix-2.0 >= $GLIB_REQUIRED
+                  uuid"
 
-PKG_CHECK_MODULES(TRACKER_CONTROL, [$TRACKER_CONTROL_REQUIRED])
+PKG_CHECK_MODULES(TRACKER, [$TRACKER_REQUIRED])
 
+# Check requirements for tracker-resdump
 TRACKER_RESDUMP_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
                           gee-0.8      >= $GEE_REQUIRED"
 
@@ -503,12 +504,6 @@ TRACKER_MINER_RSS_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
 PKG_CHECK_MODULES(TRACKER_MINER_RSS, [$TRACKER_MINER_RSS_REQUIRED],
                   [have_tracker_miner_rss=yes],
                   [have_tracker_miner_rss=no])
-
-# Check requirements for tracker-utils
-TRACKER_UTILS_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
-                        gio-unix-2.0 >= $GLIB_REQUIRED"
-
-PKG_CHECK_MODULES(TRACKER_UTILS, [$TRACKER_UTILS_REQUIRED])
 
 # Check requirements for tracker-needle
 TRACKER_NEEDLE_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
@@ -790,6 +785,35 @@ else
 fi
 
 ##################################################################
+# Check for libtracker-common, make sure libstemmer exists
+##################################################################
+
+AC_ARG_ENABLE([libstemmer],
+              AS_HELP_STRING([--enable-libstemmer],
+                             [enable the stemming while indexing [[default=auto]]]),
+              [enable_libstemmer=$enableval],
+              [enable_libstemmer=auto])
+
+if test "x$enable_libstemmer" != "xno" ; then
+   AC_CHECK_LIB([stemmer], [sb_stemmer_new], [have_libstemmer=yes], [have_libstemmer=no])
+
+   if test "x$have_libstemmer" = "xyes"; then
+      AC_DEFINE(HAVE_LIBSTEMMER, [], [Define if we have libstemmer])
+      LIBTRACKER_COMMON_LIBS="$LIBTRACKER_COMMON_LIBS -lstemmer"
+   fi
+else
+   have_libstemmer="no  (disabled)"
+fi
+
+if test "x$enable_libstemmer" = "xyes"; then
+   if test "x$have_libstemmer" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find libstemmer.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_LIBSTEMMER, test "x$have_libstemmer" = "xyes")
+
+##################################################################
 # Check for tracker-fts, allow disabling FTS support
 ##################################################################
 
@@ -799,10 +823,10 @@ AC_ARG_ENABLE([tracker-fts],
               [enable_tracker_fts=$enableval],
               [enable_tracker_fts=auto])
 
-if test "x$enable_tracker_fts" != "xno" ; then
-   have_tracker_fts="yes"
-else
+if test "x$enable_tracker_fts" = "xno" ; then
    have_tracker_fts="no  (disabled)"
+else
+   have_tracker_fts="yes"
 fi
 
 if test "x$have_tracker_fts" = "xyes"; then
@@ -1020,6 +1044,10 @@ esac
 
 AM_CONDITIONAL(HAVE_LIBICU, test "x$have_libicu" = "xyes")
 
+# Add to libtracker-common
+LIBTRACKER_COMMON_CFLAGS="$LIBTRACKER_COMMON_CFLAGS $UNICODE_SUPPORT_CFLAGS"
+LIBTRACKER_COMMON_LIBS="$LIBTRACKER_COMMON_LIBS $UNICODE_SUPPORT_LIBS"
+
 # Add to libtracker-fts
 LIBTRACKER_FTS_CFLAGS="$LIBTRACKER_FTS_CFLAGS $UNICODE_SUPPORT_CFLAGS"
 LIBTRACKER_FTS_LIBS="$LIBTRACKER_FTS_LIBS $UNICODE_SUPPORT_LIBS"
@@ -1079,7 +1107,7 @@ AC_ARG_ENABLE(libmediaart,
 
 if test "x$enable_libmediaart" != "xno" ; then
    PKG_CHECK_MODULES(LIBMEDIAART,
-                     [libmediaart-1.0 >= $LIBMEDIAART_REQUIRED],
+                     [libmediaart-2.0 >= $LIBMEDIAART_REQUIRED],
                      [have_libmediaart=yes],
                      [have_libmediaart=no])
 
@@ -1096,7 +1124,7 @@ if test "x$enable_libmediaart" != "xno" ; then
    TRACKER_MINER_FS_LIBS="$TRACKER_MINER_FS_LIBS $LIBMEDIAART_LIBS"
 
    # Used for .pc file...
-   LIBTRACKER_MINER_PC_REQUIRES="libmediaart-1.0"
+   LIBTRACKER_MINER_PC_REQUIRES="libmediaart-2.0"
    AC_SUBST(LIBTRACKER_MINER_PC_REQUIRES)
 
    if test "x$have_libmediaart" = "xyes"; then
@@ -1742,8 +1770,34 @@ fi
 
 AM_CONDITIONAL(HAVE_LIBXML2, test "x$have_libxml2" = "xyes")
 
+##################################################################
+# Check for xsltproc, used to generate cfg man pages (5)
+##################################################################
+
+AC_ARG_ENABLE([cfg-man-pages],
+              AS_HELP_STRING([--enable-cfg-man-pages],
+                             [enable man pages for config (.cfg) files [[default=yes]]]),
+              [enable_cfg_man_pages=$enableval],
+              [enable_cfg_man_pages=yes])
+
+if test "x$enable_cfg_man_pages" != "xno" ; then
+   # Check for graphviz if we are building gtk_doc
+   AC_PATH_PROG(XSLTPROC, xsltproc)
+   AC_SUBST(XSLTPROC)
+else
+   have_xsltproc="no  (disabled)"
+fi
+
+if test "x$enable_cfg_man_pages" = "xyes"; then
+   if test -z "$XSLTPROC"; then
+      AC_MSG_ERROR([Couldn't find xsltproc, try installing libxslt.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_XSLTPROC, test -n "$XSLTPROC")
+
 ####################################################################
-# Check for tracker-extract: gstreamer/mplayer/etc
+# Check for tracker-extract: gstreamer/etc
 ####################################################################
 
 AC_ARG_ENABLE(generic-media-extractor,
@@ -1819,17 +1873,10 @@ if test "$have_generic_media_handler_app" = "GStreamer"; then
    AC_DEFINE(HAVE_GSTREAMER, [], [Define if we have GStreamer])
    AM_CONDITIONAL(HAVE_GSTREAMER, true)
    AM_CONDITIONAL(HAVE_LIBAV, false)
-   AM_CONDITIONAL(USING_EXTERNAL_GENERIC_MEDIA_PLAYER, false)
 elif test "$have_generic_media_handler_app" = "libav"; then
     AC_DEFINE(HAVE_GSTREAMER, [], [Define if we have libav])
     AM_CONDITIONAL(HAVE_LIBAV, true)
     AM_CONDITIONAL(HAVE_GSTREAMER, false)
-    AM_CONDITIONAL(USING_EXTERNAL_GENERIC_MEDIA_PLAYER, false)
-else
-   AC_DEFINE(USING_EXTERNAL_GENERIC_MEDIA_PLAYER, [], [Define that Tracker will try to use external generic media players])
-   AM_CONDITIONAL(USING_EXTERNAL_GENERIC_MEDIA_PLAYER, true)
-   AM_CONDITIONAL(HAVE_GSTREAMER, false)
-   AM_CONDITIONAL(HAVE_LIBAV, false)
 fi
 
 ###########################################################################
@@ -2545,22 +2592,6 @@ AM_CONDITIONAL(HAVE_ARTWORK, test "x$have_artwork" = "xyes")
 ##################################################################
 
 AC_CONFIG_FILES([
-	data/dbus/Makefile
-	data/gschemas/Makefile
-	data/icons/16x16/Makefile
-	data/icons/22x22/Makefile
-	data/icons/24x24/Makefile
-	data/icons/32x32/Makefile
-	data/icons/48x48/Makefile
-	data/icons/Makefile
-	data/icons/scalable/Makefile
-	data/languages/Makefile
-	data/Makefile
-	data/miners/Makefile
-	data/ontologies/Makefile
-	data/tracker-control.pc
-	data/tracker-sparql.pc
-	data/tracker-miner.pc
 	docs/Makefile
 	docs/design/Makefile
 	docs/manpages/Makefile
@@ -2577,31 +2608,39 @@ AC_CONFIG_FILES([
 	Makefile
 	po/Makefile.in
 	src/gvdb/Makefile
-	src/libstemmer/Makefile
 	src/libtracker-common/Makefile
+	src/libtracker-common/stop-words/Makefile
 	src/libtracker-sparql/Makefile
+	src/libtracker-sparql/tracker-sparql.pc
 	src/libtracker-bus/Makefile
 	src/libtracker-control/Makefile
+	src/libtracker-control/tracker-control.pc
 	src/libtracker-data/Makefile
 	src/libtracker-direct/Makefile
 	src/libtracker-sparql-backend/Makefile
 	src/libtracker-fts/Makefile
 	src/libtracker-extract/Makefile
 	src/libtracker-miner/Makefile
+	src/libtracker-miner/tracker-miner.pc
 	src/Makefile
 	src/miners/Makefile
 	src/miners/fs/Makefile
 	src/miners/apps/Makefile
 	src/miners/rss/Makefile
 	src/miners/user-guides/Makefile
+	src/ontologies/Makefile
 	src/tracker-store/Makefile
-	src/tracker-control/Makefile
+	src/tracker/Makefile
 	src/tracker-extract/Makefile
 	src/tracker-preferences/Makefile
-	src/tracker-preferences/tracker-preferences.desktop.in
 	src/tracker-needle/Makefile
-	src/tracker-needle/tracker-needle.desktop.in
-	src/tracker-utils/Makefile
+	src/tracker-needle/icons/Makefile
+	src/tracker-needle/icons/16x16/Makefile
+	src/tracker-needle/icons/22x22/Makefile
+	src/tracker-needle/icons/24x24/Makefile
+	src/tracker-needle/icons/32x32/Makefile
+	src/tracker-needle/icons/48x48/Makefile
+	src/tracker-needle/icons/scalable/Makefile
 	src/tracker-writeback/Makefile
 	src/plugins/Makefile
 	src/plugins/evolution/Makefile
@@ -2690,7 +2729,6 @@ AC_CONFIG_FILES([
 	utils/data-generators/cc/Makefile
 	utils/mtp/Makefile
 	utils/sandbox/Makefile
-	utils/tracker-sql/Makefile
 	utils/tracker-resdump/Makefile
 	examples/Makefile
 	examples/libtracker-miner/Makefile
@@ -2713,6 +2751,7 @@ Build Configuration:
 	Win32:                                  $native_win32
 
 	Enable gtk doc (for documentation):     $enable_gtk_doc
+	Enable man pages for GSettings:         $enable_cfg_man_pages
 
 	Enable functional tests:                $enable_functional_tests
 	Enable unit tests:                      $have_unit_tests
@@ -2726,6 +2765,7 @@ Feature Support:
 
 	Build with Journal support:             $have_tracker_journal
 	Build with SQLite FTS support:          $have_tracker_fts (built-in FTS: $have_builtin_fts4)
+	Build with Stemming support:            $have_libstemmer
 
 	Cache media art                         $have_libmediaart (libmediaart)
 	Install artwork                         $have_artwork

@@ -137,7 +137,8 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(libtracker_datadir)"
+am__installdirs = "$(DESTDIR)$(libtracker_datadir)" \
+	"$(DESTDIR)$(man5dir)"
 LTLIBRARIES = $(libtracker_data_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libtracker_data_la_DEPENDENCIES = $(top_builddir)/src/gvdb/libgvdb.la \
@@ -146,13 +147,14 @@ libtracker_data_la_DEPENDENCIES = $(top_builddir)/src/gvdb/libgvdb.la \
 am_libtracker_data_la_OBJECTS = tracker-sparql-expression.lo \
 	tracker-sparql-pattern.lo tracker-sparql-query.lo \
 	tracker-sparql-scanner.lo tracker-turtle-reader.lo \
-	tracker-class.lo tracker-collation.lo tracker-data-backup.lo \
-	tracker-data-manager.lo tracker-data-query.lo \
-	tracker-data-update.lo tracker-db-config.lo \
-	tracker-db-interface.lo tracker-db-interface-sqlite.lo \
-	tracker-db-manager.lo tracker-db-journal.lo \
-	tracker-db-backup.lo tracker-namespace.lo tracker-ontology.lo \
-	tracker-ontologies.lo tracker-property.lo
+	tracker-class.lo tracker-collation.lo tracker-crc32.lo \
+	tracker-data-backup.lo tracker-data-manager.lo \
+	tracker-data-query.lo tracker-data-update.lo \
+	tracker-db-config.lo tracker-db-interface.lo \
+	tracker-db-interface-sqlite.lo tracker-db-manager.lo \
+	tracker-db-journal.lo tracker-db-backup.lo \
+	tracker-namespace.lo tracker-ontology.lo tracker-ontologies.lo \
+	tracker-property.lo
 libtracker_data_la_OBJECTS = $(am_libtracker_data_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -207,6 +209,9 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
+man5dir = $(mandir)/man5
+NROFF = nroff
+MANS = $(man_MANS)
 HEADERS = $(noinst_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
@@ -265,6 +270,7 @@ CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATADIRNAME = @DATADIRNAME@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -451,8 +457,7 @@ TRACKER_API_VERSION = @TRACKER_API_VERSION@
 TRACKER_API_VERSION_UNDERSCORES = @TRACKER_API_VERSION_UNDERSCORES@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
-TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
-TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
+TRACKER_CFLAGS = @TRACKER_CFLAGS@
 TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
 TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
 TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
@@ -460,6 +465,7 @@ TRACKER_EXTRACT_MODULES_DIR = @TRACKER_EXTRACT_MODULES_DIR@
 TRACKER_EXTRACT_MODULES_LIBS = @TRACKER_EXTRACT_MODULES_LIBS@
 TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
+TRACKER_LIBS = @TRACKER_LIBS@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
@@ -487,8 +493,6 @@ TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
 TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
-TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
-TRACKER_UTILS_LIBS = @TRACKER_UTILS_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
 TRACKER_WRITEBACK_CFLAGS = @TRACKER_WRITEBACK_CFLAGS@
 TRACKER_WRITEBACK_LIBS = @TRACKER_WRITEBACK_LIBS@
@@ -500,6 +504,7 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
+XSLTPROC = @XSLTPROC@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -587,6 +592,7 @@ libtracker_data_la_SOURCES = \
 	tracker-turtle-reader.vala                     \
 	tracker-class.c                                \
 	tracker-collation.c                            \
+	tracker-crc32.c \
 	tracker-data-backup.c                          \
 	tracker-data-manager.c                         \
 	tracker-data-query.c                           \
@@ -607,6 +613,7 @@ libtracker_data_la_LIBADD = $(top_builddir)/src/gvdb/libgvdb.la \
 	$(BUILD_LIBS) $(LIBTRACKER_DATA_LIBS) -lm $(am__append_1)
 noinst_HEADERS = \
 	tracker-class.h                                \
+	tracker-crc32.h \
 	tracker-data.h                                 \
 	tracker-collation.h                            \
 	tracker-data-backup.h                          \
@@ -625,11 +632,28 @@ noinst_HEADERS = \
 	tracker-property.h                             \
 	tracker-sparql-query.h
 
+
+# Configuration / GSettings
+gsettings_ENUM_NAMESPACE = org.freedesktop.Tracker
+gsettings_ENUM_FILES = $(top_srcdir)/src/libtracker-common/tracker-enums.h
+gsettings_SCHEMAS = org.freedesktop.Tracker.DB.gschema.xml
+@HAVE_XSLTPROC_TRUE@DATE = `date +'%B %Y'`
+@HAVE_XSLTPROC_FALSE@man_MANS = 
+@HAVE_XSLTPROC_TRUE@man_MANS = tracker-db.cfg.5
+
+# Dist / Clean rules for all data
 BUILT_SOURCES = \
 	libtracker_data_la_vala.stamp
 
+CLEANFILES = \
+	libtracker_data_la_vala.stamp \
+	$(gsettings_SCHEMAS) \
+	$(man_MANS)
+
 EXTRA_DIST = \
-	libtracker-data.vapi
+	libtracker-data.vapi \
+	$(gsettings_SCHEMAS:.xml=.xml.in) \
+	$(man_MANS)
 
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -712,6 +736,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-class.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-collation.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crc32.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-backup.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-manager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-query.Plo@am__quote@
@@ -787,6 +812,49 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
+install-man5: $(man_MANS)
+	@$(NORMAL_INSTALL)
+	@list1=''; \
+	list2='$(man_MANS)'; \
+	test -n "$(man5dir)" \
+	  && test -n "`echo $$list1$$list2`" \
+	  || exit 0; \
+	echo " $(MKDIR_P) '$(DESTDIR)$(man5dir)'"; \
+	$(MKDIR_P) "$(DESTDIR)$(man5dir)" || exit 1; \
+	{ for i in $$list1; do echo "$$i"; done;  \
+	if test -n "$$list2"; then \
+	  for i in $$list2; do echo "$$i"; done \
+	    | sed -n '/\.5[a-z]*$$/p'; \
+	fi; \
+	} | while read p; do \
+	  if test -f $$p; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; echo "$$p"; \
+	done | \
+	sed -e 'n;s,.*/,,;p;h;s,.*\.,,;s,^[^5][0-9a-z]*$$,5,;x' \
+	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,' | \
+	sed 'N;N;s,\n, ,g' | { \
+	list=; while read file base inst; do \
+	  if test "$$base" = "$$inst"; then list="$$list $$file"; else \
+	    echo " $(INSTALL_DATA) '$$file' '$(DESTDIR)$(man5dir)/$$inst'"; \
+	    $(INSTALL_DATA) "$$file" "$(DESTDIR)$(man5dir)/$$inst" || exit $$?; \
+	  fi; \
+	done; \
+	for i in $$list; do echo "$$i"; done | $(am__base_list) | \
+	while read files; do \
+	  test -z "$$files" || { \
+	    echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(man5dir)'"; \
+	    $(INSTALL_DATA) $$files "$(DESTDIR)$(man5dir)" || exit $$?; }; \
+	done; }
+
+uninstall-man5:
+	@$(NORMAL_UNINSTALL)
+	@list=''; test -n "$(man5dir)" || exit 0; \
+	files=`{ for i in $$list; do echo "$$i"; done; \
+	l2='$(man_MANS)'; for i in $$l2; do echo "$$i"; done | \
+	  sed -n '/\.5[a-z]*$$/p'; \
+	} | sed -e 's,.*/,,;h;s,.*\.,,;s,^[^5][0-9a-z]*$$,5,;x' \
+	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,'`; \
+	dir='$(DESTDIR)$(man5dir)'; $(am__uninstall_files_from_dir)
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -873,9 +941,9 @@ distdir: $(DISTFILES)
 check-am: all-am
 check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LTLIBRARIES) $(MANS) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libtracker_datadir)"; do \
+	for dir in "$(DESTDIR)$(libtracker_datadir)" "$(DESTDIR)$(man5dir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -901,6 +969,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -944,7 +1013,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libtracker_dataLTLIBRARIES
+install-data-am: install-libtracker_dataLTLIBRARIES install-man
 
 install-dvi: install-dvi-am
 
@@ -960,7 +1029,7 @@ install-info: install-info-am
 
 install-info-am:
 
-install-man:
+install-man: install-man5
 
 install-pdf: install-pdf-am
 
@@ -990,7 +1059,9 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-libtracker_dataLTLIBRARIES
+uninstall-am: uninstall-libtracker_dataLTLIBRARIES uninstall-man
+
+uninstall-man: uninstall-man5
 
 .MAKE: all check install install-am install-strip
 
@@ -1002,15 +1073,27 @@ uninstall-am: uninstall-libtracker_dataLTLIBRARIES
 	install-data-am install-dvi install-dvi-am install-exec \
 	install-exec-am install-html install-html-am install-info \
 	install-info-am install-libtracker_dataLTLIBRARIES install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags tags-am uninstall uninstall-am \
-	uninstall-libtracker_dataLTLIBRARIES
+	install-man5 install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-am uninstall \
+	uninstall-am uninstall-libtracker_dataLTLIBRARIES \
+	uninstall-man uninstall-man5
 
 .PRECIOUS: Makefile
 
+
+@INTLTOOL_XML_NOMERGE_RULE@
+
+@GSETTINGS_RULES@
+
+%.cfg.5: $(gsettings_SCHEMAS)
+	$(AM_V_GEN)$(XSLTPROC) \
+	  --stringparam version "${VERSION}" \
+	  --stringparam current-date "${DATE}" \
+	  --stringparam config-file "$(@:.cfg.5=.cfg)" \
+	  $(top_srcdir)/docs/manpages/gsettings.xsl $^ > $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

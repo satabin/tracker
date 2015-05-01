@@ -19,11 +19,11 @@
  * Author: Carlos Garnacho  <carlos@lanedo.com>
  */
 
-#include <libtracker-common/tracker-log.h>
-#include <libtracker-common/tracker-date-time.h>
+#include "config.h"
+
+#include <libtracker-common/tracker-common.h>
 #include <libtracker-sparql/tracker-sparql.h>
 
-#include "tracker-miner-common.h"
 #include "tracker-file-notifier.h"
 #include "tracker-file-system.h"
 #include "tracker-crawler.h"
@@ -95,6 +95,11 @@ typedef struct {
 	/* Canonical copy from priv->file_system */
 	GFile *cur_parent;
 } DirectoryCrawledData;
+
+typedef struct {
+	TrackerFileNotifier *notifier;
+	gint max_depth;
+} SparqlStartData;
 
 static gboolean crawl_directories_start (TrackerFileNotifier *notifier);
 
@@ -342,7 +347,7 @@ notifier_check_next_root (TrackerFileNotifier *notifier)
 }
 
 static void
-file_notifier_traverse_tree (TrackerFileNotifier *notifier)
+file_notifier_traverse_tree (TrackerFileNotifier *notifier, gint max_depth)
 {
 	TrackerFileNotifierPrivate *priv;
 	GFile *config_root, *directory;
@@ -355,12 +360,18 @@ file_notifier_traverse_tree (TrackerFileNotifier *notifier)
 	config_root = tracker_indexing_tree_get_root (priv->indexing_tree,
 						      directory, &flags);
 
+	/* The max_depth parameter is usually '1', which would cause only the
+	 * directory itself to be processed. We want the directory and its contents
+	 * to be processed so we need to go to (max_depth + 1) here.
+	 */
+
 	if (config_root != directory ||
 	    flags & TRACKER_DIRECTORY_FLAG_CHECK_MTIME) {
 		tracker_file_system_traverse (priv->file_system,
 		                              directory,
 		                              G_LEVEL_ORDER,
 		                              file_notifier_traverse_tree_foreach,
+		                              max_depth + 1,
 		                              notifier);
 	}
 }
@@ -629,14 +640,14 @@ finish_current_directory (TrackerFileNotifier *notifier)
 		               priv->current_index_root->files_found,
 		               priv->current_index_root->files_ignored);
 
-		tracker_info ("  Notified files after %2.2f seconds",
-		              g_timer_elapsed (priv->timer, NULL));
-		tracker_info ("  Found %d directories, ignored %d directories",
-		              priv->current_index_root->directories_found,
-		              priv->current_index_root->directories_ignored);
-		tracker_info ("  Found %d files, ignored %d files",
-		              priv->current_index_root->files_found,
-		              priv->current_index_root->files_ignored);
+		g_info ("  Notified files after %2.2f seconds",
+		        g_timer_elapsed (priv->timer, NULL));
+		g_info ("  Found %d directories, ignored %d directories",
+		        priv->current_index_root->directories_found,
+		        priv->current_index_root->directories_ignored);
+		g_info ("  Found %d files, ignored %d files",
+		        priv->current_index_root->files_found,
+		        priv->current_index_root->files_ignored);
 
 		root_data_free (priv->current_index_root);
 		priv->current_index_root = NULL;
@@ -674,7 +685,8 @@ sparql_contents_query_cb (GObject      *object,
 
 static gchar *
 sparql_contents_compose_query (GFile **directories,
-                               guint   n_dirs)
+                               guint   n_dirs,
+                               GQueue *filter)
 {
 	GString *str;
 	gchar *uri;
@@ -684,6 +696,9 @@ sparql_contents_compose_query (GFile **directories,
 			    " ?u nfo:belongsToContainer ?f . ?f nie:url ?url ."
 			    " FILTER (?url IN (");
 	for (i = 0; i < n_dirs; i++) {
+		if (g_queue_find (filter, directories[i]))
+			continue;
+
 		if (i != 0)
 			g_string_append_c (str, ',');
 
@@ -700,13 +715,14 @@ sparql_contents_compose_query (GFile **directories,
 static void
 sparql_contents_query_start (TrackerFileNotifier  *notifier,
                              GFile               **directories,
-                             guint                 n_dirs)
+                             guint                 n_dirs,
+                             GQueue               *filter)
 {
 	TrackerFileNotifierPrivate *priv;
 	gchar *sparql;
 
 	priv = notifier->priv;
-	sparql = sparql_contents_compose_query (directories, n_dirs);
+	sparql = sparql_contents_compose_query (directories, n_dirs, filter);
 	tracker_sparql_connection_query_async (priv->connection,
 	                                       sparql,
 	                                       priv->cancellable,
@@ -721,12 +737,13 @@ sparql_files_query_cb (GObject      *object,
 		       GAsyncResult *result,
 		       gpointer      user_data)
 {
+	SparqlStartData *data = user_data;
 	TrackerFileNotifierPrivate *priv;
 	TrackerFileNotifier *notifier;
 	TrackerSparqlCursor *cursor;
 	GError *error = NULL;
 
-	notifier = user_data;
+	notifier = data->notifier;
 	priv = notifier->priv;
 
 	cursor = tracker_sparql_connection_query_finish (TRACKER_SPARQL_CONNECTION (object),
@@ -739,17 +756,20 @@ sparql_files_query_cb (GObject      *object,
 		g_object_unref (cursor);
 	}
 
-	file_notifier_traverse_tree (notifier);
+	file_notifier_traverse_tree (notifier, data->max_depth);
 
 	if (priv->current_index_root->updated_dirs->len > 0) {
 		/* Updated directories have been found, check for deleted contents in those */
 		sparql_contents_query_start (notifier,
 		                             (GFile**) priv->current_index_root->updated_dirs->pdata,
-		                             priv->current_index_root->updated_dirs->len);
+		                             priv->current_index_root->updated_dirs->len,
+		                             priv->current_index_root->pending_dirs);
 		g_ptr_array_set_size (priv->current_index_root->updated_dirs, 0);
 	} else {
 		finish_current_directory (notifier);
 	}
+
+	g_free (data);
 }
 
 static gchar *
@@ -779,11 +799,16 @@ sparql_files_compose_query (GFile **files,
 
 static void
 sparql_files_query_start (TrackerFileNotifier  *notifier,
-			  GFile               **files,
-                          guint                 n_files)
+                          GFile               **files,
+                          guint                 n_files,
+                          gint                  max_depth)
 {
 	TrackerFileNotifierPrivate *priv;
 	gchar *sparql;
+	SparqlStartData *data = g_new (SparqlStartData, 1);
+
+	data->notifier = notifier;
+	data->max_depth = max_depth;
 
 	priv = notifier->priv;
 	sparql = sparql_files_compose_query (files, n_files);
@@ -791,7 +816,7 @@ sparql_files_query_start (TrackerFileNotifier  *notifier,
 	                                       sparql,
 	                                       priv->cancellable,
 	                                       sparql_files_query_cb,
-	                                       notifier);
+	                                       data);
 	g_free (sparql);
 }
 
@@ -826,7 +851,7 @@ crawl_directories_start (TrackerFileNotifier *notifier)
 			gchar *uri;
 
 			uri = g_file_get_uri (directory);
-			tracker_info ("Processing location: '%s'", uri);
+			g_info ("Processing location: '%s'", uri);
 			g_free (uri);
 
 			g_timer_reset (priv->timer);
@@ -862,6 +887,7 @@ crawler_finished_cb (TrackerCrawler *crawler,
 	TrackerFileNotifier *notifier = user_data;
 	TrackerFileNotifierPrivate *priv = notifier->priv;
 	GFile *directory;
+	gint max_depth = -1;
 
 	g_assert (priv->current_index_root != NULL);
 
@@ -870,6 +896,8 @@ crawler_finished_cb (TrackerCrawler *crawler,
 		return;
 	}
 
+	max_depth = tracker_crawler_get_max_depth (crawler);
+
 	directory = g_queue_peek_head (priv->current_index_root->pending_dirs);
 
 	if (priv->current_index_root->query_files->len > 0 &&
@@ -877,11 +905,11 @@ crawler_finished_cb (TrackerCrawler *crawler,
 	     tracker_file_system_get_property (priv->file_system,
 	                                       directory, quark_property_iri))) {
 		sparql_files_query_start (notifier,
-					  (GFile**) priv->current_index_root->query_files->pdata,
-		                          priv->current_index_root->query_files->len);
+                                  (GFile**) priv->current_index_root->query_files->pdata,
+		                          priv->current_index_root->query_files->len, max_depth);
 		g_ptr_array_set_size (priv->current_index_root->query_files, 0);
 	} else {
-		file_notifier_traverse_tree (notifier);
+		file_notifier_traverse_tree (notifier, max_depth);
 		finish_current_directory (notifier);
 	}
 }
@@ -1644,6 +1672,7 @@ tracker_file_notifier_get_file_iri (TrackerFileNotifier *notifier,
 	TrackerFileNotifierPrivate *priv;
 	GFile *canonical;
 	gchar *iri = NULL;
+	gboolean found;
 
 	g_return_val_if_fail (TRACKER_IS_FILE_NOTIFIER (notifier), NULL);
 	g_return_val_if_fail (G_IS_FILE (file), NULL);
@@ -1657,9 +1686,21 @@ tracker_file_notifier_get_file_iri (TrackerFileNotifier *notifier,
 		return NULL;
 	}
 
-	iri = tracker_file_system_get_property (priv->file_system,
-	                                        canonical,
-	                                        quark_property_iri);
+	found = tracker_file_system_get_property_full (priv->file_system,
+	                                               canonical,
+	                                               quark_property_iri,
+	                                               (gpointer *) &iri);
+
+	if (found && !iri) {
+		/* NULL here mean the file iri was "invalidated", the file
+		 * was inserted by a previous event, so it has an unknown iri,
+		 * and further updates are keeping the file object alive.
+		 *
+		 * When these updates are processed, they'll need fetching the
+		 * file IRI again, so we force here extraction for these cases.
+		 */
+		force = TRUE;
+	}
 
 	if (!iri && force) {
 		TrackerSparqlCursor *cursor;
@@ -1682,4 +1723,30 @@ tracker_file_notifier_get_file_iri (TrackerFileNotifier *notifier,
 	}
 
 	return iri;
+}
+
+void
+tracker_file_notifier_invalidate_file_iri (TrackerFileNotifier *notifier,
+                                           GFile               *file)
+{
+	TrackerFileNotifierPrivate *priv;
+	GFile *canonical;
+
+	g_return_if_fail (TRACKER_IS_FILE_NOTIFIER (notifier));
+	g_return_if_fail (G_IS_FILE (file));
+
+	priv = notifier->priv;
+	canonical = tracker_file_system_get_file (priv->file_system,
+	                                          file,
+	                                          G_FILE_TYPE_REGULAR,
+	                                          NULL);
+	if (!canonical) {
+		return;
+	}
+
+	/* Set a NULL iri, so we make sure to look it up afterwards */
+	tracker_file_system_set_property (priv->file_system,
+	                                  canonical,
+	                                  quark_property_iri,
+	                                  NULL);
 }

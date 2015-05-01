@@ -127,6 +127,9 @@
 /* Define to 1 if you have the `sqlite3' library (-lsqlite3). */
 #undef HAVE_LIBSQLITE3
 
+/* Define if we have libstemmer */
+#undef HAVE_LIBSTEMMER
+
 /* Define if we have libtiff */
 #undef HAVE_LIBTIFF
 
@@ -367,9 +370,6 @@
 # undef __EXTENSIONS__
 #endif
 
-
-/* Define that Tracker will try to use external generic media players */
-#undef USING_EXTERNAL_GENERIC_MEDIA_PLAYER
 
 /* Unzip ps.gz files */
 #undef USING_UNZIPPSFILES

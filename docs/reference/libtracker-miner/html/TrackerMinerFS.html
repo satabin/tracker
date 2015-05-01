@@ -454,12 +454,14 @@ finds. If 'data_provider' is <code class="literal">NULL</code> (the default), th
 <a name="tracker-miner-fs-error-quark"></a><h3>tracker_miner_fs_error_quark ()</h3>
 <pre class="programlisting"><span class="returnvalue">GQuark</span>
 tracker_miner_fs_error_quark (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>
-</p>
+<p>Gives the caller the <span class="type">GQuark</span> used to identify <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> errors
+in <span class="type">GError</span> structures. The <span class="type">GQuark</span> is used as the domain for the error.</p>
 <div class="refsect3">
 <a name="id-1.3.5.2.11.2.5"></a><h4>Returns</h4>
+<p> the <span class="type">GQuark</span> used for the domain of a <span class="type">GError</span>.</p>
 <p></p>
 </div>
+<p class="since">Since 1.2.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -525,7 +527,8 @@ to supply <span class="type">GFile</span> and <span class="type">GFileInfo</span
 <a name="tracker-miner-fs-get-throttle"></a><h3>tracker_miner_fs_get_throttle ()</h3>
 <pre class="programlisting"><span class="returnvalue">gdouble</span>
 tracker_miner_fs_get_throttle (<em class="parameter"><code><a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> *fs</code></em>);</pre>
-<p>Gets the current throttle value. see <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-set-throttle" title="tracker_miner_fs_set_throttle ()"><code class="function">tracker_miner_fs_set_throttle()</code></a>.</p>
+<p>Gets the current throttle value, see
+<a class="link" href="TrackerMinerFS.html#tracker-miner-fs-set-throttle" title="tracker_miner_fs_set_throttle ()"><code class="function">tracker_miner_fs_set_throttle()</code></a> for more details.</p>
 <div class="refsect3">
 <a name="id-1.3.5.2.11.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -543,7 +546,7 @@ tracker_miner_fs_get_throttle (<em class="parameter"><code><a class="link" href=
 </div>
 <div class="refsect3">
 <a name="id-1.3.5.2.11.5.6"></a><h4>Returns</h4>
-<p> current throttle value.</p>
+<p> a double representing a value between 0.0 and 1.0.</p>
 <p></p>
 </div>
 <p class="since">Since 0.8</p>
@@ -553,8 +556,12 @@ tracker_miner_fs_get_throttle (<em class="parameter"><code><a class="link" href=
 <a name="tracker-miner-fs-get-mtime-checking"></a><h3>tracker_miner_fs_get_mtime_checking ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
 tracker_miner_fs_get_mtime_checking (<em class="parameter"><code><a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> *fs</code></em>);</pre>
+<p>Returns a boolean used to identify if file modification time checks
+are performed when processing content. This may be set to <code class="literal">FALSE</code> if
+working prodominently with cloud data where you can't perform these
+checks. By default and for local file systems, this is enabled.</p>
 <div class="refsect3">
-<a name="id-1.3.5.2.11.6.4"></a><h4>Parameters</h4>
+<a name="id-1.3.5.2.11.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -569,10 +576,10 @@ tracker_miner_fs_get_mtime_checking (<em class="parameter"><code><a class="link"
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.5.2.11.6.5"></a><h4>Returns</h4>
-<p> <span class="type">TRUE</span> if mtime checks for directories against the database
+<a name="id-1.3.5.2.11.6.6"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if mtime checks for directories against the database
 are done when <em class="parameter"><code>fs</code></em>
-crawls the file system, otherwise <span class="type">FALSE</span>.</p>
+crawls the file system, otherwise <code class="literal">FALSE</code>.</p>
 <p></p>
 </div>
 <p class="since">Since 0.10</p>
@@ -582,12 +589,32 @@ crawls the file system, otherwise <span class="type">FALSE</span>.</p>
 <a name="tracker-miner-fs-get-initial-crawling"></a><h3>tracker_miner_fs_get_initial_crawling ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
 tracker_miner_fs_get_initial_crawling (<em class="parameter"><code><a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> *fs</code></em>);</pre>
-<p>
-</p>
+<p>Returns a boolean which indicates if the indexing tree is crawled
+upon start up or not. This may be set to <code class="literal">FALSE</code> if working
+prodominently with cloud data where you can't perform these checks.
+By default and for local file systems, this is enabled.</p>
 <div class="refsect3">
-<a name="id-1.3.5.2.11.7.5"></a><h4>Returns</h4>
+<a name="id-1.3.5.2.11.7.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>fs</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.5.2.11.7.6"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if a file system structure is crawled for new
+updates on start up, otherwise <code class="literal">FALSE</code>.</p>
 <p></p>
 </div>
+<p class="since">Since 0.10</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -595,10 +622,12 @@ tracker_miner_fs_get_initial_crawling (<em class="parameter"><code><a class="lin
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_miner_fs_set_throttle (<em class="parameter"><code><a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> *fs</code></em>,
                                <em class="parameter"><code><span class="type">gdouble</span> throttle</code></em>);</pre>
-<p>Tells the filesystem miner to throttle its operations.
-a value of 0 means no throttling at all, so the miner
-will perform operations at full speed, 1 is the slowest
-value.</p>
+<p>Tells the filesystem miner to throttle its operations. A value of
+0.0 means no throttling at all, so the miner will perform
+operations at full speed, 1.0 is the slowest value. With a value of
+1.0, the <em class="parameter"><code>fs</code></em>
+ is typically waiting one full second before handling
+the next batch of queued items to be processed.</p>
 <div class="refsect3">
 <a name="id-1.3.5.2.11.8.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -615,7 +644,7 @@ value.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>throttle</p></td>
-<td class="parameter_description"><p>throttle value, between 0 and 1</p></td>
+<td class="parameter_description"><p>a double between 0.0 and 1.0</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -643,7 +672,7 @@ running the entire time and where it is very unlikely that a file
 could be changed outside between startup and shutdown of the
 process using this API.</p>
 <p>The default if not set directly is that <em class="parameter"><code>mtime_checking</code></em>
- is <span class="type">TRUE</span>.</p>
+ is <code class="literal">TRUE</code>.</p>
 <div class="refsect3">
 <a name="id-1.3.5.2.11.9.8"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -674,8 +703,45 @@ process using this API.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_miner_fs_set_initial_crawling (<em class="parameter"><code><a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> *fs</code></em>,
                                        <em class="parameter"><code><span class="type">gboolean</span> do_initial_crawling</code></em>);</pre>
-<p>
-</p>
+<p>Tells the <em class="parameter"><code>fs</code></em>
+ that crawling the <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> should happen
+initially. This is actually required to set up file system monitor
+using technologies like inotify, etc.</p>
+<p>Setting this to <span class="type">FALSE</span> can dramatically improve the start up the
+crawling of the <em class="parameter"><code>fs</code></em>
+.</p>
+<p>The down side is that using this consistently means that some files
+on the disk may be out of date with files in the database.</p>
+<p>The main purpose of this function is for systems where a <em class="parameter"><code>fs</code></em>
+ is
+running the entire time and where it is very unlikely that a file
+could be changed outside between startup and shutdown of the
+process using this API.</p>
+<p>The default if not set directly is that <em class="parameter"><code>do_initial_crawling</code></em>
+ is <code class="literal">TRUE</code>.</p>
+<div class="refsect3">
+<a name="id-1.3.5.2.11.10.9"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>fs</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>do_initial_crawling</p></td>
+<td class="parameter_description"><p>a <span class="type">gboolean</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since 0.10</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1301,8 +1367,13 @@ to <em class="parameter"><code>file</code></em>
 <a name="tracker-miner-fs-has-items-to-process"></a><h3>tracker_miner_fs_has_items_to_process ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
 tracker_miner_fs_has_items_to_process (<em class="parameter"><code><a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> *fs</code></em>);</pre>
+<p>The <em class="parameter"><code>fs</code></em>
+ keeps many priority queus for content it is processing.
+This function returns <code class="literal">TRUE</code> if the sum of all (or any) priority
+queues is more than 0. This includes items deleted, created,
+updated, moved or being written back.</p>
 <div class="refsect3">
-<a name="id-1.3.5.2.11.27.4"></a><h4>Parameters</h4>
+<a name="id-1.3.5.2.11.27.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1317,9 +1388,9 @@ tracker_miner_fs_has_items_to_process (<em class="parameter"><code><a class="lin
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.5.2.11.27.5"></a><h4>Returns</h4>
-<p> <span class="type">TRUE</span> if there are items to process in the internal
-queues, otherwise <span class="type">FALSE</span>.</p>
+<a name="id-1.3.5.2.11.27.6"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if there are items to process in the internal
+queues, otherwise <code class="literal">FALSE</code>.</p>
 <p></p>
 </div>
 <p class="since">Since 0.10</p>

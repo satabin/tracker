@@ -411,7 +411,7 @@ am__set_b = \
     *) \
       b='$*';; \
   esac
-DIST_SUBDIRS = data src docs po utils examples tests
+DIST_SUBDIRS = src docs po utils examples tests
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/config.h.in \
 	$(top_srcdir)/Makefile.decl $(top_srcdir)/build-aux/compile \
 	$(top_srcdir)/build-aux/config.guess \
@@ -458,9 +458,9 @@ am__relativize = \
     dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
   done; \
   reldir="$$dir2"
-DIST_ARCHIVES = $(distdir).tar.gz
 GZIP_ENV = --best
-DIST_TARGETS = dist-gzip
+DIST_ARCHIVES = $(distdir).tar.xz
+DIST_TARGETS = dist-xz
 distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
@@ -496,6 +496,7 @@ CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATADIRNAME = @DATADIRNAME@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -682,8 +683,7 @@ TRACKER_API_VERSION = @TRACKER_API_VERSION@
 TRACKER_API_VERSION_UNDERSCORES = @TRACKER_API_VERSION_UNDERSCORES@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
-TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
-TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
+TRACKER_CFLAGS = @TRACKER_CFLAGS@
 TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
 TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
 TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
@@ -691,6 +691,7 @@ TRACKER_EXTRACT_MODULES_DIR = @TRACKER_EXTRACT_MODULES_DIR@
 TRACKER_EXTRACT_MODULES_LIBS = @TRACKER_EXTRACT_MODULES_LIBS@
 TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
+TRACKER_LIBS = @TRACKER_LIBS@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
@@ -718,8 +719,6 @@ TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
 TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
-TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
-TRACKER_UTILS_LIBS = @TRACKER_UTILS_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
 TRACKER_WRITEBACK_CFLAGS = @TRACKER_WRITEBACK_CFLAGS@
 TRACKER_WRITEBACK_LIBS = @TRACKER_WRITEBACK_LIBS@
@@ -731,6 +730,7 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
+XSLTPROC = @XSLTPROC@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -844,7 +844,7 @@ all_test_ltlibs = $(test_ltlibraries) $(uninstalled_test_ltlibraries) $(installe
 @ENABLE_INSTALLED_TESTS_TRUE@                      $(dist_test_scripts) $(dist_installed_test_scripts)
 
 @ENABLE_INSTALLED_TESTS_TRUE@installed_test_meta_DATA = $(installed_testcases:=.test)
-SUBDIRS = data src docs po utils examples $(am__append_14)
+SUBDIRS = src docs po utils examples $(am__append_14)
 gen_start_date = 2009-04-10
 DISTCHECK_CONFIGURE_FLAGS = \
 	--with-session-bus-services-dir="\$(datadir)"/dbus-1/services \
@@ -867,7 +867,7 @@ DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-libgsf                                \
 	--enable-playlist                              \
 	--enable-tracker-preferences                   \
-	--with-enca
+	--enable-enca
 
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 all: $(BUILT_SOURCES) config.h
@@ -1475,7 +1475,6 @@ dist-bzip2: distdir
 dist-lzip: distdir
 	tardir=$(distdir) && $(am__tar) | lzip -c $${LZIP_OPT--9} >$(distdir).tar.lz
 	$(am__post_remove_distdir)
-
 dist-xz: distdir
 	tardir=$(distdir) && $(am__tar) | XZ_OPT=$${XZ_OPT--e} xz -c >$(distdir).tar.xz
 	$(am__post_remove_distdir)

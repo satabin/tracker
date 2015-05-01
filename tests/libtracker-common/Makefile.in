@@ -94,7 +94,7 @@ host_triplet = @host@
 TESTS = $(am__EXEEXT_1)
 installed_test_PROGRAMS = $(am__EXEEXT_4)
 noinst_PROGRAMS = $(am__EXEEXT_5) $(am__EXEEXT_1)
-check_PROGRAMS = $(am__EXEEXT_3)
+check_PROGRAMS = $(am__EXEEXT_3) tracker-parser$(EXEEXT)
 @ENABLE_ALWAYS_BUILD_TESTS_TRUE@am__append_1 = $(all_test_ltlibs)
 @ENABLE_ALWAYS_BUILD_TESTS_TRUE@am__append_2 = $(all_test_programs)
 @ENABLE_ALWAYS_BUILD_TESTS_TRUE@am__append_3 = $(all_test_scripts)
@@ -172,18 +172,18 @@ am__installdirs = "$(DESTDIR)$(installed_testdir)" \
 LTLIBRARIES = $(installed_test_LTLIBRARIES) $(noinst_LTLIBRARIES)
 am__EXEEXT_1 = tracker-type-utils$(EXEEXT) tracker-dbus$(EXEEXT) \
 	tracker-file-utils$(EXEEXT) tracker-utils$(EXEEXT) \
-	tracker-sched-test$(EXEEXT) tracker-crc32-test$(EXEEXT) \
-	tracker-date-time-test$(EXEEXT)
+	tracker-sched-test$(EXEEXT) tracker-date-time-test$(EXEEXT) \
+	tracker-parser-test$(EXEEXT)
 am__EXEEXT_2 = $(am__EXEEXT_1)
 @ENABLE_ALWAYS_BUILD_TESTS_FALSE@am__EXEEXT_3 = $(am__EXEEXT_2)
 @ENABLE_INSTALLED_TESTS_TRUE@am__EXEEXT_4 = $(am__EXEEXT_1)
 @ENABLE_ALWAYS_BUILD_TESTS_TRUE@am__EXEEXT_5 = $(am__EXEEXT_2)
 PROGRAMS = $(installed_test_PROGRAMS) $(noinst_PROGRAMS)
-am_tracker_crc32_test_OBJECTS = tracker-crc32-test.$(OBJEXT)
-tracker_crc32_test_OBJECTS = $(am_tracker_crc32_test_OBJECTS)
-tracker_crc32_test_LDADD = $(LDADD)
+am_tracker_date_time_test_OBJECTS = tracker-date-time-test.$(OBJEXT)
+tracker_date_time_test_OBJECTS = $(am_tracker_date_time_test_OBJECTS)
+tracker_date_time_test_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
-tracker_crc32_test_DEPENDENCIES =  \
+tracker_date_time_test_DEPENDENCIES =  \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -191,13 +191,6 @@ AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-am_tracker_date_time_test_OBJECTS = tracker-date-time-test.$(OBJEXT)
-tracker_date_time_test_OBJECTS = $(am_tracker_date_time_test_OBJECTS)
-tracker_date_time_test_LDADD = $(LDADD)
-tracker_date_time_test_DEPENDENCIES =  \
-	$(top_builddir)/tests/common/libtracker-testcommon.la \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_tracker_dbus_OBJECTS = tracker-dbus-test.$(OBJEXT)
 tracker_dbus_OBJECTS = $(am_tracker_dbus_OBJECTS)
 tracker_dbus_LDADD = $(LDADD)
@@ -209,6 +202,20 @@ am_tracker_file_utils_OBJECTS = tracker-file-utils-test.$(OBJEXT)
 tracker_file_utils_OBJECTS = $(am_tracker_file_utils_OBJECTS)
 tracker_file_utils_LDADD = $(LDADD)
 tracker_file_utils_DEPENDENCIES =  \
+	$(top_builddir)/tests/common/libtracker-testcommon.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_tracker_parser_OBJECTS = tracker-parser.$(OBJEXT)
+tracker_parser_OBJECTS = $(am_tracker_parser_OBJECTS)
+tracker_parser_LDADD = $(LDADD)
+tracker_parser_DEPENDENCIES =  \
+	$(top_builddir)/tests/common/libtracker-testcommon.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_tracker_parser_test_OBJECTS = tracker-parser-test.$(OBJEXT)
+tracker_parser_test_OBJECTS = $(am_tracker_parser_test_OBJECTS)
+tracker_parser_test_LDADD = $(LDADD)
+tracker_parser_test_DEPENDENCIES =  \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -268,14 +275,15 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(tracker_crc32_test_SOURCES) \
-	$(tracker_date_time_test_SOURCES) $(tracker_dbus_SOURCES) \
-	$(tracker_file_utils_SOURCES) $(tracker_sched_test_SOURCES) \
+SOURCES = $(tracker_date_time_test_SOURCES) $(tracker_dbus_SOURCES) \
+	$(tracker_file_utils_SOURCES) $(tracker_parser_SOURCES) \
+	$(tracker_parser_test_SOURCES) $(tracker_sched_test_SOURCES) \
 	$(tracker_type_utils_SOURCES) $(tracker_utils_SOURCES)
-DIST_SOURCES = $(tracker_crc32_test_SOURCES) \
-	$(tracker_date_time_test_SOURCES) $(tracker_dbus_SOURCES) \
-	$(tracker_file_utils_SOURCES) $(tracker_sched_test_SOURCES) \
-	$(tracker_type_utils_SOURCES) $(tracker_utils_SOURCES)
+DIST_SOURCES = $(tracker_date_time_test_SOURCES) \
+	$(tracker_dbus_SOURCES) $(tracker_file_utils_SOURCES) \
+	$(tracker_parser_SOURCES) $(tracker_parser_test_SOURCES) \
+	$(tracker_sched_test_SOURCES) $(tracker_type_utils_SOURCES) \
+	$(tracker_utils_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -513,6 +521,7 @@ CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATADIRNAME = @DATADIRNAME@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -699,8 +708,7 @@ TRACKER_API_VERSION = @TRACKER_API_VERSION@
 TRACKER_API_VERSION_UNDERSCORES = @TRACKER_API_VERSION_UNDERSCORES@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
-TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
-TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
+TRACKER_CFLAGS = @TRACKER_CFLAGS@
 TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
 TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
 TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
@@ -708,6 +716,7 @@ TRACKER_EXTRACT_MODULES_DIR = @TRACKER_EXTRACT_MODULES_DIR@
 TRACKER_EXTRACT_MODULES_LIBS = @TRACKER_EXTRACT_MODULES_LIBS@
 TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
+TRACKER_LIBS = @TRACKER_LIBS@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
@@ -735,8 +744,6 @@ TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
 TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
-TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
-TRACKER_UTILS_LIBS = @TRACKER_UTILS_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
 TRACKER_WRITEBACK_CFLAGS = @TRACKER_WRITEBACK_CFLAGS@
 TRACKER_WRITEBACK_LIBS = @TRACKER_WRITEBACK_LIBS@
@@ -748,6 +755,7 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
+XSLTPROC = @XSLTPROC@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -865,8 +873,8 @@ test_programs = \
 	tracker-file-utils                             \
 	tracker-utils				       \
 	tracker-sched-test			       \
-	tracker-crc32-test			       \
-	tracker-date-time-test
+	tracker-date-time-test \
+        tracker-parser-test
 
 AM_CPPFLAGS = \
 	-DTOP_SRCDIR=\"$(abs_top_srcdir)\"             \
@@ -889,8 +897,9 @@ tracker_type_utils_SOURCES = tracker-type-utils-test.c
 tracker_file_utils_SOURCES = tracker-file-utils-test.c
 tracker_utils_SOURCES = tracker-utils-test.c
 tracker_sched_test_SOURCES = tracker-sched-test.c
-tracker_crc32_test_SOURCES = tracker-crc32-test.c
 tracker_date_time_test_SOURCES = tracker-date-time-test.c
+tracker_parser_test_SOURCES = tracker-parser-test.c
+tracker_parser_SOURCES = tracker-parser.c
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -1051,10 +1060,6 @@ clean-noinstPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
-tracker-crc32-test$(EXEEXT): $(tracker_crc32_test_OBJECTS) $(tracker_crc32_test_DEPENDENCIES) $(EXTRA_tracker_crc32_test_DEPENDENCIES) 
-	@rm -f tracker-crc32-test$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(tracker_crc32_test_OBJECTS) $(tracker_crc32_test_LDADD) $(LIBS)
-
 tracker-date-time-test$(EXEEXT): $(tracker_date_time_test_OBJECTS) $(tracker_date_time_test_DEPENDENCIES) $(EXTRA_tracker_date_time_test_DEPENDENCIES) 
 	@rm -f tracker-date-time-test$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_date_time_test_OBJECTS) $(tracker_date_time_test_LDADD) $(LIBS)
@@ -1066,6 +1071,14 @@ tracker-dbus$(EXEEXT): $(tracker_dbus_OBJECTS) $(tracker_dbus_DEPENDENCIES) $(EX
 tracker-file-utils$(EXEEXT): $(tracker_file_utils_OBJECTS) $(tracker_file_utils_DEPENDENCIES) $(EXTRA_tracker_file_utils_DEPENDENCIES) 
 	@rm -f tracker-file-utils$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_file_utils_OBJECTS) $(tracker_file_utils_LDADD) $(LIBS)
+
+tracker-parser$(EXEEXT): $(tracker_parser_OBJECTS) $(tracker_parser_DEPENDENCIES) $(EXTRA_tracker_parser_DEPENDENCIES) 
+	@rm -f tracker-parser$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_parser_OBJECTS) $(tracker_parser_LDADD) $(LIBS)
+
+tracker-parser-test$(EXEEXT): $(tracker_parser_test_OBJECTS) $(tracker_parser_test_DEPENDENCIES) $(EXTRA_tracker_parser_test_DEPENDENCIES) 
+	@rm -f tracker-parser-test$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_parser_test_OBJECTS) $(tracker_parser_test_LDADD) $(LIBS)
 
 tracker-sched-test$(EXEEXT): $(tracker_sched_test_OBJECTS) $(tracker_sched_test_DEPENDENCIES) $(EXTRA_tracker_sched_test_DEPENDENCIES) 
 	@rm -f tracker-sched-test$(EXEEXT)
@@ -1120,10 +1133,11 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crc32-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-date-time-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-dbus-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-utils-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-parser-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-parser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-sched-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-type-utils-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils-test.Po@am__quote@
@@ -1428,16 +1442,16 @@ tracker-sched-test.log: tracker-sched-test$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tracker-crc32-test.log: tracker-crc32-test$(EXEEXT)
-	@p='tracker-crc32-test$(EXEEXT)'; \
-	b='tracker-crc32-test'; \
+tracker-date-time-test.log: tracker-date-time-test$(EXEEXT)
+	@p='tracker-date-time-test$(EXEEXT)'; \
+	b='tracker-date-time-test'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tracker-date-time-test.log: tracker-date-time-test$(EXEEXT)
-	@p='tracker-date-time-test$(EXEEXT)'; \
-	b='tracker-date-time-test'; \
+tracker-parser-test.log: tracker-parser-test$(EXEEXT)
+	@p='tracker-parser-test$(EXEEXT)'; \
+	b='tracker-parser-test'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \

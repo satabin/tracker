@@ -114,7 +114,7 @@ DIST_COMMON = $(srcdir)/Makefile.am \
 	$(libtracker_controlinclude_HEADERS) $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES =
+CONFIG_CLEAN_FILES = tracker-control.pc
 CONFIG_CLEAN_VPATH_FILES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
@@ -144,7 +144,8 @@ am__uninstall_files_from_dir = { \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(girdir)" \
-	"$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(vapidir)" \
+	"$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(typelibdir)" \
+	"$(DESTDIR)$(vapidir)" \
 	"$(DESTDIR)$(libtracker_controlincludedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
@@ -205,7 +206,7 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-DATA = $(gir_DATA) $(typelib_DATA) $(vapi_DATA)
+DATA = $(gir_DATA) $(pkgconfig_DATA) $(typelib_DATA) $(vapi_DATA)
 HEADERS = $(libtracker_controlinclude_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
@@ -227,6 +228,7 @@ am__define_uniq_tagged_files = \
 ETAGS = etags
 CTAGS = ctags
 am__DIST_COMMON = $(srcdir)/Makefile.in \
+	$(srcdir)/tracker-control.pc.in \
 	$(top_srcdir)/build-aux/depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ABIWORD_CFLAGS = @ABIWORD_CFLAGS@
@@ -260,6 +262,7 @@ CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATADIRNAME = @DATADIRNAME@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -446,8 +449,7 @@ TRACKER_API_VERSION = @TRACKER_API_VERSION@
 TRACKER_API_VERSION_UNDERSCORES = @TRACKER_API_VERSION_UNDERSCORES@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
-TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
-TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
+TRACKER_CFLAGS = @TRACKER_CFLAGS@
 TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
 TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
 TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
@@ -455,6 +457,7 @@ TRACKER_EXTRACT_MODULES_DIR = @TRACKER_EXTRACT_MODULES_DIR@
 TRACKER_EXTRACT_MODULES_LIBS = @TRACKER_EXTRACT_MODULES_LIBS@
 TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
+TRACKER_LIBS = @TRACKER_LIBS@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
@@ -482,8 +485,6 @@ TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
 TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
-TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
-TRACKER_UTILS_LIBS = @TRACKER_UTILS_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
 TRACKER_WRITEBACK_CFLAGS = @TRACKER_WRITEBACK_CFLAGS@
 TRACKER_WRITEBACK_LIBS = @TRACKER_WRITEBACK_LIBS@
@@ -495,6 +496,7 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
+XSLTPROC = @XSLTPROC@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -582,6 +584,12 @@ libtracker_control_@TRACKER_API_VERSION@_la_LIBADD = \
 	$(LIBTRACKER_MINER_LIBS)
 
 
+# PkgConfig
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = tracker-control-$(TRACKER_API_VERSION).pc
+CLEANFILES = tracker-control-$(TRACKER_API_VERSION).pc \
+	$(BUILT_SOURCES) $(am__append_4)
+
 # Vala bindings
 vapidir = $(datadir)/vala/vapi
 vapi_DATA = \
@@ -591,7 +599,6 @@ vapi_DATA = \
 BUILT_SOURCES = \
 	$(vapi_DATA)
 
-CLEANFILES = $(BUILT_SOURCES) $(am__append_4)
 EXTRA_DIST = \
 	tracker-control.vapi                           \
 	tracker-control.deps
@@ -651,6 +658,8 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
+tracker-control.pc: $(top_builddir)/config.status $(srcdir)/tracker-control.pc.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
@@ -745,6 +754,27 @@ uninstall-girDATA:
 	@list='$(gir_DATA)'; test -n "$(girdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(girdir)'; $(am__uninstall_files_from_dir)
+install-pkgconfigDATA: $(pkgconfig_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(pkgconfig_DATA)'; test -n "$(pkgconfigdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(pkgconfigdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(pkgconfigdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(pkgconfigdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(pkgconfigdir)" || exit $$?; \
+	done
+
+uninstall-pkgconfigDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(pkgconfig_DATA)'; test -n "$(pkgconfigdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(pkgconfigdir)'; $(am__uninstall_files_from_dir)
 install-typelibDATA: $(typelib_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
@@ -896,7 +926,7 @@ check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(girdir)" "$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(vapidir)" "$(DESTDIR)$(libtracker_controlincludedir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(girdir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(vapidir)" "$(DESTDIR)$(libtracker_controlincludedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -956,8 +986,8 @@ info: info-am
 info-am:
 
 install-data-am: install-girDATA \
-	install-libtracker_controlincludeHEADERS install-typelibDATA \
-	install-vapiDATA
+	install-libtracker_controlincludeHEADERS install-pkgconfigDATA \
+	install-typelibDATA install-vapiDATA
 
 install-dvi: install-dvi-am
 
@@ -1005,7 +1035,8 @@ ps-am:
 
 uninstall-am: uninstall-girDATA uninstall-libLTLIBRARIES \
 	uninstall-libtracker_controlincludeHEADERS \
-	uninstall-typelibDATA uninstall-vapiDATA
+	uninstall-pkgconfigDATA uninstall-typelibDATA \
+	uninstall-vapiDATA
 
 .MAKE: all check install install-am install-strip
 
@@ -1018,18 +1049,22 @@ uninstall-am: uninstall-girDATA uninstall-libLTLIBRARIES \
 	install-exec-am install-girDATA install-html install-html-am \
 	install-info install-info-am install-libLTLIBRARIES \
 	install-libtracker_controlincludeHEADERS install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip install-typelibDATA install-vapiDATA \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-am uninstall uninstall-am uninstall-girDATA \
-	uninstall-libLTLIBRARIES \
+	install-pdf install-pdf-am install-pkgconfigDATA install-ps \
+	install-ps-am install-strip install-typelibDATA \
+	install-vapiDATA installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags tags-am uninstall uninstall-am \
+	uninstall-girDATA uninstall-libLTLIBRARIES \
 	uninstall-libtracker_controlincludeHEADERS \
-	uninstall-typelibDATA uninstall-vapiDATA
+	uninstall-pkgconfigDATA uninstall-typelibDATA \
+	uninstall-vapiDATA
 
 .PRECIOUS: Makefile
 
+
+tracker-control-$(TRACKER_API_VERSION).pc: tracker-control.pc
+	cp $< $@
 
 tracker-control-$(TRACKER_API_VERSION).vapi: tracker-control.vapi
 	cp $< $@

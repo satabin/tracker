@@ -133,7 +133,8 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(eplugindir)" "$(DESTDIR)$(eplugindir)"
+am__installdirs = "$(DESTDIR)$(eplugindir)" "$(DESTDIR)$(eplugindir)" \
+	"$(DESTDIR)$(servicedir)"
 LTLIBRARIES = $(eplugin_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 liborg_freedesktop_Tracker_evolution_plugin_la_DEPENDENCIES = $(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
@@ -195,7 +196,7 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-DATA = $(eplugin_DATA)
+DATA = $(eplugin_DATA) $(service_DATA)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
 # and print each of them once, without duplicates.  Input order is
@@ -249,6 +250,7 @@ CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATADIRNAME = @DATADIRNAME@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -308,6 +310,7 @@ INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
+INTLTOOL_SERVICE_RULE = '%.service:   %.service.in   $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; $(INTLTOOL_MERGE) $(top_srcdir)/po $< [$]@ -d -u'
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTLTOOL_V_MERGE = @INTLTOOL_V_MERGE@
 INTLTOOL_V_MERGE_OPTIONS = @INTLTOOL_V_MERGE_OPTIONS@
@@ -435,8 +438,7 @@ TRACKER_API_VERSION = @TRACKER_API_VERSION@
 TRACKER_API_VERSION_UNDERSCORES = @TRACKER_API_VERSION_UNDERSCORES@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
-TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
-TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
+TRACKER_CFLAGS = @TRACKER_CFLAGS@
 TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
 TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
 TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
@@ -444,6 +446,7 @@ TRACKER_EXTRACT_MODULES_DIR = @TRACKER_EXTRACT_MODULES_DIR@
 TRACKER_EXTRACT_MODULES_LIBS = @TRACKER_EXTRACT_MODULES_LIBS@
 TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
+TRACKER_LIBS = @TRACKER_LIBS@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
@@ -471,8 +474,6 @@ TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
 TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
-TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
-TRACKER_UTILS_LIBS = @TRACKER_UTILS_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
 TRACKER_WRITEBACK_CFLAGS = @TRACKER_WRITEBACK_CFLAGS@
 TRACKER_WRITEBACK_LIBS = @TRACKER_WRITEBACK_LIBS@
@@ -484,6 +485,7 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
+XSLTPROC = @XSLTPROC@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -568,16 +570,16 @@ liborg_freedesktop_Tracker_evolution_plugin_la_LIBADD = \
 	$(BUILD_LIBS)                                  \
 	$(TRACKER_MINER_EVOLUTION_LIBS)
 
-BUILT_SOURCES = \
-	$(eplugin_DATA)
+BUILT_SOURCES = $(eplugin_DATA)
 
-CLEANFILES = \
-	$(BUILT_SOURCES)                               \
-	$(eplugin_DATA)
-
-EXTRA_DIST = \
-	org-freedesktop-Tracker-evolution-plugin.eplug.xml
-
+# Dist / Clean rules for all data
+CLEANFILES = $(BUILT_SOURCES) $(eplugin_DATA) $(autostart_DATA) \
+	$(desktop_in_files) $(service_DATA) \
+	$(service_DATA:.service=.service.in)
+EXTRA_DIST = org-freedesktop-Tracker-evolution-plugin.eplug.xml \
+	$(desktop_in_in_files) $(service_DATA:.service=.service.in.in)
+servicedir = $(DBUS_SERVICES_DIR)
+service_DATA = org.freedesktop.Tracker1.Miner.EMails.service
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -706,6 +708,27 @@ uninstall-epluginDATA:
 	@list='$(eplugin_DATA)'; test -n "$(eplugindir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(eplugindir)'; $(am__uninstall_files_from_dir)
+install-serviceDATA: $(service_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(service_DATA)'; test -n "$(servicedir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(servicedir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(servicedir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(servicedir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(servicedir)" || exit $$?; \
+	done
+
+uninstall-serviceDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(service_DATA)'; test -n "$(servicedir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(servicedir)'; $(am__uninstall_files_from_dir)
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -794,7 +817,7 @@ check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(LTLIBRARIES) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(eplugindir)" "$(DESTDIR)$(eplugindir)"; do \
+	for dir in "$(DESTDIR)$(eplugindir)" "$(DESTDIR)$(eplugindir)" "$(DESTDIR)$(servicedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -853,8 +876,10 @@ info: info-am
 
 info-am:
 
-install-data-am: install-epluginDATA install-epluginLTLIBRARIES
-
+install-data-am: install-epluginDATA install-epluginLTLIBRARIES \
+	install-serviceDATA
+	@$(NORMAL_INSTALL)
+	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 install-dvi: install-dvi-am
 
 install-dvi-am:
@@ -899,25 +924,27 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-epluginDATA uninstall-epluginLTLIBRARIES
+uninstall-am: uninstall-epluginDATA uninstall-epluginLTLIBRARIES \
+	uninstall-local uninstall-serviceDATA
 
-.MAKE: all check install install-am install-strip
+.MAKE: all check install install-am install-data-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean \
 	clean-epluginLTLIBRARIES clean-generic clean-libtool \
 	cscopelist-am ctags ctags-am distclean distclean-compile \
 	distclean-generic distclean-libtool distclean-tags distdir dvi \
 	dvi-am html html-am info info-am install install-am \
-	install-data install-data-am install-dvi install-dvi-am \
-	install-epluginDATA install-epluginLTLIBRARIES install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-am uninstall uninstall-am uninstall-epluginDATA \
-	uninstall-epluginLTLIBRARIES
+	install-data install-data-am install-data-hook install-dvi \
+	install-dvi-am install-epluginDATA install-epluginLTLIBRARIES \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-serviceDATA \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags tags-am uninstall uninstall-am \
+	uninstall-epluginDATA uninstall-epluginLTLIBRARIES \
+	uninstall-local uninstall-serviceDATA
 
 .PRECIOUS: Makefile
 
@@ -931,7 +958,19 @@ uninstall-am: uninstall-epluginDATA uninstall-epluginLTLIBRARIES
 	    -e "s|+LOCALEDIR+|$(localedir)|"           \
 	    $< > $@
 
-@INTLTOOL_DESKTOP_RULE@
+# DBus interfaces (XML files) and services
+%.service.in: %.service.in.in
+	@sed -e "s|@libexecdir[@]|${libexecdir}|" $< > $@
+@INTLTOOL_SERVICE_RULE@
+
+install-data-hook:
+	$(MKDIR_P) "$(DESTDIR)$(datadir)/tracker/miners" && \
+	$(LN_S) -f "$(servicedir)/$(service_DATA)" \
+                   "$(DESTDIR)$(datadir)/tracker/miners/$(service_DATA)"
+
+uninstall-local:
+	$(RM) "$(DESTDIR)$(datadir)/tracker/miners/$(service_DATA)" && \
+	$(RM) "$(servicedir)/$(service_DATA)"
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

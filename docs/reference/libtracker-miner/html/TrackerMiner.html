@@ -315,11 +315,11 @@ just after creation (or directly created with <code class="function">g_initable_
 <a name="tracker-miner-error-quark"></a><h3>tracker_miner_error_quark ()</h3>
 <pre class="programlisting"><span class="returnvalue">GQuark</span>
 tracker_miner_error_quark (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>Gives the caller the <span class="type">GQuark</span> used to identify miner errors in
-GError structures.</p>
+<p>Gives the caller the <span class="type">GQuark</span> used to identify <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> errors
+in <span class="type">GError</span> structures. The <span class="type">GQuark</span> is used as the domain for the error.</p>
 <div class="refsect3">
 <a name="id-1.3.4.2.11.2.5"></a><h4>Returns</h4>
-<p> the error <span class="type">GQuark</span></p>
+<p> the <span class="type">GQuark</span> used for the domain of a <span class="type">GError</span>.</p>
 <p></p>
 </div>
 <p class="since">Since 0.8</p>
@@ -701,40 +701,53 @@ tracker_miner_get_dbus_full_path (<em class="parameter"><code><a class="link" hr
 <a name="TRACKER-MINER-DBUS-INTERFACE:CAPS"></a><h3>TRACKER_MINER_DBUS_INTERFACE</h3>
 <pre class="programlisting">#define TRACKER_MINER_DBUS_INTERFACE   "org.freedesktop.Tracker1.Miner"
 </pre>
-<p>
-</p>
+<p>The name of the D-Bus interface to use for all data miners that
+inter-operate with Tracker.</p>
+<p class="since">Since 0.8.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="TRACKER-MINER-DBUS-NAME-PREFIX:CAPS"></a><h3>TRACKER_MINER_DBUS_NAME_PREFIX</h3>
 <pre class="programlisting">#define TRACKER_MINER_DBUS_NAME_PREFIX "org.freedesktop.Tracker1.Miner."
 </pre>
-<p>
-</p>
+<p>D-Bus name prefix to use for all data miners. This allows custom
+miners to be written using <em class="parameter"><code>TRACKER_MINER_DBUS_NAME_PREFIX</code></em>
+ + "Files" for
+example and would show up on D-Bus under
+"org.freedesktop.Tracker1.Miner.Files".</p>
+<p class="since">Since 0.8.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="TRACKER-MINER-DBUS-PATH-PREFIX:CAPS"></a><h3>TRACKER_MINER_DBUS_PATH_PREFIX</h3>
 <pre class="programlisting">#define TRACKER_MINER_DBUS_PATH_PREFIX "/org/freedesktop/Tracker1/Miner/"
 </pre>
-<p>
-</p>
+<p>D-Bus path prefix to use for all data miners. This allows custom
+miners to be written using <em class="parameter"><code>TRACKER_MINER_DBUS_PATH_PREFIX</code></em>
+ + "Files" for
+example and would show up on D-Bus under
+"/org/freedesktop/Tracker1/Miner/Files".</p>
+<p class="since">Since 0.8.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="TRACKER-MINER-ERROR-DOMAIN:CAPS"></a><h3>TRACKER_MINER_ERROR_DOMAIN</h3>
 <pre class="programlisting">#define TRACKER_MINER_ERROR_DOMAIN "TrackerMiner"
 </pre>
-<p>
-</p>
+<p>Used as the domain for any <span class="type">GErrors</span> reported by <em class="parameter"><code>TrackerMiner</code></em>
+ objects.</p>
+<p class="since">Since 0.8.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="TRACKER-MINER-ERROR:CAPS"></a><h3>TRACKER_MINER_ERROR</h3>
 <pre class="programlisting">#define TRACKER_MINER_ERROR        tracker_miner_error_quark()
 </pre>
-<p>
-</p>
+<p>Returns the <em class="parameter"><code>GQuark</code></em>
+ used for <span class="type">GErrors</span> and for <em class="parameter"><code>TrackerMiner</code></em>
+
+implementations. This calls <a class="link" href="TrackerMiner.html#tracker-miner-error-quark" title="tracker_miner_error_quark ()"><code class="function">tracker_miner_error_quark()</code></a>.</p>
+<p class="since">Since 0.8.</p>
 </div>
 <hr>
 <div class="refsect2">

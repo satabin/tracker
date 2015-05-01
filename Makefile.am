@@ -1,6 +1,6 @@
 include $(top_srcdir)/Makefile.decl
 
-SUBDIRS = data src docs po utils examples
+SUBDIRS = src docs po utils examples
 
 if HAVE_UNIT_TESTS
 SUBDIRS += tests
@@ -117,6 +117,6 @@ DISTCHECK_CONFIGURE_FLAGS =                            \
 	--enable-libgsf                                \
 	--enable-playlist                              \
 	--enable-tracker-preferences                   \
-	--with-enca
+	--enable-enca
 
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}

@@ -106,7 +106,7 @@ DIST_COMMON = $(srcdir)/Makefile.am \
 	$(libtracker_sparqlinclude_HEADERS) $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES =
+CONFIG_CLEAN_FILES = tracker-sparql.pc
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 am__DEPENDENCIES_1 =
@@ -196,10 +196,10 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(girdir)" "$(DESTDIR)$(typelibdir)" \
-	"$(DESTDIR)$(vapidir)" \
+am__installdirs = "$(DESTDIR)$(girdir)" "$(DESTDIR)$(pkgconfigdir)" \
+	"$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(vapidir)" \
 	"$(DESTDIR)$(libtracker_sparqlincludedir)"
-DATA = $(gir_DATA) $(typelib_DATA) $(vapi_DATA)
+DATA = $(gir_DATA) $(pkgconfig_DATA) $(typelib_DATA) $(vapi_DATA)
 HEADERS = $(libtracker_sparqlinclude_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
@@ -224,9 +224,9 @@ am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(srcdir)/Tracker-$(TRACKER_API_VERSION).gir \
 	$(srcdir)/libtracker_sparql_la_vala.stamp \
 	$(srcdir)/tracker-generated-no-checks.h \
-	$(srcdir)/tracker-sparql.vapi $(top_srcdir)/build-aux/depcomp \
-	tracker-builder.c tracker-connection.c tracker-cursor.c \
-	tracker-utils.c
+	$(srcdir)/tracker-sparql.pc.in $(srcdir)/tracker-sparql.vapi \
+	$(top_srcdir)/build-aux/depcomp tracker-builder.c \
+	tracker-connection.c tracker-cursor.c tracker-utils.c
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ABIWORD_CFLAGS = @ABIWORD_CFLAGS@
 ABIWORD_LIBS = @ABIWORD_LIBS@
@@ -259,6 +259,7 @@ CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATADIRNAME = @DATADIRNAME@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -445,8 +446,7 @@ TRACKER_API_VERSION = @TRACKER_API_VERSION@
 TRACKER_API_VERSION_UNDERSCORES = @TRACKER_API_VERSION_UNDERSCORES@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
-TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
-TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
+TRACKER_CFLAGS = @TRACKER_CFLAGS@
 TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
 TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
 TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
@@ -454,6 +454,7 @@ TRACKER_EXTRACT_MODULES_DIR = @TRACKER_EXTRACT_MODULES_DIR@
 TRACKER_EXTRACT_MODULES_LIBS = @TRACKER_EXTRACT_MODULES_LIBS@
 TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
+TRACKER_LIBS = @TRACKER_LIBS@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
@@ -481,8 +482,6 @@ TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
 TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
-TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
-TRACKER_UTILS_LIBS = @TRACKER_UTILS_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
 TRACKER_WRITEBACK_CFLAGS = @TRACKER_WRITEBACK_CFLAGS@
 TRACKER_WRITEBACK_LIBS = @TRACKER_WRITEBACK_LIBS@
@@ -494,6 +493,7 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
+XSLTPROC = @XSLTPROC@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -576,7 +576,9 @@ libtracker_sparql_la_SOURCES = \
 	tracker-cursor.vala                            \
 	tracker-utils.vala                             \
 	tracker-uri.c                                  \
-	tracker-version.c
+	tracker-ontologies.h \
+	tracker-version.c \
+	tracker-version.h
 
 libtracker_sparql_la_LIBADD = \
 	$(BUILD_LIBS)                                  \
@@ -587,9 +589,16 @@ libtracker_sparql_la_LIBADD = \
 vala_header = tracker-generated.h
 libtracker_sparqlinclude_HEADERS = \
 	$(vala_header)                                 \
+	tracker-ontologies.h \
 	tracker-sparql.h                               \
 	tracker-version.h
 
+
+# PkgConfig
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = tracker-sparql-$(TRACKER_API_VERSION).pc
+CLEANFILES = tracker-sparql-$(TRACKER_API_VERSION).pc \
+	tracker-sparql-$(TRACKER_API_VERSION).vapi
 
 # Vala bindings
 vapidir = $(datadir)/vala/vapi
@@ -604,9 +613,6 @@ MAINTAINERCLEANFILES = \
 	tracker-sparql-$(TRACKER_API_VERSION).vapi     \
 	tracker-sparql-$(TRACKER_API_VERSION).deps     \
 	$(vala_header:.h=-no-checks.h)
-
-CLEANFILES = \
-	tracker-sparql-$(TRACKER_API_VERSION).vapi
 
 EXTRA_DIST = \
 	tracker-sparql-$(TRACKER_API_VERSION).deps     \
@@ -656,6 +662,8 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
+tracker-sparql.pc: $(top_builddir)/config.status $(srcdir)/tracker-sparql.pc.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
@@ -770,6 +778,27 @@ uninstall-girDATA:
 	@list='$(gir_DATA)'; test -n "$(girdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(girdir)'; $(am__uninstall_files_from_dir)
+install-pkgconfigDATA: $(pkgconfig_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(pkgconfig_DATA)'; test -n "$(pkgconfigdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(pkgconfigdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(pkgconfigdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(pkgconfigdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(pkgconfigdir)" || exit $$?; \
+	done
+
+uninstall-pkgconfigDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(pkgconfig_DATA)'; test -n "$(pkgconfigdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(pkgconfigdir)'; $(am__uninstall_files_from_dir)
 install-typelibDATA: $(typelib_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
@@ -921,7 +950,7 @@ check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(girdir)" "$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(vapidir)" "$(DESTDIR)$(libtracker_sparqlincludedir)"; do \
+	for dir in "$(DESTDIR)$(girdir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(vapidir)" "$(DESTDIR)$(libtracker_sparqlincludedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -995,8 +1024,8 @@ info: info-am
 info-am:
 
 install-data-am: install-girDATA \
-	install-libtracker_sparqlincludeHEADERS install-typelibDATA \
-	install-vapiDATA
+	install-libtracker_sparqlincludeHEADERS install-pkgconfigDATA \
+	install-typelibDATA install-vapiDATA
 
 install-dvi: install-dvi-am
 
@@ -1044,7 +1073,8 @@ ps-am:
 
 uninstall-am: uninstall-girDATA \
 	uninstall-libtracker_sparqlincludeHEADERS \
-	uninstall-typelibDATA uninstall-vapiDATA
+	uninstall-pkgconfigDATA uninstall-typelibDATA \
+	uninstall-vapiDATA
 
 .MAKE: all check install install-am install-strip
 
@@ -1057,14 +1087,15 @@ uninstall-am: uninstall-girDATA \
 	install-exec-am install-girDATA install-html install-html-am \
 	install-info install-info-am \
 	install-libtracker_sparqlincludeHEADERS install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip install-typelibDATA install-vapiDATA \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-am uninstall uninstall-am uninstall-girDATA \
-	uninstall-libtracker_sparqlincludeHEADERS \
-	uninstall-typelibDATA uninstall-vapiDATA
+	install-pdf install-pdf-am install-pkgconfigDATA install-ps \
+	install-ps-am install-strip install-typelibDATA \
+	install-vapiDATA installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags tags-am uninstall uninstall-am \
+	uninstall-girDATA uninstall-libtracker_sparqlincludeHEADERS \
+	uninstall-pkgconfigDATA uninstall-typelibDATA \
+	uninstall-vapiDATA
 
 .PRECIOUS: Makefile
 
@@ -1082,6 +1113,9 @@ tracker-sparql-$(TRACKER_API_VERSION).vapi: tracker-sparql.vapi
 
 tracker-sparql-$(TRACKER_API_VERSION).deps: tracker-sparql.deps
 	$(AM_V_GEN)cp $^ $@
+
+tracker-sparql-$(TRACKER_API_VERSION).pc: tracker-sparql.pc
+	cp $< $@
 
 # Introspection foo
 -include $(INTROSPECTION_MAKEFILE)

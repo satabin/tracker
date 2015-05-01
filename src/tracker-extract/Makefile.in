@@ -120,39 +120,37 @@ host_triplet = @host@
 
 # Gstreamer with GUPnP-DLNA backend?
 @HAVE_GUPNP_DLNA_TRUE@am__append_23 = 91-gstreamer-generic-dlna.rule
-@USING_EXTERNAL_GENERIC_MEDIA_PLAYER_TRUE@am__append_24 = libextract-mplayer.la
-@USING_EXTERNAL_GENERIC_MEDIA_PLAYER_TRUE@am__append_25 = 93-mplayer-generic.rule
-@HAVE_TOTEM_PL_PARSER_TRUE@am__append_26 = libextract-playlist.la
-@HAVE_TOTEM_PL_PARSER_TRUE@am__append_27 = 15-playlist.rule
-@HAVE_LIBOSINFO_TRUE@am__append_28 = libextract-iso.la
-@HAVE_LIBOSINFO_TRUE@am__append_29 = 11-iso.rule
-@HAVE_LIBPNG_TRUE@am__append_30 = libextract-png.la
-@HAVE_LIBPNG_TRUE@am__append_31 = 10-png.rule
-@HAVE_ABIWORD_TRUE@am__append_32 = libextract-abw.la
-@HAVE_ABIWORD_TRUE@am__append_33 = 10-abw.rule
-@HAVE_DVI_TRUE@am__append_34 = libextract-dvi.la
-@HAVE_DVI_TRUE@am__append_35 = 10-dvi.rule
-@HAVE_MP3_TRUE@am__append_36 = libextract-mp3.la
-@HAVE_MP3_TRUE@am__append_37 = 10-mp3.rule
-@HAVE_PS_TRUE@am__append_38 = libextract-ps.la
-@HAVE_PS_TRUE@am__append_39 = 10-ps.rule
-@HAVE_TEXT_TRUE@am__append_40 = libextract-text.la
-@HAVE_TEXT_TRUE@am__append_41 = 15-source-code.rule 90-text-generic.rule
-@HAVE_ICON_TRUE@am__append_42 = libextract-icon.la
-@HAVE_ICON_TRUE@am__append_43 = 10-ico.rule
-@HAVE_LIBAV_TRUE@am__append_44 = libextract-libav.la
-@HAVE_LIBAV_TRUE@am__append_45 = 90-libav-audio-generic.rule 90-libav-video-generic.rule
+@HAVE_TOTEM_PL_PARSER_TRUE@am__append_24 = libextract-playlist.la
+@HAVE_TOTEM_PL_PARSER_TRUE@am__append_25 = 15-playlist.rule
+@HAVE_LIBOSINFO_TRUE@am__append_26 = libextract-iso.la
+@HAVE_LIBOSINFO_TRUE@am__append_27 = 11-iso.rule
+@HAVE_LIBPNG_TRUE@am__append_28 = libextract-png.la
+@HAVE_LIBPNG_TRUE@am__append_29 = 10-png.rule
+@HAVE_ABIWORD_TRUE@am__append_30 = libextract-abw.la
+@HAVE_ABIWORD_TRUE@am__append_31 = 10-abw.rule
+@HAVE_DVI_TRUE@am__append_32 = libextract-dvi.la
+@HAVE_DVI_TRUE@am__append_33 = 10-dvi.rule
+@HAVE_MP3_TRUE@am__append_34 = libextract-mp3.la
+@HAVE_MP3_TRUE@am__append_35 = 10-mp3.rule
+@HAVE_PS_TRUE@am__append_36 = libextract-ps.la
+@HAVE_PS_TRUE@am__append_37 = 10-ps.rule
+@HAVE_TEXT_TRUE@am__append_38 = libextract-text.la
+@HAVE_TEXT_TRUE@am__append_39 = 15-source-code.rule 90-text-generic.rule
+@HAVE_ICON_TRUE@am__append_40 = libextract-icon.la
+@HAVE_ICON_TRUE@am__append_41 = 10-ico.rule
+@HAVE_LIBAV_TRUE@am__append_42 = libextract-libav.la
+@HAVE_LIBAV_TRUE@am__append_43 = 90-libav-audio-generic.rule 90-libav-video-generic.rule
 
 # GStreamer with GUPnP-DLNA backend?
-@HAVE_GUPNP_DLNA_TRUE@am__append_46 = $(GUPNP_DLNA_CFLAGS)
-@HAVE_GUPNP_DLNA_TRUE@am__append_47 = $(GUPNP_DLNA_LIBS)
+@HAVE_GUPNP_DLNA_TRUE@am__append_44 = $(GUPNP_DLNA_CFLAGS)
+@HAVE_GUPNP_DLNA_TRUE@am__append_45 = $(GUPNP_DLNA_LIBS)
 
 # GStreamer with Discoverer backend?
-@HAVE_GSTREAMER_PBUTILS_TRUE@am__append_48 = $(GSTREAMER_PBUTILS_CFLAGS)
-@HAVE_GSTREAMER_PBUTILS_TRUE@am__append_49 = $(GSTREAMER_PBUTILS_LIBS)
+@HAVE_GSTREAMER_PBUTILS_TRUE@am__append_46 = $(GSTREAMER_PBUTILS_CFLAGS)
+@HAVE_GSTREAMER_PBUTILS_TRUE@am__append_47 = $(GSTREAMER_PBUTILS_LIBS)
 libexec_PROGRAMS = tracker-extract$(EXEEXT)
-@HAVE_LIBGSF_TRUE@am__append_50 = tracker-gsf.c tracker-gsf.h
-@HAVE_LIBGSF_TRUE@am__append_51 = $(LIBGSF_LIBS)
+@HAVE_LIBGSF_TRUE@am__append_48 = tracker-gsf.c tracker-gsf.h
+@HAVE_LIBGSF_TRUE@am__append_49 = $(LIBGSF_LIBS)
 subdir = src/tracker-extract
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/attributes.m4 \
@@ -198,7 +196,9 @@ am__uninstall_files_from_dir = { \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
 am__installdirs = "$(DESTDIR)$(extractmodulesdir)" \
-	"$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(rulesdir)"
+	"$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(man5dir)" \
+	"$(DESTDIR)$(autostartdir)" "$(DESTDIR)$(configdir)" \
+	"$(DESTDIR)$(rulesdir)" "$(DESTDIR)$(servicedir)"
 LTLIBRARIES = $(extractmodules_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libextract_abw_la_DEPENDENCIES =  \
@@ -394,20 +394,6 @@ libextract_mp3_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(libextract_mp3_la_LDFLAGS) $(LDFLAGS) -o $@
 @HAVE_MP3_TRUE@am_libextract_mp3_la_rpath = -rpath \
 @HAVE_MP3_TRUE@	$(extractmodulesdir)
-libextract_mplayer_la_DEPENDENCIES =  \
-	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libextract_mplayer_la_OBJECTS =  \
-	libextract_mplayer_la-tracker-extract-mplayer.lo
-libextract_mplayer_la_OBJECTS = $(am_libextract_mplayer_la_OBJECTS)
-libextract_mplayer_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
-	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(libextract_mplayer_la_CFLAGS) $(CFLAGS) \
-	$(libextract_mplayer_la_LDFLAGS) $(LDFLAGS) -o $@
-@USING_EXTERNAL_GENERIC_MEDIA_PLAYER_TRUE@am_libextract_mplayer_la_rpath =  \
-@USING_EXTERNAL_GENERIC_MEDIA_PLAYER_TRUE@	-rpath \
-@USING_EXTERNAL_GENERIC_MEDIA_PLAYER_TRUE@	$(extractmodulesdir)
 libextract_msoffice_xml_la_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
@@ -641,7 +627,6 @@ SOURCES = $(libextract_abw_la_SOURCES) $(libextract_bmp_la_SOURCES) \
 	$(libextract_html_la_SOURCES) $(libextract_icon_la_SOURCES) \
 	$(libextract_iso_la_SOURCES) $(libextract_jpeg_la_SOURCES) \
 	$(libextract_libav_la_SOURCES) $(libextract_mp3_la_SOURCES) \
-	$(libextract_mplayer_la_SOURCES) \
 	$(libextract_msoffice_xml_la_SOURCES) \
 	$(libextract_msoffice_la_SOURCES) \
 	$(libextract_oasis_la_SOURCES) $(libextract_pdf_la_SOURCES) \
@@ -658,7 +643,6 @@ DIST_SOURCES = $(libextract_abw_la_SOURCES) \
 	$(libextract_html_la_SOURCES) $(libextract_icon_la_SOURCES) \
 	$(libextract_iso_la_SOURCES) $(libextract_jpeg_la_SOURCES) \
 	$(libextract_libav_la_SOURCES) $(libextract_mp3_la_SOURCES) \
-	$(libextract_mplayer_la_SOURCES) \
 	$(libextract_msoffice_xml_la_SOURCES) \
 	$(libextract_msoffice_la_SOURCES) \
 	$(libextract_oasis_la_SOURCES) $(libextract_pdf_la_SOURCES) \
@@ -672,7 +656,10 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-DATA = $(rules_DATA)
+man5dir = $(mandir)/man5
+NROFF = nroff
+MANS = $(man_MANS)
+DATA = $(autostart_DATA) $(config_DATA) $(rules_DATA) $(service_DATA)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
 # and print each of them once, without duplicates.  Input order is
@@ -726,6 +713,7 @@ CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATADIRNAME = @DATADIRNAME@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -785,6 +773,7 @@ INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
+INTLTOOL_SERVICE_RULE = '%.service:   %.service.in   $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; $(INTLTOOL_MERGE) $(top_srcdir)/po $< [$]@ -d -u'
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTLTOOL_V_MERGE = @INTLTOOL_V_MERGE@
 INTLTOOL_V_MERGE_OPTIONS = @INTLTOOL_V_MERGE_OPTIONS@
@@ -912,8 +901,7 @@ TRACKER_API_VERSION = @TRACKER_API_VERSION@
 TRACKER_API_VERSION_UNDERSCORES = @TRACKER_API_VERSION_UNDERSCORES@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
-TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
-TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
+TRACKER_CFLAGS = @TRACKER_CFLAGS@
 TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
 TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
 TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
@@ -921,6 +909,7 @@ TRACKER_EXTRACT_MODULES_DIR = @TRACKER_EXTRACT_MODULES_DIR@
 TRACKER_EXTRACT_MODULES_LIBS = @TRACKER_EXTRACT_MODULES_LIBS@
 TRACKER_EXTRACT_RULES_DIR = @TRACKER_EXTRACT_RULES_DIR@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
+TRACKER_LIBS = @TRACKER_LIBS@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
@@ -948,8 +937,6 @@ TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
 TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
-TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
-TRACKER_UTILS_LIBS = @TRACKER_UTILS_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
 TRACKER_WRITEBACK_CFLAGS = @TRACKER_WRITEBACK_CFLAGS@
 TRACKER_WRITEBACK_LIBS = @TRACKER_WRITEBACK_LIBS@
@@ -961,6 +948,7 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
+XSLTPROC = @XSLTPROC@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -1074,8 +1062,7 @@ rules_files = \
 	90-text-generic.rule \
 	90-libav-audio-generic.rule \
 	90-libav-video-generic.rule \
-	91-gstreamer-generic-dlna.rule \
-	93-mplayer-generic.rule
+	91-gstreamer-generic-dlna.rule
 
 
 # NOTE:
@@ -1092,8 +1079,7 @@ extractmodules_LTLIBRARIES = $(am__append_1) $(am__append_3) \
 	$(am__append_24) $(am__append_26) $(am__append_28) \
 	$(am__append_30) $(am__append_32) $(am__append_34) \
 	$(am__append_36) $(am__append_38) $(am__append_40) \
-	$(am__append_42) $(am__append_44) libextract-bmp.la \
-	libextract-dummy.la
+	$(am__append_42) libextract-bmp.la libextract-dummy.la
 # Rule files using the dummy extractor
 rules_DATA = $(am__append_2) $(am__append_4) $(am__append_6) \
 	$(am__append_8) $(am__append_10) $(am__append_12) \
@@ -1102,8 +1088,7 @@ rules_DATA = $(am__append_2) $(am__append_4) $(am__append_6) \
 	$(am__append_25) $(am__append_27) $(am__append_29) \
 	$(am__append_31) $(am__append_33) $(am__append_35) \
 	$(am__append_37) $(am__append_39) $(am__append_41) \
-	$(am__append_43) $(am__append_45) 10-bmp.rule 10-comics.rule \
-	10-ebooks.rule
+	$(am__append_43) 10-bmp.rule 10-comics.rule 10-ebooks.rule
 
 # ABW
 libextract_abw_la_SOURCES = tracker-extract-abw.c
@@ -1149,17 +1134,6 @@ libextract_flac_la_LIBADD = \
 	$(BUILD_LIBS) \
 	$(TRACKER_EXTRACT_MODULES_LIBS) \
 	$(LIBFLAC_LIBS)
-
-
-# MPlayer
-libextract_mplayer_la_SOURCES = tracker-extract-mplayer.c
-libextract_mplayer_la_CFLAGS = $(TRACKER_EXTRACT_MODULES_CFLAGS)
-libextract_mplayer_la_LDFLAGS = $(module_flags)
-libextract_mplayer_la_LIBADD = \
-	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(BUILD_LIBS) \
-	$(TRACKER_EXTRACT_MODULES_LIBS)
 
 
 # Oasis
@@ -1321,14 +1295,14 @@ libextract_gstreamer_la_SOURCES = \
 	tracker-cue-sheet.c
 
 libextract_gstreamer_la_CFLAGS = $(TRACKER_EXTRACT_MODULES_CFLAGS) \
-	$(GSTREAMER_CFLAGS) $(LIBCUE_CFLAGS) $(am__append_46) \
-	$(am__append_48)
+	$(GSTREAMER_CFLAGS) $(LIBCUE_CFLAGS) $(am__append_44) \
+	$(am__append_46)
 libextract_gstreamer_la_LDFLAGS = $(module_flags)
 libextract_gstreamer_la_LIBADD =  \
 	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
 	$(BUILD_LIBS) $(TRACKER_EXTRACT_MODULES_LIBS) \
-	$(GSTREAMER_LIBS) $(LIBCUE_LIBS) $(am__append_47) \
-	$(am__append_49)
+	$(GSTREAMER_LIBS) $(LIBCUE_LIBS) $(am__append_45) \
+	$(am__append_47)
 
 # GIF
 libextract_gif_la_SOURCES = tracker-extract-gif.c
@@ -1472,13 +1446,13 @@ tracker_extract_SOURCES = tracker-config.c tracker-config.h \
 	tracker-extract-persistence.c tracker-extract-persistence.h \
 	tracker-extract-priority-dbus.c \
 	tracker-extract-priority-dbus.h tracker-read.c tracker-read.h \
-	tracker-main.c tracker-main.h $(am__append_50)
+	tracker-main.c tracker-main.h $(am__append_48)
 tracker_extract_LDADD = $(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-extract/libtracker-extract.la \
 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(BUILD_LIBS) $(TRACKER_EXTRACT_LIBS) $(am__append_51)
+	$(BUILD_LIBS) $(TRACKER_EXTRACT_LIBS) $(am__append_49)
 @HAVE_LIBGSF_TRUE@tracker_extract_CFLAGS = $(LIBGSF_CFLAGS)
 BUILT_SOURCES = \
 	tracker-extract-priority-dbus.c \
@@ -1486,10 +1460,34 @@ BUILT_SOURCES = \
 	tracker-extract-priority-dbus-stamp \
 	$(NULL)
 
-CLEANFILES = $(BUILT_SOURCES)
-EXTRA_DIST = \
-	$(rules_files)
 
+# Dist / Clean rules for all data
+CLEANFILES = $(BUILT_SOURCES) $(autostart_DATA) \
+	$(autostart_DATA:.desktop=.desktop.in) $(service_DATA) \
+	$(service_DATA:.service=.service.in) $(gsettings_SCHEMAS) \
+	$(man_MANS)
+EXTRA_DIST = $(rules_files) $(autostart_DATA:.desktop=.desktop.in.in) \
+	$(config_DATA) $(service_DATA:.service=.service.in.in) \
+	$(gsettings_SCHEMAS:.xml=.xml.in) $(man_MANS)
+
+# DBus interfaces (XML files) and services
+configdir = $(datadir)/tracker
+config_DATA = \
+	tracker-extract.xml \
+	tracker-extract-priority.xml
+
+servicedir = $(DBUS_SERVICES_DIR)
+service_DATA = org.freedesktop.Tracker1.Miner.Extract.service
+autostartdir = $(sysconfdir)/xdg/autostart
+autostart_DATA = tracker-extract.desktop
+
+# Configuration / GSettings
+gsettings_ENUM_NAMESPACE = org.freedesktop.Tracker
+gsettings_ENUM_FILES = $(top_srcdir)/src/libtracker-common/tracker-enums.h
+gsettings_SCHEMAS = org.freedesktop.Tracker.Extract.gschema.xml
+@HAVE_XSLTPROC_TRUE@DATE = `date +'%B %Y'`
+@HAVE_XSLTPROC_FALSE@man_MANS = 
+@HAVE_XSLTPROC_TRUE@man_MANS = $(libexec_PROGRAMS).cfg.5
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -1602,9 +1600,6 @@ libextract-libav.la: $(libextract_libav_la_OBJECTS) $(libextract_libav_la_DEPEND
 libextract-mp3.la: $(libextract_mp3_la_OBJECTS) $(libextract_mp3_la_DEPENDENCIES) $(EXTRA_libextract_mp3_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libextract_mp3_la_LINK) $(am_libextract_mp3_la_rpath) $(libextract_mp3_la_OBJECTS) $(libextract_mp3_la_LIBADD) $(LIBS)
 
-libextract-mplayer.la: $(libextract_mplayer_la_OBJECTS) $(libextract_mplayer_la_DEPENDENCIES) $(EXTRA_libextract_mplayer_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(libextract_mplayer_la_LINK) $(am_libextract_mplayer_la_rpath) $(libextract_mplayer_la_OBJECTS) $(libextract_mplayer_la_LIBADD) $(LIBS)
-
 libextract-msoffice-xml.la: $(libextract_msoffice_xml_la_OBJECTS) $(libextract_msoffice_xml_la_DEPENDENCIES) $(EXTRA_libextract_msoffice_xml_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libextract_msoffice_xml_la_LINK) $(am_libextract_msoffice_xml_la_rpath) $(libextract_msoffice_xml_la_OBJECTS) $(libextract_msoffice_xml_la_LIBADD) $(LIBS)
 
@@ -1715,7 +1710,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_jpeg_la-tracker-extract-jpeg.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_libav_la-tracker-extract-libav.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_mp3_la-tracker-extract-mp3.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_mplayer_la-tracker-extract-mplayer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_msoffice_la-tracker-extract-msoffice.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_msoffice_xml_la-tracker-extract-msoffice-xml.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_oasis_la-tracker-extract-oasis.Plo@am__quote@
@@ -1863,13 +1857,6 @@ libextract_mp3_la-tracker-extract-mp3.lo: tracker-extract-mp3.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-extract-mp3.c' object='libextract_mp3_la-tracker-extract-mp3.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_mp3_la_CFLAGS) $(CFLAGS) -c -o libextract_mp3_la-tracker-extract-mp3.lo `test -f 'tracker-extract-mp3.c' || echo '$(srcdir)/'`tracker-extract-mp3.c
-
-libextract_mplayer_la-tracker-extract-mplayer.lo: tracker-extract-mplayer.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_mplayer_la_CFLAGS) $(CFLAGS) -MT libextract_mplayer_la-tracker-extract-mplayer.lo -MD -MP -MF $(DEPDIR)/libextract_mplayer_la-tracker-extract-mplayer.Tpo -c -o libextract_mplayer_la-tracker-extract-mplayer.lo `test -f 'tracker-extract-mplayer.c' || echo '$(srcdir)/'`tracker-extract-mplayer.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libextract_mplayer_la-tracker-extract-mplayer.Tpo $(DEPDIR)/libextract_mplayer_la-tracker-extract-mplayer.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='tracker-extract-mplayer.c' object='libextract_mplayer_la-tracker-extract-mplayer.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_mplayer_la_CFLAGS) $(CFLAGS) -c -o libextract_mplayer_la-tracker-extract-mplayer.lo `test -f 'tracker-extract-mplayer.c' || echo '$(srcdir)/'`tracker-extract-mplayer.c
 
 libextract_msoffice_xml_la-tracker-extract-msoffice-xml.lo: tracker-extract-msoffice-xml.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_msoffice_xml_la_CFLAGS) $(CFLAGS) -MT libextract_msoffice_xml_la-tracker-extract-msoffice-xml.lo -MD -MP -MF $(DEPDIR)/libextract_msoffice_xml_la-tracker-extract-msoffice-xml.Tpo -c -o libextract_msoffice_xml_la-tracker-extract-msoffice-xml.lo `test -f 'tracker-extract-msoffice-xml.c' || echo '$(srcdir)/'`tracker-extract-msoffice-xml.c
@@ -2086,6 +2073,91 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
+install-man5: $(man_MANS)
+	@$(NORMAL_INSTALL)
+	@list1=''; \
+	list2='$(man_MANS)'; \
+	test -n "$(man5dir)" \
+	  && test -n "`echo $$list1$$list2`" \
+	  || exit 0; \
+	echo " $(MKDIR_P) '$(DESTDIR)$(man5dir)'"; \
+	$(MKDIR_P) "$(DESTDIR)$(man5dir)" || exit 1; \
+	{ for i in $$list1; do echo "$$i"; done;  \
+	if test -n "$$list2"; then \
+	  for i in $$list2; do echo "$$i"; done \
+	    | sed -n '/\.5[a-z]*$$/p'; \
+	fi; \
+	} | while read p; do \
+	  if test -f $$p; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; echo "$$p"; \
+	done | \
+	sed -e 'n;s,.*/,,;p;h;s,.*\.,,;s,^[^5][0-9a-z]*$$,5,;x' \
+	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,' | \
+	sed 'N;N;s,\n, ,g' | { \
+	list=; while read file base inst; do \
+	  if test "$$base" = "$$inst"; then list="$$list $$file"; else \
+	    echo " $(INSTALL_DATA) '$$file' '$(DESTDIR)$(man5dir)/$$inst'"; \
+	    $(INSTALL_DATA) "$$file" "$(DESTDIR)$(man5dir)/$$inst" || exit $$?; \
+	  fi; \
+	done; \
+	for i in $$list; do echo "$$i"; done | $(am__base_list) | \
+	while read files; do \
+	  test -z "$$files" || { \
+	    echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(man5dir)'"; \
+	    $(INSTALL_DATA) $$files "$(DESTDIR)$(man5dir)" || exit $$?; }; \
+	done; }
+
+uninstall-man5:
+	@$(NORMAL_UNINSTALL)
+	@list=''; test -n "$(man5dir)" || exit 0; \
+	files=`{ for i in $$list; do echo "$$i"; done; \
+	l2='$(man_MANS)'; for i in $$l2; do echo "$$i"; done | \
+	  sed -n '/\.5[a-z]*$$/p'; \
+	} | sed -e 's,.*/,,;h;s,.*\.,,;s,^[^5][0-9a-z]*$$,5,;x' \
+	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,'`; \
+	dir='$(DESTDIR)$(man5dir)'; $(am__uninstall_files_from_dir)
+install-autostartDATA: $(autostart_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(autostart_DATA)'; test -n "$(autostartdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(autostartdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(autostartdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(autostartdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(autostartdir)" || exit $$?; \
+	done
+
+uninstall-autostartDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(autostart_DATA)'; test -n "$(autostartdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(autostartdir)'; $(am__uninstall_files_from_dir)
+install-configDATA: $(config_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(config_DATA)'; test -n "$(configdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(configdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(configdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(configdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(configdir)" || exit $$?; \
+	done
+
+uninstall-configDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(config_DATA)'; test -n "$(configdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(configdir)'; $(am__uninstall_files_from_dir)
 install-rulesDATA: $(rules_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(rules_DATA)'; test -n "$(rulesdir)" || list=; \
@@ -2107,6 +2179,27 @@ uninstall-rulesDATA:
 	@list='$(rules_DATA)'; test -n "$(rulesdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(rulesdir)'; $(am__uninstall_files_from_dir)
+install-serviceDATA: $(service_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(service_DATA)'; test -n "$(servicedir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(servicedir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(servicedir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(servicedir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(servicedir)" || exit $$?; \
+	done
+
+uninstall-serviceDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(service_DATA)'; test -n "$(servicedir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(servicedir)'; $(am__uninstall_files_from_dir)
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -2193,9 +2286,9 @@ distdir: $(DISTFILES)
 check-am: all-am
 check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
-all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(DATA)
+all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(MANS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(extractmodulesdir)" "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(rulesdir)"; do \
+	for dir in "$(DESTDIR)$(extractmodulesdir)" "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(man5dir)" "$(DESTDIR)$(autostartdir)" "$(DESTDIR)$(configdir)" "$(DESTDIR)$(rulesdir)" "$(DESTDIR)$(servicedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -2254,8 +2347,11 @@ info: info-am
 
 info-am:
 
-install-data-am: install-extractmodulesLTLIBRARIES install-rulesDATA
-
+install-data-am: install-autostartDATA install-configDATA \
+	install-extractmodulesLTLIBRARIES install-man \
+	install-rulesDATA install-serviceDATA
+	@$(NORMAL_INSTALL)
+	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 install-dvi: install-dvi-am
 
 install-dvi-am:
@@ -2270,7 +2366,7 @@ install-info: install-info-am
 
 install-info-am:
 
-install-man:
+install-man: install-man5
 
 install-pdf: install-pdf-am
 
@@ -2300,28 +2396,35 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-extractmodulesLTLIBRARIES \
-	uninstall-libexecPROGRAMS uninstall-rulesDATA
+uninstall-am: uninstall-autostartDATA uninstall-configDATA \
+	uninstall-extractmodulesLTLIBRARIES uninstall-libexecPROGRAMS \
+	uninstall-local uninstall-man uninstall-rulesDATA \
+	uninstall-serviceDATA
 
-.MAKE: all check install install-am install-strip
+uninstall-man: uninstall-man5
+
+.MAKE: all check install install-am install-data-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean \
 	clean-extractmodulesLTLIBRARIES clean-generic \
 	clean-libexecPROGRAMS clean-libtool cscopelist-am ctags \
 	ctags-am distclean distclean-compile distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
+	html-am info info-am install install-am install-autostartDATA \
+	install-configDATA install-data install-data-am \
+	install-data-hook install-dvi install-dvi-am install-exec \
 	install-exec-am install-extractmodulesLTLIBRARIES install-html \
 	install-html-am install-info install-info-am \
-	install-libexecPROGRAMS install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-rulesDATA install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-am uninstall uninstall-am \
+	install-libexecPROGRAMS install-man install-man5 install-pdf \
+	install-pdf-am install-ps install-ps-am install-rulesDATA \
+	install-serviceDATA install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-am uninstall \
+	uninstall-am uninstall-autostartDATA uninstall-configDATA \
 	uninstall-extractmodulesLTLIBRARIES uninstall-libexecPROGRAMS \
-	uninstall-rulesDATA
+	uninstall-local uninstall-man uninstall-man5 \
+	uninstall-rulesDATA uninstall-serviceDATA
 
 .PRECIOUS: Makefile
 
@@ -2333,13 +2436,44 @@ tracker-extract-priority-dbus.c: tracker-extract-priority-dbus-stamp
 tracker-extract-priority-dbus.h: tracker-extract-priority-dbus-stamp
 	@:
 
-tracker-extract-priority-dbus-stamp: Makefile.am $(top_srcdir)/data/dbus/tracker-extract-priority.xml
+tracker-extract-priority-dbus-stamp: Makefile.am $(top_srcdir)/src/tracker-extract/tracker-extract-priority.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) \
 	              --interface-prefix org.freedesktop.Tracker1.Extract. \
 	              --generate-c-code tracker-extract-priority-dbus \
 	              --c-namespace TrackerExtractDBus \
-	              $(top_srcdir)/data/dbus/tracker-extract-priority.xml
+	              $(top_srcdir)/src/tracker-extract/tracker-extract-priority.xml
 	touch $@
+
+%.service.in: %.service.in.in
+	@sed -e "s|@libexecdir[@]|${libexecdir}|" $< > $@
+@INTLTOOL_SERVICE_RULE@
+
+install-data-hook:
+	$(MKDIR_P) "$(DESTDIR)$(datadir)/tracker/miners" && \
+	$(LN_S) -f "$(servicedir)/$(service_DATA)" \
+                   "$(DESTDIR)$(datadir)/tracker/miners/$(service_DATA)"
+
+uninstall-local:
+	$(RM) "$(DESTDIR)$(datadir)/tracker/miners/$(service_DATA)" && \
+	$(RM) "$(servicedir)/$(service_DATA)"
+
+# Desktop files: First we fix the VERSION and libexecdir
+%.desktop.in: %.desktop.in.in
+	@sed -e "s|@libexecdir[@]|${libexecdir}|" \
+	     -e "s|@VERSION[@]|${VERSION}|" $< > $@
+
+@INTLTOOL_DESKTOP_RULE@
+
+@INTLTOOL_XML_NOMERGE_RULE@
+
+@GSETTINGS_RULES@
+
+%.cfg.5: $(gsettings_SCHEMAS)
+	$(AM_V_GEN)$(XSLTPROC) \
+	  --stringparam version "${VERSION}" \
+	  --stringparam current-date "${DATE}" \
+	  --stringparam config-file "$(@:.cfg.5=.cfg)" \
+	  $(top_srcdir)/docs/manpages/gsettings.xsl $^ > $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

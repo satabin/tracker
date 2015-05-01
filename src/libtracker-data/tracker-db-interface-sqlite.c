@@ -28,13 +28,14 @@
 
 #include <libtracker-common/tracker-date-time.h>
 #include <libtracker-common/tracker-locale.h>
+#include <libtracker-common/tracker-parser.h>
 
 #include <libtracker-sparql/tracker-sparql.h>
 
 #if HAVE_TRACKER_FTS
 #include <libtracker-fts/tracker-fts.h>
-#include <libtracker-fts/tracker-parser.h>
 #endif
+
 
 #ifdef HAVE_LIBUNISTRING
 /* libunistring versions prior to 9.1.2 need this hack */
@@ -682,10 +683,8 @@ function_sparql_unaccent (sqlite3_context *context,
 
 	zOutput = u8_normalize (UNINORM_NFKD, zInput, nInput, NULL, &written);
 
-#if HAVE_TRACKER_FTS
 	/* Unaccenting is done in place */
 	tracker_parser_unaccent_nfkd_string (zOutput, &written);
-#endif
 
 	sqlite3_result_text (context, zOutput, written, free);
 }
@@ -875,10 +874,8 @@ function_sparql_unaccent (sqlite3_context *context,
 		return;
 	}
 
-#if HAVE_TRACKER_FTS
 	/* Unaccenting is done in place */
 	tracker_parser_unaccent_nfkd_string (zOutput, &nOutput);
-#endif
 
 	sqlite3_result_text16 (context, zOutput, -1, sqlite3_free);
 }
@@ -926,17 +923,6 @@ check_interrupt (void *user_data)
 }
 
 static void
-tracker_locale_notify_cb (TrackerLocaleID id,
-                          gpointer        user_data)
-{
-	TrackerDBInterface *db_interface = user_data;
-
-	/* Request a collator reset. Use thread-safe methods as this function will get
-	 * called from the main thread */
-	g_atomic_int_compare_and_exchange (&(db_interface->collator_reset_requested), FALSE, TRUE);
-}
-
-static void
 open_database (TrackerDBInterface  *db_interface,
                GError             **error)
 {
@@ -967,11 +953,6 @@ open_database (TrackerDBInterface  *db_interface,
 
 	/* Set our unicode collation function */
 	tracker_db_interface_sqlite_reset_collator (db_interface);
-	/* And register for updates on locale changes */
-	db_interface->locale_notification_id = tracker_locale_notify_add (TRACKER_LOCALE_COLLATE,
-	                                                                  tracker_locale_notify_cb,
-	                                                                  db_interface,
-	                                                                  NULL);
 
 	sqlite3_progress_handler (db_interface->db, 100,
 	                          check_interrupt, db_interface);
@@ -1359,10 +1340,6 @@ tracker_db_interface_sqlite_finalize (GObject *object)
 
 	g_free (db_interface->filename);
 	g_free (db_interface->busy_status);
-
-	if (db_interface->locale_notification_id) {
-		tracker_locale_notify_remove (db_interface->locale_notification_id);
-	}
 
 	G_OBJECT_CLASS (tracker_db_interface_parent_class)->finalize (object);
 }

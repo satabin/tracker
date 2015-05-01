@@ -3,6 +3,7 @@ tracker (1.2.6-1) UNRELEASED; urgency=medium
   * New upstream release.
   * Drop patch which is now upstream.
   * Bump Build-Depends on libglib2.0-dev to (>= 2.40.0) as per configure.ac.
+  * Update Vcs-Browser URL to use cgit and https.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 01 May 2015 05:25:39 +0200
 

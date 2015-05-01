@@ -1486,8 +1486,7 @@ lookup_file_urn (TrackerMinerFS *fs,
 static gboolean
 item_add_or_update (TrackerMinerFS *fs,
                     GFile          *file,
-                    gint            priority,
-                    gboolean        is_new)
+                    gint            priority)
 {
 	TrackerMinerFSPrivate *priv;
 	TrackerSparqlBuilder *sparql;
@@ -1871,7 +1870,7 @@ item_move (TrackerMinerFS *fs,
 	                               NULL, NULL);
 
 	/* Get 'source' ID */
-	source_iri = lookup_file_urn (fs, source_file, FALSE);
+	source_iri = lookup_file_urn (fs, source_file, TRUE);
 	source_exists = (source_iri != NULL);
 
 	if (!file_info) {
@@ -2566,8 +2565,7 @@ item_queue_handlers_cb (gpointer user_data)
 		if (!parent ||
 		    tracker_indexing_tree_file_is_root (fs->priv->indexing_tree, file) ||
 		    lookup_file_urn (fs, parent, TRUE)) {
-			keep_processing = item_add_or_update (fs, file, priority,
-			                                      (queue == QUEUE_CREATED));
+			keep_processing = item_add_or_update (fs, file, priority);
 		} else {
 			TrackerPriorityQueue *item_queue;
 			gchar *uri;

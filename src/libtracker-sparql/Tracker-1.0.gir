@@ -16,10 +16,7 @@
 		<member name="blank_node" c:identifier="TRACKER_SPARQL_VALUE_TYPE_BLANK_NODE" value="6"/>
 		<member name="boolean" c:identifier="TRACKER_SPARQL_VALUE_TYPE_BOOLEAN" value="7"/>
 	</enumeration>
-	<errordomain name="Error" get-quark="tracker_sparql_error_quark" codes="Error">
-	<annotation key="dbus.name" value="org.freedesktop.Tracker1.SparqlError"/>
-</errordomain>
-	<enumeration name="Error" c:type="TrackerSparqlError">
+	<enumeration name="Error" c:type="TrackerSparqlError" glib:error-domain="tracker_sparql_error-quark">
 		<member name="parse" c:identifier="TRACKER_SPARQL_ERROR_PARSE" value="0"/>
 		<member name="unknown_class" c:identifier="TRACKER_SPARQL_ERROR_UNKNOWN_CLASS" value="1"/>
 		<member name="unknown_property" c:identifier="TRACKER_SPARQL_ERROR_UNKNOWN_PROPERTY" value="2"/>
@@ -237,7 +234,7 @@
 			</return-value>
 			<parameters>
 				<parameter name="literal" direction="inout" transfer-ownership="full">
-					<type name="glong" c:type="time_t"/>
+					<type name="glong" c:type="time_t*"/>
 				</parameter>
 			</parameters>
 		</method>
@@ -289,12 +286,27 @@
 		<property name="result">
 			<type name="utf8" c:type="gchar*"/>
 		</property>
+		<method name="get_result" c:identifier="tracker_sparql_builder_get_result">
+			<return-value transfer-ownership="none">
+				<type name="utf8" c:type="const gchar*"/>
+			</return-value>
+		</method>
 		<property name="length" writable="1">
 			<type name="gint" c:type="gint"/>
 		</property>
+		<method name="get_length" c:identifier="tracker_sparql_builder_get_length">
+			<return-value transfer-ownership="none">
+				<type name="gint" c:type="gint"/>
+			</return-value>
+		</method>
 		<property name="state">
 			<type name="Tracker.SparqlBuilderState" c:type="TrackerSparqlBuilderState"/>
 		</property>
+		<method name="get_state" c:identifier="tracker_sparql_builder_get_state">
+			<return-value transfer-ownership="none">
+				<type name="Tracker.SparqlBuilderState" c:type="TrackerSparqlBuilderState"/>
+			</return-value>
+		</method>
 	</class>
 	<record name="SparqlBuilderClass" c:type="TrackerSparqlBuilderClass" glib:is-gtype-struct-for="Builder">
 		<field name="parent_class">
@@ -1306,7 +1318,7 @@
 					<type name="gint" c:type="gint"/>
 				</parameter>
 				<parameter name="length" direction="out" transfer-ownership="full">
-					<type name="glong" c:type="glong"/>
+					<type name="glong" c:type="glong*"/>
 				</parameter>
 			</parameters>
 		</method>
@@ -1319,7 +1331,7 @@
 					<type name="gint" c:type="gint"/>
 				</parameter>
 				<parameter name="length" direction="out" transfer-ownership="full">
-					<type name="glong" c:type="glong"/>
+					<type name="glong" c:type="glong*"/>
 				</parameter>
 			</parameters>
 		</virtual-method>
@@ -1498,9 +1510,34 @@
 		<property name="connection" writable="1">
 			<type name="Tracker.SparqlConnection" c:type="TrackerSparqlConnection*"/>
 		</property>
+		<method name="get_connection" c:identifier="tracker_sparql_cursor_get_connection">
+			<return-value transfer-ownership="none">
+				<type name="Tracker.SparqlConnection" c:type="TrackerSparqlConnection*"/>
+			</return-value>
+		</method>
+		<method name="set_connection" c:identifier="tracker_sparql_cursor_set_connection">
+			<return-value transfer-ownership="none">
+				<type name="none"/>
+			</return-value>
+			<parameters>
+				<parameter name="value" transfer-ownership="none">
+					<type name="Tracker.SparqlConnection" c:type="TrackerSparqlConnection*"/>
+				</parameter>
+			</parameters>
+		</method>
 		<property name="n-columns">
 			<type name="gint" c:type="gint"/>
 		</property>
+		<method name="get_n_columns" c:identifier="tracker_sparql_cursor_get_n_columns">
+			<return-value transfer-ownership="none">
+				<type name="gint" c:type="gint"/>
+			</return-value>
+		</method>
+		<virtual-method name="get_n_columns" invoker="get_n_columns">
+			<return-value transfer-ownership="none">
+				<type name="gint" c:type="gint"/>
+			</return-value>
+		</virtual-method>
 	</class>
 	<record name="SparqlCursorClass" c:type="TrackerSparqlCursorClass" glib:is-gtype-struct-for="Cursor">
 		<field name="parent_class">
@@ -1549,7 +1586,7 @@
 						<type name="gint" c:type="gint"/>
 					</parameter>
 					<parameter name="length" direction="out" transfer-ownership="full">
-						<type name="glong" c:type="glong"/>
+						<type name="glong" c:type="glong*"/>
 					</parameter>
 				</parameters>
 			</callback>

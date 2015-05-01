@@ -24,6 +24,9 @@
 /* Define that GUPnP-DLNA should be used */
 #undef GSTREAMER_BACKEND_GUPNP_DLNA
 
+/* Guarantee existence of some metadata */
+#undef GUARANTEE_METADATA
+
 /* Define if we have AbiWord extractor */
 #undef HAVE_ABIWORD
 

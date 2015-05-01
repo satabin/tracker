@@ -13,8 +13,8 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [1])
 m4_define([tracker_minor_version], [2])
-m4_define([tracker_micro_version], [4])
-m4_define([tracker_interface_age], [2])
+m4_define([tracker_micro_version], [6])
+m4_define([tracker_interface_age], [3])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -197,7 +197,7 @@ PYTHON_REQUIRED=2.6
 
 # Library required versions
 DBUS_REQUIRED=1.3.1
-GLIB_REQUIRED=2.38.0
+GLIB_REQUIRED=2.40.0
 PANGO_REQUIRED=1.0.0
 GTK_REQUIRED=3.0.0
 LIBXML2_REQUIRED=2.6
@@ -2493,6 +2493,24 @@ fi
 
 AM_CONDITIONAL(HAVE_TOTEM_PL_PARSER, test "x$have_playlist" = "xyes")
 
+#####################################################################
+# Check for tracker-extract: Guarantee existence of certain metadata
+#####################################################################
+
+# Currently guarantees (for extraction):
+# - nie:title for music and video files
+# - nie:contentCreated for music, video and image files
+
+AC_ARG_ENABLE(guarantee-metadata,
+              AS_HELP_STRING([--enable-guarantee-metadata],
+                             [enable guaranteed existence of some metadata, e.g. nie:title from files [[default=no]]]),
+              [enable_guarantee_metadata=$enableval],
+              [enable_guarantee_metadata=no])
+
+if test "x$enable_guarantee_metadata" != "xno"; then
+  AC_DEFINE(GUARANTEE_METADATA, 1, [Guarantee existence of some metadata])
+fi
+
 ####################################################################
 # Check if we should use initctl or sysvinit
 ####################################################################
@@ -2774,6 +2792,7 @@ Frameworks / Options:
         Support GNOME's Nautilus                $have_tracker_nautilus_extension ($tracker_nautilus_extension_install_dir)
 	Support Maemo                           $enable_maemo
 	Support libmeegotouch                   $have_meegotouch
+	Support Guaranteed Metadata             $enable_guarantee_metadata (e.g. guess nie:title from files)
 
 "
 

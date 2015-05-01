@@ -1,6 +1,7 @@
 tracker (1.2.6-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Drop patch which is now upstream.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 01 May 2015 05:25:39 +0200
 

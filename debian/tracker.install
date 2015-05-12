@@ -1,4 +1,13 @@
+usr/bin/tracker
+
+# compat binaries
 usr/bin/tracker-control
+usr/bin/tracker-import
+usr/bin/tracker-info
+usr/bin/tracker-search
+usr/bin/tracker-sparql
+usr/bin/tracker-stats
+usr/bin/tracker-tag
 
 usr/share/dbus-1/services/org.freedesktop.Tracker1.service
 usr/share/dbus-1/services/org.freedesktop.Tracker1.Writeback.service
@@ -18,7 +27,15 @@ usr/lib/*/tracker-1.0/writeback-modules/*.so
 
 usr/share/man/man1/tracker-store.1
 usr/share/man/man1/tracker-writeback.1
-usr/share/man/man1/tracker-control.1
+usr/share/man/man1/tracker-info.1
+usr/share/man/man1/tracker-search.1
+usr/share/man/man1/tracker-sparql.1
+usr/share/man/man1/tracker-tag.1
+usr/share/man/man1/tracker-reset.1
+usr/share/man/man1/tracker-sql.1
+usr/share/man/man1/tracker-daemon.1
+usr/share/man/man1/tracker-status.1
+usr/share/man/man1/tracker-index.1
 
 usr/share/glib-2.0/schemas/
 usr/share/locale/

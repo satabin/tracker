@@ -5,6 +5,11 @@ tracker (1.4.0-1) UNRELEASED; urgency=medium
     removed and tracker uses the system version now.
   * Update debian/copyright. Remove section about libstemmer.
   * Build against libmediaart-2.0-dev (>= 1.9.0).
+  * Drop the tracker-utils package and fold it into the tracker package.
+    The various tracker-* commands have been replaced by a single 'tracker'
+    binary. This new binary is shipped in the tracker package along with
+    compat scripts for the old names, making the tracker-utils package
+    obsolete.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 08 May 2015 01:51:31 +0200
 

@@ -8,7 +8,8 @@ usr/share/dbus-1/services/org.freedesktop.Tracker1.Miner.Applications.service
 usr/share/dbus-1/services/org.freedesktop.Tracker1.Miner.Files.service
 usr/share/dbus-1/services/org.freedesktop.Tracker1.Miner.Userguides.service
 usr/share/man/man1/tracker-miner-fs.1
-usr/share/tracker/miners/tracker-miner-applications.desktop
-usr/share/tracker/miners/tracker-miner-files.desktop
-usr/share/tracker/miners/tracker-miner-userguides.desktop
+usr/share/tracker/miners/org.freedesktop.Tracker1.Miner.Applications.service
+usr/share/tracker/miners/org.freedesktop.Tracker1.Miner.Files.service
+usr/share/tracker/miners/org.freedesktop.Tracker1.Miner.Userguides.service
+usr/share/tracker/tracker-miner-files-index.xml
 debian/30-tracker.conf etc/sysctl.d/

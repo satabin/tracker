@@ -1,4 +1,4 @@
-tracker (1.4.0-1) UNRELEASED; urgency=medium
+tracker (1.4.0-1) experimental; urgency=medium
 
   * New upstream release.
   * Add Build-Depends on libstemmer-dev. The internal code copy has been
@@ -11,7 +11,7 @@ tracker (1.4.0-1) UNRELEASED; urgency=medium
     compat scripts for the old names, making the tracker-utils package
     obsolete.
 
- -- Michael Biebl <biebl@debian.org>  Fri, 08 May 2015 01:51:31 +0200
+ -- Michael Biebl <biebl@debian.org>  Tue, 12 May 2015 22:42:44 +0200
 
 tracker (1.2.6-1) unstable; urgency=medium
 

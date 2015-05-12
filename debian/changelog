@@ -1,6 +1,8 @@
 tracker (1.4.0-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Add Build-Depends on libstemmer-dev. The internal code copy has been
+    removed and tracker uses the system version now.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 08 May 2015 01:51:31 +0200
 

@@ -36,6 +36,7 @@ usr/share/man/man1/tracker-daemon.1
 usr/share/man/man1/tracker-status.1
 usr/share/man/man1/tracker-index.1
 
+usr/share/bash-completion/
 usr/share/glib-2.0/schemas/
 usr/share/locale/
 usr/share/tracker/ontologies/

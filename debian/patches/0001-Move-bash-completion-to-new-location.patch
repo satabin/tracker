@@ -1,0 +1,91 @@
+From: Michael Biebl <biebl@debian.org>
+Date: Wed, 13 May 2015 19:17:07 +0200
+Subject: Move bash-completion to new location
+
+Rename the bash completion script after the binary and move it to
+/usr/share/bash-completion/completions. This way the completions can be
+loaded on demand.
+---
+ configure.ac                        | 13 +++++++++++++
+ src/tracker/Makefile.am             |  6 +++---
+ src/tracker/bash-completion/tracker | 10 ++++++++++
+ src/tracker/tracker-prompt.sh       | 10 ----------
+ 4 files changed, 26 insertions(+), 13 deletions(-)
+ create mode 100644 src/tracker/bash-completion/tracker
+ delete mode 100644 src/tracker/tracker-prompt.sh
+
+diff --git a/configure.ac b/configure.ac
+index 17a70da..b2e3ae8 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -848,6 +848,19 @@ AM_CONDITIONAL(HAVE_BUILTIN_FTS, test "$have_builtin_fts4" = "yes")
+ AM_CONDITIONAL(HAVE_TRACKER_FTS, test "$have_tracker_fts" = "yes")
+ 
+ ####################################################################
++# bash-completion
++####################################################################
++AC_ARG_WITH([bashcompletiondir],
++        AS_HELP_STRING([--with-bashcompletiondir=DIR], [Bash completions directory]),
++        [],
++        [AS_IF([$($PKG_CONFIG --exists bash-completion)], [
++                with_bashcompletiondir=$($PKG_CONFIG --variable=completionsdir bash-completion)
++        ] , [
++                with_bashcompletiondir=${datadir}/bash-completion/completions
++        ])])
++AC_SUBST([bashcompletiondir], [$with_bashcompletiondir])
++
++####################################################################
+ # Check for D-Bus requirements
+ ####################################################################
+ 
+diff --git a/src/tracker/Makefile.am b/src/tracker/Makefile.am
+index 5815a7c..27e6e96 100644
+--- a/src/tracker/Makefile.am
++++ b/src/tracker/Makefile.am
+@@ -76,11 +76,11 @@ uninstall-hook:
+ 	$(RM) "$(DESTDIR)$(bindir)/tracker-tag"
+ 
+ # Bash completion
+-completiondir = $(sysconfdir)/bash_completion.d
+-completion_DATA = tracker-prompt.sh
++bashcompletiondir = @bashcompletiondir@
++bashcompletion_DATA = bash-completion/tracker
+ 
+ tracker-compat: tracker-compat.in
+ 	$(AM_V_at)sed -e "s|@bindir[@]|${bindir}|" $< > $@
+ 
+-EXTRA_DIST = $(completion_DATA) tracker-compat.in
++EXTRA_DIST = $(bashcompletion_DATA) tracker-compat.in
+ CLEANFILES = tracker-compat
+diff --git a/src/tracker/bash-completion/tracker b/src/tracker/bash-completion/tracker
+new file mode 100644
+index 0000000..8022b6a
+--- /dev/null
++++ b/src/tracker/bash-completion/tracker
+@@ -0,0 +1,10 @@
++#-*- mode: shell-script;-*-
++
++tracker_cmds()
++{
++    possible=`tracker | egrep "   [a-z].*   " | awk '{ print ($1) }'`
++    local cur=${COMP_WORDS[COMP_CWORD]}
++    COMPREPLY=( $(compgen -W "$possible" -- $cur) )
++}
++
++complete -F tracker_cmds tracker
+diff --git a/src/tracker/tracker-prompt.sh b/src/tracker/tracker-prompt.sh
+deleted file mode 100644
+index 8022b6a..0000000
+--- a/src/tracker/tracker-prompt.sh
++++ /dev/null
+@@ -1,10 +0,0 @@
+-#-*- mode: shell-script;-*-
+-
+-tracker_cmds()
+-{
+-    possible=`tracker | egrep "   [a-z].*   " | awk '{ print ($1) }'`
+-    local cur=${COMP_WORDS[COMP_CWORD]}
+-    COMPREPLY=( $(compgen -W "$possible" -- $cur) )
+-}
+-
+-complete -F tracker_cmds tracker

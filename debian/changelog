@@ -1,3 +1,9 @@
+tracker (1.4.0-3) UNRELEASED; urgency=medium
+
+  * Change Depends of libtracker-miner-1.0-dev to libmediaart-2.0-dev.
+
+ -- Michael Biebl <biebl@debian.org>  Mon, 25 May 2015 16:26:58 +0200
+
 tracker (1.4.0-2) unstable; urgency=medium
 
   * Ship bash-completion for tracker binary.

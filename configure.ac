@@ -13,8 +13,8 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [1])
 m4_define([tracker_minor_version], [4])
-m4_define([tracker_micro_version], [0])
-m4_define([tracker_interface_age], [0])
+m4_define([tracker_micro_version], [1])
+m4_define([tracker_interface_age], [1])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -846,6 +846,29 @@ fi
 
 AM_CONDITIONAL(HAVE_BUILTIN_FTS, test "$have_builtin_fts4" = "yes")
 AM_CONDITIONAL(HAVE_TRACKER_FTS, test "$have_tracker_fts" = "yes")
+
+####################################################################
+# bash-completion
+####################################################################
+
+AC_ARG_WITH([bash-completion-dir],
+    AS_HELP_STRING([--with-bash-completion-dir[=PATH]],
+        [Install the bash auto-completion script in this directory. @<:@default=yes@:>@]),
+    [],
+    [with_bash_completion_dir=yes])
+
+if test "x$with_bash_completion_dir" = "xyes"; then
+   PKG_CHECK_MODULES([BASH_COMPLETION], [bash-completion >= 2.0],
+       [BASH_COMPLETION_DIR=$($PKG_CONFIG --variable=completionsdir bash-completion)],
+       [BASH_COMPLETION_DIR="${datadir}/bash-completion/completions"])
+elif test "x$with_bash_completion_dir" != "xno"; then
+   # Set with_bash_completions_dir to avoid printing path twice below
+   BASH_COMPLETION_DIR="$with_bash_completion_dir"
+   with_bash_completion_dir="yes"
+fi
+
+AC_SUBST([BASH_COMPLETION_DIR])
+AM_CONDITIONAL([WITH_BASH_COMPLETION],[test "x$with_bash_completion_dir" != "xno"])
 
 ####################################################################
 # Check for D-Bus requirements
@@ -2769,6 +2792,8 @@ Feature Support:
 
 	Cache media art                         $have_libmediaart (libmediaart)
 	Install artwork                         $have_artwork
+
+	Bash completion support:                $with_bash_completion_dir ($BASH_COMPLETION_DIR)
 
 Data Miners / Writebacks:
 

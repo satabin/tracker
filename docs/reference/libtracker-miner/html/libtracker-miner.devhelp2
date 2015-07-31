@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
-<book xmlns="http://www.devhelp.net/book" title="Tracker Miner Library Reference Manual" link="index.html" author="" name="libtracker-miner" version="2" language="c">
+<book xmlns="http://www.devhelp.net/book" title="Tracker Miner Library Reference Manual" link="index.html" author="" name="libtracker-miner" version="2" language="c" online="http://library.gnome.org/devel/libtracker-miner/unstable/">
   <chapters>
     <sub name="Overview" link="tracker-overview.html">
       <sub name="Compiling applications" link="tracker-overview-compiling.html"/>
@@ -196,5 +195,32 @@
     <keyword type="struct" name="struct TrackerThumbnailerClass" link="libtracker-miner-TrackerThumbnailer.html#TrackerThumbnailerClass"/>
     <keyword type="function" name="tracker_media_art_queue_remove ()" link="libtracker-miner-Media-art-management.html#tracker-media-art-queue-remove" since="0.10.4"/>
     <keyword type="function" name="tracker_media_art_queue_empty ()" link="libtracker-miner-Media-art-management.html#tracker-media-art-queue-empty" since="0.10.4"/>
+    <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_NONE" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-NONE:CAPS"/>
+    <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_RECURSE" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-RECURSE:CAPS"/>
+    <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_CHECK_MTIME" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-CHECK-MTIME:CAPS"/>
+    <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_MONITOR" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-MONITOR:CAPS"/>
+    <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_IGNORE" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-IGNORE:CAPS"/>
+    <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_PRESERVE" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-PRESERVE:CAPS"/>
+    <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_PRIORITY" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-PRIORITY:CAPS"/>
+    <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_NO_STAT" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-NO-STAT:CAPS"/>
+    <keyword type="constant" name="TRACKER_FILTER_FILE" link="libtracker-miner-Enumerations.html#TRACKER-FILTER-FILE:CAPS"/>
+    <keyword type="constant" name="TRACKER_FILTER_DIRECTORY" link="libtracker-miner-Enumerations.html#TRACKER-FILTER-DIRECTORY:CAPS"/>
+    <keyword type="constant" name="TRACKER_FILTER_PARENT_DIRECTORY" link="libtracker-miner-Enumerations.html#TRACKER-FILTER-PARENT-DIRECTORY:CAPS"/>
+    <keyword type="constant" name="TRACKER_FILTER_POLICY_DENY" link="libtracker-miner-Enumerations.html#TRACKER-FILTER-POLICY-DENY:CAPS"/>
+    <keyword type="constant" name="TRACKER_FILTER_POLICY_ACCEPT" link="libtracker-miner-Enumerations.html#TRACKER-FILTER-POLICY-ACCEPT:CAPS"/>
+    <keyword type="constant" name="TRACKER_NETWORK_TYPE_NONE" link="libtracker-miner-Enumerations.html#TRACKER-NETWORK-TYPE-NONE:CAPS"/>
+    <keyword type="constant" name="TRACKER_NETWORK_TYPE_UNKNOWN" link="libtracker-miner-Enumerations.html#TRACKER-NETWORK-TYPE-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="TRACKER_NETWORK_TYPE_GPRS" link="libtracker-miner-Enumerations.html#TRACKER-NETWORK-TYPE-GPRS:CAPS"/>
+    <keyword type="constant" name="TRACKER_NETWORK_TYPE_EDGE" link="libtracker-miner-Enumerations.html#TRACKER-NETWORK-TYPE-EDGE:CAPS"/>
+    <keyword type="constant" name="TRACKER_NETWORK_TYPE_3G" link="libtracker-miner-Enumerations.html#TRACKER-NETWORK-TYPE-3G:CAPS"/>
+    <keyword type="constant" name="TRACKER_NETWORK_TYPE_LAN" link="libtracker-miner-Enumerations.html#TRACKER-NETWORK-TYPE-LAN:CAPS"/>
+    <keyword type="constant" name="TRACKER_MINER_ERROR_NAME_MISSING" link="TrackerMiner.html#TRACKER-MINER-ERROR-NAME-MISSING:CAPS"/>
+    <keyword type="constant" name="TRACKER_MINER_ERROR_NAME_UNAVAILABLE" link="TrackerMiner.html#TRACKER-MINER-ERROR-NAME-UNAVAILABLE:CAPS"/>
+    <keyword type="constant" name="TRACKER_MINER_ERROR_PAUSED" link="TrackerMiner.html#TRACKER-MINER-ERROR-PAUSED:CAPS"/>
+    <keyword type="constant" name="TRACKER_MINER_ERROR_PAUSED_ALREADY" link="TrackerMiner.html#TRACKER-MINER-ERROR-PAUSED-ALREADY:CAPS"/>
+    <keyword type="constant" name="TRACKER_MINER_ERROR_INVALID_COOKIE" link="TrackerMiner.html#TRACKER-MINER-ERROR-INVALID-COOKIE:CAPS"/>
+    <keyword type="constant" name="TRACKER_DECORATOR_ERROR_EMPTY" link="TrackerDecorator.html#TRACKER-DECORATOR-ERROR-EMPTY:CAPS"/>
+    <keyword type="constant" name="TRACKER_DECORATOR_ERROR_PAUSED" link="TrackerDecorator.html#TRACKER-DECORATOR-ERROR-PAUSED:CAPS"/>
+    <keyword type="constant" name="TRACKER_MINER_FS_ERROR_INIT" link="TrackerMinerFS.html#TRACKER-MINER-FS-ERROR-INIT:CAPS"/>
   </functions>
 </book>

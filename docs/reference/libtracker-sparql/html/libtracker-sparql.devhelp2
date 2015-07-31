@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
-<book xmlns="http://www.devhelp.net/book" title="Tracker SPARQL Library Reference Manual" link="index.html" author="" name="libtracker-sparql" version="2" language="c">
+<book xmlns="http://www.devhelp.net/book" title="Tracker SPARQL Library Reference Manual" link="index.html" author="" name="libtracker-sparql" version="2" language="c" online="http://library.gnome.org/devel/libtracker-sparql/unstable/">
   <chapters>
     <sub name="Overview" link="tracker-overview.html">
       <sub name="Connection methods" link="tracker-overview-connection-methods.html"/>
@@ -115,5 +114,31 @@
     <keyword type="variable" name="tracker_micro_version" link="libtracker-sparql-Version-Information.html#tracker-micro-version"/>
     <keyword type="variable" name="tracker_binary_age" link="libtracker-sparql-Version-Information.html#tracker-binary-age"/>
     <keyword type="variable" name="tracker_interface_age" link="libtracker-sparql-Version-Information.html#tracker-interface-age"/>
+    <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_UPDATE" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-UPDATE:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_INSERT" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-INSERT:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_DELETE" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-DELETE:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_SUBJECT" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-SUBJECT:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_PREDICATE" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-PREDICATE:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_OBJECT" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-OBJECT:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_BLANK" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-BLANK:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_WHERE" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-WHERE:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_EMBEDDED_INSERT" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-EMBEDDED-INSERT:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_GRAPH" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-GRAPH:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_ERROR_PARSE" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-PARSE:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_ERROR_UNKNOWN_CLASS" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-UNKNOWN-CLASS:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_ERROR_UNKNOWN_PROPERTY" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-UNKNOWN-PROPERTY:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_ERROR_TYPE" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-TYPE:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_ERROR_CONSTRAINT" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-CONSTRAINT:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_ERROR_NO_SPACE" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-NO-SPACE:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_ERROR_INTERNAL" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-INTERNAL:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_ERROR_UNSUPPORTED" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-UNSUPPORTED:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_UNBOUND" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-UNBOUND:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_URI" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-URI:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_STRING" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-STRING:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_INTEGER" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-INTEGER:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_DOUBLE" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-DOUBLE:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_DATETIME" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-DATETIME:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_BLANK_NODE" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-BLANK-NODE:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_BOOLEAN" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-BOOLEAN:CAPS"/>
   </functions>
 </book>

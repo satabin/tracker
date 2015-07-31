@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Desktop Search
 Name[ar]=بحث سطح المكتب
+Name[bg]=Търсене на компютъра
 Name[bs]=Pretraga na radnoj površi
 Name[ca]=Cerca a l'escriptori
 Name[ca@valencia]=Cerca a l'escriptori
@@ -42,6 +43,7 @@ Name[zh_HK]=桌面搜尋
 Name[zh_TW]=桌面搜尋
 Comment=Find what you're looking for on this computer by name or content using Tracker
 Comment[ar]=اعثر على ما تبحث عنه في هذا الحاسوب بالاسم أو المحتوى مستخدما المُقتفي
+Comment[bg]=Претърсване на данните върху този компютър чрез Tracker
 Comment[bs]=Pronađite ono što tražite na ovom računaru po imenu ili sadržaja koristeći Tragača
 Comment[ca]=Trobeu el que esteu buscant a l'ordinador ja sigui per nom o pel seu contingut utilitzant el Tracker
 Comment[ca@valencia]=Trobeu el que esteu buscant a l'ordinador ja siga per nom o pel seu contingut utilitzant el Tracker
@@ -88,5 +90,5 @@ StartupNotify=true
 X-GNOME-Bugzilla-Bugzilla=GNOME
 X-GNOME-Bugzilla-Product=tracker
 X-GNOME-Bugzilla-Component=Tracker Needle
-X-GNOME-Bugzilla-Version=1.4.0
+X-GNOME-Bugzilla-Version=1.4.1
 

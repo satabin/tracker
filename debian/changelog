@@ -1,4 +1,4 @@
-tracker (1.6.0-1) UNRELEASED; urgency=medium
+tracker (1.6.0-1) unstable; urgency=medium
 
   [ Michael Biebl ]
   * New upstream release.
@@ -13,7 +13,7 @@ tracker (1.6.0-1) UNRELEASED; urgency=medium
       dconf & friends
     - Make an en_US.utf8 locale which the testsuite expects to find.
 
- -- Michael Biebl <biebl@debian.org>  Tue, 22 Sep 2015 15:52:18 +0200
+ -- Michael Biebl <biebl@debian.org>  Tue, 22 Sep 2015 16:43:34 +0200
 
 tracker (1.4.1-1) unstable; urgency=medium
 

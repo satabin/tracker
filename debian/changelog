@@ -1,7 +1,17 @@
 tracker (1.6.0-1) UNRELEASED; urgency=medium
 
+  [ Michael Biebl ]
   * New upstream release.
   * Drop Build-Depends on graphviz, no longer necessary.
+
+  [ Iain Lane ]
+  * debian/tests/unit-tests: Fix the DEP8 tests. (Closes: #785139)
+    - Make sure we always have LANG set
+    - Run under dbus-run-session so that there's always a session bus
+      available
+    - Set HOME to our temporary dir so we can guarantee to be able to write to
+      dconf & friends
+    - Make an en_US.utf8 locale which the testsuite expects to find.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 22 Sep 2015 15:52:18 +0200
 

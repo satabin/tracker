@@ -144,7 +144,7 @@
     <keyword type="function" name="tracker_miner_fs_set_throttle ()" link="TrackerMinerFS.html#tracker-miner-fs-set-throttle" since="0.8"/>
     <keyword type="function" name="tracker_miner_fs_set_mtime_checking ()" link="TrackerMinerFS.html#tracker-miner-fs-set-mtime-checking" since="0.10"/>
     <keyword type="function" name="tracker_miner_fs_set_initial_crawling ()" link="TrackerMinerFS.html#tracker-miner-fs-set-initial-crawling" since="0.10"/>
-    <keyword type="function" name="tracker_miner_fs_add_directory_without_parent ()" link="TrackerMinerFS.html#tracker-miner-fs-add-directory-without-parent" since="0.10"/>
+    <keyword type="function" name="tracker_miner_fs_add_directory_without_parent ()" link="TrackerMinerFS.html#tracker-miner-fs-add-directory-without-parent" deprecated="" since="0.10"/>
     <keyword type="function" name="tracker_miner_fs_directory_add ()" link="TrackerMinerFS.html#tracker-miner-fs-directory-add" since="0.8"/>
     <keyword type="function" name="tracker_miner_fs_directory_remove ()" link="TrackerMinerFS.html#tracker-miner-fs-directory-remove" since="0.8"/>
     <keyword type="function" name="tracker_miner_fs_directory_remove_full ()" link="TrackerMinerFS.html#tracker-miner-fs-directory-remove-full" since="0.10"/>

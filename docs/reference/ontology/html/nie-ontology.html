@@ -5,8 +5,8 @@
 <title>Nepomuk Information Element (NIE): Top classes in the ontology. Almost everything else is subclass of these.: Tracker Ontology Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
-<link rel="up" href="ontology.html" title="Part I. Overview">
-<link rel="prev" href="dc-properties.html" title="DC Ontology Properties">
+<link rel="up" href="ontology.html" title="Part II. Ontology">
+<link rel="prev" href="dc-ontology.html" title="Dublin Core metadata (DC): Common superproperties for documents">
 <link rel="next" href="nie-classes.html" title="NIE Ontology Classes">
 <meta name="generator" content="GTK-Doc V1.24.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -16,7 +16,7 @@
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ontology.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="dc-properties.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="dc-ontology.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="nie-classes.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="chapter">
@@ -25,7 +25,17 @@
 <div class="toc"><dl class="toc">
 <dt><span class="section"><a href="nie-ontology.html#nie-explanation">Overview</a></span></dt>
 <dt><span class="section"><a href="nie-classes.html">NIE Ontology Classes</a></span></dt>
-<dt><span class="section"><a href="nie-properties.html">NIE Ontology Properties</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="nie-DataObject.html">nie:DataObject</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="nie-DataSource.html">nie:DataSource</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="nie-InformationElement.html">nie:InformationElement</a></span><span class="refpurpose"></span>
+</dt>
+</dl></dd>
 </dl></div>
 <dt><span class="term">Authors:</span></dt>
 <dd><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
@@ -54,28 +64,28 @@
 <div class="titlepage"><div><div><h3 class="title">
 <a name="nie-introduction"></a>Introduction</h3></div></div></div>
 <p>The core of the NEPOMUK Information Element Ontology and the entire
-  Ontology Framework revolves around the concepts of <a class="link" href="nie-classes.html#nie-DataObject" title="nie:DataObject">DataObject</a> and
- <a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">InformationElement</a>. They express  the representation
+  Ontology Framework revolves around the concepts of <a class="link" href="nie-DataObject.html" title="nie:DataObject">DataObject</a> and
+ <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">InformationElement</a>. They express  the representation
  and content of a piece of data. Their specialized subclasses (defined
  in the other ontologies) can be used to classify
  a wide array of desktop resources and express them in RDF.
 </p>
 <p>
- <a class="link" href="nie-classes.html#nie-DataObject" title="nie:DataObject">nie:DataObject</a> class represents a bunch of
+ <a class="link" href="nie-DataObject.html" title="nie:DataObject">nie:DataObject</a> class represents a bunch of
  bytes somewhere (local or remote), the physical entity that contain
  data. The <span class="emphasis"><em>meaning</em></span> (interpretation) of that entity, the
  information for the user contained in those bytes (e.g. a music file,
  a picture) is represented on the
-<a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a> side of the
+<a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> side of the
 ontology.
 </p>
 <p>
 Both sides are linked using the
-property <a class="link" href="nie-properties.html#nie-interpretedAs" title="nie:interpretedAs">nie:interpretedAs</a> (and its reverse
-<a class="link" href="nie-properties.html#nie-isStoredAs" title="nie:isStoredAs">nie:isStoredAs</a>), indicating the correspondence
+property nie:interpretedAs (and its reverse
+nie:isStoredAs), indicating the correspondence
 between the physical element and its interpretation. There is also a
 property to
-link <a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a>s,
+link <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a>s,
 representing the logical containment between them (like a picture and
 its album).
 </p>
@@ -95,27 +105,27 @@ its album).
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><a class="link" href="nie-properties.html#nie-title" title="nie:title">nie:title</a></span></p></td>
+<td><p><span class="term">nie:title</span></p></td>
 <td><p>Title or name or short text describing the item</p></td>
 </tr>
 <tr>
-<td><p><span class="term"><a class="link" href="nie-properties.html#nie-description" title="nie:description">nie:description</a></span></p></td>
+<td><p><span class="term">nie:description</span></p></td>
 <td><p>More verbose comment about the element</p></td>
 </tr>
 <tr>
-<td><p><span class="term"><a class="link" href="nie-properties.html#nie-language" title="nie:language">nie:language</a></span></p></td>
+<td><p><span class="term">nie:language</span></p></td>
 <td><p>To specify the language of the item.</p></td>
 </tr>
 <tr>
-<td><p><span class="term"><a class="link" href="nie-properties.html#nie-plainTextContent" title="nie:plainTextContent">nie:plainTextContent</a></span></p></td>
+<td><p><span class="term">nie:plainTextContent</span></p></td>
 <td><p>Just the raw content of the file, if it makes sense as text.</p></td>
 </tr>
 <tr>
-<td><p><span class="term"><a class="link" href="nie-properties.html#nie-generator" title="nie:generator">nie:generator</a></span></p></td>
+<td><p><span class="term">nie:generator</span></p></td>
 <td><p>Software/Agent that set/produced the information.</p></td>
 </tr>
 <tr>
-<td><p><span class="term"><a class="link" href="nie-properties.html#nie-usageCounter" title="nie:usageCounter">nie:usageCounter</a></span></p></td>
+<td><p><span class="term">nie:usageCounter</span></p></td>
 <td><p>Count number of accesses to the information. It can be an
       indicator of relevance for advanced searches</p></td>
 </tr>
@@ -133,24 +143,24 @@ its album).
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><a class="link" href="nie-properties.html#nie-informationElementDate" title="nie:informationElementDate">nie:informationElementDate</a></span></p></td>
+<td><p><span class="term">nie:informationElementDate</span></p></td>
 <td><p>This is an ''abstract'' property that act as superproperty of
        the other dates. Don't use it directly.</p></td>
 </tr>
 <tr>
-<td><p><span class="term"><a class="link" href="nie-properties.html#nie-contentLastModified" title="nie:contentLastModified">nie:contentLastModified</a></span></p></td>
+<td><p><span class="term">nie:contentLastModified</span></p></td>
 <td><p>Modification time of a resource. Usually the mtime of a local file, or information from the server for online resources.</p></td>
 </tr>
 <tr>
-<td><p><span class="term"><a class="link" href="nie-properties.html#nie-contentCreated" title="nie:contentCreated">nie:contentCreated</a></span></p></td>
+<td><p><span class="term">nie:contentCreated</span></p></td>
 <td><p>Creation time of the content. If the contents is created by an application, the same application should set the value of this property. Note that this property can be undefined for resources in the filesystem because the creation time is not available in the most common filesystem formats.</p></td>
 </tr>
 <tr>
-<td><p><span class="term"><a class="link" href="nie-properties.html#nie-contentAccessed" title="nie:contentAccessed">nie:contentAccessed</a></span></p></td>
+<td><p><span class="term">nie:contentAccessed</span></p></td>
 <td><p>For resources coming from the filesystem, this is the usual access time to the file. For other  kind of resources (online or virtual), the application accessing it should update its value.</p></td>
 </tr>
 <tr>
-<td><p><span class="term"><a class="link" href="nie-properties.html#nie-lastRefreshed" title="nie:lastRefreshed">nie:lastRefreshed</a></span></p></td>
+<td><p><span class="term">nie:lastRefreshed</span></p></td>
 <td><p>.</p></td>
 </tr>
 </tbody>
@@ -164,8 +174,8 @@ its album).
 <li class="listitem">Every file (local or remote) should generate one DataObject instance and an InformationElement instance.</li>
 <li class="listitem">Even when Data Objects and Information Elements are completely different things, for efficiency reasons in Tracker we use the same URI for both of them.</li>
 <li class="listitem">The URI will be an autogenerated ID, and the real location of the item (e.g. ''file://path/to/file.mp3'') is a property of the Data Object</li>
-<li class="listitem">Every DataObject must have the property <a class="link" href="nie-properties.html#nie-url" title="nie:url">nie:url</a>, that points to the location of the resource, and should be used by any program that wants to access it.</li>
-<li class="listitem">There is a deprecated property in the ontology: <a class="link" href="nie-properties.html#nie-isStoredAs" title="nie:isStoredAs">nie:isStoredAs</a> . We discourage its use in the code: in the best case it is a loopback to the nie:url value, but in general it can contain any value or not be set at all.</li>
+<li class="listitem">Every DataObject must have the property nie:url, that points to the location of the resource, and should be used by any program that wants to access it.</li>
+<li class="listitem">There is a deprecated property in the ontology: nie:isStoredAs . We discourage its use in the code: in the best case it is a loopback to the nie:url value, but in general it can contain any value or not be set at all.</li>
 </ol></div>
 <p>Here comes an example, for the image file /home/user/a.jpeg:</p>
 <pre class="programlisting">
@@ -184,14 +194,6 @@ its album).
 	nie:url &lt;file:///home/ivan/test/CC-test-big.png&gt; .
 
 </pre>
-</div>
-<hr>
-<div class="refsect2">
-<a name="nie-graphical-overview"></a><div class="figure">
-<a name="nie-ontology-graph"></a><p class="title"><b>Figure 1. Graphical Overview</b></p>
-<div class="figure-contents"><div><img src="overview.png" alt="Graphical Overview"></div></div>
-</div>
-<br class="figure-break"><p>Notation defined <a class="link" href="ontology-notation-description.html#ontology-notation" title="Figure 9. Notation for ontology description">in this page</a></p>
 </div>
 <hr>
 <div class="refsect2">

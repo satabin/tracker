@@ -296,6 +296,7 @@ get_file_metadata (TrackerExtractTask  *task,
 	GFile *file;
 	gchar *mime_used = NULL;
 	gint items = 0;
+	gboolean success = FALSE;
 
 	*info_out = NULL;
 
@@ -322,17 +323,20 @@ get_file_metadata (TrackerExtractTask  *task,
 		if (task->cur_func) {
 			TrackerSparqlBuilder *statements;
 
-			g_debug ("Using %s...", g_module_name (task->cur_module));
+			g_debug ("Using %s...",
+				 task->cur_module ?
+				 g_module_name (task->cur_module) :
+				 "Dummy extraction");
 
-			(task->cur_func) (info);
+			success = (task->cur_func) (info);
 
 			statements = tracker_extract_info_get_metadata_builder (info);
 			items = tracker_sparql_builder_get_length (statements);
 
-			if (items > 0) {
+			if (items > 0)
 				tracker_sparql_builder_insert_close (statements);
-				task->success = TRUE;
-			}
+
+			task->success = success;
 		}
 
 		g_free (mime_used);
@@ -340,14 +344,14 @@ get_file_metadata (TrackerExtractTask  *task,
 
 	g_debug ("Done (%d objects added)\n", items);
 
-	if (items == 0) {
+	if (!success) {
 		tracker_extract_info_unref (info);
 		info = NULL;
 	}
 
 	*info_out = info;
 
-	return (items > 0);
+	return success;
 }
 
 /* This function is called on the thread calling g_cancellable_cancel() */
@@ -464,6 +468,10 @@ filter_module (TrackerExtract *extract,
 	TrackerExtractPrivate *priv;
 	gchar *module_basename, *filter_name;
 	gboolean filter;
+
+	if (!module) {
+		return FALSE;
+	}
 
 	priv = TRACKER_EXTRACT_GET_PRIVATE (extract);
 
@@ -619,7 +627,7 @@ dispatch_task_cb (TrackerExtractTask *task)
 
 	task->cur_module = module = tracker_mimetype_info_get_module (task->mimetype_handlers, &task->cur_func, &thread_awareness);
 
-	if (!module || !task->cur_func) {
+	if (!task->cur_func) {
 		g_warning ("Discarding task, no module able to handle '%s'", task->file);
 		priv->unhandled_count++;
 		extract_task_free (task);
@@ -796,7 +804,7 @@ tracker_extract_get_metadata_by_cmdline (TrackerExtract *object,
 	task->mimetype_handlers = tracker_extract_module_manager_get_mimetype_handlers (task->mimetype);
 	task->cur_module = tracker_mimetype_info_get_module (task->mimetype_handlers, &task->cur_func, NULL);
 
-	while (task->cur_module && task->cur_func) {
+	while (task->cur_func) {
 		if (!filter_module (object, task->cur_module) &&
 		    get_file_metadata (task, &info)) {
 			const gchar *preupdate_str, *postupdate_str, *statements_str, *where;

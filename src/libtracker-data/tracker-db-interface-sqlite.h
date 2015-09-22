@@ -61,8 +61,13 @@ int                 tracker_db_interface_sqlite_fts_update_text        (TrackerD
 gboolean            tracker_db_interface_sqlite_fts_delete_text        (TrackerDBInterface       *db_interface,
 									int                       id,
 									const gchar              *property);
+gboolean            tracker_db_interface_sqlite_fts_delete_id          (TrackerDBInterface       *interface,
+                                                                        int                       id);
 void                tracker_db_interface_sqlite_fts_update_commit      (TrackerDBInterface       *interface);
 void                tracker_db_interface_sqlite_fts_update_rollback    (TrackerDBInterface       *interface);
+
+void                tracker_db_interface_sqlite_fts_rebuild_tokens     (TrackerDBInterface       *interface);
+
 #endif
 
 G_END_DECLS

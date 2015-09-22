@@ -929,6 +929,9 @@ init_mount_points (TrackerMinerFiles *miner_files)
 
 		urn = tracker_sparql_cursor_get_string (cursor, 0, NULL);
 
+		if (!urn)
+			continue;
+
 		if (strcmp (urn, TRACKER_DATASOURCE_URN_NON_REMOVABLE_MEDIA) == 0) {
 			/* Report non-removable media to be mounted by HAL as well */
 			state |= VOLUME_MOUNTED;
@@ -2321,6 +2324,18 @@ process_file_attributes_cb (GObject      *object,
 	tracker_sparql_builder_object_date (sparql, (time_t *) &time_);
 	tracker_sparql_builder_graph_close (sparql);
 	tracker_sparql_builder_insert_close (sparql);
+
+	/* Delete data sources from other miners/decorators */
+	tracker_sparql_builder_delete_open (sparql, NULL);
+	tracker_sparql_builder_subject_iri (sparql, urn);
+	tracker_sparql_builder_predicate (sparql, "nie:dataSource");
+	tracker_sparql_builder_object_variable (sparql, "datasource");
+	tracker_sparql_builder_delete_close (sparql);
+	tracker_sparql_builder_where_open (sparql);
+	tracker_sparql_builder_subject_iri (sparql, urn);
+	tracker_sparql_builder_predicate (sparql, "nie:dataSource");
+	tracker_sparql_builder_object_variable (sparql, "datasource");
+	tracker_sparql_builder_where_close (sparql);
 
 	g_object_unref (file_info);
 	g_free (uri);

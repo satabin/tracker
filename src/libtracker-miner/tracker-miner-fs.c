@@ -1455,12 +1455,6 @@ item_add_or_update_continue (TrackerMinerFS *fs,
 		}
 	}
 
-	if (tracker_miner_fs_has_items_to_process (fs) == FALSE &&
-	    tracker_task_pool_get_size (TRACKER_TASK_POOL (fs->priv->task_pool)) == 0) {
-		/* We need to run this one more time to trigger process_stop() */
-		item_queue_handlers_set_up (fs);
-	}
-
 	/* Last reference is kept by the pool, removing the task from
 	 * the pool cleans up the task too!
 	 *
@@ -1469,6 +1463,12 @@ item_add_or_update_continue (TrackerMinerFS *fs,
 	 * UpdateProcessingTaskContext and GFile.
 	 */
 	tracker_task_pool_remove (fs->priv->task_pool, task);
+
+	if (tracker_miner_fs_has_items_to_process (fs) == FALSE &&
+	    tracker_task_pool_get_size (TRACKER_TASK_POOL (fs->priv->task_pool)) == 0) {
+		/* We need to run this one more time to trigger process_stop() */
+		item_queue_handlers_set_up (fs);
+	}
 
 	g_free (uri);
 }
@@ -1621,6 +1621,9 @@ item_remove (TrackerMinerFS *fs,
 #endif
 	}
 
+	if (tracker_file_notifier_get_file_type (fs->priv->file_notifier, file) == G_FILE_TYPE_DIRECTORY)
+		flags |= TRACKER_BULK_MATCH_CHILDREN;
+
 	/* FIRST:
 	 * Remove tracker:available for the resources we're going to remove.
 	 * This is done so that unavailability of the resources is marked as soon
@@ -1633,7 +1636,7 @@ item_remove (TrackerMinerFS *fs,
 	                                     "DELETE { "
 	                                     "  ?f tracker:available true "
 	                                     "}",
-	                                     flags | TRACKER_BULK_MATCH_CHILDREN);
+	                                     flags);
 
 	tracker_sparql_buffer_push (fs->priv->sparql_buffer,
 	                            task,
@@ -1653,7 +1656,6 @@ item_remove (TrackerMinerFS *fs,
 	                                     "  ?ie a rdfs:Resource "
 	                                     "}",
 	                                     flags |
-	                                     TRACKER_BULK_MATCH_CHILDREN |
 	                                     TRACKER_BULK_MATCH_LOGICAL_RESOURCES);
 
 	tracker_sparql_buffer_push (fs->priv->sparql_buffer,
@@ -2880,6 +2882,30 @@ check_item_queues (TrackerMinerFS *fs,
 		if (tracker_task_pool_find (fs->priv->writeback_pool, file)) {
 			/* Cancel writeback operations on a deleted file */
 			cancel_writeback_task (fs, file);
+		}
+
+		if (tracker_file_notifier_get_file_type (fs->priv->file_notifier,
+		                                         file) == G_FILE_TYPE_DIRECTORY) {
+			if (tracker_priority_queue_foreach_remove (fs->priv->items_updated,
+			                                           (GEqualFunc) g_file_has_parent,
+			                                           file,
+			                                           (GDestroyNotify) g_object_unref)) {
+				g_debug ("  Deleting previous unhandled UPDATED events on children");
+			}
+
+			if (tracker_priority_queue_foreach_remove (fs->priv->items_created,
+			                                           (GEqualFunc) g_file_has_parent,
+			                                           file,
+			                                           (GDestroyNotify) g_object_unref)) {
+				g_debug ("  Deleting previous unhandled CREATED events on children");
+			}
+
+			if (tracker_priority_queue_foreach_remove (fs->priv->items_deleted,
+			                                           (GEqualFunc) g_file_has_parent,
+			                                           file,
+			                                           (GDestroyNotify) g_object_unref)) {
+				g_debug ("  Deleting previous unhandled DELETED events on children");
+			}
 		}
 
 		/* Remove all previous updates */
@@ -4129,6 +4155,7 @@ tracker_miner_fs_has_items_to_process (TrackerMinerFS *fs)
 	return FALSE;
 }
 
+#ifndef TRACKER_DISABLE_DEPRECATED
 /**
  * tracker_miner_fs_add_directory_without_parent:
  * @fs: a #TrackerMinerFS
@@ -4163,6 +4190,7 @@ tracker_miner_fs_add_directory_without_parent (TrackerMinerFS *fs,
 	                           file,
 	                           flags);
 }
+#endif
 
 /**
  * tracker_miner_fs_get_indexing_tree:

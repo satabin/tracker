@@ -1,13 +1,672 @@
+2015-09-22  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.6.0
+
+	tests: Don't use the same test path twice
+	Recent glib forbids duplicate test paths, as the test relies on that
+	in order to find the .rq/.out files, copy these files from graph-4*.
+
+2015-09-20  Ask Hjorth Larsen  <asklarsen@gmail.com>
+
+	Updated Danish translation
+
+2015-09-20  Rafael Fontenelle  <rffontenelle@gmail.com>
+
+	Updated Brazilian Portuguese translation
+
+2015-09-20  Kjartan Maraas  <kmaraas@gnome.org>
+
+	Updated Norwegian bokmål translation.
+
+2015-09-20  Alexandre Franke  <alexandre.franke@gmail.com>
+
+	Updated French translation
+
+2015-09-18  Bernd Homuth  <dev@hmt.im>
+
+	Updated German translation
+
+2015-09-18  Stas Solovey  <whats_up@tut.by>
+
+	Updated Russian translation
+
+2015-09-13  Muhammet Kara  <muhammetk@gmail.com>
+
+	Updated Turkish translation
+
+2015-09-08  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2015-09-05  Seong-ho Cho  <shcho@gnome.org>
+
+	Updated Korean translation
+
+2015-09-02  Dominique Leuenberger  <dimstar@opensuse.org>
+
+	libtracker-extract: fix dummy_module
+	The ModuleInfo typedef contains 6 items, of which the last is 'optional' (predefined).
+
+	TRUE as parameter for TrackerExtractShutdownFunc though is not a good idea: it's used as an
+	integer and passed as a pointer to a function call.
+
+	As there is no shudown function for the dummy module, just pass an additional NULL in there.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=754448
+
+2015-09-02  Ting-Wei Lan  <lantw@src.gnome.org>
+
+	build: Fix return value error for tracker_miner_files_peer_listener_is_file_watched
+	https://bugzilla.gnome.org/show_bug.cgi?id=753942
+
+2015-09-01  David King  <amigadave@amigadave.com>
+
+	tracker-miner-fs: avoid crash during init
+	Correctly handle the result of tracker_sparql_cursor_get_string(), which
+	can be NULL.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=754055
+
+2015-08-31  Andika Triwidada  <andika@gmail.com>
+
+	Updated Indonesian translation
+
+2015-08-28  Tom Tryfonidis  <tomtryf@gmail.com>
+
+	Updated Greek translation
+
+2015-08-28  Xavier Claessens  <xavier.claessens@collabora.com>
+
+	TrackerExtractController: Fix DBus signature of GetStatus method
+	When "wait-for-miner-fs" config is enabled, extractor calls GetStatus
+	with a wrong expected return type and thus won't start extracting files
+	until Files miner emits "Progress" signal.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=754246
+
+2015-08-27  Christian Kirbach  <Christian.Kirbach@gmail.com>
+
+	Updated German translation
+
+2015-08-26  Anders Jonsson  <anders.jonsson@norsjovallen.se>
+
+	Updated Swedish translation
+
+2015-08-26  Chao-Hsiung Liao  <j_h_liau@yahoo.com.tw>
+
+	Updated Chinese (Taiwan) translation
+
+2015-08-25  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2015-08-25  Fran Dieguez  <fran@openhost.es>
+
+	Updated Galician translations
+
+2015-08-20  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.5.2
+
+2015-08-19  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Mark nodes being removed
+	We don't want to recurse on these, this turns the last
+	tracker_indexing_tree_remove() call a no-op if happens to be called
+	recursively within a ::directory-removed signal handler.
+
+	Revert "libtracker-miner: Postpone TrackerIndexingTree::directory-removed emission"
+	This reverts commit 5b4ab760c4782d1b7a098605b69d547c9466d20e.
+
+	There's code relying on poking the removed directory flags one last time
+	during ::directory-remove, so we must prevent from recursion in some other
+	ways. Spotted during make distcheck.
+
+	libtracker-miner: Check the crawler cancellable before destroying it
+	It won't be set unless tracker_crawler_start() was called, so there's a
+	chance it could be NULL on finalize. Spotted on make distcheck
+
+	tests: Fix make check
+	We now return a GError in the only tested condition, so look for this at least
+
+	tracker-miner-fs: Keep cache of IndexFile requesters on directories
+	The senders for all DBus requests to the IndexFile method on directories
+	will be now watched, the dbus presence of the senders will control the
+	lifetime of the directory on the indexed directories tree.
+
+	There may be multiple requests on a same directory, in such case the
+	directory will be indexed/monitored for as long as there is alive requesters
+	on it. Requests on already indexed directories (or children of recursively
+	indexed ones) will be silently ignored. Unmounts will also silently drop
+	the IndexFile listeners, applications should issue new requests on volume
+	mounts if desired.
+
+	The patch is loosely based on initial work from Felipe Borges.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=680834
+
+2015-08-18  Sam Thursfield  <sam@afuera.me.uk>
+
+	libtracker-miner: Deprecate tracker_miner_fs_add_directory_without_parent
+	This has been unused since commit 74d20884c870c2f54d93d3c01824b0994629c5d3.
+
+2015-08-17  Jordi Mas  <jmas@softcatala.org>
+
+	Update Catalan translation
+
+2015-08-15  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Invalidate TrackerDecoratorFS cache on (pre)unmount
+	This ensures tracker-extract promptly drops all its current items when
+	volumes are being unmounted, otherwise the already cached items will keep
+	being processed, possibly preventing unmount from happening.
+
+	libtracker-miner: Postpone TrackerIndexingTree::directory-removed emission
+	Emitting before actually detaching the file from the GNode tree won't be
+	safe if the signal results in reentrancy on tracker_indexing_tree_remove()
+
+	libtracker-miner: Drop cache on TrackerDecorator pause/resume
+	The cached data might be old by the time the miner is resumed, so just
+	fetch some data from scratch.
+
+	libtracker-miner: Ensure TrackerFileNotifier stops on crawler interruption
+	finish_current_directory() shouldn't jump to the next directory in the
+	current root if crawling is being interrupted there.
+
+	Now that we unset priv->current_index_root as a result of interruption,
+	we can avoid doing that ad-hoc on indexing_tree_directory_removed().
+
+	libtracker-miner: Fix TrackerCrawler cancellation
+	On tracker_crawler_stop()/cancellation, the various async callbacks
+	would poke memory that is no longer valid (The DataProviderData and
+	DirectoryRootInfo structs will be immediately destroyed, before the
+	callbacks are run).
+
+	This fixes multiple crash scenarios upon cancellation, the crawler
+	has been also simplified to use a single cancellable, since we'll
+	be just running one data provider/enumerator at a time.
+
+	tracker-extract: Plug error leak
+
+	libtracker-extract: Plug error leak
+
+	libtracker-extract: Plug leak
+	The string would be leaked if we end up with too low confidence from libicu.
+
+2015-08-11  Sam Thursfield  <sam@afuera.me.uk>
+
+	functional-tests: Improve 'manual start' mode
+	This mode now allows you to run the tests against already-running
+	Tracker processes. A lot of tests depend on specific miner-fs
+	configuration so they might not work, but it can be useful.
+
+	You can still start the test and then manually start the Tracker process
+	if you want.
+
+	Note that enabling manual start on the commandline probably doesn't
+	work (commandline options for these tests are pretty broken) so just
+	change the options.is_manual_start() function to 'return True' if you
+	want to use this mode.
+
+	functional-tests: Clean up miner tests a bit
+
+	Update .gitignore
+
+2015-08-09  Necdet Yücel  <necdetyucel@gmail.com>
+
+	Updated Turkish translation
+
+2015-08-08  Felipe Braga  <fbobraga@gmail.com>
+
+	Updated Brazilian Portuguese translation
+
+2015-08-04  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract: Remove SVG handling code from the gstreamer module
+	This is now unused.
+
+	tracker-extract: Use dummy fastpath for svg extraction
+	The gstreamer based extraction is less than useful for our purposes,
+	it could spend considerable amounts of cpu time and memory in
+	building a pixel representation of the image (which is useless for
+	us), and would extract nothing relevant from the file (w/h are
+	meaningless on scalable images, other details such as geolocation
+	just don't apply here).
+
+	So SVG through gstreamer was a very expensive no-op, it can be
+	safely made to use dummy extraction, and it will still be set
+	the corresponding rdf:types.
+
+	This is our side of the fix for:
+	https://bugzilla.gnome.org/show_bug.cgi?id=748608
+
+	libtracker-extract: Add builtin dummy extractor
+	For rules with no ModulePath key (i.e. those we only want to set
+	rdf:types for) we relied on the lack of generic extractors that
+	might handle the mimetype.
+
+	If there was one such generic extractor, the TrackerMimetypeInfo
+	iterator would skip the empty rule and directly attempt the generic
+	extractor.
+
+	Because it is conceivable that no-op is desired for some files,
+	we shouldn't attempt to skip it, nor run further modules after the
+	dummy rules, so just give this dummy fastpath a presence that
+	tracker-extract will make sense of.
+
+	tracker-extract: items==0 doesn't imply failure
+	There may be files where there's just nothing to be extracted, make
+	these fall through the success code paths. If a module fails for
+	any reason, it must return FALSE on the get_metadata func.
+
+	tracker-extract: Handle correctly empty insertions
+	There may be files for which is valid to say "there's nothing to
+	extract here" without resorting to error paths, in that case we
+	must insert the dataSource, but skip the empty statements for the
+	file.
+
+	tracker-extract: Handle NULL modules
+	This will be necessary when we have an internal dummy function.
+
+2015-08-03  Andres Gomez  <andres.gomez@jolla.com>
+
+	libtracker-common: String to date conversion to return with GError when null string
+	Previously we were failing with a GLIB CRITICAL.
+	Now, return gentlier and with a filled GError.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=752544
+
+2015-08-03  Pedro Albuquerque  <palbuquerque73@gmail.com>
+
+	Updated Portuguese translation
+
+2015-08-02  Aurimas Černius  <aurisc4@gmail.com>
+
+	Updated Lithuanian translation
+
+2015-07-31  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
 2015-07-31  Martyn Russell  <martyn@lanedo.com>
 
-	Release 1.4.1
+	build: Fix bash completion dir problem with make install, distcheck
+	- Support JHBuild too
+	- Allow disabling altogether
+	- Fix DISTCHECK flags
 
-2015-07-31  Iain Lane  <iain@orangesquash.org.uk>
+	Conflicts:
+		Makefile.am
 
-	libtracker-miner: Set inotify limits for 'GInotifyFileBackend' too
-	As of GLib 2.45.1, the inotify monitor backend is called this.
+2015-07-31  Ting-Wei Lan  <lantw@src.gnome.org>
 
-2015-07-31  Carlos Garnacho  <carlosg@gnome.org>
+	build: Fix return value error for tracker_file_notifier_get_file_type
+	https://bugzilla.gnome.org/show_bug.cgi?id=752900
+
+2015-07-31  Martyn Russell  <martyn@lanedo.com>
+
+	tracker: Fixed search with -f <arg> or --files <arg>, broken expression
+	https://bugzilla.gnome.org/show_bug.cgi?id=752871
+
+2015-07-27  Dušan Kazik  <prescott66@gmail.com>
+
+	Updated Slovak translation
+
+2015-07-26  Carlos Garnacho  <carlosg@gnome.org>
+
+	rss: cater for nmo:communicationChannel cardinality changes
+	Now that mfo:FeedMessages can reference multiple mfo:FeedChannels,
+	ensure we set link messages with all channels we receive these from.
+
+	ontology: Remove cardinality limits on nmo:communicationChannel
+	For at least the case of feed messages (the only user of
+	nmo:communicationChannel inside Tracker), this does not
+	quite represent reality, a same message can come from different
+	channels (eg. same developers across several planet feeds),
+	so remove the cardinality limit.
+
+	The change also affects the indices created on the nmo:Message
+	table, there will be an implicit index for the multivalued field,
+	so there's no need for tracker:indexed, the secondary index shared
+	with nmo:receivedDate has changed into making an index on
+	nmo:receivedDate itself, it should yield similar results together
+	with the index on the new standalone table for nmo:communicationChannel.
+
+	Regarding compliance with Nepomuk, nmo:communicationChannel got stuck
+	forever as an enhancement request at
+	http://dev.nepomuk.semanticdesktop.org/ticket/722, so it's not something
+	to care about here.
+
+	libtracker-data: Cope for cardinality changes overwriting indices
+	There's otherwise name collision between the old single-valued index
+	and the new multivalued table. The index for the multivalued table
+	will be created afterwards.
+
+	rss: Unify website handling
+	We now keep per feed item a hashtable of websites, so we can filter
+	duplicates and point to the right URN/IRI in the insert queries.
+
+	rss: Perform extraction/insertion of feed items at once
+	The async ASK/INSERT pattern per-feed was vulnerable to nie:url collisions
+	if we happened to process several feed items pointing to the same URL
+	simultaneously.
+
+	Change this so we first query the older items, and then we check items are
+	really up to date, inserting only the newest of occurrences, and updating
+	the database if the content changed for real (eg. the post was updated).
+	This is done in a single update_array operation for all feed items in a
+	channel.
+
+	rss: Refactor mfo:FeedMessage sparql insert creation into a separate function
+	No functional changes here.
+
+2015-07-25  Carlos Garnacho  <carlosg@gnome.org>
+
+	rss: Optimize deletes
+	We now just do 2 queries, one that deletes nmo:communicationChannel from
+	all related mfo:FeedMessages when a mfo:FeedChannel is deleted, and
+	another that garbage collects all mfo:FeedMessages that have no
+	nmo:communicationChannel. This approach is compatible with any possible
+	cardinality changes to nmo:communicationChannel.
+
+	libtracker-data: Clean up stale URIs on startup
+	The Resource table can be left populated with stale resources, in order to
+	avoid these from accumulating, clean these up during startup.
+
+	This assumes all miners and clients will be educated and will clean up all
+	references to deleted resources (triples of the form {?urn some:prop ?deleted})
+	at the moment deletes happen, and always during the lifetime of the previous
+	run of tracker-store.
+
+	If there's sloppy miners/clients that don't fully unlink the resource, or
+	users mess with the lifetime of tracker-store in the middle of such
+	maintenance operations, we will leave such stale values around the
+	database, possibly confusing queries where the predicate is used in the
+	WHERE section. Short of having fully refcounted resources, seems like a
+	minor drawback.
+
+	Revert "libtracker-data: delete elements from the Resource table"
+	This reverts commit ae3ab553d0e5faf0dadc85586dac0c0ee4443394.
+
+	This approach is a bit too drastic, as it may confuse queries triggered
+	by the deletion of the resource, the SQL translation of DELETE queries
+	using the deleted resource in the WHERE will fail because there is no
+	matching URI for that row ID anymore.
+
+	Another less drastic approach is done in the next commit.
+
+2015-07-24  Carlos Garnacho  <carlosg@gnome.org>
+
+	rss: Keep the channels by tracker:id() in the hashtable
+	We won't be able to fetch the old URNs for the delete mfo:FeedChannels
+	at the time of receiving the GraphUpdated notifications, we can only
+	store these by tracker:id() as that's the only thing we readily have.
+
+	rss: Simplify GrssFeedChannel list creation
+	Simply fetch the hashtable values, instead of overcomplicating
+	the old/new checks.
+
+2015-07-24  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2015-07-24  Carlos Garnacho  <carlosg@gnome.org>
+
+	rss: fix typo
+	Destroy, not free.
+
+	rss: Set website url as a nfo:WebSite
+	nco:websiteUrl has to point to a rdfs:Resource according to the
+	ontology, so make the string a full blown nfo:WebSite, with its
+	nie:url.
+
+2015-07-22  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Fallback to basename checks on hidden files
+	When we receive DELETED events on files, the TrackerFileNotifier/
+	TrackerIndexingTree attempt to find out if its hidden and should
+	thus be ignored. However the g_file_query_info() evidently fails
+	at that time, with the file already deleted, so we think the file
+	is not hidden and the delete operation gets propagated to the
+	TrackerMineFS.
+
+	Fix this by resorting to basename checks as a last resort, so
+	we do the right thing even after the file is gone.
+
+2015-07-22  David King  <amigadave@amigadave.com>
+
+	libtracker-data: Fix printf string format
+	Introduced by commit 81135ae19c727df716d0c0945869462e75a53497.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=752717
+
+2015-07-21  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.5.1
+
+	libtracker-miner: Avoid full table scans on recursive sparql buffer queries
+	If MATCH_CHILDREN is specified for a TrackerTask, we use
+	tracker:uri-is-descendant(), it's however smarter to use fn:starts-with,
+	as that'll resort to sqlite tricks that will avoid full table scans.
+
+	libtracker-miner: Remove operations on children on deleted folders
+	This is an optimization to reduce the number of queries that we
+	perform across the deletion of large directory trees.
+
+	libtracker-miner: Only set MATCH_CHILDREN on tasks for directory files
+	It's a query that can be avoided for non-directories, so better do it.
+
+	libtracker-miner: Add tracker_file_notifier_get_file_type()
+	Just plug the hole from the internal TrackerFileSystem, will be
+	handy for fast file type checks at the TrackerMinerFS level.
+
+	libtracker-miner: Be smarter at not triggering TrackerDecorator activity
+	There's times where tracker-extract GraphUpdated handler will fire due
+	to its own inserts. Doing so is harmless, but triggers each time a
+	query for the count of unhandled elements that effectively goes nowhere
+	as it's already active.
+
+	So handle_updates() is now smarter at not triggering activity unless
+	a resource of the inspected classes is added, and graph_updated_cb()
+	won't trigger anymore the count query everytime.
+
+	libtracker-data: delete elements from the Resource table
+	On deletion, items with an specific row ID are removed from all
+	tables but the Resources one, which holds the urn:uuid:... mappings.
+
+	The deletion of that table lead to confusions in the fts_view view
+	and ultimately the FTS table, as both will indirectly depend on the
+	elements stored there, so the deleted rows still had FTS representation,
+	just filled with nulls.
+
+	This looks like was just forgotten, if it was there to cover
+	constraint errors, it'll be better to just open the pandora box, and
+	fix the bugs we receive. Anyhow, from testing most common scenarios
+	it works alright.
+
+	parser: Optimize 0-length string parsing
+	We were still creating the ICU parser and trying to feed it with
+	data, which turned out surprisingly expensive on deletes, as
+	"deleting" on FTS just replaces the text with "nothing", so we're
+	creating a parser for each of these.
+
+	This reduces the timing of the sparql delete in the previous commit
+	further down to:
+	real	1m7.029s
+	user	0m0.023s
+	sys	0m0.009s
+
+	libtracker-data: Don't schedule all deletes only because of FTS
+	The limitations in FTS why it made sense to perform the scheduled
+	delete no longer apply since FTS4 and external content tables
+	(or rather, we don't need the previous values explicitly).
+
+	The scheduled delete is a lot more (if not extremely) thorough,
+	decomposing the properties and items to be deleted into individual
+	queries. This has quite an effect on deletes involving a large
+	number of elements, a query like
+
+	delete { ?u a rdfs:Resource; }
+	where { ?u nie:url ?url .
+	           FILTER (fn:starts-with (?url, ".../linux/"))}
+
+	on a linux git checkout indexed through tracker-miner-fs used
+	to involve 7M sqlite queries, with this fast path it's down to
+	1.6M (and infinitely less sqlite3_stmt cache misses). In result
+	the timing is improved substantially, time(1) from that query
+	on the "tracker sparql" command went from:
+
+	real	2m33.377s
+	user	0m0.021s
+	sys	0m0.008s
+
+	Down to:
+
+	real	1m23.625s
+	user	0m0.021s
+	sys	0m0.009s
+
+	libtracker-data: Add function to delete an entire row from the FTS table
+	This can be used as an optimization, instead of updating each column
+	individually as we currently do.
+
+2015-07-19  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract-msoffice: Avoid frequent errors when feeding wrong files
+	There's mimetypes which detection is too weak (i.e. purely based on
+	filename extension matches), so it makes sense to avoid the frequent
+	errors we get when the module gets fed a random file.
+
+	tracker-extract-gstreamer: Avoid frequent errors when feeding wrong files
+	There's mimetypes which detection is too weak (i.e. purely based on
+	filename extension matches), so it makes sense to avoid the frequent
+	errors we get when the module gets fed a random file.
+
+	Merge branch 'wip/GrssPerson'
+
+2015-07-18  Igor Gnatenko  <ignatenko@src.gnome.org>
+
+	configure: bump required libgrss version to 0.7
+	and now grss has unversioned pc name
+
+2015-07-18  Carlos Garnacho  <carlosg@gnome.org>
+
+	rss: use tracker_sparql_builder_object_blank_open()/close()
+	Tested-by: Igor Gnatenko <ignatenko@src.gnome.org>
+
+2015-07-18  Igor Gnatenko  <ignatenko@src.gnome.org>
+
+	rss: add extracting additional attrs for persons
+	GrssPerson is introduced in libgrss 0.7
+
+2015-07-18  Carlos Garnacho  <carlosg@gnome.org>
+
+	rss: Extract copyright/contributors/categories from feed messages
+	These do get extracted as nie:copyright, nco:contributor and nie:keyword
+	respectively.
+
+2015-07-18  Pedro Albuquerque  <palbuquerque73@gmail.com>
+
+	Updated Portuguese translation
+
+2015-07-17  Balázs Úr  <urbalazs@gmail.com>
+
+	Updated Hungarian translation
+
+2015-07-17  Carlos Garnacho  <carlosg@gnome.org>
+
+	rss: Store html as nmo:htmlMessageContent
+	We get raw HTML content from the feed, and nie:plainTextContent
+	should be that, plain text. This change is twofold, we now store
+	the HTML content as nmo:htmlMessageContent (as the ontology
+	observes), and honor nie:plainTextContent (and FTS!) by storing
+	the plain text stripped of all tags.
+
+	rss: Maintain references to GrssFeedChannels
+	We're currently leaking these, and recreating all from scratch
+	again each time we query the mfo:FeedChannels. Just keep the references,
+	and reuse GrssFeedChannels from previous additions.
+
+	rss: Account for a same feed message coming from different channels
+	Unfortunately the nmo:communicationChannel docs are very explicit about
+	the property cardinality. So we just create the mfo:FeedMessage for
+	the first channel, and make it bail out any next time it would be
+	added, from the same mfo:FeedChannel or another.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=752484
+
+	rss: replace string comparison by boolean check
+	The cursor can return the correct type right away, no need to
+	retrieve the boolean value as a string and compare to anything.
+
+	rss: Handle mfo:FeedChannel deletes
+	If we receive a delete for one of those, we'll delete all feed messages
+	associated with it.
+
+2015-07-16  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2015-07-16  Carlos Garnacho  <carlosg@gnome.org>
+
+	rss: Make --title argument optional
+	We can fetch that now from the feed channel, so leave --add-feed
+	as the minimum required.
+
+	rss: Lower severity of frequent message
+	No need for a g_message() for something that's completely expected.
+
+	rss: Retrieve information around mfo:FeedChannels
+	We leave these mostly untouched, but we should have some info to fill
+	in when the GrssFeedChannel has been populated. We currently retrieve
+	title, url (although we should have gotten that in the first place),
+	feed type, description, image link, and last message date.
+
+	rss: Be more careful about updates
+	We just check all feeds on any hint from GraphUpdate, which means
+	we also update everything if we dare to modify the mfo:FeedChannel,
+	resulting in circular updates.
+
+	Actually, we should be just inspecting additions of mfo:FeedChannel
+	elements (or selected property changes in these), so modifications
+	on these don't trigger the extraction of all the feeds again.
+	If we happen to update all feeds on GraphUpdates, we also do so
+	when modifying FeedChannels
+
+2015-07-15  Carlos Garnacho  <carlosg@gnome.org>
+
+	rss: Unset timeout source id
+	This timeout is meant to run once, but leaves the timeout_id behind,
+	which warns when we g_source_remove() it.
+
+	rss: Fix double free
+	The variant is not for us to free.
+
+	rss: fix typo in ontology
+	nco:fullname is all lowercase, this one caught me too...
+
+	rss: Fix compile error
+	has_author was not defined. It's been renamed to "author" too, the former
+	name makes more sense for booleans.
+
+2015-07-15  Igor Gnatenko  <ignatenko@src.gnome.org>
+
+	rss: author field should be nco:Contact, not string
+	Reference: https://bugzilla.gnome.org/show_bug.cgi?id=752398
+
+	rss: add author field
+	Reference: https://bugzilla.gnome.org/show_bug.cgi?id=752398
+
+2015-07-14  Igor Gnatenko  <ignatenko@src.gnome.org>
+
+	bump libgrss to latest 0.6
+	There are no API break since 0.5, but 0.5 doesn't work well and doesn't shipped in distros
+
+	Reference: https://bugzilla.gnome.org/show_bug.cgi?id=752371
+
+2015-07-13  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.5.0
 
 	distcheck fixes
 
@@ -25,11 +684,24 @@
 	This prevents .ogg suffixed videos from being played by gnome-music (oddly,
 	with success, in a separate window).
 
+2015-07-13  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2015-07-12  Carlos Garnacho  <carlosg@gnome.org>
+
 	libtracker-extract: Accept rules with no ModulePath
 	This will enable us to make dummy rules for files that must have some RDF
 	type(s), but don't have an extractor module.
 
 	https://bugzilla.gnome.org/show_bug.cgi?id=735610
+
+2015-07-12  Gilles Dartiguelongue  <eva@gentoo.org>
+
+	build: Fix AM_CONDITIONAL position HAVE_{GSTREAMER,LIBAV} definition
+	https://bugzilla.gnome.org/show_bug.cgi?id=750368
+
+2015-07-06  Carlos Garnacho  <carlosg@gnome.org>
 
 	tracker-extract-gstreamer: Fallback to preview image for album art
 	Some files don't provide a cover image, but just a preview image, we can
@@ -41,7 +713,11 @@
 
 	https://bugzilla.gnome.org/show_bug.cgi?id=732236
 
-2015-07-31  Philip Withnall  <philip.withnall@collabora.co.uk>
+2015-07-06  Pedro Albuquerque  <palbuquerque73@gmail.com>
+
+	Updated Portuguese translation
+
+2015-07-06  Philip Withnall  <philip.withnall@collabora.co.uk>
 
 	libtracker-miner: Keep a monitor on root index tree files on deletion
 	If Tracker is running with some index-recursive-directories set (for
@@ -56,7 +732,7 @@
 
 	https://bugzilla.gnome.org/show_bug.cgi?id=750394
 
-2015-07-31  Ville Skyttä  <ville.skytta@iki.fi>
+2015-07-06  Ville Skyttä  <ville.skytta@iki.fi>
 
 	tracker-sparql.1: Man page syntax fix
 	https://bugzilla.gnome.org/show_bug.cgi?id=751723
@@ -64,7 +740,7 @@
 	docs: Spelling fixes
 	https://bugzilla.gnome.org/show_bug.cgi?id=751724
 
-2015-07-31  Carlos Garnacho  <carlosg@gnome.org>
+2015-07-05  Carlos Garnacho  <carlosg@gnome.org>
 
 	tracker-miner-fs: Reset retry counter when we need to prepend parents
 	The situation where a parent directory has to be prepended in order to
@@ -91,6 +767,13 @@
 	tracker-preferences: Remove needless prints
 	These won't tell a lot, since we're killing the whole thing.
 
+2015-07-05  Sam Thursfield  <sam@afuera.me.uk>
+
+	Fix tracker-encoding-test
+	After commit ede17cc22b0c6245c030 this was failing to compile.
+
+2015-07-05  Carlos Garnacho  <carlosg@gnome.org>
+
 	cli: Improve bash completion script
 	We now autocomplete files where it applies (various -f/--file options,
 	tracker info) and '-' prefixed switches.
@@ -98,13 +781,286 @@
 	cli: Mark missing strings for translation
 	The help strings in the sql subcommand weren't marked as translated
 
-2015-07-28  Pedro Albuquerque  <palbuquerque73@gmail.com>
+	extract-mp3: Bail out on encoding detection if confidence is too low
+	Libicu encoding detection is able to tell the confidence it got on
+	the detection, we should be using that in case the confidence is
+	too low, as that means the returned encoding is probably bogus, and
+	we have an encoding to fallback on.
+
+	This fixes detection on the file reported on bug #735515, where
+	a couple of 'ï' chars (valid ISO-8859-1) make libicu detect UTF-16BE,
+	although with an extremely low confidence.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=735515
+
+	libtracker-extract: initialize value
+	ucsdet_open() expects an status set to 0, otherwise it will bail out
+	early. With uninitialized memory we might or might not get that.
+
+2015-07-05  Philip Withnall  <philip.withnall@collabora.co.uk>
+
+	vala: Ensure all .vapi files contain GIR namespace CCode attributes
+	Ensure all .vapi files exported by Tracker contain gir_namespace and
+	gir_version CCode attributes, otherwise Vala code compiled against them
+	will hit this warning:
+
+	tracker-sparql-1.0.vapi:4.2-4.17: warning: Namespace Sparql does not
+	have a GIR namespace and version annotation
+		namespace Sparql {
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=751051
+
+2015-07-04  Marcus Meissner  <meissner@suse.de>
+
+	configure: Save LDFLAGS
+	There's places where CFLAGS is modified/restored while LDFLAGS is left
+	untouched, both should be saved/restored at the same time.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=742186
+
+2015-07-04  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-data: Trigger rebuild of FTS tokens on parser changes
+	Whenever there's a change in the implementation of our tokenizers, we'll
+	trigger a rebuild of the FTS table. This allows for live updates to our
+	tokenizers without the need to redo the database from scratch.
+
+	The FTS rebuild is also triggered on locale changes.
+
+	libtracker-data: Add functions to maintain a "parser sha1" stamp file
+	We'll keep a ~/.cache/tracker/parser-sha1.txt file, containing the sha1 of
+	the last commit that affected libtracker-common/tracker-parser*, which
+	Tracker will compare against its compiled-in one. This will help trigger
+	automatic FTS token rebuild on parser changes.
+
+	libtracker-data: Add TrackerDBInterfaceSqlite method to rebuild FTS tokens
+	Not a lot going on here, we just punch the hole so it can be used on
+	tracker-data-manager.c
+
+	tracker-fts: Add method to rebuild the FTS tokens
+	This may be useful on locale changes or tokenizer updates, as our
+	FTS table uses external content (the fts_view view we create for that
+	purpose), All text content is external to it, so we can safely rebuild
+	all tokens from scratch.
+
+	libtracker-common: generate sha1 for the current parser incarnation
+	This is created out of the last git commit sha1 from the relevant
+	parser files. It may be used in order to rebuild the FTS table tokens
+	after we perform changes in the tokenizers themselves.
+
+	docs: Ensure ontology properties can be looked up through devhelp
+	The devhelp index generation relies on specific roles set in the
+	docbook XML, we were setting none for ontology properties though.
+
+2015-07-04  Philip Withnall  <philip.withnall@collabora.co.uk>
+
+	tracker-miner-fs: Fix a completion check when removing the final task
+	Depending on how mining goes, this path might be the last one taken
+	before the miner is ready to go idle again. However, the check on the
+	task pool size is guaranteed to be false because the task which
+	item_add_or_update_continue() was called on has not yet been removed
+	from the pool — that’s done directly below.
+
+	Fix that by removing the task from the task pool before checking whether
+	the pool is empty.
+
+	This fixes stalls in tracker-miner-fs where `tracker-control -S` would
+	show the following for ever (when running with
+	index-recursive-directories set to a non-empty list):
+	   1%  File System - Crawl finished for directory 'blah'
+
+	Previously, the only way to fix this was to pause and then resume the
+	miner.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=751172
+
+	tracker-thumbnailer: Output debug information about supported MIME types
+	https://bugzilla.gnome.org/show_bug.cgi?id=751654
+
+	build: Add missing files to .gitignore files
+	https://bugzilla.gnome.org/show_bug.cgi?id=751052
+
+2015-07-04  Iain Lane  <iain@orangesquash.org.uk>
+
+	functions-tracker: Fix collate order
+	Somewhere between sqlite 3.8.7 and 3.8.10.2, sqlite seemed to fix
+	a bug on ORDER BY SOMESTRINGFUNCTION() clauses, where it would
+	invariably apply the BINARY collator, despite tracker specifying
+	its own one.
+
+	This is something that 2 libtracker-data tests were indirectly
+	testing, where queries are sorted by tracker:coalesce(), these now
+	happen to fail because the stored results inadvertently had the wrong
+	order.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=749262
+
+2015-07-03  Carlos Garnacho  <carlosg@gnome.org>
+
+	extract-mp3: Stop processing after finding padding
+	ID3v2[0-4] Allows the possibility of some padding at the end of an
+	ID3 block, defined to be filled with 0x00, just in case later tag
+	additions don't cause a full rewrite of the file. This means there's
+	nothing for us when we hit this.
+
+	ID3v2.4 also defines the existence of "ID3 footers", those always
+	start as "3ID", and should be skipped for our purposes, as those
+	are basically a mirror of the ID3 block.
+
+	This most notably avoids a bunch of "Ignoring unknown frame ''"
+	spew on -v 3 logs, as padding is fairly common.
+
+	extract-mp3: Account for the tag header size in calculations
+	In the parsing of id3v2[0-4] tags, we calculate offsets in base
+	of the size we get in the header, which according to id3 specs,
+	doesn't include the 10 bytes of the header itself.
+
+	This means there's a disparity of 10 bytes between our 0-based
+	offsets, and our 10-based fetched size, we must account for this
+	when iterating through frames.
+
+	Also, we were possibly (and mistakenly) iterating till the end
+	of the file (comparing against size instead of tsize(+header) in
+	the while loops), we only have to parse one id3 block at a time.
+	If the former bug could conceivable make us miss the last frame,
+	this one would overcompensate for it.
+
+	Less importantly, this fixes the incorrect "position +
+	content size > tag size, not processing any more frames" debug
+	spew I was seeing on many mp3s with -v 3.
+
+	extract-mp3: Return false if we find no frame headers
+	This means we're probably not dealing with an mp3 file, even if
+	we thought so. This makes it possible to bail out into more generic
+	modules (eg. gstreamer) that might catch what the file is for real.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=733136
+
+	tracker-extract: Check the return value from TrackerExtractMetadataFunc
+	Extract modules might fail mid-processing, when the TrackerSparqlBuilder
+	has been partially written, we should bail out and move on to the next
+	extract module, as we can't guarantee its validity.
+
+2015-07-01  Carlos Garnacho  <carlosg@gnome.org>
+
+	Merge branch 'decorator-memory-reduction'
+
+	tracker-miner-fs: Delete nie:dataSources on update
+	Decorators should be updating again all relevant information, so ensure
+	their nie:dataSource is deleted for these to kick in again.
+
+	This used to be unnecessary because updated items just went to the
+	internal decorator queue, without further checks. Now that the decorators
+	query the database for the next items missing that dataSource, it is
+	crucial to do this somewhere.
+
+	tracker-extract: tell what the error really means
+	The current one is not really intuitive.
+
+	libtracker-miner: Reduce TrackerDecorator file cache size
+	Instead of keeping all items in memory, a small cache is kept of upcoming
+	files to be processed, querying the database again for files missing the
+	nie:dataSource when the cache has been flushed. When no further items are
+	processed, the miner is stopped. Whenever the prioritized rdf:types list
+	changes, the cache is dropped, just to query again with the new order kept
+	into account.
+
+	This reduces the potential memory usage of tracker-extract, it would
+	previously would grow linearly with the number of files left to be
+	inspected, which might bring in some memory pressure on certain scenarios.
+
+	On the downside, this obviously makes the decorator a little bit slower,
+	due to more queries happening (as opposed to a huge one), and at times the
+	decorator is idle waiting to know what else to do.
+
+	tracker-extract: Keep ref on recovery files
+	The hashtable expects its own ref here, otherwise we get critical
+	warnings after processing that item.
+
+	docs: delete xml folder before regenerating ontology docs
+	Otherwise it simply fails if there happens to be stale data
+
+2015-06-30  Carlos Garnacho  <carlosg@gnome.org>
+
+	distcheck fix
+
+	update docs .gitignore
+
+	docs: Delete dia diagrams, and pre-generated PNGs
+	Those weren't that much clear nor useful, those are deleted in
+	a separate commit in case we want to rescue and rework them
+	someday.
+
+	docs: Delete ontology graph tool
+	This is now unused, so remove the tool, and the configure.ac check
+	for fdp.
+
+	docs: Rework ontology docs generation entirely
+	Ontology docs weren't in a much good shape, besides many ontologies
+	being seriously underdocumented (something which should improve
+	separately), the generated docs were little more than a data dump,
+	and the diagrams shown were broken, confusing, or both. This all
+	amounts to quite counter-productive developer docs.
+
+	So the ontology docs have been refurbished, the per-ontology
+	descriptions are still useful, but have been stripped of all images,
+	and the docs overall are now completely class-centric, per
+	rdfs:Resource subclass we now get:
+
+	- Ascii diagram of its local hierarchy, up to all its ancestors and
+	  down to all its direct children.
+	- All properties that affect the specific class. This is notably
+	  more intuitive now as there's properties defined on one ontology
+	  that are in the domain of classes in another ontology, something
+	  which you couldn't get at a glance in the previous docs
+	- It clearly states which properties supersede which superproperties,
+	  which again makes it easier if those apply for the class at hand.
+
+	The result feels quite neater, and will indeed be more resembling
+	to other gtk-doc generated API docs.
+
+2015-06-30  Pedro Albuquerque  <palbuquerque73@gmail.com>
 
 	Updated Portuguese translation
+
+2015-06-23  Balázs Úr  <urbalazs@gmail.com>
+
+	Updated Hungarian translation
+
+2015-06-20  Ralph Boehme  <slow@samba.org>
+
+	configure: fix conditional AM_CONDITIONAL
 
 2015-06-16  Piotr Drąg  <piotrdrag@gmail.com>
 
 	Updated Polish translation
+
+2015-05-31  Iain Lane  <iain@orangesquash.org.uk>
+
+	libtracker-miner: Set inotify limits for 'GInotifyFileBackend' too
+	As of GLib 2.45.1, the inotify monitor backend is called this.
+
+2015-05-31  Philip Withnall  <philip.withnall@collabora.co.uk>
+
+	libtracker-common: Don’t fail statvfs() on a missing directory
+	If $XDG_CACHE_HOME/tracker doesn’t exist on startup, the statvfs() call
+	to determine how much space is left will fail with ENOENT. However, the
+	code currently interprets this as being out of space, and will cause the
+	rest of Tracker to shut down, even if there is actually plenty of space
+	left on the disk.
+
+	Avoid this by traversing up the directory hierarchy until statvfs() does
+	not fail with ENOENT.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=748907
+
+2015-05-28  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2015-05-26  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
 
 2015-05-23  Michael Biebl  <biebl@debian.org>
 
@@ -112,6 +1068,18 @@
 	Rename the bash completion script after the binary and move it to
 	/usr/share/bash-completion/completions. This way the completions can be
 	loaded on demand.
+
+2015-05-21  Dušan Kazik  <prescott66@gmail.com>
+
+	Updated Slovak translation
+
+2015-05-20  Christian Kirbach  <Christian.Kirbach@gmail.com>
+
+	Updated German translation
+
+2015-05-18  Jordi Mas  <jmas@softcatala.org>
+
+	Fixes to Catalan translation
 
 2015-05-17  Martin Srebotnjak  <miles@filmsi.net>
 
@@ -121,9 +1089,25 @@
 
 	Added Bulgarian translation
 
-2015-04-23  Gustavo Marques  <gutodisse+gnome@gmail.com>
+2015-04-26  Cheng-Chia Tseng  <>
 
-	Updated Brazilian Portuguese translation
+	Updated Chinese (Taiwan) translation
+
+2015-04-25  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2015-04-24  Philip Withnall  <philip.withnall@collabora.co.uk>
+
+	tracker-extract: Only extract media art if artist or title is known
+	media_art_process_*() require at least one of the track’s artist and
+	title to be specified, and will fail an assertion precondition if both
+	are NULL.
+
+	Other tracker-extract-*.c media backends already do this check, but it
+	was missing from the GStreamer extractor.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=748227
 
 2015-04-09  Carlos Garnacho  <carlosg@gnome.org>
 
@@ -137,11 +1121,51 @@
 
 	https://bugzilla.gnome.org/show_bug.cgi?id=746401
 
-2015-03-24  Carlos Garnacho  <carlosg@gnome.org>
+2015-04-02  Piotr Drąg  <piotrdrag@gmail.com>
 
-	Release 1.4.0
+	Slightly improve new strings
 
-2015-03-24  Kunaal  <kunaalus@gmail.com>
+	Updated POTFILES.in
+
+2015-04-01  Kunaal  <kunaalus@gmail.com>
+
+	tracker-needle: use gsettings
+	Added gsettings for tracker-needle.
+	Store the last view selected by user in tracker-needle before closing.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=740302
+
+2015-04-01  Martyn Russell  <martyn@lanedo.com>
+
+	tracker: Fixed execution bit of tracker-compat, which is broken by sed
+	https://bugzilla.gnome.org/show_bug.cgi?id=746939
+
+2015-03-28  Antoine Jacoutot  <ajacoutot@gnome.org>
+
+	openbsd: implement tracker_process_get_uid_for_pid()
+	https://bugzilla.gnome.org/show_bug.cgi?id=697719
+
+2015-03-24  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2015-03-24  Milo Casagrande  <milo@ubuntu.com>
+
+	Updated Italian translation
+
+2015-03-24  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2015-03-24  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2015-03-24  Enrico Nicoletto  <liverig@gmail.com>
+
+	Updated Brazilian Portuguese translation
+
+2015-03-23  Kunaal  <kunaalus@gmail.com>
 
 	tracker-extract: Fix for find_member function
 	find_member can't find functions if searching for "./something".
@@ -160,11 +1184,21 @@
 
 	https://bugzilla.gnome.org/show_bug.cgi?id=746194
 
+2015-03-23  Adrien Dorsaz  <adrien@adorsaz.ch>
+
+	tracker-needle: fix query model assertion
+	Match.TAGS_ONLY isn't indirect so this assertion should pass
+	(the indirect way is Match.TAGS_ONLY_INDIRECT).
+
+	tracker-needle: add logic to find by tags only
+
+	tracker-needle: Add a button to search by tags
+
 2015-03-22  Andika Triwidada  <andika@gmail.com>
 
 	Updated Indonesian translation
 
-2015-03-21  Muhammet Kara  <muhammetk@gmail.com>
+2015-03-22  Muhammet Kara  <muhammetk@gmail.com>
 
 	Updated Turkish translation
 
@@ -513,7 +1547,7 @@
 	tracker-needle: Missing accessible label names on tracker-needle widgets
 	https://bugzilla.gnome.org/show_bug.cgi?id=663687
 
-2014-12-26  Sam Thursfield  <sam@afuera.me.uk>
+2014-12-27  Sam Thursfield  <sam@afuera.me.uk>
 
 	Merge branch 'sam/functional-test-60x-fixes'
 
@@ -527,6 +1561,8 @@
 	Merge branch 'sam/functional-test-50x-fixes'
 
 	functional-tests: Remove another guarantee-metadata dependency
+
+2014-12-26  Sam Thursfield  <sam@afuera.me.uk>
 
 	writeback: Improve error when writeback fails due to missing module
 
@@ -1162,8 +2198,6 @@
 
 	As usual all '_' prefixed keys are translated so tracker-control still shows
 	translated miners in its output.
-
-2014-09-26  Martyn Russell  <martyn@lanedo.com>
 
 	data: Update locations in POTFILES.{in|skip}
 
@@ -1899,7 +2933,7 @@
 
 	build: update firefox and thunderbird detection
 
-2014-08-03  MarMav  <mavridou@gmail.com>
+2014-08-04  MarMav  <mavridou@gmail.com>
 
 	Updated Greek translation
 
@@ -2281,7 +3315,7 @@
 	tracker-extract: Fix build with libav when libmediaaart is disabled
 	https://bugzilla.gnome.org/show_bug.cgi?id=728370
 
-2014-06-02  Gil Forcada  <gforcada@gnome.org>
+2014-06-03  Gil Forcada  <gforcada@gnome.org>
 
 	[l10n] Update Catalan translation
 
@@ -2375,7 +3409,7 @@
 
 	tracker-preferences: Use Box not HBox which is deprecated
 
-2014-05-08  Carlos Garnacho  <carlosg@gnome.org>
+2014-05-09  Carlos Garnacho  <carlosg@gnome.org>
 
 	libtracker-miner: Pass parent flags when reindexing a previously ignored folder
 	If a folder with the "ignored" flag is removed from the configuration, and its
@@ -2387,7 +3421,7 @@
 	Those might differ from the flags reported by the TrackerIndexingTree,
 	specially during ::directory-removed.
 
-2014-05-08  Martyn Russell  <martyn@lanedo.com>
+2014-05-09  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-miner: Call check_directory() on root dir to crawl
 	Unit tests were failing, pre-release because the count of directories we
@@ -3757,7 +4791,7 @@
 
 	Release 0.17.1
 
-2014-01-23  Reinout van Schouwen  <reinouts@gnome.org>
+2014-01-24  Reinout van Schouwen  <reinouts@gnome.org>
 
 	Updated translation by Erwin Poeze
 
@@ -4204,7 +5238,7 @@
 
 	Updated Spanish translation
 
-2014-01-07  Piotr Drąg  <piotrdrag@gmail.com>
+2014-01-08  Piotr Drąg  <piotrdrag@gmail.com>
 
 	Updated Polish translation
 
@@ -5161,7 +6195,7 @@
 
 	Updated Norwegian bokmål translation
 
-2013-06-01  Fran Diéguez  <fran.dieguez@mabishu.com>
+2013-06-02  Fran Diéguez  <fran.dieguez@mabishu.com>
 
 	Updated Galician translations
 
@@ -5327,7 +6361,7 @@
 	tracker-tag: Fixed GLib-WARNING **: goption.c:2193: ignoring no-arg...
 	Was using wrong FLAG in GOption
 
-2013-03-24  Fran Diéguez  <fran.dieguez@mabishu.com>
+2013-03-25  Fran Diéguez  <fran.dieguez@mabishu.com>
 
 	Updated Galician translations
 
@@ -6058,12 +7092,14 @@
 	tracker-extract-pdf: Fix crash if mmap() fails
 	Patch from Fedora: https://bugzilla.redhat.com/show_bug.cgi?id=751922
 
-2012-07-23  Jürg Billeter  <j@bitron.ch>
+2012-07-24  Jürg Billeter  <j@bitron.ch>
 
 	tracker-miner-fs: Ignore XDG directories set to $HOME
 	This prevents accidental recursive indexing of $HOME.
 
 	Fixes GB#680172.
+
+2012-07-23  Jürg Billeter  <j@bitron.ch>
 
 	tracker-needle: Fix double free
 	Fixes GB#680350.
@@ -6423,7 +7459,7 @@
 
 	[l10n] Update Japanese translation
 
-2012-03-19  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+2012-03-20  Sam Thursfield  <sam.thursfield@codethink.co.uk>
 
 	utils: Add tracker-sandbox
 	This script assists in running development versions of Tracker in
@@ -6529,7 +7565,7 @@
 
 	Rename remaining albumart function to media_art
 
-2012-02-13  Zeeshan Ali (Khattak)  <zeeshanak@gnome.org>
+2012-02-14  Zeeshan Ali (Khattak)  <zeeshanak@gnome.org>
 
 	tracker-extract: Extract media ID for bootable ISO
 	In Boxes, we need to know which (libosinfo) media exactly are we talking
@@ -7806,7 +8842,7 @@
 
 	Updated Czech translation
 
-2011-10-30  Daniel Mustieles  <daniel.mustieles@gmail.com>
+2011-10-31  Daniel Mustieles  <daniel.mustieles@gmail.com>
 
 	Updated Spanish translation
 
@@ -8763,7 +9799,7 @@
 
 	Updated Czech translation
 
-2011-09-16  Martyn Russell  <martyn@lanedo.com>
+2011-09-17  Martyn Russell  <martyn@lanedo.com>
 
 	Merge branch 'tracker-preferences-xdg-dirs'
 
@@ -9685,7 +10721,7 @@
 
 	Updated Slovenian translation
 
-2011-08-05  Christian Kirbach  <Christian.Kirbach@googlemail.com>
+2011-08-06  Christian Kirbach  <Christian.Kirbach@googlemail.com>
 
 	[l10n] Updated German translation
 
@@ -11008,11 +12044,11 @@
 
 	Insert nco:EmailAddress resources
 
-2011-06-04  Adrien Bustany  <abustany@gnome.org>
-
 	Add indexing delay to prefs
 
 	Can build SPARQL to insert messages
+
+2011-06-04  Adrien Bustany  <abustany@gnome.org>
 
 	Can list all messages
 
@@ -11096,7 +12132,7 @@
 	acquire the bus name, leaving the other with a bus name but
 	ignorant about the mtime check needed.
 
-2011-06-01  Gil Forcada  <gforcada@gnome.org>
+2011-06-02  Gil Forcada  <gforcada@gnome.org>
 
 	[l10n]Updated Catalan translation
 
@@ -12435,7 +13471,7 @@
 
 	Update Simplified Chinese translation.
 
-2011-03-24  Carlos Garnacho  <carlosg@gnome.org>
+2011-03-25  Carlos Garnacho  <carlosg@gnome.org>
 
 	tracker-needle: Fix alignment of folders without known parent
 
@@ -14245,7 +15281,7 @@
 
 	libtracker-data: Fix C warning in tracker-db-interface-sqlite.c
 
-2011-01-21  Javier Jardón  <jjardon@gnome.org>
+2011-01-22  Javier Jardón  <jjardon@gnome.org>
 
 	tracker-needle: Use accessor functions instead direct access
 	Fixes https://bugzilla.gnome.org/show_bug.cgi?id=640231
@@ -14687,8 +15723,6 @@
 
 	tracker-needle: Add Ctrl+W to close window
 	Fixes GB#639543, Ctrl+W should close the window
-
-2011-01-14  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-needle: Use a meaningful window title "Desktop Search"
 	Fixes GB#639552, Give needle window a name that means something
@@ -15667,7 +16701,7 @@
 
 	docs: Document the TRACKER_PRAGMAS_FILE environment variable
 
-2010-11-27  Martyn Russell  <martyn@lanedo.com>
+2010-11-28  Martyn Russell  <martyn@lanedo.com>
 
 	Fixes GB#635757, missing test file in tarball
 
@@ -16236,7 +17270,7 @@
 
 	Updated Slovenian translation
 
-2010-10-29  Carles Ferrando  <carles.ferrando@gmail.com>
+2010-10-30  Carles Ferrando  <carles.ferrando@gmail.com>
 
 	Added Catalan (Valencian) translation
 
@@ -16260,7 +17294,7 @@
 
 	tracker-preferences: Fixed check which used "text" not "test"
 
-2010-10-28  Jorge González  <jorgegonz@svn.gnome.org>
+2010-10-29  Jorge González  <jorgegonz@svn.gnome.org>
 
 	Updated Spanish translation
 
@@ -16920,7 +17954,7 @@
 	Those classes shouldn't be run in the tests. Are there to organize the code
 	but don't contain useful tests by themselves.
 
-2010-10-13  Mikael Ottela  <mikael.ottela@ixonos.com>
+2010-10-14  Mikael Ottela  <mikael.ottela@ixonos.com>
 
 	Fix the gupnp-dlna extractor to use the tracker_sparql_escape_uri_printf
 
@@ -17775,7 +18809,7 @@
 	tracker-store: Send D-Bus replies for BatchCommit
 	Fixes NB#189896.
 
-2010-09-02  Daniel Nylander  <po@danielnylander.se>
+2010-09-03  Daniel Nylander  <po@danielnylander.se>
 
 	Updated Swedish translation
 
@@ -19121,7 +20155,7 @@
 	    Thus, adding an extra reference during the g_file_enumerate_children_async()
 	    for the specific GFile being used.
 
-2010-08-01  Gabor Kelemen  <kelemeng@gnome.hu>
+2010-08-02  Gabor Kelemen  <kelemeng@gnome.hu>
 
 	Updated Hungarian translation
 
@@ -21309,7 +22343,7 @@
 
 	tracker-extract: gstreamer: Bugfix for NB#169119, critical about unref of an object
 
-2010-05-16  Petr Kovar  <pknbe@volny.cz>
+2010-05-17  Petr Kovar  <pknbe@volny.cz>
 
 	Update Czech translation by Marek Cernocky
 
@@ -21696,7 +22730,7 @@
 
 	Update Czech translation by Marek Cernocky
 
-2010-05-01  Mario Blättermann  <mariobl@gnome.org>
+2010-05-02  Mario Blättermann  <mariobl@gnome.org>
 
 	Updated German translation
 
@@ -21730,9 +22764,9 @@
 
 	libtracker-data: Fixed compilation warning
 
-2010-04-29  Philip Van Hoof  <philip@codeminded.be>
-
 	libtracker-db: Fix for last commit, || should be &&
+
+2010-04-29  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-db: Avoid strstr in uri_is_parent and uri_is_descendant
 
@@ -21925,7 +22959,7 @@
 
 	libstemmer: Bugfix NB#164958, FTS doesn't work for "beautif" and "beautifu"
 
-2010-04-22  Petr Kovar  <pknbe@volny.cz>
+2010-04-23  Petr Kovar  <pknbe@volny.cz>
 
 	Update Czech translation by Marek Cernocky
 
@@ -22505,7 +23539,7 @@
 
 	Fix build failures on none Linux platforms
 
-2010-04-08  Debarshi Ray  <debarshir@src.gnome.org>
+2010-04-09  Debarshi Ray  <debarshir@src.gnome.org>
 
 	tracker-miner-rss: Implicitly link the RSS miner against GTHREAD_LIBS
 
@@ -22638,7 +23672,7 @@
 	regex string. This fix changes the regex from a bound literal to being part
 	of the SQL query string itself.
 
-2010-04-05  Mikael Ottela  <mikael.ottela@ixonos.com>
+2010-04-06  Mikael Ottela  <mikael.ottela@ixonos.com>
 
 	Added indices to message ontology for query performance
 
@@ -22748,7 +23782,7 @@
 
 	libtracker-miner: Don't install tracker-miner-dbus.h to /usr/include
 
-2010-03-31  Aurimas Černius  <aurisc4@gmail.com>
+2010-04-01  Aurimas Černius  <aurisc4@gmail.com>
 
 	Updated Lithuanian translation
 
@@ -25249,7 +26283,7 @@
 
 	Updated Norwegian bokmål translation
 
-2010-02-09  Martyn Russell  <martyn@lanedo.com>
+2010-02-10  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-miner: Removed tracker_miner_fs_get_directories()
 	This is no longer needed.
@@ -28977,7 +30011,7 @@
 	 --image-files to --images
 	 --music-files to --music
 
-2009-09-23  Michael Biebl  <biebl@debian.org>
+2009-09-24  Michael Biebl  <biebl@debian.org>
 
 	Add missing files to POTFILES.in
 	According to 4ddf3304d4c3909ab9ec9cf56edcb495e1d634c3 the miner desktop
@@ -28987,6 +30021,8 @@
 	This reverts commit 336b0bff94af3e96e1d5722ff1cd2e9cfa559b6c.
 
 	Add missing "\"
+
+2009-09-23  Michael Biebl  <biebl@debian.org>
 
 	Fix a few typos in the man pages
 
@@ -29085,7 +30121,7 @@
 
 	Fixes bug #584607, Search does not work for Hungarian
 
-2009-09-20  Daniel Nylander  <po@danielnylander.se>
+2009-09-21  Daniel Nylander  <po@danielnylander.se>
 
 	Updated Swedish translation
 
@@ -32039,13 +33075,13 @@
 
 	Arbitrary lowering priority of SetMany() items
 
-2009-06-14  Philip Van Hoof  <philip@codeminded.be>
-
 	Don't do all the g_idle_add nonsense in the push modules
 	These were causing a GSource source for each 2000 items being pushed using the
 	DBus SetMany() call. Making it actually worse than better. I just removed them
 	for now, we might have to replace it with an internal, but static global for
 	the module, queue (not a queue per SetMany, like what is being removed here).
+
+2009-06-14  Philip Van Hoof  <philip@codeminded.be>
 
 	Fixed push modules, bugfix closing the query
 
@@ -32778,8 +33814,6 @@
 	Another include path fix
 	libtracker-gtk uses <tracker.h>, so we also need to add
 	$(top_srcdir)/src/libtracker for tracker-search-tool.
-
-2009-05-11  Michael Biebl  <biebl@debian.org>
 
 	Fix include path
 	tracker-search-tool-callbacks.c uses
@@ -33576,7 +34610,7 @@
 	Add gitlog-to-changelog script from gnulib and a dist-hook to
 	generate ChangeLog file when creating tarballs.
 
-2009-04-13  Khaled Hosny  <khaledhosny@eglug.org>
+2009-04-14  Khaled Hosny  <khaledhosny@eglug.org>
 
 	Updated Arabic translaion
 

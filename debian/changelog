@@ -1,6 +1,7 @@
 tracker (1.6.0-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Drop Build-Depends on graphviz, no longer necessary.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 22 Sep 2015 15:52:18 +0200
 

@@ -95,8 +95,7 @@ typedef enum {
 	EXTRACT_MIME_AUDIO,
 	EXTRACT_MIME_VIDEO,
 	EXTRACT_MIME_IMAGE,
-	EXTRACT_MIME_GUESS,
-	EXTRACT_MIME_SVG,
+	EXTRACT_MIME_GUESS
 } ExtractMime;
 
 typedef struct {
@@ -1200,12 +1199,7 @@ extract_metadata (MetadataExtractor      *extractor,
 #endif
 		} else {
 			tracker_sparql_builder_object (metadata, "nfo:Image");
-
-			if (extractor->mime != EXTRACT_MIME_SVG) {
-				tracker_sparql_builder_object (metadata, "nmm:Photo");
-			} else {
-				tracker_sparql_builder_object (metadata, "nfo:VectorImage");
-			}
+			tracker_sparql_builder_object (metadata, "nmm:Photo");
 		}
 	}
 
@@ -1381,7 +1375,6 @@ common_extract_stream_metadata (MetadataExtractor    *extractor,
 	}
 
 	if (extractor->mime == EXTRACT_MIME_IMAGE ||
-	    extractor->mime == EXTRACT_MIME_SVG ||
 	    extractor->mime == EXTRACT_MIME_VIDEO) {
 
 		if (extractor->width >= 0) {
@@ -1510,7 +1503,10 @@ discoverer_init_and_run (MetadataExtractor *extractor,
 			g_message ("Missing a GStreamer plugin for %s. %s", uri,
 			           required_plugins_message);
 			g_free (required_plugins_message);
-		} else {
+		} else if (error->domain != GST_STREAM_ERROR ||
+		           (error->code != GST_STREAM_ERROR_TYPE_NOT_FOUND &&
+		            error->code != GST_STREAM_ERROR_WRONG_TYPE &&
+		            error->code != GST_STREAM_ERROR_DECODE)) {
 			g_warning ("Call to gst_discoverer_discover_uri(%s) failed: %s",
 			           uri, error->message);
 		}
@@ -1662,7 +1658,9 @@ tracker_extract_gstreamer (const gchar          *uri,
 		                  graph);
 
 #ifdef HAVE_LIBMEDIAART
-		if (extractor->media_art_type != MEDIA_ART_NONE) {
+		if (extractor->media_art_type != MEDIA_ART_NONE &&
+		    (extractor->media_art_artist != NULL ||
+		     extractor->media_art_title != NULL)) {
 			GError *error = NULL;
 			gboolean success = TRUE;
 
@@ -1742,9 +1740,7 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 	} else
 #endif /* GSTREAMER_BACKEND_GUPNP_DLNA */
 
-	if (strcmp (mimetype, "image/svg+xml") == 0) {
-		tracker_extract_gstreamer (uri, info, EXTRACT_MIME_SVG, graph);
-	} else if (strcmp (mimetype, "video/3gpp") == 0 ||
+	if (strcmp (mimetype, "video/3gpp") == 0 ||
 	           strcmp (mimetype, "video/mp4") == 0 ||
                    strcmp (mimetype, "video/x-ms-asf") == 0 ||
                    strcmp (mimetype, "application/vnd.ms-asf") == 0 ||

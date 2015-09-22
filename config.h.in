@@ -70,7 +70,7 @@
 /* Define to 1 if you have the `getpagesize' function. */
 #undef HAVE_GETPAGESIZE
 
-/* Define if we have libav */
+/* Define if we have GStreamer */
 #undef HAVE_GSTREAMER
 
 /* Define if we have HAL */
@@ -81,6 +81,9 @@
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
+
+/* Define if we have libav */
+#undef HAVE_LIBAV
 
 /* Define if we have libcue */
 #undef HAVE_LIBCUE
@@ -303,8 +306,7 @@
 /* Define to 1 if you have the `up_client_get_on_low_battery' function. */
 #undef HAVE_UP_CLIENT_GET_ON_LOW_BATTERY
 
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
 #undef LT_OBJDIR
 
 /* Define if we are on win32 */

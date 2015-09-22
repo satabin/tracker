@@ -2625,6 +2625,12 @@ create_decomposed_metadata_property_table (TrackerDBInterface *iface,
 					g_propagate_error (error, internal_error);
 					goto error_out;
 				}
+			} else if (in_change && tracker_property_get_cardinality_changed (property)) {
+				/* We should be dropping all indices colliding with the new table name */
+				tracker_db_interface_execute_query (iface, &internal_error,
+				                                    "DROP INDEX IF EXISTS \"%s_%s\"",
+				                                    service_name,
+				                                    field_name);
 			}
 
 			sql = g_string_new ("");
@@ -3658,6 +3664,20 @@ ontology_get_fts_properties (gboolean     only_new,
 
 	return has_new;
 }
+
+static void
+rebuild_fts_tokens (TrackerDBInterface *iface,
+                    gboolean            creating_db)
+{
+	if (!creating_db) {
+		g_debug ("Rebuilding FTS tokens, this may take a moment...");
+		tracker_db_interface_sqlite_fts_rebuild_tokens (iface);
+		g_debug ("FTS tokens rebuilt");
+	}
+
+	/* Update the stamp file */
+	tracker_db_manager_tokenizer_update ();
+}
 #endif
 
 gboolean
@@ -4606,6 +4626,27 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 	}
 #endif /* DISABLE_JOURNAL */
 
+	if (!read_only) {
+		/* Delete stale URIs in the Resource table */
+		g_debug ("Cleaning up stale resource URIs");
+
+		stmt = tracker_db_interface_create_statement (iface, TRACKER_DB_STATEMENT_CACHE_TYPE_UPDATE,
+		                                              &internal_error,
+		                                              "DELETE FROM Resource WHERE Resource.ID NOT IN"
+		                                              "(SELECT ID FROM \"rdfs:Resource\")");
+
+		if (stmt) {
+			tracker_db_statement_execute (stmt, &internal_error);
+			g_object_unref (stmt);
+		}
+
+		if (internal_error) {
+			g_warning ("Could not clean up stale resource URIs: %s\n",
+			           internal_error->message);
+			g_clear_error (&internal_error);
+		}
+	}
+
 	/* If locale changed, re-create indexes */
 	if (!read_only && tracker_db_manager_locale_changed ()) {
 		/* Report OPERATION - STATUS */
@@ -4638,6 +4679,12 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 		}
 
 		tracker_db_manager_set_current_locale ();
+
+#if HAVE_TRACKER_FTS
+		rebuild_fts_tokens (iface, is_first_time_index);
+	} else if (!read_only && tracker_db_manager_get_tokenizer_changed ()) {
+		rebuild_fts_tokens (iface, is_first_time_index);
+#endif
 	}
 
 	if (!read_only) {

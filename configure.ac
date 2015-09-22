@@ -12,9 +12,9 @@ AC_PREREQ([2.64])
 # if backwards compatibility has been broken,
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [1])
-m4_define([tracker_minor_version], [4])
-m4_define([tracker_micro_version], [1])
-m4_define([tracker_interface_age], [1])
+m4_define([tracker_minor_version], [6])
+m4_define([tracker_micro_version], [0])
+m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -225,7 +225,7 @@ EDS_REQUIRED=2.32.0
 CAMEL_REQUIRED=2.32.0
 GEE_REQUIRED=0.3
 TAGLIB_REQUIRED=1.6
-LIBGRSS_REQUIRED=0.5
+LIBGRSS_REQUIRED=0.7
 REST_REQUIRED=0.6
 NETWORK_MANAGER_REQUIRED=0.8
 GSTREAMER_REQUIRED=0.10.31
@@ -498,8 +498,8 @@ if test -n $FIREFOX; then
 fi
 
 # Check requirements for tracker-miner-rss
-TRACKER_MINER_RSS_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
-                            libgrss-0.5  >= $LIBGRSS_REQUIRED"
+TRACKER_MINER_RSS_REQUIRED="glib-2.0 >= $GLIB_REQUIRED
+                            libgrss  >= $LIBGRSS_REQUIRED"
 
 PKG_CHECK_MODULES(TRACKER_MINER_RSS, [$TRACKER_MINER_RSS_REQUIRED],
                   [have_tracker_miner_rss=yes],
@@ -671,18 +671,6 @@ AM_CONDITIONAL([ENABLE_GTK_DOC], test "x$enable_gtk_doc" = xyes)
 [
 AM_CONDITIONAL([ENABLE_GTK_DOC], false)
 ])
-
-if test "x$enable_gtk_doc" != xno; then
-   # Check for graphviz if we are building gtk_doc
-   AC_PATH_PROG(GRAPHVIZ_FDP, fdp)
-   AC_SUBST(GRAPHVIZ_FDP)
-
-   if test -z "$GRAPHVIZ_FDP"; then
-      AC_MSG_ERROR([Couldn't find Graphviz's fdp tool (graphviz).])
-   fi
-fi
-
-AM_CONDITIONAL(HAVE_GRAPHVIZ_FDP, test -n "$GRAPHVIZ_FDP")
 
 ####################################################################
 # Check if we should install Windows specific binaries
@@ -1897,9 +1885,12 @@ if test "$have_generic_media_handler_app" = "GStreamer"; then
    AM_CONDITIONAL(HAVE_GSTREAMER, true)
    AM_CONDITIONAL(HAVE_LIBAV, false)
 elif test "$have_generic_media_handler_app" = "libav"; then
-    AC_DEFINE(HAVE_GSTREAMER, [], [Define if we have libav])
-    AM_CONDITIONAL(HAVE_LIBAV, true)
-    AM_CONDITIONAL(HAVE_GSTREAMER, false)
+   AC_DEFINE(HAVE_LIBAV, [], [Define if we have libav])
+   AM_CONDITIONAL(HAVE_LIBAV, true)
+   AM_CONDITIONAL(HAVE_GSTREAMER, false)
+else
+   AM_CONDITIONAL(HAVE_LIBAV, false)
+   AM_CONDITIONAL(HAVE_GSTREAMER, false)
 fi
 
 ###########################################################################
@@ -2113,8 +2104,10 @@ AM_CONDITIONAL(HAVE_LIBOSINFO, test "x$have_libosinfo" = "xyes")
 # distros, it is not.
 
 OLD_CFLAGS="$CFLAGS"
+OLD_LDFLAGS="$LDFLAGS"
 OLD_LIBS="$LIBS"
 CFLAGS=""
+LDFLAGS=""
 LIBS=""
 
 AC_ARG_ENABLE(libgif,
@@ -2151,6 +2144,7 @@ fi
 AM_CONDITIONAL(HAVE_LIBGIF, test "x$have_libgif" = "xyes")
 
 CFLAGS="$OLD_CFLAGS"
+LDFLAGS="$OLD_LDFLAGS"
 LIBS="$OLD_LIBS"
 
 ##################################################################
@@ -2161,8 +2155,10 @@ LIBS="$OLD_LIBS"
 # distros, it is not.
 
 OLD_CFLAGS="$CFLAGS"
+OLD_LDFLAGS="$LDFLAGS"
 OLD_LIBS="$LIBS"
 CFLAGS=""
+LDFLAGS=""
 LIBS=""
 
 AC_ARG_ENABLE(libjpeg,
@@ -2199,6 +2195,7 @@ fi
 AM_CONDITIONAL(HAVE_LIBJPEG, test "x$have_libjpeg" = "xyes")
 
 CFLAGS="$OLD_CFLAGS"
+LDFLAGS="$OLD_LDFLAGS"
 LIBS="$OLD_LIBS"
 
 ##################################################################
@@ -2209,8 +2206,10 @@ LIBS="$OLD_LIBS"
 # distros, it is not.
 
 OLD_CFLAGS="$CFLAGS"
+OLD_LDFLAGS="$LDFLAGS"
 OLD_LIBS="$LIBS"
 CFLAGS=""
+LDFLAGS=""
 LIBS=""
 
 AC_ARG_ENABLE(libtiff,
@@ -2247,6 +2246,7 @@ fi
 AM_CONDITIONAL(HAVE_LIBTIFF, test "x$have_libtiff" = "xyes")
 
 CFLAGS="$OLD_CFLAGS"
+LDFLAGS="$OLD_LDFLAGS"
 LIBS="$OLD_LIBS"
 
 ##################################################################
@@ -2257,8 +2257,10 @@ LIBS="$OLD_LIBS"
 # distros, it is not.
 
 OLD_CFLAGS="$CFLAGS"
+OLD_LDFLAGS="$LDFLAGS"
 OLD_LIBS="$LIBS"
 CFLAGS=""
+LDFLAGS=""
 LIBS=""
 
 AC_ARG_ENABLE(libpng,
@@ -2295,6 +2297,7 @@ fi
 AM_CONDITIONAL(HAVE_LIBPNG, test "x$have_libpng" = "xyes")
 
 CFLAGS="$OLD_CFLAGS"
+LDFLAGS="$OLD_LDFLAGS"
 LIBS="$OLD_LIBS"
 
 ##################################################################

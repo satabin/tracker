@@ -161,25 +161,31 @@ decorator_save_info (TrackerSparqlBuilder    *sparql,
 	tracker_sparql_builder_object_iri (sparql,
 	                                   tracker_decorator_get_data_source (TRACKER_DECORATOR (decorator)));
 
-	/* Add extracted metadata */
-	str = g_strdup_printf ("<%s>", urn);
-	tracker_sparql_builder_append (sparql, str);
-	g_free (str);
-
 	builder = tracker_extract_info_get_metadata_builder (info);
-	result = tracker_sparql_builder_get_result (builder);
-	tracker_sparql_builder_append (sparql, result);
 
-	/* Close graph and insert statement, insert where clause */
-	tracker_sparql_builder_graph_close (sparql);
-        tracker_sparql_builder_insert_close (sparql);
+	if (tracker_sparql_builder_get_length (builder) > 0) {
+		/* Add extracted metadata */
+		str = g_strdup_printf ("<%s>", urn);
+		tracker_sparql_builder_append (sparql, str);
+		g_free (str);
 
-	where = tracker_extract_info_get_where_clause (info);
+		result = tracker_sparql_builder_get_result (builder);
+		tracker_sparql_builder_append (sparql, result);
 
-	if (where && *where) {
-		tracker_sparql_builder_where_open (sparql);
-		tracker_sparql_builder_append (sparql, where);
-		tracker_sparql_builder_where_close (sparql);
+		/* Close graph and insert statement, insert where clause */
+		tracker_sparql_builder_graph_close (sparql);
+		tracker_sparql_builder_insert_close (sparql);
+
+		where = tracker_extract_info_get_where_clause (info);
+
+		if (where && *where) {
+			tracker_sparql_builder_where_open (sparql);
+			tracker_sparql_builder_append (sparql, where);
+			tracker_sparql_builder_where_close (sparql);
+		}
+	} else {
+		tracker_sparql_builder_graph_close (sparql);
+		tracker_sparql_builder_insert_close (sparql);
 	}
 
 	/* Prepend/append pre/postupdate chunks */
@@ -218,8 +224,9 @@ get_metadata_cb (TrackerExtract *extract,
 		g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (result), &error);
 
 		if (!error || error->domain == TRACKER_EXTRACT_ERROR) {
-			g_message ("Extraction failed: %s\n", error->message);
+			g_message ("Extraction failed: %s\n", error ? error->message : "no error given");
 			g_task_return_boolean (task, FALSE);
+			g_clear_error (&error);
 		} else {
 			g_task_return_error (task, error);
 		}
@@ -279,7 +286,7 @@ decorator_next_item_cb (TrackerDecorator *decorator,
 		    error->domain == tracker_decorator_error_quark ()) {
 			switch (error->code) {
 			case TRACKER_DECORATOR_ERROR_EMPTY:
-				g_message ("Next item does not require 2nd stage metadata extraction (e.g. resource may not be a file)");
+				g_message ("There are no further items to extract");
 				break;
 			case TRACKER_DECORATOR_ERROR_PAUSED:
 				g_message ("Next item is on hold because miner is paused");
@@ -585,7 +592,7 @@ decorator_retry_file (GFile    *file,
 	gchar *path;
 
 	path = g_file_get_uri (file);
-	g_hash_table_insert (priv->recovery_files, path, file);
+	g_hash_table_insert (priv->recovery_files, path, g_object_ref (file));
 	tracker_decorator_fs_prepend_file (TRACKER_DECORATOR_FS (decorator), file);
 }
 

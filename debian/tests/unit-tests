@@ -7,4 +7,4 @@ LOCPATH=${ADTTMP}/locale \
     HOME=${ADTTMP} \
     LANG=en_US.utf8 \
     LC_ALL=en_US.utf8 \
-    xvfb-run -a dbus-run-session make -C tests check
+    xvfb-run -a dbus-run-session make -C tests check VERBOSE=1

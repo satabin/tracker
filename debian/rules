@@ -56,7 +56,7 @@ override_dh_auto_configure:
 		--disable-hal \
 		--enable-taglib \
 		--enable-libosinfo \
-		--disable-libcue \
+		--enable-libcue \
 		--disable-static \
 		--libexecdir=\$${prefix}/lib/tracker
 

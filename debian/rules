@@ -55,7 +55,7 @@ override_dh_auto_configure:
 		--disable-miner-firefox \
 		--disable-hal \
 		--disable-taglib \
-		--disable-libosinfo \
+		--enable-libosinfo \
 		--disable-libcue \
 		--disable-static \
 		--libexecdir=\$${prefix}/lib/tracker

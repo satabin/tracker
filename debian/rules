@@ -54,7 +54,7 @@ override_dh_auto_configure:
 		--disable-miner-thunderbird \
 		--disable-miner-firefox \
 		--disable-hal \
-		--disable-taglib \
+		--enable-taglib \
 		--enable-libosinfo \
 		--disable-libcue \
 		--disable-static \

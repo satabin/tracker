@@ -1,6 +1,7 @@
 tracker (1.6.1-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Rebase patches.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 26 Nov 2015 00:13:50 +0100
 

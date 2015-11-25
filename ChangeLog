@@ -1,3 +1,147 @@
+2015-11-18  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.6.1
+
+2015-11-18  Debarshi Ray  <debarshir@gnome.org>
+
+	tracker-extract-xmp: Fix extraction of orientation values 3 and 4
+	They had gotten swapped around. See:
+	http://www.cipa.jp/std/documents/e/DC-010-2012_E.pdf
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=758295
+
+	tracker-extract-tiff: Fix extraction of orientation values
+	TIFFTAG_ORIENTATION values range from 1 to 8, not 0 to 7. See:
+	https://partners.adobe.com/public/developer/en/tiff/TIFF6.pdf
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=758293
+
+2015-11-14  YunQiang Su  <yqsu@src.gnome.org>
+
+	Us ... instead of …  for zh_CN
+
+2015-11-14  liushuyu  <liushuyu_011@126.com>
+
+	update zh_CN translation
+
+2015-10-30  Debarshi Ray  <debarshir@gnome.org>
+
+	libtracker-control: Improve the documentation
+	Make it clear that tracker_miner_manager_index_file only tells the
+	miner to start indexing a file. It doesn't wait for the actual indexing
+	operation to complete.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=757366
+
+	libtracker-control: Fix the return value
+	As documented, tracker_miner_manager_index_file should return TRUE on
+	success, not FALSE.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=757366
+
+2015-10-23  Marius Gedminas  <marius@gedmin.as>
+
+	Fix buffer overrun in libunistring builds
+	libunistring uses UTF-8 strings without a trailing NUL byte.  We're
+	passing such strings to tracker_parser_unaccent_nfkd_string() from
+	function_sparql_unaccent() in the sqlite interface.  If the string has
+	no accented characters, writing a NUL byte at the end will step out of
+	bounds.  This causes memory corruption and crashes.
+
+	The other caller of tracker_parser_unaccent_nfkd_string() is
+	process_word_utf8(), and it looks like it wants a trailing NUL, so let's
+	add it there.
+
+	There are no more callers of the libunistring version of
+	tracker_parser_unaccent_nfkd_string().
+
+	(For extra confusion, the libicu version of
+	tracker_parser_unaccent_nfkd_string() deals with U+0000-terminated
+	UTF-16 strings.)
+
+	Should fix https://bugzilla.gnome.org/show_bug.cgi?id=746195
+
+2015-10-21  Debarshi Ray  <debarshir@gnome.org>
+
+	libtracker-miner: Handle failure to get a TrackerSparqlConnection
+	We might fail to get a TrackerSparqlConnection if the session was shut
+	down too early and the DBus connection closed. Since this is not a
+	programming error nor an example of a broken system, let's not abort
+	and use a WARNING instead of a CRITICAL.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=756869
+
+2015-10-20  Debarshi Ray  <debarshir@gnome.org>
+
+	libtracker-miner: Cancel pending async operations during destruction
+	https://bugzilla.gnome.org/show_bug.cgi?id=756877
+
+	libtracker-miner: Abort async operations once the instance is gone
+	https://bugzilla.gnome.org/show_bug.cgi?id=756877
+
+2015-10-14  Inaki Larranaga Murgoitio  <dooteo@zundan.com>
+
+	Updated Basque language
+
+2015-10-11  Sam Thursfield  <sam@afuera.me.uk>
+
+	functional-tests: Time out after 5 seconds, instead of 30 seconds
+	Failing tests shouldn't take 30 seconds to fail. 5 seconds is still a
+	long time.
+
+	functional-tests: Clean up name watches properly
+
+	functional-tests Remove some outdated and unused tests
+	Also, the test-runner.sh now runs all .py files, instead of just those
+	marked executable.
+
+	functional-tests: Use GDBus instead of dbus-python
+	dbus-python is deprecated.
+
+2015-10-10  Sam Thursfield  <sam@afuera.me.uk>
+
+	functional-tests: Avoid AttributeError exception in Helper.stop()
+	If a process was never started, the .stop method should do nothing
+	instead of raising an AttributeError.
+
+	functional-tests: Use environment vars instead of commandline options
+	The commandline option parsing is totally broken and interferes with the
+	real argument parsing of the unittest module or whatever other test
+	runner you are using.
+
+	You can now enable verbose test output by setting
+	TRACKER_TESTS_VERBOSE=1 in the environment. The
+	TRACKER_TESTS_MANUAL_START variable also exists but probably doesn't
+	work at present.
+
+2015-10-06  Denis Zalevskiy  <denis.zalevskiy@jolla.com>
+
+	tracker: detect uid from /proc/pid
+	Owner UID of the /proc/[pid]/cmdline could be different than process real UID
+	while /proc/[pid] owner is expected to be equal.
+
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=755945
+
+2015-09-28  Milo Casagrande  <milo@ubuntu.com>
+
+	Updated Italian translation
+
+2015-09-25  Bastien Nocera  <hadess@hadess.net>
+
+	build: Work-around vim highlighting bug
+	When "Couldn't" is used in an m4 macro, vim will highlight all the
+	code until the next "'" to close it. Work around that by replacing
+	"Couldn't" by "Could not".
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=755218
+
+2015-09-22  Милош Поповић  <gpopac@gmail.com>
+
+	Updated Serbian Latin translation
+
+	Updated Serbian translation
+
 2015-09-22  Carlos Garnacho  <carlosg@gnome.org>
 
 	Release 1.6.0

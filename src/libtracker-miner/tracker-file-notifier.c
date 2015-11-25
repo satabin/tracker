@@ -670,19 +670,27 @@ sparql_contents_query_cb (GObject      *object,
 	TrackerSparqlCursor *cursor;
 	GError *error = NULL;
 
-	notifier = user_data;
-
 	cursor = tracker_sparql_connection_query_finish (TRACKER_SPARQL_CONNECTION (object),
 	                                                 result, &error);
 	if (error) {
+		if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+			goto out;
 		g_warning ("Could not query directory contents: %s\n", error->message);
-		g_error_free (error);
-	} else if (cursor) {
+	}
+
+	notifier = user_data;
+
+	if (cursor) {
 		sparql_contents_check_deleted (notifier, cursor);
 		g_object_unref (cursor);
 	}
 
 	finish_current_directory (notifier, FALSE);
+
+out:
+	if (error) {
+	        g_error_free (error);
+	}
 }
 
 static gchar *
@@ -724,6 +732,11 @@ sparql_contents_query_start (TrackerFileNotifier  *notifier,
 	gchar *sparql;
 
 	priv = notifier->priv;
+
+	if (G_UNLIKELY (priv->connection == NULL)) {
+		return;
+	}
+
 	sparql = sparql_contents_compose_query (directories, n_dirs, filter);
 	tracker_sparql_connection_query_async (priv->connection,
 	                                       sparql,
@@ -745,15 +758,18 @@ sparql_files_query_cb (GObject      *object,
 	TrackerSparqlCursor *cursor;
 	GError *error = NULL;
 
-	notifier = data->notifier;
-	priv = notifier->priv;
-
 	cursor = tracker_sparql_connection_query_finish (TRACKER_SPARQL_CONNECTION (object),
 	                                                 result, &error);
 	if (error) {
+		if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+			goto out;
 		g_warning ("Could not query indexed files: %s\n", error->message);
-		g_error_free (error);
-	} else if (cursor) {
+	}
+
+	notifier = data->notifier;
+	priv = notifier->priv;
+
+	if (cursor) {
 		sparql_files_query_populate (notifier, cursor, TRUE);
 		g_object_unref (cursor);
 	}
@@ -771,6 +787,10 @@ sparql_files_query_cb (GObject      *object,
 		finish_current_directory (notifier, FALSE);
 	}
 
+out:
+	if (error) {
+	        g_error_free (error);
+	}
 	g_free (data);
 }
 
@@ -813,6 +833,11 @@ sparql_files_query_start (TrackerFileNotifier  *notifier,
 	data->max_depth = max_depth;
 
 	priv = notifier->priv;
+
+	if (G_UNLIKELY (priv->connection == NULL)) {
+		return;
+	}
+
 	sparql = sparql_files_compose_query (files, n_files);
 	tracker_sparql_connection_query_async (priv->connection,
 	                                       sparql,
@@ -1390,11 +1415,13 @@ tracker_file_notifier_finalize (GObject *object)
 		g_object_unref (priv->data_provider);
 	}
 
+	g_cancellable_cancel (priv->cancellable);
+
 	g_object_unref (priv->crawler);
 	g_object_unref (priv->monitor);
 	g_object_unref (priv->file_system);
 	g_object_unref (priv->cancellable);
-	g_object_unref (priv->connection);
+	g_clear_object (&priv->connection);
 
 	if (priv->current_index_root)
 		root_data_free (priv->current_index_root);
@@ -1580,11 +1607,9 @@ tracker_file_notifier_init (TrackerFileNotifier *notifier)
 	priv->cancellable = g_cancellable_new ();
 
 	if (error) {
-		g_critical ("Could not get SPARQL connection: %s\n",
-		            error->message);
+		g_warning ("Could not get SPARQL connection: %s\n",
+		           error->message);
 		g_error_free (error);
-
-		g_assert_not_reached ();
 	}
 
 	priv->timer = g_timer_new ();
@@ -1686,6 +1711,11 @@ tracker_file_notifier_get_file_iri (TrackerFileNotifier *notifier,
 	g_return_val_if_fail (G_IS_FILE (file), NULL);
 
 	priv = notifier->priv;
+
+	if (G_UNLIKELY (priv->connection == NULL)) {
+		return NULL;
+	}
+
 	canonical = tracker_file_system_get_file (priv->file_system,
 	                                          file,
 	                                          G_FILE_TYPE_REGULAR,

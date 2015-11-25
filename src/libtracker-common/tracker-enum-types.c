@@ -105,6 +105,7 @@ tracker_date_error_get_type (void)
     static const GEnumValue values[] = {
       { TRACKER_DATE_ERROR_OFFSET, "TRACKER_DATE_ERROR_OFFSET", "offset" },
       { TRACKER_DATE_ERROR_INVALID_ISO8601, "TRACKER_DATE_ERROR_INVALID_ISO8601", "invalid-iso8601" },
+      { TRACKER_DATE_ERROR_EMPTY, "TRACKER_DATE_ERROR_EMPTY", "empty" },
       { 0, NULL, NULL }
     };
     GType g_define_type_id = 

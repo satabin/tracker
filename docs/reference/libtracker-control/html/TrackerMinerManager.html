@@ -845,7 +845,7 @@ with a mimetype in that list will be reindexed. </p></td>
 tracker_miner_manager_index_file (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
                                   <em class="parameter"><code><span class="type">GFile</span> *file</code></em>,
                                   <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
-<p>Tells the filesystem miner to index the <em class="parameter"><code>file</code></em>
+<p>Tells the filesystem miner to start indexing the <em class="parameter"><code>file</code></em>
 .</p>
 <p>On failure <em class="parameter"><code>error</code></em>
  will be set.</p>
@@ -892,11 +892,11 @@ tracker_miner_manager_index_file_async
                                 <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
                                 <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
                                 <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
-<p>Tells the filesystem miner to index the <em class="parameter"><code>file</code></em>
-. When the operation is called,
+<p>Tells the filesystem miner to start indexing the <em class="parameter"><code>file</code></em>
+. Once the message has been sent,
 <em class="parameter"><code>callback</code></em>
  will be called. You can then call <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-index-file-finish" title="tracker_miner_manager_index_file_finish ()"><code class="function">tracker_miner_manager_index_file_finish()</code></a>
-to get the result of the operation.</p>
+to get the result.</p>
 <div class="refsect3">
 <a name="id-1.2.3.2.11.17.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">

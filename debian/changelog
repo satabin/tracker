@@ -2,6 +2,8 @@ tracker (1.6.1-1) UNRELEASED; urgency=medium
 
   * New upstream release.
   * Rebase patches.
+  * Pass --as-needed to dh_autoreconf and use DEB_LDFLAGS_MAINT_APPEND to set
+    the linker flags.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 26 Nov 2015 00:13:50 +0100
 

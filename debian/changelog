@@ -1,3 +1,11 @@
+tracker (1.6.1-2) unstable; urgency=medium
+
+  * Team upload.
+  * Change libpng12-dev to libpng-dev, to ease libpng transition
+    (Closes: #662523)
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Thu, 21 Jan 2016 16:06:04 +0100
+
 tracker (1.6.1-1) unstable; urgency=medium
 
   * New upstream release.

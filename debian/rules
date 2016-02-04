@@ -69,6 +69,3 @@ override_dh_makeshlibs:
 		-X/usr/lib/$(DEB_HOST_MULTIARCH)/tracker-1.0/ \
 		-X/usr/lib/evolution/ \
 		-X/usr/lib/nautilus/
-
-override_dh_strip:
-	dh_strip --dbg-package=tracker-dbg

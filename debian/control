@@ -304,18 +304,3 @@ Description: metadata database, indexer and search tool - filesystem indexer
 # Tracker is an advanced framework for first class objects with associated
 # metadata and tags. It provides a one stop solution for all metadata, tags,
 # shared object databases, search tools and indexing.
-
-Package: tracker-dbg
-Architecture: any
-Section: debug
-Priority: extra
-Depends: ${shlibs:Depends},
-         ${misc:Depends},
-         tracker (= ${binary:Version})
-Description: metadata database, indexer and search tool - debugging symbols
- This package includes the debugging symbols useful for debugging tracker and
- its utilities.
- .
- Tracker is an advanced framework for first class objects with associated
- metadata and tags. It provides a one stop solution for all metadata, tags,
- shared object databases, search tools and indexing.

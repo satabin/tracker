@@ -2,6 +2,7 @@ tracker (1.7.4-1) UNRELEASED; urgency=medium
 
   * New upstream release.
   * Drop dbg package now that we have automatic dbgsym packages.
+  * Drop compat binaries, they are no longer provided by upstream.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 04 Feb 2016 06:31:20 +0100
 

@@ -1,14 +1,5 @@
 usr/bin/tracker
 
-# compat binaries
-usr/bin/tracker-control
-usr/bin/tracker-import
-usr/bin/tracker-info
-usr/bin/tracker-search
-usr/bin/tracker-sparql
-usr/bin/tracker-stats
-usr/bin/tracker-tag
-
 usr/share/dbus-1/services/org.freedesktop.Tracker1.service
 usr/share/dbus-1/services/org.freedesktop.Tracker1.Writeback.service
 

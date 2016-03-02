@@ -89,7 +89,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/attributes.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
 	$(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/m4/sqlite-builtin-fts4.m4 \
+	$(top_srcdir)/m4/sqlite-builtin-fts5.m4 \
 	$(top_srcdir)/m4/sqlite-threadsafe.m4 \
 	$(top_srcdir)/m4/tracker.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -101,8 +101,7 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)" \
 	"$(DESTDIR)$(bashcompletiondir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_tracker_OBJECTS = tracker-main.$(OBJEXT) \
-	tracker-compatible.$(OBJEXT) tracker-config.$(OBJEXT) \
+am_tracker_OBJECTS = tracker-main.$(OBJEXT) tracker-config.$(OBJEXT) \
 	tracker-daemon.$(OBJEXT) tracker-dbus.$(OBJEXT) \
 	tracker-help.$(OBJEXT) tracker-index.$(OBJEXT) \
 	tracker-info.$(OBJEXT) tracker-process.$(OBJEXT) \
@@ -555,8 +554,6 @@ libs = \
 
 tracker_SOURCES = \
 	tracker-main.c \
-	tracker-compatible.c \
-	tracker-compatible.h \
 	tracker-config.c \
 	tracker-config.h \
 	tracker-color.h \
@@ -598,8 +595,7 @@ tracker_LDADD = \
 # Bash completion
 @WITH_BASH_COMPLETION_TRUE@bashcompletiondir = $(BASH_COMPLETION_DIR)
 @WITH_BASH_COMPLETION_TRUE@bashcompletion_DATA = bash-completion/tracker
-EXTRA_DIST = $(bashcompletion_DATA) tracker-compat.in
-CLEANFILES = tracker-compat
+EXTRA_DIST = $(bashcompletion_DATA)
 all: all-am
 
 .SUFFIXES:
@@ -694,7 +690,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-compatible.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-daemon.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-dbus.Po@am__quote@
@@ -869,7 +864,6 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
-	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -901,8 +895,7 @@ info: info-am
 info-am:
 
 install-data-am: install-bashcompletionDATA
-	@$(NORMAL_INSTALL)
-	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
+
 install-dvi: install-dvi-am
 
 install-dvi-am:
@@ -948,9 +941,8 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-bashcompletionDATA uninstall-binPROGRAMS
-	@$(NORMAL_INSTALL)
-	$(MAKE) $(AM_MAKEFLAGS) uninstall-hook
-.MAKE: install-am install-data-am install-strip uninstall-am
+
+.MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean \
 	clean-binPROGRAMS clean-generic clean-libtool cscopelist-am \
@@ -958,39 +950,16 @@ uninstall-am: uninstall-bashcompletionDATA uninstall-binPROGRAMS
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
 	html-am info info-am install install-am \
 	install-bashcompletionDATA install-binPROGRAMS install-data \
-	install-data-am install-data-hook install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags tags-am uninstall uninstall-am \
-	uninstall-bashcompletionDATA uninstall-binPROGRAMS \
-	uninstall-hook
+	uninstall-bashcompletionDATA uninstall-binPROGRAMS
 
-
-install-data-hook: tracker-compat
-	$(AM_V_GEN) cp -f ./$^ "$(DESTDIR)${bindir}/tracker-control"
-	$(AM_V_GEN) cp -f ./$^ "$(DESTDIR)${bindir}/tracker-import"
-	$(AM_V_GEN) cp -f ./$^ "$(DESTDIR)${bindir}/tracker-info"
-	$(AM_V_GEN) cp -f ./$^ "$(DESTDIR)${bindir}/tracker-search"
-	$(AM_V_GEN) cp -f ./$^ "$(DESTDIR)${bindir}/tracker-sparql"
-	$(AM_V_GEN) cp -f ./$^ "$(DESTDIR)${bindir}/tracker-stats"
-	$(AM_V_GEN) cp -f ./$^ "$(DESTDIR)${bindir}/tracker-tag"
-
-uninstall-hook:
-	$(RM) "$(DESTDIR)$(bindir)/tracker-control" && \
-	$(RM) "$(DESTDIR)$(bindir)/tracker-import" && \
-	$(RM) "$(DESTDIR)$(bindir)/tracker-info" && \
-	$(RM) "$(DESTDIR)$(bindir)/tracker-search" && \
-	$(RM) "$(DESTDIR)$(bindir)/tracker-sparql" && \
-	$(RM) "$(DESTDIR)$(bindir)/tracker-stats" && \
-	$(RM) "$(DESTDIR)$(bindir)/tracker-tag"
-
-tracker-compat: tracker-compat.in
-	$(AM_V_at)sed -e "s|@bindir[@]|${bindir}|" $< > $@
-	$(AM_V_at)chmod +x $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

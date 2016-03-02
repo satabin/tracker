@@ -36,7 +36,7 @@
 /* Define if we should install artwork */
 #undef HAVE_ARTWORK
 
-/* Defined if Sqlite has FTS4 compiled in */
+/* Defined if Sqlite has FTS5 compiled in */
 #undef HAVE_BUILTIN_FTS
 
 /* Define to 1 if you have the declaration of `posix_fadvise', and to 0 if you

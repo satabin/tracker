@@ -1,6 +1,523 @@
-2015-11-18  Carlos Garnacho  <carlosg@gnome.org>
+2016-03-01  Carlos Garnacho  <carlosg@gnome.org>
 
-	Release 1.6.1
+	Release 1.7.4
+
+	tracker-miner-fs: Ignore git repositories by default
+	Any file with a .git folder will be ignored. Feel free to change this
+	in gsettings if you found this useful.
+
+	tracker-miner-fs: Ignore #*# (vim backup) files by default
+
+	Update to FTS5
+	Our old stale copy of the FTS3/4 module is now deleted, replaced by
+	a shinier FTS5 embedded module. If at configure time we detect that
+	SQLite doesn't offer the FTS5 module, we will load our own, just as
+	we used to do with FTS4.
+
+	FTS5 brings a few differences in the ways it's meant to be extended,
+	the tokenizer has been updated to cope with the differences. Also,
+	FTS5 offers no offsets() builtin function, nor matchinfo() which we
+	used to implement ranking. It offers though ways to implement
+	additional functions, and builtin rank support which can be tweaked
+	to achieve the same functional results than we did.
+
+	Other than that, the ways to interact with the FTS virtual table
+	are roughly similar to those in FTS4, insertions and deletions have
+	been updated to do things the FTS5 way.
+
+	Since it's not worth to bump the database format (data is reproducted
+	from the journal, so we drop some embedded data such as
+	nie:plainTextContent), the nco:hobby property has been modified to
+	no longer be fulltext indexed, AFAIK there's no users ever setting/
+	accessing that, and the FTS properties change will trigger the
+	regeneration of the FTS view and virtual tables, resulting in a
+	seamless update to FTS5.
+
+	However, we don't leave completely unscathed from the fts3_tokenizer()
+	change. Since the older FTS3/4 tokenizer is not registered, we can't
+	just drop the older FTS table. So it is left dangling and never
+	accessed again, in favor of the newer fts5 table. This is obviously
+	not a problem when creating the database from scratch.
+
+	In the way, a few bugs were found. per-property weights in ranking
+	were being given in a scrambled way (although stable across database
+	generations). And deletion of FTS properties (or entire rows) could
+	result in the tokens not being fully removed from the FTS table,
+	resulting in confused searches. These are now fixed.
+
+	Impact to users of tracker should be none. All the FTS Sparql-to-SQL
+	translation has been updated to just use FTS5 syntax and tables.
+
+	libtracker-data: Handle tracker:fulltextIndexed changes
+	We no longer have a reason to deem this change incompatible. Since
+	no actual text is stored in the FTS tables, and it merely updates
+	its tokenization info from the original class tables, we can just
+	drop this info and reconstruct at will. So there's no longer need
+	to consider tracker:fulltextIndexed changes as incompatible.
+
+2016-02-27  Cédric Valmary  <cvalmary@yahoo.fr>
+
+	Updated Occitan translation
+
+2016-02-26  Marinus Schraal  <fosero@gmail.com>
+
+	tracker-extract: Use tracker-guarantee to ensure a title in playlists
+	Resort to the basename in order to guarantee a title.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=761466
+
+	tracker-extract: Fix year-only date extraction in gstreamer module
+	ISO 8601 takes hours and months starting at 1. Passing 0 results in
+	wrong parsing of the resulting date string.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=761236
+
+2016-02-25  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: lower g_critical() severity
+	And check for another condition where it might happen (if
+	tracker_crawler_start() happens on a non-existing dir). The severity
+	of this situation is not really critical, so it's been lowered to a
+	g_debug().
+
+	libtracker-miner: Cancel crawling/querying on both cancellation paths
+	When a currently inspected folder is cancelled, we could either jump to
+	the next pending dir (if any) or the next crawling root, we must cancel
+	these two operations prior to both.
+
+	libtracker-miner: Use g_file_equal instead of direct comparison
+	We might be passed a non-canonical directory to
+	file_notifier_current_root_check_remove_directory(), g_file_equal
+	will be safer.
+
+	libtracker-miner: Plug fd leak when cancelling crawlers early
+	The enumerators would just be freed but not closed, leaking fds
+	in the underlying implementations.
+
+	libtracker-direct: Handle cancellation
+	Always go through the async path, and manage the cancellable in
+	both the IO scheduler and the jobs. If we try to handle cancellation
+	in the direct path, the cursor will be unref'ed (and try to grab
+	the DB lock again) while the lock is held. There's no way cancellation
+	can work while holding the lock, so just removed this path.
+
+2016-02-24  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Do not break ordering with bulk operations
+	The way bulk operations break the ordering of the sparql updates
+	may bring certain glitches. eg. if a delete (bulk) operation
+	happens on a folder while the sparql buffer already contains
+	updates corresponding to files within that folder, the way we
+	order operations results in the delete happening first, and
+	the inserts/updates happening afterwards. This may leave the
+	database in inconsistent states.
+
+	So make bulk operations a 1 file thing, this could maybe be
+	smarter and try to compress consecutive similar operations,
+	but there's not much added value in it. Plus, the bulk operations
+	we issue in the miner would never match that criteria.
+
+	Because we no longer break the ordering with bulk operations,
+	things like the error map are no longer necessary, so we can
+	remove some icky code here.
+
+	BulkOperationMerge and its functions could be further simplified,
+	that's left for a later cleanup.
+
+	libtracker-miner: Cancel ops in current buffers if a delete affects the file
+	If a folder being deleted affects operations currently in the currently
+	issued tasks (eg. those we emitted ::process-file on) and writeback buffers,
+	those operations would still attempt to proceed, with different degrees
+	of success.
+
+	libtracker-miner: Stop crawling if a delete op affects the current directory
+	Otherwise the crawler will still attempt to go through the processed
+	folders, adding unnecesary processing and potentially leaving inconsistent
+	state in the TrackerFileSystem if a similar file layout appeared in the
+	future.
+
+	libtracker-miner: Fix TrackerFileNotifier cancellable maintenance
+	Resetting and reusing is not deemed safe. It is better to create new
+	cancellables and let the old ones be last unref'ed after async callbacks
+	finish.
+
+	libtracker-miner: Delete directory altogether on interrupted crawling
+	We can't tell the extracted data is complete or valid, so give up on
+	that data entirely.
+
+	libtracker-miner: Set uri in warning
+	It's useful to know the file it comes from.
+
+2016-02-16  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.7.3
+
+	libtracker-miner: Fix invalid return value warning
+
+2016-02-15  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Add envvar toggle to force directory updated checks
+	The bugs covered by the last patches might leave leftovers in the DB if
+	tracker-miner-fs updated a directory after it changed between runs, but
+	wouldn't delete contents that were removed from the filesystem.
+
+	Add this toggle envvar to point people to a solution, if you've seen errors
+	like "UNIQUE constraint failed: nie:DataObject.nie:url" in journald, you're
+	affected by these bugs, and should run tracker-miner-fs once with
+	TRACKER_MINER_FORCE_CHECK_UPDATED set in the environment. Running just
+	once will be enough, enabling this always will incur in startup performance
+	penalties.
+
+	libtracker-miner: Simplify deleted contents querying in TrackerFileNotifier
+	Now that we perform per-directory crawling+querying, we can just check
+	whether the currently crawled dir was updated, and remove all filtering
+	features from sparql_contents_query_start().
+
+	We actually were interpreting the filter incorrectly, because the
+	directories would be added to the updated_dirs array sooner than they
+	would be crawled, so the check for deleted contents was simply
+	forgotten. This simplification fixes such situation.
+
+2016-02-15  Haithem BEN GHORBAL  <haithem.benghorbal@gmail.com>
+
+	libtracker-data: Fix uninitialized variable usage
+	object_id is not initialized in this branch of code, use the object
+	URI instead.
+
+2016-02-15  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Detect file type on files coming from store
+	When adding files from the store to the TrackerFileSystem, we must at least
+	detect whether they are folders. Returning "unknown" here meant that
+	TrackerMinerFS wouldn't enable the TRACKER_BULK_MATCH_CHILDREN mask on
+	delete operations for directories, which could leave lingering child
+	nfo:FileDataObjects.
+
+	This situation could happen if a folder is deleted between runs of
+	tracker-miner-fs, all information we can get comes from the store, as
+	it's no longer there at the time of crawling.
+
+	libtracker-miner: Use Sparql1.1 in TrackerSparqlBuffer tasks
+	We can use STRSTARTS better than fn:starts-with here.
+
+2016-02-15  Haithem BEN GHORBAL  <haithem.benghorbal@gmail.com>
+
+	libtracker-miner: Separate currently crawled dir from pending directories
+	The GQueue is passed as a filter to sparql_contents_compose_query(), but
+	it relies on the current file being outside the filter, otherwise it
+	will produce an empty IN() filter.
+
+	libtracker-miner: Reset of reentry counter is not needed anymore
+	Moreover, an infinite loop may occurs if process-file signal always fails.
+
+	libtracker-miner: Invalidate files iri recursively in case of file removal
+	Directories must get all children invalidated, because already queued tasks
+	might contain new instances of those same files, in which case they would
+	still find the previous URN.
+
+	libtracker-miner: Allow to invalidate files iri recursively
+	This will be useful for delete operations.
+
+2016-02-15  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Proceed into querying if tracker_crawler_start() fails
+	tracker_crawler_start() may return FALSE if the directory doesn't exist
+	or its ::check-directory handlers return FALSE. We must continue in these
+	circumstances into querying the directory as usual, so it's contrasted
+	and eventually deleted by file_notifier_traverse_tree_foreach().
+
+2016-02-15  Haithem BEN GHORBAL  <haithem.benghorbal@gmail.com>
+
+	libtracker-miner: Fix some memory leaks of TrackerTask
+	These leaks had huge impact as each TrackerTask had a reference
+	to a GFile, which prevent them to be removed from TrackerFileSystem
+	when calling tracker_file_system_forget_files(). Due to this behavior,
+	adding/removing/re-adding folders resulted in some folders/files not
+	being indexed.
+
+	libtracker-miner: Add extra reference around file deletion
+	TrackerFileNotifier::file-deleted might have removed the last reference
+	to the given file, make sure it lives a bit longer for the remaining
+	operations to finish.
+
+	libtracker-miner: Use the interned GFile with tracker_file_system_forget_files()
+	This allow the correponding node to be retrieved from g_object_get_qdata()
+	instead of traversing all the tree, which might imply a performance hit.
+
+	libtracker-miner: Fix generated Sparql query in sparql_contents_compose_query()
+	If the first element is filtered out it'd append a comma anyway in
+	the query filter.
+
+	libtracker-miner: Fix "return makes integer from pointer without a cast" warnings
+
+	libtracker-fts: Fix invalid blob length calculation
+	The blob lenght is defined to be in bytes.
+
+	Tracker: fix possible dereference of null pointer
+
+	libtracker-data: remove unnecessary call to tracker_db_manager_get_db_interface()
+	It was done at the end of the function.
+
+	libtracker-data: Rework ontology_get_fts_properties()
+	All callers require both hashtables, so remove NULL handling for those.
+	Fixes a possible memory leak if fts_properties is NULL.
+
+2016-02-14  Haithem BEN GHORBAL  <haithem.benghorbal@gmail.com>
+
+	libtracker-miner: Fix variable set but not used warning
+
+	docs: Fix less-than-zero comparison of an unsigned value
+
+	libtracker-data: Fix g_warning() missing argument
+
+2016-02-06  Rūdolfs Mazurs  <rudolfsm@src.gnome.org>
+
+	Update Latvian translation
+
+2016-01-28  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Do not insert partial/empty sparql on error
+	The check for these errors was done specifically so we could still
+	insert (even if incomplete) data on tracker-extract failures, when
+	we used to communicate with it directly from tracker-miner-fs.
+
+	Nowadays, tracker-extract is a TrackerDecorator, and tracker-miner-fs
+	should most likely receive only errors here on ENOENT and other errors
+	that affect the file and its info as a whole. In these situations
+	we end up with a task with a completely empty sparql string, which
+	doesn't help much here.
+
+	libtracker-miner: Pass a builder in UPDATE state to ::remove-file
+	A stateless TrackerSparqlBuilder is not that useful, because there's
+	no API to push the desired state. A TrackerSparqlBuilder created
+	through tracker_sparql_builder_new_update() will allow us to
+	open delete and insert statements, which is what we want here.
+
+	libtracker-miner: Remove children recursively from queues on directory deleted
+	We use to emit ::file-deleted on topmost directories only when deleting a
+	directory tree. This means we have to remove children recursively too, because
+	we'll otherwise leave stale items that are not direct children of the directory
+	we notified upon.
+
+2016-01-25  Richard Hughes  <richard@hughsie.com>
+
+	Update the AppData to spec version 0.7+
+
+2016-01-21  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-common: Use guint64 for free space calculations
+	We need the whole range after the multiplication with st.f_bsize, gsize
+	may overflow here. Also, make the cast to double explicit rather than
+	implicit in get_remaining_space_percentage()
+
+2016-01-17  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.7.2
+
+	libtracker-miner: Fix Invalid memory reads on writeback finalization
+	We connect the signal through g_signal_connect_object() which has the
+	feature of disconnecting automatically the signal when the given
+	gobject is finalized. Doing it again ourselves in finalize ends up
+	in invalid reads, we can avoid doing this altogether.
+
+	libtracker-extract: Fix possible XMP extractor leak
+	We may end up overwriting the TrackerXmpRegion fields here, and
+	forgetting about the previous memory. Just stick to the first
+	values if we iterate multiple times here.
+
+	libtracker-data: Keep a weak reference on the Variable to the Context
+	Otherwise we fall into circular references, and leaks eventually.
+
+	libtracker-miner: Add TrackerMinerFS::remove-file signal
+	This signal can be used to tweak TrackerMinerFS deletion behavior,
+	or override it altogether.
+
+	libtracker-common: Report total free space if running as root
+	For the people that want to run Tracker as a system-wide service.
+	There's no "unprivileged user" limitations to obey here, so just
+	report st.f_bfree instead of st.f_bavail.
+
+	ontology: Set domain index on nie:contentCreated for nmo:Message
+	This is needed in order to optimize queries for mixed sent/received
+	nmo:Messages. This becomes a bottleneck when making polari use
+	tracker-miner-chatlog [1] information to fetch backlog from channels.
+
+	nie:contentCreated will be contained by every nmo:Message, so this
+	index allows us to perform quick queries even with a massive amount
+	of per-channel messages.
+
+	[1] https://git.gnome.org/browse/tracker-miner-chatlog/
+
+	libtracker-common: Make libicu/libunistring agree on function prerequisites
+	We can possibly end up with tracker_parser_unaccent_nfkd_string() called on
+	0-length strings. Libunistring already handles/accepts this fine, the libicu
+	implementation already is 0-length safe, so have it accept 0-length strings
+	as well.
+
+	tracker: Remove tracker-compatibility
+	This was scheduled for removal for 1.6, a bit late here.
+
+2016-01-16  Philip Van Hoof  <philip@codeminded.be>
+
+	Revert "libtracker-data: Clean up stale URIs on startup"
+	This reverts commit e4a0f7be0c138a733b74413ff7a11a9431c7fe08.
+
+2016-01-11  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Remove wrong call
+	We already got the task error on the g_task_propagate_boolean()
+	above, and it's impossible that the task will contain a pointer,
+	plus we'd leak it if it were the case. So just remove this call.
+
+	libtracker-miner: Plug leak
+	We take ownership on the task, we must free it then.
+
+	tracker-extract: Plug leak
+	We take ownership on the TrackerExtractInfo, we must free it then.
+
+2016-01-11  Philip Van Hoof  <philip@codeminded.be>
+
+	Fix small memory leak
+
+2016-01-10  Aurimas Černius  <aurisc4@gmail.com>
+
+	Updated Lithuanian translation
+
+2015-12-17  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.7.1
+
+	libtracker-extract: Fix double free
+	We're giving ownership of the GError to the task, no need to free
+	here.
+
+	libtracker-miner: Fix double free
+	Pass a copy of the error to the GTask, we're freeing our own together
+	with the others in the array afterwards.
+
+2015-12-15  Anders Jonsson  <anders.jonsson@norsjovallen.se>
+
+	Updated Swedish translation
+
+2015-12-13  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2015-12-10  Debarshi Ray  <debarshir@gnome.org>
+
+	libtracker-data: Silence a CRITICAL
+	We shouldn't be passing a NULL string argument to g_regex_match.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=759280
+
+2015-12-02  Carlos Garnacho  <carlosg@gnome.org>
+
+	Merge branch 'wip/garnacho/sparql1.1'
+
+	libtracker-miner: Optimize move operations
+	Instead of creating one delete+insert per file (indirectly) contained
+	in a folder, do it all at once in a DELETE...INSERT...WHERE. We only
+	now need to query and block if we're running a thumbnailer service,
+	which should be most uncommon.
+
+	This makes the whole update to happen in a much tighter loop within
+	tracker-store, eg. helps reduce the time spent in processing the
+	renaming of a linux kernel tree (51964 elements) from 23s to 12s.
+	(as measured locally by tracker-miner-fs on a previously idle
+	system).
+
+	libtracker-data: Add support for BIND
+	The BIND form allows a value to be assigned to a variable from a graph
+	pattern:
+
+	  SELECT ?u ?hour
+	  { ?u a rdfs:Resource .
+	       nfo:fileLastModified ?modified
+	    BIND (HOUR (?modified) AS ?hour)
+	  }
+
+	It will be specially useful on places where we use the result of a
+	calculation on more than one places, eg. on SELECT and FILTER(). It will
+	also be useful combined with DELETE...INSERT...WHERE to perform complex
+	mass-updates in a single query.
+
+	http://www.w3.org/TR/sparql11-query/#bind
+
+	libtracker-data: Resolve variables looking up the binding if we're in same context
+	This is necessary for BIND support, as the variables looked up to add the
+	BIND alias likely belong to the same scope that we're currently building.
+	This results in SQL like (very simplified, and shortened):
+
+	  SELECT "nie:url" AS "1_u", "1_u" AS "2_u" ...
+
+	The second "1_u" can't be looked up yet in this scope (only on the WHERE
+	clause, or a wrapping SELECT), so ends up as the string itself. With this
+	change, this kind of queries will result in (shortened again):
+
+	  SELECT "nie:url" AS "1_u", "nie:url" AS "2_u" ...
+
+	Which is legal, and results in the expected values assigned to the BIND
+	alias.
+
+	libtracker-data: Relate Variable objects to their origin Context
+	It will be necessary so we can figure out at query construction time
+	whether we are in a scope where we can use the variable alias or not.
+
+	libtracker-data: Implement sparql1.1 delete/insert
+	Sparql1.1 defines updates as a single statement of the form:
+	DELETE {} INSERT {} WHERE {}
+
+	With delete/insert-only syntax being special cases for that common
+	form: http://www.w3.org/TR/sparql11-update/#deleteInsert
+
+	This is now implemented in litracker-data, the parser will accept
+	this new syntax, and perform the delete/insert operations on all
+	solution items. We first perform all deletes and then all inserts
+	in order to minimize database flushing.
+
+	libtracker-data: Add support for NOW() builtin function
+	This function is defined in Sparql 1.1 query language recommendation,
+	http://www.w3.org/TR/sparql11-query/#func-now
+
+	libtracker-data: Add support for RAND() builtin function
+	This function is defined in Sparql 1.1 query language recommendation,
+	http://www.w3.org/TR/sparql11-query/#idp2130040
+
+	libtracker-data: Add SparqlRand sqlite function
+	This will be used to back up the RAND() sparql 1.1 function. Unlike
+	the random() sqlite builtin function, g_random_double() gives us
+	the random number in the same range than described in the
+	recommendation, so it seems a better fit.
+
+2015-11-25  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.7.0
+
+	tracker-extract-epub: Fix possibly uninitialized variable
+
+	libtracker-miner: Fix compile warning
+
+	tracker-extract: Port TrackerExtract to GTask
+
+	libtracker-miner: Port TrackerSparqlBuffer to GTask
+
+	libtracker-data: Port TrackerDBInterfaceSqlite to GTask
+
+	libtracker-extract: Port tracker_extract_client API to GTask
+
+2015-11-23  Carlos Garnacho  <carlosg@gnome.org>
+
+	miners: Take over the deletion of previous properties from TrackerMinerFS
+	Performing the deletion inside libtracker-miner takes some assumptions we
+	shouldn't be doing in a generic library, such as the graph we're deleting
+	from. It makes more sense to make miners responsible of deleting their
+	older properties prior to a file update.
+
+	Applications/user guides miners could be more specific as to which
+	properties they're deleting, we'll rely on those not stepping over other
+	miners' toes at the moment.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=758341
 
 2015-11-18  Debarshi Ray  <debarshir@gnome.org>
 
@@ -78,6 +595,121 @@
 
 	libtracker-miner: Abort async operations once the instance is gone
 	https://bugzilla.gnome.org/show_bug.cgi?id=756877
+
+	Revert "libtracker-miner: Abort async operations once the ..."
+	Wrong bug URL.
+
+	This reverts commit 864aabbe4d5c4fb7fd9b0813c25a337240df6235.
+
+	Revert "libtracker-miner: Cancel pending async operations ..."
+	Wrong bug URL.
+
+	This reverts commit dc04031e33c5f554040c8a2c3311aaaca51b4043.
+
+	libtracker-miner: Cancel pending async operations during destruction
+	https://bugzilla.gnome.org/show_bug.cgi?id=756869
+
+	libtracker-miner: Abort async operations once the instance is gone
+	https://bugzilla.gnome.org/show_bug.cgi?id=756869
+
+2015-10-19  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-data: Add support for MD5/SHA1/256/512 builtin functions
+	These functions are defined in Sparql 1.1 query language recommendation,
+	http://www.w3.org/TR/sparql11-query/#func-md5
+	http://www.w3.org/TR/sparql11-query/#func-sha1
+	http://www.w3.org/TR/sparql11-query/#func-sha256
+	http://www.w3.org/TR/sparql11-query/#func-sha512
+
+	libtracker-data: Add SparqlChecksum sqlite function
+	This function will be used to back the various sparql checksum
+	functions.
+
+	libtracker-data: Add support for YEAR/.../SECONDS builtin functions
+	These functions are defined in Sparql 1.1 query language recommendation,
+	http://www.w3.org/TR/sparql11-query/#func-year
+	http://www.w3.org/TR/sparql11-query/#func-month
+	http://www.w3.org/TR/sparql11-query/#func-day
+	http://www.w3.org/TR/sparql11-query/#func-hours
+	http://www.w3.org/TR/sparql11-query/#func-minutes
+	http://www.w3.org/TR/sparql11-query/#func-seconds
+
+	libtracker-data: Pass explicitly the operation type on updates
+	Instead of storing it in an internal variable, we might be applying
+	different operation types here, so it will be clearer overall if
+	we pass the operation around.
+
+	libtracker-data: Make datetime functions accept other than vars
+	The datetime functions were very specific at only accepting variables
+	(backed by a table column), using the :localDate and :localTime
+	decomposed fields, specific internally to datetime properties.
+
+	So, actually make it able to accept other than variables (we will still
+	use the decomposed local time for these), and translate these as a
+	primary expression. This makes all these queries work (as opposed
+	to just the first):
+
+	select year(?date) { ?u nie:contentCreated ?date }
+	select year(now()) {}
+	select year("2015-07-29T23:00:00Z"^^xsd:dateTime) {}
+	select year("2015-07-29"^^xsd:date) {}
+
+	libtracker-data: Add support for CEIL/FLOOR builtin functions
+	These functions are defined in Sparql 1.1 query language recommendation,
+	http://www.w3.org/TR/sparql11-query/#func-ceil
+	http://www.w3.org/TR/sparql11-query/#func-floor
+
+	libtracker-data: Add SparqlCeil/Floor sqlite functions
+	These will be used to implement CEIL/FLOOR, as per Sparql 1.1
+
+	libtracker-data: Add support for STRBEFORE/STRAFTER builtin functions
+	These functions are defined in Sparql 1.1 query language recommendation,
+	http://www.w3.org/TR/sparql11-query/#func-strbefore
+	http://www.w3.org/TR/sparql11-query/#func-strafter
+
+	libtracker-data: Add SparqlStrBefore/After sqlite functions
+	These will be used in STRBEFORE/STRAFTER, as per sparql 1.1
+
+	libtracker-data: Add support for the ENCODE_FOR_URI() builtin function
+	This function is defined in Sparql 1.1 query language recommendation,
+	http://www.w3.org/TR/sparql11-query/#func-encode
+
+	libtracker-data: Add SparqlEncodeForUri sqlite function
+	This will be used on ENCODE_FOR_URI(), as per sparql 1.1.
+
+	libtracker-data: Add support for the ROUND() builtin function
+	This function is defined in Sparql 1.1 query language recommendation,
+	http://www.w3.org/TR/sparql11-query/#func-round
+
+	libtracker-data: Add support for the ABS() builtin function
+	This function is defined in Sparql 1.1 query language recommendation,
+	http://www.w3.org/TR/sparql11-query/#func-abs
+
+	libtracker-data: Add support for STRSTARTS/STRENDS builtin functions
+	These are defined in Sparql 1.1 query language recommendation,
+	http://www.w3.org/TR/sparql11-query/#func-strstarts
+	http://www.w3.org/TR/sparql11-query/#func-strends
+
+	libtracker-data: Add support for the SUBSTR() builtin function
+	This function is defined in Sparql 1.1 query language recommedation,
+	http://www.w3.org/TR/sparql11-query/#func-substr
+
+	libtracker-data: Add support for the STRLEN() builtin function
+	This function is defined in Sparql 1.1 query recommendation,
+	http://www.w3.org/TR/sparql11-query/#func-strlen
+
+	libtracker-data: Add support for LCASE/UCASE builtin functions
+	These functions are defined in Sparql 1.1 query recommendation,
+	http://www.w3.org/TR/sparql11-query/#func-lcase
+	http://www.w3.org/TR/sparql11-query/#func-ucase
+
+	libtracker-data: Add support for the CONTAINS builtin function
+	This function is defined in Sparql 1.1 query language recommendation,
+	http://www.w3.org/TR/sparql11-query/#func-contains
+
+	libtracker-data: Add support for the CONCAT() builtin function
+	This function is defined in Sparql 1.1 query language recommendation,
+	http://www.w3.org/TR/sparql11-query/#func-concat
 
 2015-10-14  Inaki Larranaga Murgoitio  <dooteo@zundan.com>
 

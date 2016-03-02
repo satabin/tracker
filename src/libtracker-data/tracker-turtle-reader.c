@@ -82,6 +82,7 @@ struct _TrackerTurtleReaderClass {
 typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_NONE,
 	TRACKER_SPARQL_TOKEN_TYPE_A,
+	TRACKER_SPARQL_TOKEN_TYPE_ABS,
 	TRACKER_SPARQL_TOKEN_TYPE_AS,
 	TRACKER_SPARQL_TOKEN_TYPE_ASC,
 	TRACKER_SPARQL_TOKEN_TYPE_ASK,
@@ -90,18 +91,23 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_AVG,
 	TRACKER_SPARQL_TOKEN_TYPE_BASE,
 	TRACKER_SPARQL_TOKEN_TYPE_BLANK_NODE,
+	TRACKER_SPARQL_TOKEN_TYPE_BIND,
 	TRACKER_SPARQL_TOKEN_TYPE_BOUND,
 	TRACKER_SPARQL_TOKEN_TYPE_BY,
+	TRACKER_SPARQL_TOKEN_TYPE_CEIL,
 	TRACKER_SPARQL_TOKEN_TYPE_CLOSE_BRACE,
 	TRACKER_SPARQL_TOKEN_TYPE_CLOSE_BRACKET,
 	TRACKER_SPARQL_TOKEN_TYPE_CLOSE_PARENS,
 	TRACKER_SPARQL_TOKEN_TYPE_COALESCE,
 	TRACKER_SPARQL_TOKEN_TYPE_COLON,
+	TRACKER_SPARQL_TOKEN_TYPE_CONCAT,
+	TRACKER_SPARQL_TOKEN_TYPE_CONTAINS,
 	TRACKER_SPARQL_TOKEN_TYPE_COMMA,
 	TRACKER_SPARQL_TOKEN_TYPE_CONSTRUCT,
 	TRACKER_SPARQL_TOKEN_TYPE_COUNT,
 	TRACKER_SPARQL_TOKEN_TYPE_DATA,
 	TRACKER_SPARQL_TOKEN_TYPE_DATATYPE,
+	TRACKER_SPARQL_TOKEN_TYPE_DAY,
 	TRACKER_SPARQL_TOKEN_TYPE_DECIMAL,
 	TRACKER_SPARQL_TOKEN_TYPE_DELETE,
 	TRACKER_SPARQL_TOKEN_TYPE_DESC,
@@ -112,15 +118,18 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_DOUBLE,
 	TRACKER_SPARQL_TOKEN_TYPE_DOUBLE_CIRCUMFLEX,
 	TRACKER_SPARQL_TOKEN_TYPE_DROP,
+	TRACKER_SPARQL_TOKEN_TYPE_ENCODE_FOR_URI,
 	TRACKER_SPARQL_TOKEN_TYPE_EOF,
 	TRACKER_SPARQL_TOKEN_TYPE_EXISTS,
 	TRACKER_SPARQL_TOKEN_TYPE_FALSE,
 	TRACKER_SPARQL_TOKEN_TYPE_FILTER,
+	TRACKER_SPARQL_TOKEN_TYPE_FLOOR,
 	TRACKER_SPARQL_TOKEN_TYPE_FROM,
 	TRACKER_SPARQL_TOKEN_TYPE_GRAPH,
 	TRACKER_SPARQL_TOKEN_TYPE_GROUP,
 	TRACKER_SPARQL_TOKEN_TYPE_GROUP_CONCAT,
 	TRACKER_SPARQL_TOKEN_TYPE_HAVING,
+	TRACKER_SPARQL_TOKEN_TYPE_HOURS,
 	TRACKER_SPARQL_TOKEN_TYPE_IF,
 	TRACKER_SPARQL_TOKEN_TYPE_INSERT,
 	TRACKER_SPARQL_TOKEN_TYPE_INTEGER,
@@ -132,12 +141,17 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_ISURI,
 	TRACKER_SPARQL_TOKEN_TYPE_LANG,
 	TRACKER_SPARQL_TOKEN_TYPE_LANGMATCHES,
+	TRACKER_SPARQL_TOKEN_TYPE_LCASE,
 	TRACKER_SPARQL_TOKEN_TYPE_LIMIT,
 	TRACKER_SPARQL_TOKEN_TYPE_MAX,
+	TRACKER_SPARQL_TOKEN_TYPE_MD5,
 	TRACKER_SPARQL_TOKEN_TYPE_MIN,
 	TRACKER_SPARQL_TOKEN_TYPE_MINUS,
+	TRACKER_SPARQL_TOKEN_TYPE_MINUTES,
+	TRACKER_SPARQL_TOKEN_TYPE_MONTH,
 	TRACKER_SPARQL_TOKEN_TYPE_NAMED,
 	TRACKER_SPARQL_TOKEN_TYPE_NOT,
+	TRACKER_SPARQL_TOKEN_TYPE_NOW,
 	TRACKER_SPARQL_TOKEN_TYPE_NULL,
 	TRACKER_SPARQL_TOKEN_TYPE_OFFSET,
 	TRACKER_SPARQL_TOKEN_TYPE_OP_AND,
@@ -159,25 +173,39 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_PLUS,
 	TRACKER_SPARQL_TOKEN_TYPE_PN_PREFIX,
 	TRACKER_SPARQL_TOKEN_TYPE_PREFIX,
+	TRACKER_SPARQL_TOKEN_TYPE_RAND,
 	TRACKER_SPARQL_TOKEN_TYPE_REDUCED,
 	TRACKER_SPARQL_TOKEN_TYPE_REGEX,
 	TRACKER_SPARQL_TOKEN_TYPE_REPLACE,
+	TRACKER_SPARQL_TOKEN_TYPE_ROUND,
 	TRACKER_SPARQL_TOKEN_TYPE_SAMETERM,
+	TRACKER_SPARQL_TOKEN_TYPE_SECONDS,
 	TRACKER_SPARQL_TOKEN_TYPE_SELECT,
 	TRACKER_SPARQL_TOKEN_TYPE_SEMICOLON,
+	TRACKER_SPARQL_TOKEN_TYPE_SHA1,
+	TRACKER_SPARQL_TOKEN_TYPE_SHA256,
+	TRACKER_SPARQL_TOKEN_TYPE_SHA512,
 	TRACKER_SPARQL_TOKEN_TYPE_SILENT,
 	TRACKER_SPARQL_TOKEN_TYPE_STAR,
 	TRACKER_SPARQL_TOKEN_TYPE_STR,
+	TRACKER_SPARQL_TOKEN_TYPE_STRAFTER,
+	TRACKER_SPARQL_TOKEN_TYPE_STRBEFORE,
+	TRACKER_SPARQL_TOKEN_TYPE_STRENDS,
 	TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL1,
 	TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL2,
 	TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG1,
 	TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG2,
+	TRACKER_SPARQL_TOKEN_TYPE_STRLEN,
+	TRACKER_SPARQL_TOKEN_TYPE_STRSTARTS,
+	TRACKER_SPARQL_TOKEN_TYPE_SUBSTR,
 	TRACKER_SPARQL_TOKEN_TYPE_SUM,
 	TRACKER_SPARQL_TOKEN_TYPE_TRUE,
+	TRACKER_SPARQL_TOKEN_TYPE_UCASE,
 	TRACKER_SPARQL_TOKEN_TYPE_UNION,
 	TRACKER_SPARQL_TOKEN_TYPE_VAR,
 	TRACKER_SPARQL_TOKEN_TYPE_WHERE,
-	TRACKER_SPARQL_TOKEN_TYPE_WITH
+	TRACKER_SPARQL_TOKEN_TYPE_WITH,
+	TRACKER_SPARQL_TOKEN_TYPE_YEAR
 } TrackerSparqlTokenType;
 
 struct _TrackerSourceLocation {
@@ -339,7 +367,7 @@ TrackerTurtleReader* tracker_turtle_reader_construct (GType object_type, const g
 			_g_object_unref0 (self);
 #line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			return NULL;
-#line 343 "tracker-turtle-reader.c"
+#line 371 "tracker-turtle-reader.c"
 		} else {
 #line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -347,7 +375,7 @@ TrackerTurtleReader* tracker_turtle_reader_construct (GType object_type, const g
 			g_clear_error (&_inner_error_);
 #line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			return NULL;
-#line 351 "tracker-turtle-reader.c"
+#line 379 "tracker-turtle-reader.c"
 		}
 	}
 #line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -416,14 +444,14 @@ TrackerTurtleReader* tracker_turtle_reader_construct (GType object_type, const g
 	_g_mapped_file_unref0 (_tmp0_);
 #line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return self;
-#line 420 "tracker-turtle-reader.c"
+#line 448 "tracker-turtle-reader.c"
 }
 
 
 TrackerTurtleReader* tracker_turtle_reader_new (const gchar* path, GError** error) {
 #line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return tracker_turtle_reader_construct (TRACKER_TYPE_TURTLE_READER, path, error);
-#line 427 "tracker-turtle-reader.c"
+#line 455 "tracker-turtle-reader.c"
 }
 
 
@@ -446,7 +474,7 @@ static glong string_strnlen (gchar* str, glong maxlen) {
 	_tmp3_ = end;
 #line 1198 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 	if (_tmp3_ == NULL) {
-#line 450 "tracker-turtle-reader.c"
+#line 478 "tracker-turtle-reader.c"
 		glong _tmp4_ = 0L;
 #line 1199 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 		_tmp4_ = maxlen;
@@ -454,7 +482,7 @@ static glong string_strnlen (gchar* str, glong maxlen) {
 		result = _tmp4_;
 #line 1199 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 		return result;
-#line 458 "tracker-turtle-reader.c"
+#line 486 "tracker-turtle-reader.c"
 	} else {
 		gchar* _tmp5_ = NULL;
 		gchar* _tmp6_ = NULL;
@@ -466,7 +494,7 @@ static glong string_strnlen (gchar* str, glong maxlen) {
 		result = (glong) (_tmp5_ - _tmp6_);
 #line 1201 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 		return result;
-#line 470 "tracker-turtle-reader.c"
+#line 498 "tracker-turtle-reader.c"
 	}
 }
 
@@ -490,21 +518,21 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 	_tmp1_ = offset;
 #line 1210 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 	if (_tmp1_ >= ((glong) 0)) {
-#line 494 "tracker-turtle-reader.c"
+#line 522 "tracker-turtle-reader.c"
 		glong _tmp2_ = 0L;
 #line 1210 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 		_tmp2_ = len;
 #line 1210 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 		_tmp0_ = _tmp2_ >= ((glong) 0);
-#line 500 "tracker-turtle-reader.c"
+#line 528 "tracker-turtle-reader.c"
 	} else {
 #line 1210 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 		_tmp0_ = FALSE;
-#line 504 "tracker-turtle-reader.c"
+#line 532 "tracker-turtle-reader.c"
 	}
 #line 1210 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 	if (_tmp0_) {
-#line 508 "tracker-turtle-reader.c"
+#line 536 "tracker-turtle-reader.c"
 		glong _tmp3_ = 0L;
 		glong _tmp4_ = 0L;
 		glong _tmp5_ = 0L;
@@ -516,7 +544,7 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp5_ = string_strnlen ((gchar*) self, _tmp3_ + _tmp4_);
 #line 1212 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 		string_length = _tmp5_;
-#line 520 "tracker-turtle-reader.c"
+#line 548 "tracker-turtle-reader.c"
 	} else {
 		gint _tmp6_ = 0;
 		gint _tmp7_ = 0;
@@ -526,13 +554,13 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp7_ = _tmp6_;
 #line 1214 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 		string_length = (glong) _tmp7_;
-#line 530 "tracker-turtle-reader.c"
+#line 558 "tracker-turtle-reader.c"
 	}
 #line 1217 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 	_tmp8_ = offset;
 #line 1217 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 	if (_tmp8_ < ((glong) 0)) {
-#line 536 "tracker-turtle-reader.c"
+#line 564 "tracker-turtle-reader.c"
 		glong _tmp9_ = 0L;
 		glong _tmp10_ = 0L;
 		glong _tmp11_ = 0L;
@@ -546,7 +574,7 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp11_ = offset;
 #line 1219 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 		g_return_val_if_fail (_tmp11_ >= ((glong) 0), NULL);
-#line 550 "tracker-turtle-reader.c"
+#line 578 "tracker-turtle-reader.c"
 	} else {
 		glong _tmp12_ = 0L;
 		glong _tmp13_ = 0L;
@@ -556,13 +584,13 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp13_ = string_length;
 #line 1221 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 		g_return_val_if_fail (_tmp12_ <= _tmp13_, NULL);
-#line 560 "tracker-turtle-reader.c"
+#line 588 "tracker-turtle-reader.c"
 	}
 #line 1223 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 	_tmp14_ = len;
 #line 1223 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 	if (_tmp14_ < ((glong) 0)) {
-#line 566 "tracker-turtle-reader.c"
+#line 594 "tracker-turtle-reader.c"
 		glong _tmp15_ = 0L;
 		glong _tmp16_ = 0L;
 #line 1224 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
@@ -571,7 +599,7 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp16_ = offset;
 #line 1224 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 		len = _tmp15_ - _tmp16_;
-#line 575 "tracker-turtle-reader.c"
+#line 603 "tracker-turtle-reader.c"
 	}
 #line 1226 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 	_tmp17_ = offset;
@@ -591,7 +619,7 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 	result = _tmp22_;
 #line 1227 "/usr/share/vala-0.30/vapi/glib-2.0.vapi"
 	return result;
-#line 595 "tracker-turtle-reader.c"
+#line 623 "tracker-turtle-reader.c"
 }
 
 
@@ -604,7 +632,7 @@ static gchar* tracker_turtle_reader_generate_bnodeid (TrackerTurtleReader* self,
 	_tmp0_ = user_bnodeid;
 #line 80 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	if (_tmp0_ == NULL) {
-#line 608 "tracker-turtle-reader.c"
+#line 636 "tracker-turtle-reader.c"
 		gint _tmp1_ = 0;
 		gint _tmp2_ = 0;
 		gchar* _tmp3_ = NULL;
@@ -620,7 +648,7 @@ static gchar* tracker_turtle_reader_generate_bnodeid (TrackerTurtleReader* self,
 		result = _tmp3_;
 #line 81 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		return result;
-#line 624 "tracker-turtle-reader.c"
+#line 652 "tracker-turtle-reader.c"
 	} else {
 		GChecksum* checksum = NULL;
 		GChecksum* _tmp4_ = NULL;
@@ -720,7 +748,7 @@ static gchar* tracker_turtle_reader_generate_bnodeid (TrackerTurtleReader* self,
 		_g_checksum_free0 (checksum);
 #line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		return result;
-#line 724 "tracker-turtle-reader.c"
+#line 752 "tracker-turtle-reader.c"
 	}
 }
 
@@ -750,7 +778,7 @@ static inline gboolean tracker_turtle_reader_next_token (TrackerTurtleReader* se
 	_tmp2_ = self->priv->size;
 #line 100 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	if (_tmp2_ <= 0) {
-#line 754 "tracker-turtle-reader.c"
+#line 782 "tracker-turtle-reader.c"
 		TrackerSourceLocation begin = {0};
 		TrackerSourceLocation end = {0};
 		TrackerSparqlTokenType type = 0;
@@ -788,7 +816,7 @@ static inline gboolean tracker_turtle_reader_next_token (TrackerTurtleReader* se
 				g_propagate_error (error, _inner_error_);
 #line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				return FALSE;
-#line 792 "tracker-turtle-reader.c"
+#line 820 "tracker-turtle-reader.c"
 			} else {
 #line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -796,7 +824,7 @@ static inline gboolean tracker_turtle_reader_next_token (TrackerTurtleReader* se
 				g_clear_error (&_inner_error_);
 #line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				return FALSE;
-#line 800 "tracker-turtle-reader.c"
+#line 828 "tracker-turtle-reader.c"
 			}
 		}
 #line 103 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -831,7 +859,7 @@ static inline gboolean tracker_turtle_reader_next_token (TrackerTurtleReader* se
 		_tmp13_[_tmp14_].end = _tmp15_;
 #line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		self->priv->size = 1;
-#line 835 "tracker-turtle-reader.c"
+#line 863 "tracker-turtle-reader.c"
 	}
 #line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	_tmp16_ = self->priv->tokens;
@@ -847,7 +875,7 @@ static inline gboolean tracker_turtle_reader_next_token (TrackerTurtleReader* se
 	result = _tmp19_ != TRACKER_SPARQL_TOKEN_TYPE_EOF;
 #line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 851 "tracker-turtle-reader.c"
+#line 879 "tracker-turtle-reader.c"
 }
 
 
@@ -874,7 +902,7 @@ static inline TrackerSparqlTokenType tracker_turtle_reader_current (TrackerTurtl
 	result = _tmp3_;
 #line 112 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 878 "tracker-turtle-reader.c"
+#line 906 "tracker-turtle-reader.c"
 }
 
 
@@ -901,7 +929,7 @@ static inline gboolean tracker_turtle_reader_accept (TrackerTurtleReader* self, 
 				g_propagate_error (error, _inner_error_);
 #line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				return FALSE;
-#line 905 "tracker-turtle-reader.c"
+#line 933 "tracker-turtle-reader.c"
 			} else {
 #line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -909,20 +937,20 @@ static inline gboolean tracker_turtle_reader_accept (TrackerTurtleReader* self, 
 				g_clear_error (&_inner_error_);
 #line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				return FALSE;
-#line 913 "tracker-turtle-reader.c"
+#line 941 "tracker-turtle-reader.c"
 			}
 		}
 #line 118 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		result = TRUE;
 #line 118 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		return result;
-#line 920 "tracker-turtle-reader.c"
+#line 948 "tracker-turtle-reader.c"
 	}
 #line 120 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	result = FALSE;
 #line 120 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 926 "tracker-turtle-reader.c"
+#line 954 "tracker-turtle-reader.c"
 }
 
 
@@ -989,7 +1017,7 @@ static GError* tracker_turtle_reader_get_error (TrackerTurtleReader* self, const
 	result = _tmp14_;
 #line 124 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 993 "tracker-turtle-reader.c"
+#line 1021 "tracker-turtle-reader.c"
 }
 
 
@@ -1021,7 +1049,7 @@ static gboolean tracker_turtle_reader_expect (TrackerTurtleReader* self, Tracker
 			g_propagate_error (error, _inner_error_);
 #line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			return FALSE;
-#line 1025 "tracker-turtle-reader.c"
+#line 1053 "tracker-turtle-reader.c"
 		} else {
 #line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1029,7 +1057,7 @@ static gboolean tracker_turtle_reader_expect (TrackerTurtleReader* self, Tracker
 			g_clear_error (&_inner_error_);
 #line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			return FALSE;
-#line 1033 "tracker-turtle-reader.c"
+#line 1061 "tracker-turtle-reader.c"
 		}
 	}
 #line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1038,7 +1066,7 @@ static gboolean tracker_turtle_reader_expect (TrackerTurtleReader* self, Tracker
 		result = TRUE;
 #line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		return result;
-#line 1042 "tracker-turtle-reader.c"
+#line 1070 "tracker-turtle-reader.c"
 	}
 #line 132 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	_tmp3_ = type;
@@ -1062,7 +1090,7 @@ static gboolean tracker_turtle_reader_expect (TrackerTurtleReader* self, Tracker
 		g_propagate_error (error, _inner_error_);
 #line 132 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		return FALSE;
-#line 1066 "tracker-turtle-reader.c"
+#line 1094 "tracker-turtle-reader.c"
 	} else {
 #line 132 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1070,7 +1098,7 @@ static gboolean tracker_turtle_reader_expect (TrackerTurtleReader* self, Tracker
 		g_clear_error (&_inner_error_);
 #line 132 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		return FALSE;
-#line 1074 "tracker-turtle-reader.c"
+#line 1102 "tracker-turtle-reader.c"
 	}
 }
 
@@ -1143,7 +1171,7 @@ static gchar* tracker_turtle_reader_get_last_string (TrackerTurtleReader* self, 
 	result = _tmp15_;
 #line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 1147 "tracker-turtle-reader.c"
+#line 1175 "tracker-turtle-reader.c"
 }
 
 
@@ -1179,7 +1207,7 @@ static gchar* tracker_turtle_reader_resolve_prefixed_name (TrackerTurtleReader* 
 	_tmp4_ = ns;
 #line 142 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	if (_tmp4_ == NULL) {
-#line 1183 "tracker-turtle-reader.c"
+#line 1211 "tracker-turtle-reader.c"
 		const gchar* _tmp5_ = NULL;
 		gchar* _tmp6_ = NULL;
 		gchar* _tmp7_ = NULL;
@@ -1207,7 +1235,7 @@ static gchar* tracker_turtle_reader_resolve_prefixed_name (TrackerTurtleReader* 
 			_g_free0 (ns);
 #line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			return NULL;
-#line 1211 "tracker-turtle-reader.c"
+#line 1239 "tracker-turtle-reader.c"
 		} else {
 #line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			_g_free0 (ns);
@@ -1217,7 +1245,7 @@ static gchar* tracker_turtle_reader_resolve_prefixed_name (TrackerTurtleReader* 
 			g_clear_error (&_inner_error_);
 #line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			return NULL;
-#line 1221 "tracker-turtle-reader.c"
+#line 1249 "tracker-turtle-reader.c"
 		}
 	}
 #line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1232,7 +1260,7 @@ static gchar* tracker_turtle_reader_resolve_prefixed_name (TrackerTurtleReader* 
 	_g_free0 (ns);
 #line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 1236 "tracker-turtle-reader.c"
+#line 1264 "tracker-turtle-reader.c"
 }
 
 
@@ -1243,13 +1271,13 @@ static void _vala_array_add12 (gchar*** array, int* length, int* size, gchar* va
 		*size = (*size) ? (2 * (*size)) : 4;
 #line 254 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		*array = g_renew (gchar*, *array, (*size) + 1);
-#line 1247 "tracker-turtle-reader.c"
+#line 1275 "tracker-turtle-reader.c"
 	}
 #line 254 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	(*array)[(*length)++] = value;
 #line 254 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	(*array)[*length] = NULL;
-#line 1253 "tracker-turtle-reader.c"
+#line 1281 "tracker-turtle-reader.c"
 }
 
 
@@ -1260,13 +1288,13 @@ static void _vala_array_add13 (gchar*** array, int* length, int* size, gchar* va
 		*size = (*size) ? (2 * (*size)) : 4;
 #line 255 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		*array = g_renew (gchar*, *array, (*size) + 1);
-#line 1264 "tracker-turtle-reader.c"
+#line 1292 "tracker-turtle-reader.c"
 	}
 #line 255 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	(*array)[(*length)++] = value;
 #line 255 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	(*array)[*length] = NULL;
-#line 1270 "tracker-turtle-reader.c"
+#line 1298 "tracker-turtle-reader.c"
 }
 
 
@@ -1277,7 +1305,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 	g_return_val_if_fail (self != NULL, FALSE);
 #line 149 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	while (TRUE) {
-#line 1281 "tracker-turtle-reader.c"
+#line 1309 "tracker-turtle-reader.c"
 		TrackerTurtleReaderState _tmp0_ = 0;
 #line 150 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		_tmp0_ = self->priv->state;
@@ -1285,7 +1313,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 		switch (_tmp0_) {
 #line 150 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			case TRACKER_TURTLE_READER_STATE_INITIAL:
-#line 1289 "tracker-turtle-reader.c"
+#line 1317 "tracker-turtle-reader.c"
 			{
 #line 152 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				tracker_turtle_reader_next_token (self, &_inner_error_);
@@ -1297,7 +1325,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						g_propagate_error (error, _inner_error_);
 #line 152 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						return FALSE;
-#line 1301 "tracker-turtle-reader.c"
+#line 1329 "tracker-turtle-reader.c"
 					} else {
 #line 152 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1305,18 +1333,18 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						g_clear_error (&_inner_error_);
 #line 152 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						return FALSE;
-#line 1309 "tracker-turtle-reader.c"
+#line 1337 "tracker-turtle-reader.c"
 					}
 				}
 #line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				self->priv->state = TRACKER_TURTLE_READER_STATE_BOS;
 #line 154 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				continue;
-#line 1316 "tracker-turtle-reader.c"
+#line 1344 "tracker-turtle-reader.c"
 			}
 #line 150 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			case TRACKER_TURTLE_READER_STATE_BOS:
-#line 1320 "tracker-turtle-reader.c"
+#line 1348 "tracker-turtle-reader.c"
 			{
 				gboolean _tmp1_ = FALSE;
 				gboolean _tmp2_ = FALSE;
@@ -1334,7 +1362,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						g_propagate_error (error, _inner_error_);
 #line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						return FALSE;
-#line 1338 "tracker-turtle-reader.c"
+#line 1366 "tracker-turtle-reader.c"
 					} else {
 #line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1342,12 +1370,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						g_clear_error (&_inner_error_);
 #line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						return FALSE;
-#line 1346 "tracker-turtle-reader.c"
+#line 1374 "tracker-turtle-reader.c"
 					}
 				}
 #line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				if (_tmp1_) {
-#line 1351 "tracker-turtle-reader.c"
+#line 1379 "tracker-turtle-reader.c"
 					gchar* ns = NULL;
 					gchar* _tmp3_ = NULL;
 					gboolean _tmp4_ = FALSE;
@@ -1377,7 +1405,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							_g_free0 (ns);
 #line 159 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 1381 "tracker-turtle-reader.c"
+#line 1409 "tracker-turtle-reader.c"
 						} else {
 #line 159 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							_g_free0 (ns);
@@ -1387,12 +1415,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_clear_error (&_inner_error_);
 #line 159 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 1391 "tracker-turtle-reader.c"
+#line 1419 "tracker-turtle-reader.c"
 						}
 					}
 #line 159 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					if (_tmp4_) {
-#line 1396 "tracker-turtle-reader.c"
+#line 1424 "tracker-turtle-reader.c"
 						gchar* _tmp6_ = NULL;
 #line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						_tmp6_ = tracker_turtle_reader_get_last_string (self, 0);
@@ -1400,7 +1428,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						_g_free0 (ns);
 #line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						ns = _tmp6_;
-#line 1404 "tracker-turtle-reader.c"
+#line 1432 "tracker-turtle-reader.c"
 					}
 #line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					tracker_turtle_reader_expect (self, TRACKER_SPARQL_TOKEN_TYPE_COLON, &_inner_error_);
@@ -1414,7 +1442,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							_g_free0 (ns);
 #line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 1418 "tracker-turtle-reader.c"
+#line 1446 "tracker-turtle-reader.c"
 						} else {
 #line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							_g_free0 (ns);
@@ -1424,7 +1452,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_clear_error (&_inner_error_);
 #line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 1428 "tracker-turtle-reader.c"
+#line 1456 "tracker-turtle-reader.c"
 						}
 					}
 #line 163 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1439,7 +1467,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							_g_free0 (ns);
 #line 163 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 1443 "tracker-turtle-reader.c"
+#line 1471 "tracker-turtle-reader.c"
 						} else {
 #line 163 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							_g_free0 (ns);
@@ -1449,7 +1477,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_clear_error (&_inner_error_);
 #line 163 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 1453 "tracker-turtle-reader.c"
+#line 1481 "tracker-turtle-reader.c"
 						}
 					}
 #line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1482,7 +1510,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							_g_free0 (ns);
 #line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 1486 "tracker-turtle-reader.c"
+#line 1514 "tracker-turtle-reader.c"
 						} else {
 #line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							_g_free0 (uri);
@@ -1494,7 +1522,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_clear_error (&_inner_error_);
 #line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 1498 "tracker-turtle-reader.c"
+#line 1526 "tracker-turtle-reader.c"
 						}
 					}
 #line 167 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1503,7 +1531,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 					_g_free0 (ns);
 #line 167 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					continue;
-#line 1507 "tracker-turtle-reader.c"
+#line 1535 "tracker-turtle-reader.c"
 				} else {
 					gboolean _tmp13_ = FALSE;
 					gboolean _tmp14_ = FALSE;
@@ -1519,7 +1547,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_propagate_error (error, _inner_error_);
 #line 168 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 1523 "tracker-turtle-reader.c"
+#line 1551 "tracker-turtle-reader.c"
 						} else {
 #line 168 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1527,7 +1555,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_clear_error (&_inner_error_);
 #line 168 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 1531 "tracker-turtle-reader.c"
+#line 1559 "tracker-turtle-reader.c"
 						}
 					}
 #line 168 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1542,7 +1570,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_propagate_error (error, _inner_error_);
 #line 169 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 1546 "tracker-turtle-reader.c"
+#line 1574 "tracker-turtle-reader.c"
 							} else {
 #line 169 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1550,7 +1578,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_clear_error (&_inner_error_);
 #line 169 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 1554 "tracker-turtle-reader.c"
+#line 1582 "tracker-turtle-reader.c"
 							}
 						}
 #line 170 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1563,7 +1591,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_propagate_error (error, _inner_error_);
 #line 170 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 1567 "tracker-turtle-reader.c"
+#line 1595 "tracker-turtle-reader.c"
 							} else {
 #line 170 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1571,12 +1599,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_clear_error (&_inner_error_);
 #line 170 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 1575 "tracker-turtle-reader.c"
+#line 1603 "tracker-turtle-reader.c"
 							}
 						}
 #line 171 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						continue;
-#line 1580 "tracker-turtle-reader.c"
+#line 1608 "tracker-turtle-reader.c"
 					} else {
 						TrackerSparqlTokenType _tmp15_ = 0;
 #line 172 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1587,7 +1615,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							result = FALSE;
 #line 173 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return result;
-#line 1591 "tracker-turtle-reader.c"
+#line 1619 "tracker-turtle-reader.c"
 						}
 					}
 				}
@@ -1603,7 +1631,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						g_propagate_error (error, _inner_error_);
 #line 176 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						return FALSE;
-#line 1607 "tracker-turtle-reader.c"
+#line 1635 "tracker-turtle-reader.c"
 					} else {
 #line 176 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1611,12 +1639,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						g_clear_error (&_inner_error_);
 #line 176 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						return FALSE;
-#line 1615 "tracker-turtle-reader.c"
+#line 1643 "tracker-turtle-reader.c"
 					}
 				}
 #line 176 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				if (_tmp16_) {
-#line 1620 "tracker-turtle-reader.c"
+#line 1648 "tracker-turtle-reader.c"
 					gchar* _tmp18_ = NULL;
 					gchar* _tmp19_ = NULL;
 #line 177 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1631,7 +1659,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 					self->priv->state = TRACKER_TURTLE_READER_STATE_SUBJECT;
 #line 179 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					continue;
-#line 1635 "tracker-turtle-reader.c"
+#line 1663 "tracker-turtle-reader.c"
 				} else {
 					gboolean _tmp20_ = FALSE;
 					gboolean _tmp21_ = FALSE;
@@ -1647,7 +1675,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_propagate_error (error, _inner_error_);
 #line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 1651 "tracker-turtle-reader.c"
+#line 1679 "tracker-turtle-reader.c"
 						} else {
 #line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1655,12 +1683,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_clear_error (&_inner_error_);
 #line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 1659 "tracker-turtle-reader.c"
+#line 1687 "tracker-turtle-reader.c"
 						}
 					}
 #line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					if (_tmp20_) {
-#line 1664 "tracker-turtle-reader.c"
+#line 1692 "tracker-turtle-reader.c"
 						gchar* ns = NULL;
 						gchar* _tmp22_ = NULL;
 						gchar* _tmp23_ = NULL;
@@ -1687,7 +1715,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								_g_free0 (ns);
 #line 183 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 1691 "tracker-turtle-reader.c"
+#line 1719 "tracker-turtle-reader.c"
 							} else {
 #line 183 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								_g_free0 (ns);
@@ -1697,7 +1725,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_clear_error (&_inner_error_);
 #line 183 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 1701 "tracker-turtle-reader.c"
+#line 1729 "tracker-turtle-reader.c"
 							}
 						}
 #line 184 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1730,7 +1758,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								_g_free0 (ns);
 #line 184 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 1734 "tracker-turtle-reader.c"
+#line 1762 "tracker-turtle-reader.c"
 							} else {
 #line 184 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								_g_free0 (ns);
@@ -1740,7 +1768,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_clear_error (&_inner_error_);
 #line 184 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 1744 "tracker-turtle-reader.c"
+#line 1772 "tracker-turtle-reader.c"
 							}
 						}
 #line 184 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1753,7 +1781,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						_g_free0 (ns);
 #line 186 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						continue;
-#line 1757 "tracker-turtle-reader.c"
+#line 1785 "tracker-turtle-reader.c"
 					} else {
 						gboolean _tmp31_ = FALSE;
 						gboolean _tmp32_ = FALSE;
@@ -1769,7 +1797,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_propagate_error (error, _inner_error_);
 #line 187 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 1773 "tracker-turtle-reader.c"
+#line 1801 "tracker-turtle-reader.c"
 							} else {
 #line 187 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1777,12 +1805,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_clear_error (&_inner_error_);
 #line 187 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 1781 "tracker-turtle-reader.c"
+#line 1809 "tracker-turtle-reader.c"
 							}
 						}
 #line 187 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						if (_tmp31_) {
-#line 1786 "tracker-turtle-reader.c"
+#line 1814 "tracker-turtle-reader.c"
 							gchar* _tmp33_ = NULL;
 							gchar* _tmp34_ = NULL;
 							gchar* _tmp35_ = NULL;
@@ -1816,7 +1844,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_propagate_error (error, _inner_error_);
 #line 189 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 1820 "tracker-turtle-reader.c"
+#line 1848 "tracker-turtle-reader.c"
 								} else {
 #line 189 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1824,7 +1852,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_clear_error (&_inner_error_);
 #line 189 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 1828 "tracker-turtle-reader.c"
+#line 1856 "tracker-turtle-reader.c"
 								}
 							}
 #line 189 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1835,7 +1863,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							_g_free0 (_tmp33_);
 #line 191 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							continue;
-#line 1839 "tracker-turtle-reader.c"
+#line 1867 "tracker-turtle-reader.c"
 						} else {
 							gboolean _tmp40_ = FALSE;
 							gboolean _tmp41_ = FALSE;
@@ -1851,7 +1879,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_propagate_error (error, _inner_error_);
 #line 192 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 1855 "tracker-turtle-reader.c"
+#line 1883 "tracker-turtle-reader.c"
 								} else {
 #line 192 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1859,12 +1887,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_clear_error (&_inner_error_);
 #line 192 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 1863 "tracker-turtle-reader.c"
+#line 1891 "tracker-turtle-reader.c"
 								}
 							}
 #line 192 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							if (_tmp40_) {
-#line 1868 "tracker-turtle-reader.c"
+#line 1896 "tracker-turtle-reader.c"
 								gchar* _tmp42_ = NULL;
 								gchar* _tmp43_ = NULL;
 								gchar* _tmp44_ = NULL;
@@ -1881,7 +1909,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 										g_propagate_error (error, _inner_error_);
 #line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										return FALSE;
-#line 1885 "tracker-turtle-reader.c"
+#line 1913 "tracker-turtle-reader.c"
 									} else {
 #line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1889,7 +1917,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 										g_clear_error (&_inner_error_);
 #line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										return FALSE;
-#line 1893 "tracker-turtle-reader.c"
+#line 1921 "tracker-turtle-reader.c"
 									}
 								}
 #line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1916,7 +1944,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								self->priv->state = TRACKER_TURTLE_READER_STATE_SUBJECT;
 #line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								continue;
-#line 1920 "tracker-turtle-reader.c"
+#line 1948 "tracker-turtle-reader.c"
 							} else {
 								GError* _tmp48_ = NULL;
 #line 199 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1929,7 +1957,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_propagate_error (error, _inner_error_);
 #line 199 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 1933 "tracker-turtle-reader.c"
+#line 1961 "tracker-turtle-reader.c"
 								} else {
 #line 199 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1937,7 +1965,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_clear_error (&_inner_error_);
 #line 199 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 1941 "tracker-turtle-reader.c"
+#line 1969 "tracker-turtle-reader.c"
 								}
 							}
 						}
@@ -1946,7 +1974,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 			}
 #line 150 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			case TRACKER_TURTLE_READER_STATE_SUBJECT:
-#line 1950 "tracker-turtle-reader.c"
+#line 1978 "tracker-turtle-reader.c"
 			{
 				gboolean _tmp49_ = FALSE;
 				gboolean _tmp50_ = FALSE;
@@ -1962,7 +1990,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						g_propagate_error (error, _inner_error_);
 #line 203 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						return FALSE;
-#line 1966 "tracker-turtle-reader.c"
+#line 1994 "tracker-turtle-reader.c"
 					} else {
 #line 203 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1970,12 +1998,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						g_clear_error (&_inner_error_);
 #line 203 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						return FALSE;
-#line 1974 "tracker-turtle-reader.c"
+#line 2002 "tracker-turtle-reader.c"
 					}
 				}
 #line 203 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				if (_tmp49_) {
-#line 1979 "tracker-turtle-reader.c"
+#line 2007 "tracker-turtle-reader.c"
 					gchar* _tmp51_ = NULL;
 					gchar* _tmp52_ = NULL;
 #line 204 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -1990,7 +2018,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 					self->priv->state = TRACKER_TURTLE_READER_STATE_PREDICATE;
 #line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					continue;
-#line 1994 "tracker-turtle-reader.c"
+#line 2022 "tracker-turtle-reader.c"
 				} else {
 					gboolean _tmp53_ = FALSE;
 					gboolean _tmp54_ = FALSE;
@@ -2006,7 +2034,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_propagate_error (error, _inner_error_);
 #line 207 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 2010 "tracker-turtle-reader.c"
+#line 2038 "tracker-turtle-reader.c"
 						} else {
 #line 207 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2014,12 +2042,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_clear_error (&_inner_error_);
 #line 207 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 2018 "tracker-turtle-reader.c"
+#line 2046 "tracker-turtle-reader.c"
 						}
 					}
 #line 207 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					if (_tmp53_) {
-#line 2023 "tracker-turtle-reader.c"
+#line 2051 "tracker-turtle-reader.c"
 						gchar* ns = NULL;
 						gchar* _tmp55_ = NULL;
 						gchar* _tmp56_ = NULL;
@@ -2046,7 +2074,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								_g_free0 (ns);
 #line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 2050 "tracker-turtle-reader.c"
+#line 2078 "tracker-turtle-reader.c"
 							} else {
 #line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								_g_free0 (ns);
@@ -2056,7 +2084,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_clear_error (&_inner_error_);
 #line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 2060 "tracker-turtle-reader.c"
+#line 2088 "tracker-turtle-reader.c"
 							}
 						}
 #line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2089,7 +2117,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								_g_free0 (ns);
 #line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 2093 "tracker-turtle-reader.c"
+#line 2121 "tracker-turtle-reader.c"
 							} else {
 #line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								_g_free0 (ns);
@@ -2099,7 +2127,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_clear_error (&_inner_error_);
 #line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 2103 "tracker-turtle-reader.c"
+#line 2131 "tracker-turtle-reader.c"
 							}
 						}
 #line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2112,7 +2140,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						_g_free0 (ns);
 #line 212 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						continue;
-#line 2116 "tracker-turtle-reader.c"
+#line 2144 "tracker-turtle-reader.c"
 					} else {
 						gboolean _tmp64_ = FALSE;
 						gboolean _tmp65_ = FALSE;
@@ -2128,7 +2156,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_propagate_error (error, _inner_error_);
 #line 213 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 2132 "tracker-turtle-reader.c"
+#line 2160 "tracker-turtle-reader.c"
 							} else {
 #line 213 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2136,12 +2164,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_clear_error (&_inner_error_);
 #line 213 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 2140 "tracker-turtle-reader.c"
+#line 2168 "tracker-turtle-reader.c"
 							}
 						}
 #line 213 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						if (_tmp64_) {
-#line 2145 "tracker-turtle-reader.c"
+#line 2173 "tracker-turtle-reader.c"
 							gchar* _tmp66_ = NULL;
 							gchar* _tmp67_ = NULL;
 							gchar* _tmp68_ = NULL;
@@ -2175,7 +2203,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_propagate_error (error, _inner_error_);
 #line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 2179 "tracker-turtle-reader.c"
+#line 2207 "tracker-turtle-reader.c"
 								} else {
 #line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2183,7 +2211,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_clear_error (&_inner_error_);
 #line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 2187 "tracker-turtle-reader.c"
+#line 2215 "tracker-turtle-reader.c"
 								}
 							}
 #line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2194,7 +2222,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							_g_free0 (_tmp66_);
 #line 216 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							continue;
-#line 2198 "tracker-turtle-reader.c"
+#line 2226 "tracker-turtle-reader.c"
 						} else {
 							gboolean _tmp73_ = FALSE;
 							gboolean _tmp74_ = FALSE;
@@ -2210,7 +2238,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_propagate_error (error, _inner_error_);
 #line 217 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 2214 "tracker-turtle-reader.c"
+#line 2242 "tracker-turtle-reader.c"
 								} else {
 #line 217 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2218,7 +2246,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_clear_error (&_inner_error_);
 #line 217 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 2222 "tracker-turtle-reader.c"
+#line 2250 "tracker-turtle-reader.c"
 								}
 							}
 #line 217 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2229,7 +2257,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								self->priv->state = TRACKER_TURTLE_READER_STATE_PREDICATE;
 #line 220 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								continue;
-#line 2233 "tracker-turtle-reader.c"
+#line 2261 "tracker-turtle-reader.c"
 							} else {
 								GError* _tmp75_ = NULL;
 #line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2242,7 +2270,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_propagate_error (error, _inner_error_);
 #line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 2246 "tracker-turtle-reader.c"
+#line 2274 "tracker-turtle-reader.c"
 								} else {
 #line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2250,7 +2278,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_clear_error (&_inner_error_);
 #line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 2254 "tracker-turtle-reader.c"
+#line 2282 "tracker-turtle-reader.c"
 								}
 							}
 						}
@@ -2259,7 +2287,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 			}
 #line 150 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			case TRACKER_TURTLE_READER_STATE_PREDICATE:
-#line 2263 "tracker-turtle-reader.c"
+#line 2291 "tracker-turtle-reader.c"
 			{
 				gboolean _tmp76_ = FALSE;
 				gboolean _tmp77_ = FALSE;
@@ -2275,7 +2303,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						g_propagate_error (error, _inner_error_);
 #line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						return FALSE;
-#line 2279 "tracker-turtle-reader.c"
+#line 2307 "tracker-turtle-reader.c"
 					} else {
 #line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2283,12 +2311,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						g_clear_error (&_inner_error_);
 #line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						return FALSE;
-#line 2287 "tracker-turtle-reader.c"
+#line 2315 "tracker-turtle-reader.c"
 					}
 				}
 #line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				if (_tmp76_) {
-#line 2292 "tracker-turtle-reader.c"
+#line 2320 "tracker-turtle-reader.c"
 					gchar* _tmp78_ = NULL;
 					gchar* _tmp79_ = NULL;
 #line 227 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2307,7 +2335,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 					result = TRUE;
 #line 230 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					return result;
-#line 2311 "tracker-turtle-reader.c"
+#line 2339 "tracker-turtle-reader.c"
 				} else {
 					gboolean _tmp80_ = FALSE;
 					gboolean _tmp81_ = FALSE;
@@ -2323,7 +2351,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_propagate_error (error, _inner_error_);
 #line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 2327 "tracker-turtle-reader.c"
+#line 2355 "tracker-turtle-reader.c"
 						} else {
 #line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2331,12 +2359,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_clear_error (&_inner_error_);
 #line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 2335 "tracker-turtle-reader.c"
+#line 2363 "tracker-turtle-reader.c"
 						}
 					}
 #line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					if (_tmp80_) {
-#line 2340 "tracker-turtle-reader.c"
+#line 2368 "tracker-turtle-reader.c"
 						gchar* ns = NULL;
 						gchar* _tmp82_ = NULL;
 						gchar* _tmp83_ = NULL;
@@ -2363,7 +2391,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								_g_free0 (ns);
 #line 234 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 2367 "tracker-turtle-reader.c"
+#line 2395 "tracker-turtle-reader.c"
 							} else {
 #line 234 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								_g_free0 (ns);
@@ -2373,7 +2401,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_clear_error (&_inner_error_);
 #line 234 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 2377 "tracker-turtle-reader.c"
+#line 2405 "tracker-turtle-reader.c"
 							}
 						}
 #line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2406,7 +2434,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								_g_free0 (ns);
 #line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 2410 "tracker-turtle-reader.c"
+#line 2438 "tracker-turtle-reader.c"
 							} else {
 #line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								_g_free0 (ns);
@@ -2416,7 +2444,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_clear_error (&_inner_error_);
 #line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 2420 "tracker-turtle-reader.c"
+#line 2448 "tracker-turtle-reader.c"
 							}
 						}
 #line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2433,7 +2461,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						_g_free0 (ns);
 #line 238 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						return result;
-#line 2437 "tracker-turtle-reader.c"
+#line 2465 "tracker-turtle-reader.c"
 					} else {
 						gboolean _tmp91_ = FALSE;
 						gboolean _tmp92_ = FALSE;
@@ -2449,7 +2477,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_propagate_error (error, _inner_error_);
 #line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 2453 "tracker-turtle-reader.c"
+#line 2481 "tracker-turtle-reader.c"
 							} else {
 #line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2457,12 +2485,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_clear_error (&_inner_error_);
 #line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 2461 "tracker-turtle-reader.c"
+#line 2489 "tracker-turtle-reader.c"
 							}
 						}
 #line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						if (_tmp91_) {
-#line 2466 "tracker-turtle-reader.c"
+#line 2494 "tracker-turtle-reader.c"
 							gchar* _tmp93_ = NULL;
 							gchar* _tmp94_ = NULL;
 							gchar* _tmp95_ = NULL;
@@ -2496,7 +2524,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_propagate_error (error, _inner_error_);
 #line 241 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 2500 "tracker-turtle-reader.c"
+#line 2528 "tracker-turtle-reader.c"
 								} else {
 #line 241 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2504,7 +2532,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_clear_error (&_inner_error_);
 #line 241 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 2508 "tracker-turtle-reader.c"
+#line 2536 "tracker-turtle-reader.c"
 								}
 							}
 #line 241 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2519,7 +2547,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							_g_free0 (_tmp93_);
 #line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return result;
-#line 2523 "tracker-turtle-reader.c"
+#line 2551 "tracker-turtle-reader.c"
 						} else {
 							gboolean _tmp100_ = FALSE;
 							gboolean _tmp101_ = FALSE;
@@ -2535,7 +2563,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_propagate_error (error, _inner_error_);
 #line 245 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 2539 "tracker-turtle-reader.c"
+#line 2567 "tracker-turtle-reader.c"
 								} else {
 #line 245 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2543,12 +2571,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_clear_error (&_inner_error_);
 #line 245 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 2547 "tracker-turtle-reader.c"
+#line 2575 "tracker-turtle-reader.c"
 								}
 							}
 #line 245 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							if (_tmp100_) {
-#line 2552 "tracker-turtle-reader.c"
+#line 2580 "tracker-turtle-reader.c"
 								gchar* _tmp102_ = NULL;
 								gchar* _tmp103_ = NULL;
 								gchar* _tmp104_ = NULL;
@@ -2565,7 +2593,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 										g_propagate_error (error, _inner_error_);
 #line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										return FALSE;
-#line 2569 "tracker-turtle-reader.c"
+#line 2597 "tracker-turtle-reader.c"
 									} else {
 #line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2573,7 +2601,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 										g_clear_error (&_inner_error_);
 #line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										return FALSE;
-#line 2577 "tracker-turtle-reader.c"
+#line 2605 "tracker-turtle-reader.c"
 									}
 								}
 #line 248 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2604,7 +2632,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								result = TRUE;
 #line 251 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return result;
-#line 2608 "tracker-turtle-reader.c"
+#line 2636 "tracker-turtle-reader.c"
 							} else {
 								gboolean _tmp108_ = FALSE;
 								gboolean _tmp109_ = FALSE;
@@ -2620,7 +2648,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 										g_propagate_error (error, _inner_error_);
 #line 252 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										return FALSE;
-#line 2624 "tracker-turtle-reader.c"
+#line 2652 "tracker-turtle-reader.c"
 									} else {
 #line 252 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2628,12 +2656,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 										g_clear_error (&_inner_error_);
 #line 252 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										return FALSE;
-#line 2632 "tracker-turtle-reader.c"
+#line 2660 "tracker-turtle-reader.c"
 									}
 								}
 #line 252 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								if (_tmp108_) {
-#line 2637 "tracker-turtle-reader.c"
+#line 2665 "tracker-turtle-reader.c"
 									gchar** _tmp110_ = NULL;
 									gint _tmp110__length1 = 0;
 									const gchar* _tmp111_ = NULL;
@@ -2676,7 +2704,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									self->priv->state = TRACKER_TURTLE_READER_STATE_SUBJECT;
 #line 258 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									continue;
-#line 2680 "tracker-turtle-reader.c"
+#line 2708 "tracker-turtle-reader.c"
 								} else {
 									gboolean _tmp118_ = FALSE;
 									gboolean _tmp119_ = FALSE;
@@ -2693,7 +2721,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 											g_propagate_error (error, _inner_error_);
 #line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 											return FALSE;
-#line 2697 "tracker-turtle-reader.c"
+#line 2725 "tracker-turtle-reader.c"
 										} else {
 #line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 											g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2701,14 +2729,14 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 											g_clear_error (&_inner_error_);
 #line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 											return FALSE;
-#line 2705 "tracker-turtle-reader.c"
+#line 2733 "tracker-turtle-reader.c"
 										}
 									}
 #line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									if (_tmp119_) {
 #line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										_tmp118_ = TRUE;
-#line 2712 "tracker-turtle-reader.c"
+#line 2740 "tracker-turtle-reader.c"
 									} else {
 										gboolean _tmp121_ = FALSE;
 										gboolean _tmp122_ = FALSE;
@@ -2724,7 +2752,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 												g_propagate_error (error, _inner_error_);
 #line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												return FALSE;
-#line 2728 "tracker-turtle-reader.c"
+#line 2756 "tracker-turtle-reader.c"
 											} else {
 #line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2732,16 +2760,16 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 												g_clear_error (&_inner_error_);
 #line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												return FALSE;
-#line 2736 "tracker-turtle-reader.c"
+#line 2764 "tracker-turtle-reader.c"
 											}
 										}
 #line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										_tmp118_ = _tmp121_;
-#line 2741 "tracker-turtle-reader.c"
+#line 2769 "tracker-turtle-reader.c"
 									}
 #line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									if (_tmp118_) {
-#line 2745 "tracker-turtle-reader.c"
+#line 2773 "tracker-turtle-reader.c"
 										GString* sb = NULL;
 										GString* _tmp123_ = NULL;
 										gchar* s = NULL;
@@ -2781,7 +2809,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 										end = _tmp126_ + _tmp129_;
 #line 265 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										while (TRUE) {
-#line 2785 "tracker-turtle-reader.c"
+#line 2813 "tracker-turtle-reader.c"
 											const gchar* _tmp130_ = NULL;
 											const gchar* _tmp131_ = NULL;
 											const gchar* q = NULL;
@@ -2796,7 +2824,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 											if (!(((glong) _tmp130_) < ((glong) _tmp131_))) {
 #line 265 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												break;
-#line 2800 "tracker-turtle-reader.c"
+#line 2828 "tracker-turtle-reader.c"
 											}
 #line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 											_tmp132_ = p;
@@ -2808,7 +2836,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 											_tmp134_ = q;
 #line 267 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 											if (_tmp134_ == NULL) {
-#line 2812 "tracker-turtle-reader.c"
+#line 2840 "tracker-turtle-reader.c"
 												GString* _tmp135_ = NULL;
 												const gchar* _tmp136_ = NULL;
 												const gchar* _tmp137_ = NULL;
@@ -2828,7 +2856,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 												_tmp139_ = end;
 #line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												p = _tmp139_;
-#line 2832 "tracker-turtle-reader.c"
+#line 2860 "tracker-turtle-reader.c"
 											} else {
 												GString* _tmp140_ = NULL;
 												const gchar* _tmp141_ = NULL;
@@ -2864,7 +2892,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 													case '"':
 #line 273 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													case '\\':
-#line 2868 "tracker-turtle-reader.c"
+#line 2896 "tracker-turtle-reader.c"
 													{
 														GString* _tmp147_ = NULL;
 														const gchar* _tmp148_ = NULL;
@@ -2879,11 +2907,11 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_string_append_c (_tmp147_, _tmp149_);
 #line 278 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														break;
-#line 2883 "tracker-turtle-reader.c"
+#line 2911 "tracker-turtle-reader.c"
 													}
 #line 273 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													case 'b':
-#line 2887 "tracker-turtle-reader.c"
+#line 2915 "tracker-turtle-reader.c"
 													{
 														GString* _tmp150_ = NULL;
 #line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2892,11 +2920,11 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_string_append_c (_tmp150_, '\b');
 #line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														break;
-#line 2896 "tracker-turtle-reader.c"
+#line 2924 "tracker-turtle-reader.c"
 													}
 #line 273 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													case 'f':
-#line 2900 "tracker-turtle-reader.c"
+#line 2928 "tracker-turtle-reader.c"
 													{
 														GString* _tmp151_ = NULL;
 #line 283 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2905,11 +2933,11 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_string_append_c (_tmp151_, '\f');
 #line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														break;
-#line 2909 "tracker-turtle-reader.c"
+#line 2937 "tracker-turtle-reader.c"
 													}
 #line 273 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													case 'n':
-#line 2913 "tracker-turtle-reader.c"
+#line 2941 "tracker-turtle-reader.c"
 													{
 														GString* _tmp152_ = NULL;
 #line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2918,11 +2946,11 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_string_append_c (_tmp152_, '\n');
 #line 287 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														break;
-#line 2922 "tracker-turtle-reader.c"
+#line 2950 "tracker-turtle-reader.c"
 													}
 #line 273 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													case 'r':
-#line 2926 "tracker-turtle-reader.c"
+#line 2954 "tracker-turtle-reader.c"
 													{
 														GString* _tmp153_ = NULL;
 #line 289 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2931,11 +2959,11 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_string_append_c (_tmp153_, '\r');
 #line 290 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														break;
-#line 2935 "tracker-turtle-reader.c"
+#line 2963 "tracker-turtle-reader.c"
 													}
 #line 273 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													case 't':
-#line 2939 "tracker-turtle-reader.c"
+#line 2967 "tracker-turtle-reader.c"
 													{
 														GString* _tmp154_ = NULL;
 #line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2944,18 +2972,18 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_string_append_c (_tmp154_, '\t');
 #line 293 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														break;
-#line 2948 "tracker-turtle-reader.c"
+#line 2976 "tracker-turtle-reader.c"
 													}
 													default:
 #line 273 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													break;
-#line 2953 "tracker-turtle-reader.c"
+#line 2981 "tracker-turtle-reader.c"
 												}
 #line 295 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												_tmp155_ = p;
 #line 295 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												p = _tmp155_ + 1;
-#line 2959 "tracker-turtle-reader.c"
+#line 2987 "tracker-turtle-reader.c"
 											}
 										}
 #line 298 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -2984,7 +3012,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 												_g_string_free0 (sb);
 #line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												return FALSE;
-#line 2988 "tracker-turtle-reader.c"
+#line 3016 "tracker-turtle-reader.c"
 											} else {
 #line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												_g_free0 (s);
@@ -2996,12 +3024,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 												g_clear_error (&_inner_error_);
 #line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												return FALSE;
-#line 3000 "tracker-turtle-reader.c"
+#line 3028 "tracker-turtle-reader.c"
 											}
 										}
 #line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										if (_tmp158_) {
-#line 3005 "tracker-turtle-reader.c"
+#line 3033 "tracker-turtle-reader.c"
 											gboolean _tmp160_ = FALSE;
 											gboolean _tmp161_ = FALSE;
 #line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3020,7 +3048,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 													_g_string_free0 (sb);
 #line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													return FALSE;
-#line 3024 "tracker-turtle-reader.c"
+#line 3052 "tracker-turtle-reader.c"
 												} else {
 #line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													_g_free0 (s);
@@ -3032,7 +3060,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 													g_clear_error (&_inner_error_);
 #line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													return FALSE;
-#line 3036 "tracker-turtle-reader.c"
+#line 3064 "tracker-turtle-reader.c"
 												}
 											}
 #line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3051,7 +3079,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														_g_string_free0 (sb);
 #line 304 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														return FALSE;
-#line 3055 "tracker-turtle-reader.c"
+#line 3083 "tracker-turtle-reader.c"
 													} else {
 #line 304 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														_g_free0 (s);
@@ -3063,7 +3091,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_clear_error (&_inner_error_);
 #line 304 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														return FALSE;
-#line 3067 "tracker-turtle-reader.c"
+#line 3095 "tracker-turtle-reader.c"
 													}
 												}
 #line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3080,7 +3108,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														_g_string_free0 (sb);
 #line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														return FALSE;
-#line 3084 "tracker-turtle-reader.c"
+#line 3112 "tracker-turtle-reader.c"
 													} else {
 #line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														_g_free0 (s);
@@ -3092,7 +3120,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_clear_error (&_inner_error_);
 #line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														return FALSE;
-#line 3096 "tracker-turtle-reader.c"
+#line 3124 "tracker-turtle-reader.c"
 													}
 												}
 											}
@@ -3105,7 +3133,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 										_g_string_free0 (sb);
 #line 309 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										return result;
-#line 3109 "tracker-turtle-reader.c"
+#line 3137 "tracker-turtle-reader.c"
 									} else {
 										gboolean _tmp162_ = FALSE;
 										gboolean _tmp163_ = FALSE;
@@ -3122,7 +3150,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 												g_propagate_error (error, _inner_error_);
 #line 310 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												return FALSE;
-#line 3126 "tracker-turtle-reader.c"
+#line 3154 "tracker-turtle-reader.c"
 											} else {
 #line 310 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3130,14 +3158,14 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 												g_clear_error (&_inner_error_);
 #line 310 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												return FALSE;
-#line 3134 "tracker-turtle-reader.c"
+#line 3162 "tracker-turtle-reader.c"
 											}
 										}
 #line 310 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										if (_tmp163_) {
 #line 310 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 											_tmp162_ = TRUE;
-#line 3141 "tracker-turtle-reader.c"
+#line 3169 "tracker-turtle-reader.c"
 										} else {
 											gboolean _tmp165_ = FALSE;
 											gboolean _tmp166_ = FALSE;
@@ -3153,7 +3181,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 													g_propagate_error (error, _inner_error_);
 #line 310 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													return FALSE;
-#line 3157 "tracker-turtle-reader.c"
+#line 3185 "tracker-turtle-reader.c"
 												} else {
 #line 310 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3161,16 +3189,16 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 													g_clear_error (&_inner_error_);
 #line 310 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													return FALSE;
-#line 3165 "tracker-turtle-reader.c"
+#line 3193 "tracker-turtle-reader.c"
 												}
 											}
 #line 310 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 											_tmp162_ = _tmp165_;
-#line 3170 "tracker-turtle-reader.c"
+#line 3198 "tracker-turtle-reader.c"
 										}
 #line 310 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 										if (_tmp162_) {
-#line 3174 "tracker-turtle-reader.c"
+#line 3202 "tracker-turtle-reader.c"
 											gchar* _tmp167_ = NULL;
 											gchar* _tmp168_ = NULL;
 											gboolean _tmp169_ = FALSE;
@@ -3199,7 +3227,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 													g_propagate_error (error, _inner_error_);
 #line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													return FALSE;
-#line 3203 "tracker-turtle-reader.c"
+#line 3231 "tracker-turtle-reader.c"
 												} else {
 #line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3207,12 +3235,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 													g_clear_error (&_inner_error_);
 #line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													return FALSE;
-#line 3211 "tracker-turtle-reader.c"
+#line 3239 "tracker-turtle-reader.c"
 												}
 											}
 #line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 											if (_tmp169_) {
-#line 3216 "tracker-turtle-reader.c"
+#line 3244 "tracker-turtle-reader.c"
 												gboolean _tmp171_ = FALSE;
 												gboolean _tmp172_ = FALSE;
 #line 316 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3227,7 +3255,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_propagate_error (error, _inner_error_);
 #line 316 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														return FALSE;
-#line 3231 "tracker-turtle-reader.c"
+#line 3259 "tracker-turtle-reader.c"
 													} else {
 #line 316 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3235,7 +3263,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_clear_error (&_inner_error_);
 #line 316 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														return FALSE;
-#line 3239 "tracker-turtle-reader.c"
+#line 3267 "tracker-turtle-reader.c"
 													}
 												}
 #line 316 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3250,7 +3278,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 															g_propagate_error (error, _inner_error_);
 #line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 															return FALSE;
-#line 3254 "tracker-turtle-reader.c"
+#line 3282 "tracker-turtle-reader.c"
 														} else {
 #line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 															g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3258,7 +3286,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 															g_clear_error (&_inner_error_);
 #line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 															return FALSE;
-#line 3262 "tracker-turtle-reader.c"
+#line 3290 "tracker-turtle-reader.c"
 														}
 													}
 #line 318 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3271,7 +3299,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 															g_propagate_error (error, _inner_error_);
 #line 318 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 															return FALSE;
-#line 3275 "tracker-turtle-reader.c"
+#line 3303 "tracker-turtle-reader.c"
 														} else {
 #line 318 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 															g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3279,7 +3307,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 															g_clear_error (&_inner_error_);
 #line 318 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 															return FALSE;
-#line 3283 "tracker-turtle-reader.c"
+#line 3311 "tracker-turtle-reader.c"
 														}
 													}
 												}
@@ -3288,7 +3316,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 											result = TRUE;
 #line 322 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 											return result;
-#line 3292 "tracker-turtle-reader.c"
+#line 3320 "tracker-turtle-reader.c"
 										} else {
 											gboolean _tmp173_ = FALSE;
 											gboolean _tmp174_ = FALSE;
@@ -3308,7 +3336,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 													g_propagate_error (error, _inner_error_);
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													return FALSE;
-#line 3312 "tracker-turtle-reader.c"
+#line 3340 "tracker-turtle-reader.c"
 												} else {
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3316,14 +3344,14 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 													g_clear_error (&_inner_error_);
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													return FALSE;
-#line 3320 "tracker-turtle-reader.c"
+#line 3348 "tracker-turtle-reader.c"
 												}
 											}
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 											if (_tmp177_) {
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												_tmp176_ = TRUE;
-#line 3327 "tracker-turtle-reader.c"
+#line 3355 "tracker-turtle-reader.c"
 											} else {
 												gboolean _tmp179_ = FALSE;
 												gboolean _tmp180_ = FALSE;
@@ -3339,7 +3367,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_propagate_error (error, _inner_error_);
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														return FALSE;
-#line 3343 "tracker-turtle-reader.c"
+#line 3371 "tracker-turtle-reader.c"
 													} else {
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3347,18 +3375,18 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_clear_error (&_inner_error_);
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														return FALSE;
-#line 3351 "tracker-turtle-reader.c"
+#line 3379 "tracker-turtle-reader.c"
 													}
 												}
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												_tmp176_ = _tmp179_;
-#line 3356 "tracker-turtle-reader.c"
+#line 3384 "tracker-turtle-reader.c"
 											}
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 											if (_tmp176_) {
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												_tmp175_ = TRUE;
-#line 3362 "tracker-turtle-reader.c"
+#line 3390 "tracker-turtle-reader.c"
 											} else {
 												gboolean _tmp181_ = FALSE;
 												gboolean _tmp182_ = FALSE;
@@ -3374,7 +3402,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_propagate_error (error, _inner_error_);
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														return FALSE;
-#line 3378 "tracker-turtle-reader.c"
+#line 3406 "tracker-turtle-reader.c"
 													} else {
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3382,18 +3410,18 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_clear_error (&_inner_error_);
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														return FALSE;
-#line 3386 "tracker-turtle-reader.c"
+#line 3414 "tracker-turtle-reader.c"
 													}
 												}
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												_tmp175_ = _tmp181_;
-#line 3391 "tracker-turtle-reader.c"
+#line 3419 "tracker-turtle-reader.c"
 											}
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 											if (_tmp175_) {
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												_tmp174_ = TRUE;
-#line 3397 "tracker-turtle-reader.c"
+#line 3425 "tracker-turtle-reader.c"
 											} else {
 												gboolean _tmp183_ = FALSE;
 												gboolean _tmp184_ = FALSE;
@@ -3409,7 +3437,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_propagate_error (error, _inner_error_);
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														return FALSE;
-#line 3413 "tracker-turtle-reader.c"
+#line 3441 "tracker-turtle-reader.c"
 													} else {
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3417,18 +3445,18 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_clear_error (&_inner_error_);
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														return FALSE;
-#line 3421 "tracker-turtle-reader.c"
+#line 3449 "tracker-turtle-reader.c"
 													}
 												}
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												_tmp174_ = _tmp183_;
-#line 3426 "tracker-turtle-reader.c"
+#line 3454 "tracker-turtle-reader.c"
 											}
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 											if (_tmp174_) {
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												_tmp173_ = TRUE;
-#line 3432 "tracker-turtle-reader.c"
+#line 3460 "tracker-turtle-reader.c"
 											} else {
 												gboolean _tmp185_ = FALSE;
 												gboolean _tmp186_ = FALSE;
@@ -3444,7 +3472,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_propagate_error (error, _inner_error_);
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														return FALSE;
-#line 3448 "tracker-turtle-reader.c"
+#line 3476 "tracker-turtle-reader.c"
 													} else {
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3452,16 +3480,16 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 														g_clear_error (&_inner_error_);
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 														return FALSE;
-#line 3456 "tracker-turtle-reader.c"
+#line 3484 "tracker-turtle-reader.c"
 													}
 												}
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												_tmp173_ = _tmp185_;
-#line 3461 "tracker-turtle-reader.c"
+#line 3489 "tracker-turtle-reader.c"
 											}
 #line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 											if (_tmp173_) {
-#line 3465 "tracker-turtle-reader.c"
+#line 3493 "tracker-turtle-reader.c"
 												gchar* _tmp187_ = NULL;
 												gchar* _tmp188_ = NULL;
 #line 324 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3480,7 +3508,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 												result = TRUE;
 #line 327 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 												return result;
-#line 3484 "tracker-turtle-reader.c"
+#line 3512 "tracker-turtle-reader.c"
 											} else {
 												GError* _tmp189_ = NULL;
 #line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3493,7 +3521,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 													g_propagate_error (error, _inner_error_);
 #line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													return FALSE;
-#line 3497 "tracker-turtle-reader.c"
+#line 3525 "tracker-turtle-reader.c"
 												} else {
 #line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3501,7 +3529,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 													g_clear_error (&_inner_error_);
 #line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 													return FALSE;
-#line 3505 "tracker-turtle-reader.c"
+#line 3533 "tracker-turtle-reader.c"
 												}
 											}
 										}
@@ -3514,7 +3542,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 			}
 #line 150 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			case TRACKER_TURTLE_READER_STATE_OBJECT:
-#line 3518 "tracker-turtle-reader.c"
+#line 3546 "tracker-turtle-reader.c"
 			{
 				gboolean _tmp190_ = FALSE;
 				gboolean _tmp191_ = FALSE;
@@ -3530,7 +3558,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						g_propagate_error (error, _inner_error_);
 #line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						return FALSE;
-#line 3534 "tracker-turtle-reader.c"
+#line 3562 "tracker-turtle-reader.c"
 					} else {
 #line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3538,7 +3566,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						g_clear_error (&_inner_error_);
 #line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						return FALSE;
-#line 3542 "tracker-turtle-reader.c"
+#line 3570 "tracker-turtle-reader.c"
 					}
 				}
 #line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3547,7 +3575,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 					self->priv->state = TRACKER_TURTLE_READER_STATE_PREDICATE;
 #line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					continue;
-#line 3551 "tracker-turtle-reader.c"
+#line 3579 "tracker-turtle-reader.c"
 				} else {
 					gboolean _tmp192_ = FALSE;
 					gboolean _tmp193_ = FALSE;
@@ -3563,7 +3591,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_propagate_error (error, _inner_error_);
 #line 335 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 3567 "tracker-turtle-reader.c"
+#line 3595 "tracker-turtle-reader.c"
 						} else {
 #line 335 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3571,12 +3599,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							g_clear_error (&_inner_error_);
 #line 335 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return FALSE;
-#line 3575 "tracker-turtle-reader.c"
+#line 3603 "tracker-turtle-reader.c"
 						}
 					}
 #line 335 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					if (_tmp192_) {
-#line 3580 "tracker-turtle-reader.c"
+#line 3608 "tracker-turtle-reader.c"
 						gboolean _tmp194_ = FALSE;
 						gboolean _tmp195_ = FALSE;
 #line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3591,7 +3619,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_propagate_error (error, _inner_error_);
 #line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 3595 "tracker-turtle-reader.c"
+#line 3623 "tracker-turtle-reader.c"
 							} else {
 #line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3599,7 +3627,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								g_clear_error (&_inner_error_);
 #line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								return FALSE;
-#line 3603 "tracker-turtle-reader.c"
+#line 3631 "tracker-turtle-reader.c"
 							}
 						}
 #line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3608,13 +3636,13 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							self->priv->state = TRACKER_TURTLE_READER_STATE_BOS;
 #line 339 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							continue;
-#line 3612 "tracker-turtle-reader.c"
+#line 3640 "tracker-turtle-reader.c"
 						}
 #line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						self->priv->state = TRACKER_TURTLE_READER_STATE_SUBJECT;
 #line 342 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						continue;
-#line 3618 "tracker-turtle-reader.c"
+#line 3646 "tracker-turtle-reader.c"
 					} else {
 						gchar** _tmp196_ = NULL;
 						gint _tmp196__length1 = 0;
@@ -3624,7 +3652,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 						_tmp196__length1 = self->priv->subject_stack_length1;
 #line 343 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 						if (_tmp196__length1 > 0) {
-#line 3628 "tracker-turtle-reader.c"
+#line 3656 "tracker-turtle-reader.c"
 							const gchar* _tmp197_ = NULL;
 							gchar** _tmp198_ = NULL;
 							gint _tmp198__length1 = 0;
@@ -3648,7 +3676,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_propagate_error (error, _inner_error_);
 #line 345 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 3652 "tracker-turtle-reader.c"
+#line 3680 "tracker-turtle-reader.c"
 								} else {
 #line 345 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3656,7 +3684,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_clear_error (&_inner_error_);
 #line 345 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 3660 "tracker-turtle-reader.c"
+#line 3688 "tracker-turtle-reader.c"
 								}
 							}
 #line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3703,7 +3731,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 							result = TRUE;
 #line 357 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 							return result;
-#line 3707 "tracker-turtle-reader.c"
+#line 3735 "tracker-turtle-reader.c"
 						} else {
 							gboolean _tmp206_ = FALSE;
 							gboolean _tmp207_ = FALSE;
@@ -3719,7 +3747,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_propagate_error (error, _inner_error_);
 #line 358 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 3723 "tracker-turtle-reader.c"
+#line 3751 "tracker-turtle-reader.c"
 								} else {
 #line 358 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3727,7 +3755,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_clear_error (&_inner_error_);
 #line 358 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 3731 "tracker-turtle-reader.c"
+#line 3759 "tracker-turtle-reader.c"
 								}
 							}
 #line 358 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3736,7 +3764,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 								self->priv->state = TRACKER_TURTLE_READER_STATE_BOS;
 #line 360 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 								continue;
-#line 3740 "tracker-turtle-reader.c"
+#line 3768 "tracker-turtle-reader.c"
 							} else {
 								GError* _tmp208_ = NULL;
 #line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3749,7 +3777,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_propagate_error (error, _inner_error_);
 #line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 3753 "tracker-turtle-reader.c"
+#line 3781 "tracker-turtle-reader.c"
 								} else {
 #line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -3757,7 +3785,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									g_clear_error (&_inner_error_);
 #line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 									return FALSE;
-#line 3761 "tracker-turtle-reader.c"
+#line 3789 "tracker-turtle-reader.c"
 								}
 							}
 						}
@@ -3767,7 +3795,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 			default:
 #line 150 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			break;
-#line 3771 "tracker-turtle-reader.c"
+#line 3799 "tracker-turtle-reader.c"
 		}
 	}
 }
@@ -3776,7 +3804,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 static gpointer _g_error_copy0 (gpointer self) {
 #line 385 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return self ? g_error_copy (self) : NULL;
-#line 3780 "tracker-turtle-reader.c"
+#line 3808 "tracker-turtle-reader.c"
 }
 
 
@@ -3784,7 +3812,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 	GError * _inner_error_ = NULL;
 #line 368 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_return_if_fail (path != NULL);
-#line 3788 "tracker-turtle-reader.c"
+#line 3816 "tracker-turtle-reader.c"
 	{
 		TrackerTurtleReader* reader = NULL;
 		const gchar* _tmp0_ = NULL;
@@ -3795,12 +3823,12 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 		if (G_UNLIKELY (_inner_error_ != NULL)) {
 #line 370 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 3799 "tracker-turtle-reader.c"
+#line 3827 "tracker-turtle-reader.c"
 				goto __catch4_tracker_sparql_error;
 			}
 #line 370 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 3804 "tracker-turtle-reader.c"
+#line 3832 "tracker-turtle-reader.c"
 				goto __catch4_tracker_db_interface_error;
 			}
 #line 370 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3809,7 +3837,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 			g_clear_error (&_inner_error_);
 #line 370 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			return;
-#line 3813 "tracker-turtle-reader.c"
+#line 3841 "tracker-turtle-reader.c"
 		}
 #line 372 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		_tmp0_ = path;
@@ -3821,19 +3849,19 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 		if (G_UNLIKELY (_inner_error_ != NULL)) {
 #line 372 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 3825 "tracker-turtle-reader.c"
+#line 3853 "tracker-turtle-reader.c"
 				goto __catch4_tracker_sparql_error;
 			}
 #line 372 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 3830 "tracker-turtle-reader.c"
+#line 3858 "tracker-turtle-reader.c"
 				goto __catch4_tracker_db_interface_error;
 			}
 			goto __finally4;
 		}
 #line 373 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		while (TRUE) {
-#line 3837 "tracker-turtle-reader.c"
+#line 3865 "tracker-turtle-reader.c"
 			gboolean _tmp2_ = FALSE;
 			TrackerTurtleReader* _tmp3_ = NULL;
 			gboolean _tmp4_ = FALSE;
@@ -3851,12 +3879,12 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 				_g_object_unref0 (reader);
 #line 373 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 3855 "tracker-turtle-reader.c"
+#line 3883 "tracker-turtle-reader.c"
 					goto __catch4_tracker_sparql_error;
 				}
 #line 373 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 3860 "tracker-turtle-reader.c"
+#line 3888 "tracker-turtle-reader.c"
 					goto __catch4_tracker_db_interface_error;
 				}
 #line 373 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3867,13 +3895,13 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 				g_clear_error (&_inner_error_);
 #line 373 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				return;
-#line 3871 "tracker-turtle-reader.c"
+#line 3899 "tracker-turtle-reader.c"
 			}
 #line 373 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (!_tmp2_) {
 #line 373 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				break;
-#line 3877 "tracker-turtle-reader.c"
+#line 3905 "tracker-turtle-reader.c"
 			}
 #line 374 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			_tmp5_ = reader;
@@ -3881,7 +3909,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 			_tmp6_ = _tmp5_->priv->_object_is_uri;
 #line 374 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (_tmp6_) {
-#line 3885 "tracker-turtle-reader.c"
+#line 3913 "tracker-turtle-reader.c"
 				TrackerTurtleReader* _tmp7_ = NULL;
 				const gchar* _tmp8_ = NULL;
 				TrackerTurtleReader* _tmp9_ = NULL;
@@ -3914,12 +3942,12 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 					_g_object_unref0 (reader);
 #line 375 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 3918 "tracker-turtle-reader.c"
+#line 3946 "tracker-turtle-reader.c"
 						goto __catch4_tracker_sparql_error;
 					}
 #line 375 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 3923 "tracker-turtle-reader.c"
+#line 3951 "tracker-turtle-reader.c"
 						goto __catch4_tracker_db_interface_error;
 					}
 #line 375 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -3930,7 +3958,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 					g_clear_error (&_inner_error_);
 #line 375 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					return;
-#line 3934 "tracker-turtle-reader.c"
+#line 3962 "tracker-turtle-reader.c"
 				}
 			} else {
 				TrackerTurtleReader* _tmp15_ = NULL;
@@ -3965,12 +3993,12 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 					_g_object_unref0 (reader);
 #line 377 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 3969 "tracker-turtle-reader.c"
+#line 3997 "tracker-turtle-reader.c"
 						goto __catch4_tracker_sparql_error;
 					}
 #line 377 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 					if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 3974 "tracker-turtle-reader.c"
+#line 4002 "tracker-turtle-reader.c"
 						goto __catch4_tracker_db_interface_error;
 					}
 					goto __finally4;
@@ -3984,12 +4012,12 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 				_g_object_unref0 (reader);
 #line 379 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 3988 "tracker-turtle-reader.c"
+#line 4016 "tracker-turtle-reader.c"
 					goto __catch4_tracker_sparql_error;
 				}
 #line 379 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 3993 "tracker-turtle-reader.c"
+#line 4021 "tracker-turtle-reader.c"
 					goto __catch4_tracker_db_interface_error;
 				}
 #line 379 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -4000,7 +4028,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 				g_clear_error (&_inner_error_);
 #line 379 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 				return;
-#line 4004 "tracker-turtle-reader.c"
+#line 4032 "tracker-turtle-reader.c"
 			}
 		}
 #line 382 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -4011,12 +4039,12 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 			_g_object_unref0 (reader);
 #line 382 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 4015 "tracker-turtle-reader.c"
+#line 4043 "tracker-turtle-reader.c"
 				goto __catch4_tracker_sparql_error;
 			}
 #line 382 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 4020 "tracker-turtle-reader.c"
+#line 4048 "tracker-turtle-reader.c"
 				goto __catch4_tracker_db_interface_error;
 			}
 #line 382 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
@@ -4027,11 +4055,11 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 			g_clear_error (&_inner_error_);
 #line 382 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			return;
-#line 4031 "tracker-turtle-reader.c"
+#line 4059 "tracker-turtle-reader.c"
 		}
 #line 369 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		_g_object_unref0 (reader);
-#line 4035 "tracker-turtle-reader.c"
+#line 4063 "tracker-turtle-reader.c"
 	}
 	goto __finally4;
 	__catch4_tracker_sparql_error:
@@ -4053,7 +4081,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 		_inner_error_ = _tmp24_;
 #line 385 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		_g_error_free0 (e);
-#line 4057 "tracker-turtle-reader.c"
+#line 4085 "tracker-turtle-reader.c"
 		goto __finally4;
 	}
 	goto __finally4;
@@ -4076,7 +4104,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 		_inner_error_ = _tmp26_;
 #line 388 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		_g_error_free0 (e);
-#line 4080 "tracker-turtle-reader.c"
+#line 4108 "tracker-turtle-reader.c"
 		goto __finally4;
 	}
 	__finally4:
@@ -4088,7 +4116,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 			g_propagate_error (error, _inner_error_);
 #line 369 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			return;
-#line 4092 "tracker-turtle-reader.c"
+#line 4120 "tracker-turtle-reader.c"
 		} else {
 #line 369 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -4096,7 +4124,7 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 			g_clear_error (&_inner_error_);
 #line 369 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 			return;
-#line 4100 "tracker-turtle-reader.c"
+#line 4128 "tracker-turtle-reader.c"
 		}
 	}
 }
@@ -4113,7 +4141,7 @@ const gchar* tracker_turtle_reader_get_graph (TrackerTurtleReader* self) {
 	result = _tmp0_;
 #line 49 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 4117 "tracker-turtle-reader.c"
+#line 4145 "tracker-turtle-reader.c"
 }
 
 
@@ -4132,7 +4160,7 @@ static void tracker_turtle_reader_set_graph (TrackerTurtleReader* self, const gc
 	self->priv->_graph = _tmp1_;
 #line 49 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_object_notify ((GObject *) self, "graph");
-#line 4136 "tracker-turtle-reader.c"
+#line 4164 "tracker-turtle-reader.c"
 }
 
 
@@ -4147,7 +4175,7 @@ const gchar* tracker_turtle_reader_get_subject (TrackerTurtleReader* self) {
 	result = _tmp0_;
 #line 51 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 4151 "tracker-turtle-reader.c"
+#line 4179 "tracker-turtle-reader.c"
 }
 
 
@@ -4166,7 +4194,7 @@ static void tracker_turtle_reader_set_subject (TrackerTurtleReader* self, const 
 	self->priv->_subject = _tmp1_;
 #line 51 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_object_notify ((GObject *) self, "subject");
-#line 4170 "tracker-turtle-reader.c"
+#line 4198 "tracker-turtle-reader.c"
 }
 
 
@@ -4181,7 +4209,7 @@ const gchar* tracker_turtle_reader_get_predicate (TrackerTurtleReader* self) {
 	result = _tmp0_;
 #line 52 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 4185 "tracker-turtle-reader.c"
+#line 4213 "tracker-turtle-reader.c"
 }
 
 
@@ -4200,7 +4228,7 @@ static void tracker_turtle_reader_set_predicate (TrackerTurtleReader* self, cons
 	self->priv->_predicate = _tmp1_;
 #line 52 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_object_notify ((GObject *) self, "predicate");
-#line 4204 "tracker-turtle-reader.c"
+#line 4232 "tracker-turtle-reader.c"
 }
 
 
@@ -4215,7 +4243,7 @@ const gchar* tracker_turtle_reader_get_object (TrackerTurtleReader* self) {
 	result = _tmp0_;
 #line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 4219 "tracker-turtle-reader.c"
+#line 4247 "tracker-turtle-reader.c"
 }
 
 
@@ -4234,7 +4262,7 @@ static void tracker_turtle_reader_set_object (TrackerTurtleReader* self, const g
 	self->priv->_object = _tmp1_;
 #line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_object_notify ((GObject *) self, "object");
-#line 4238 "tracker-turtle-reader.c"
+#line 4266 "tracker-turtle-reader.c"
 }
 
 
@@ -4249,7 +4277,7 @@ gboolean tracker_turtle_reader_get_object_is_uri (TrackerTurtleReader* self) {
 	result = _tmp0_;
 #line 54 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return result;
-#line 4253 "tracker-turtle-reader.c"
+#line 4281 "tracker-turtle-reader.c"
 }
 
 
@@ -4263,7 +4291,7 @@ static void tracker_turtle_reader_set_object_is_uri (TrackerTurtleReader* self, 
 	self->priv->_object_is_uri = _tmp0_;
 #line 54 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_object_notify ((GObject *) self, "object-is-uri");
-#line 4267 "tracker-turtle-reader.c"
+#line 4295 "tracker-turtle-reader.c"
 }
 
 
@@ -4275,14 +4303,14 @@ static TrackerTurtleReaderTokenInfo* tracker_turtle_reader_token_info_dup (const
 	memcpy (dup, self, sizeof (TrackerTurtleReaderTokenInfo));
 #line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	return dup;
-#line 4279 "tracker-turtle-reader.c"
+#line 4307 "tracker-turtle-reader.c"
 }
 
 
 static void tracker_turtle_reader_token_info_free (TrackerTurtleReaderTokenInfo* self) {
 #line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_free (self);
-#line 4286 "tracker-turtle-reader.c"
+#line 4314 "tracker-turtle-reader.c"
 }
 
 
@@ -4318,7 +4346,7 @@ static void tracker_turtle_reader_class_init (TrackerTurtleReaderClass * klass) 
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_TURTLE_READER_OBJECT, g_param_spec_string ("object", "object", "object", NULL, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
 #line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_TURTLE_READER_OBJECT_IS_URI, g_param_spec_boolean ("object-is-uri", "object-is-uri", "object-is-uri", FALSE, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
-#line 4322 "tracker-turtle-reader.c"
+#line 4350 "tracker-turtle-reader.c"
 }
 
 
@@ -4327,7 +4355,7 @@ static void tracker_turtle_reader_instance_init (TrackerTurtleReader * self) {
 	self->priv = TRACKER_TURTLE_READER_GET_PRIVATE (self);
 #line 61 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	self->priv->bnodeid = 0;
-#line 4331 "tracker-turtle-reader.c"
+#line 4359 "tracker-turtle-reader.c"
 }
 
 
@@ -4359,7 +4387,7 @@ static void tracker_turtle_reader_finalize (GObject* obj) {
 	_g_mapped_file_unref0 (self->priv->mapped_file);
 #line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 	G_OBJECT_CLASS (tracker_turtle_reader_parent_class)->finalize (obj);
-#line 4363 "tracker-turtle-reader.c"
+#line 4391 "tracker-turtle-reader.c"
 }
 
 
@@ -4410,13 +4438,13 @@ static void _vala_tracker_turtle_reader_get_property (GObject * object, guint pr
 		g_value_set_boolean (value, tracker_turtle_reader_get_object_is_uri (self));
 #line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		break;
-#line 4414 "tracker-turtle-reader.c"
+#line 4442 "tracker-turtle-reader.c"
 		default:
 #line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		break;
-#line 4420 "tracker-turtle-reader.c"
+#line 4448 "tracker-turtle-reader.c"
 	}
 }
 
@@ -4456,13 +4484,13 @@ static void _vala_tracker_turtle_reader_set_property (GObject * object, guint pr
 		tracker_turtle_reader_set_object_is_uri (self, g_value_get_boolean (value));
 #line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		break;
-#line 4460 "tracker-turtle-reader.c"
+#line 4488 "tracker-turtle-reader.c"
 		default:
 #line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-data/tracker-turtle-reader.vala"
 		break;
-#line 4466 "tracker-turtle-reader.c"
+#line 4494 "tracker-turtle-reader.c"
 	}
 }
 

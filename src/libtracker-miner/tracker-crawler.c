@@ -565,8 +565,7 @@ static void
 directory_root_info_free (DirectoryRootInfo *info)
 {
 	if (info->dpd)  {
-		data_provider_data_free (info->dpd);
-		info->dpd = NULL;
+		data_provider_end (info->dpd->crawler, info);
 	}
 
 	g_object_unref (info->directory);
@@ -1235,7 +1234,7 @@ tracker_crawler_get_file_attributes (TrackerCrawler *crawler)
 gint
 tracker_crawler_get_max_depth (TrackerCrawler *crawler)
 {
-	g_return_val_if_fail (TRACKER_IS_CRAWLER (crawler), NULL);
+	g_return_val_if_fail (TRACKER_IS_CRAWLER (crawler), 0);
 	return crawler->priv->max_depth;
 }
 

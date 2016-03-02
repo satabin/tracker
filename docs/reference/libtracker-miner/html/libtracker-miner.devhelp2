@@ -176,6 +176,7 @@
     <keyword type="signal" name="The “ignore-next-update-file” signal" link="TrackerMinerFS.html#TrackerMinerFS-ignore-next-update-file"/>
     <keyword type="signal" name="The “process-file” signal" link="TrackerMinerFS.html#TrackerMinerFS-process-file"/>
     <keyword type="signal" name="The “process-file-attributes” signal" link="TrackerMinerFS.html#TrackerMinerFS-process-file-attributes"/>
+    <keyword type="signal" name="The “remove-file” signal" link="TrackerMinerFS.html#TrackerMinerFS-remove-file"/>
     <keyword type="signal" name="The “writeback-file” signal" link="TrackerMinerFS.html#TrackerMinerFS-writeback-file"/>
     <keyword type="function" name="tracker_file_data_provider_new ()" link="libtracker-miner-TrackerFileDataProvider.html#tracker-file-data-provider-new" since="1.2:"/>
     <keyword type="struct" name="struct TrackerFileDataProviderClass" link="libtracker-miner-TrackerFileDataProvider.html#TrackerFileDataProviderClass"/>

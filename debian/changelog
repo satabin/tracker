@@ -3,6 +3,8 @@ tracker (1.7.4-1) UNRELEASED; urgency=medium
   * New upstream release.
   * Drop dbg package now that we have automatic dbgsym packages.
   * Drop compat binaries, they are no longer provided by upstream.
+  * Ensure proper upgrade from tracker-dbg to new dbgsym packages by using
+    dh_strip --dbgsym-migration. Bump Build-Depends on debhelper accordingly.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 04 Feb 2016 06:31:20 +0100
 

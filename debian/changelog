@@ -1,4 +1,4 @@
-tracker (1.7.4-1) UNRELEASED; urgency=medium
+tracker (1.7.4-1) experimental; urgency=medium
 
   * New upstream release.
   * Drop dbg package now that we have automatic dbgsym packages.
@@ -9,7 +9,7 @@ tracker (1.7.4-1) UNRELEASED; urgency=medium
     DEB_HOST_MULTIARCH.
   * Bump Standards-Version to 3.9.7.
 
- -- Michael Biebl <biebl@debian.org>  Thu, 04 Feb 2016 06:31:20 +0100
+ -- Michael Biebl <biebl@debian.org>  Sun, 13 Mar 2016 21:27:52 +0100
 
 tracker (1.6.1-2) unstable; urgency=medium
 

@@ -1,5 +1,5 @@
 
-.TH tracker-miner-fs.cfg 5 "marzo 2016" 1.7.3 "Tracker Manual"
+.TH tracker-miner-fs.cfg 5 "marzo 2016" 1.7.4 "Tracker Manual"
 
 .SH NAME
 tracker-miner-fs.cfg
@@ -165,7 +165,7 @@ List of directories to avoid
 
 
 .TP
-\fBignored-directories-with-content\fR='.git'
+\fBignored-directories-with-content\fR='.trackerignore','.git'
 .nf
 
 Avoid any directory containing a file blacklisted here
@@ -195,7 +195,7 @@ The top level group is "General". The default configuration (if saved to tracker
     index-single-directories='$HOME';
     ignored-files='*~','*.o','*.la','*.lo','*.loT','*.in','*.csproj','*.m4','*.rej','*.gmo','*.orig','*.pc','*.omf','*.aux','*.tmp','*.po','*.vmdk','*.vm*','*.nvram','*.part','*.rcore','*.lzo','autom4te','conftest','confstat','Makefile','SCCS','ltmain.sh','libtool','config.status','confdefs.h','configure','#*#';
     ignored-directories='po','CVS','core-dumps','lost+found';
-    ignored-directories-with-content='.git';
+    ignored-directories-with-content='.trackerignore','.git';
     
 .fi
 

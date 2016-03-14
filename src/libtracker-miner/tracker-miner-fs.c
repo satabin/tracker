@@ -2105,7 +2105,7 @@ item_reenqueue_full (TrackerMinerFS       *fs,
 	reentry_counter = GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (queue_file),
 	                                                       fs->priv->quark_reentry_counter));
 
-	if (reentry_counter < REENTRY_MAX) {
+	if (reentry_counter <= REENTRY_MAX) {
 		g_object_set_qdata (G_OBJECT (queue_file),
 		                    fs->priv->quark_reentry_counter,
 		                    GINT_TO_POINTER (reentry_counter + 1));
@@ -2183,8 +2183,8 @@ item_queue_get_next_file (TrackerMinerFS  *fs,
 	}
 
 	/* Deleted items second */
-	queue_file = tracker_priority_queue_pop (fs->priv->items_deleted,
-	                                         &priority);
+	queue_file = tracker_priority_queue_peek (fs->priv->items_deleted,
+	                                          &priority);
 	if (queue_file) {
 		*source_file = NULL;
 
@@ -2201,23 +2201,18 @@ item_queue_get_next_file (TrackerMinerFS  *fs,
 			*file = NULL;
 
 			trace_eq_push_head ("DELETED", queue_file, "Should wait");
-
-			/* Need to postpone event... */
-			if (item_reenqueue (fs, fs->priv->items_deleted, queue_file, priority - 1)) {
-				return QUEUE_WAIT;
-			} else {
-				return QUEUE_NONE;
-			}
+			return QUEUE_WAIT;
 		}
 
+		tracker_priority_queue_pop (fs->priv->items_deleted, NULL);
 		*file = queue_file;
 		*priority_out = priority;
 		return QUEUE_DELETED;
 	}
 
 	/* Created items next */
-	queue_file = tracker_priority_queue_pop (fs->priv->items_created,
-	                                         &priority);
+	queue_file = tracker_priority_queue_peek (fs->priv->items_created,
+	                                          &priority);
 	if (queue_file) {
 		*source_file = NULL;
 
@@ -2255,23 +2250,18 @@ item_queue_get_next_file (TrackerMinerFS  *fs,
 			*file = NULL;
 
 			trace_eq_push_head ("CREATED", queue_file, "Should wait");
-
-			/* Need to postpone event... */
-			if (item_reenqueue (fs, fs->priv->items_created, queue_file, priority - 1)) {
-				return QUEUE_WAIT;
-			} else {
-				return QUEUE_NONE;
-			}
+			return QUEUE_WAIT;
 		}
 
+		tracker_priority_queue_pop (fs->priv->items_created, NULL);
 		*file = queue_file;
 		*priority_out = priority;
 		return QUEUE_CREATED;
 	}
 
 	/* Updated items next */
-	queue_file = tracker_priority_queue_pop (fs->priv->items_updated,
-	                                         &priority);
+	queue_file = tracker_priority_queue_peek (fs->priv->items_updated,
+	                                          &priority);
 	if (queue_file) {
 		*file = queue_file;
 		*source_file = NULL;
@@ -2296,23 +2286,18 @@ item_queue_get_next_file (TrackerMinerFS  *fs,
 			*file = NULL;
 
 			trace_eq_push_head ("UPDATED", queue_file, "Should wait");
-
-			/* Need to postpone event... */
-			if (item_reenqueue (fs, fs->priv->items_updated, queue_file, priority - 1)) {
-				return QUEUE_WAIT;
-			} else {
-				return QUEUE_NONE;
-			}
+			return QUEUE_WAIT;
 		}
 
+		tracker_priority_queue_pop (fs->priv->items_updated, NULL);
 		*priority_out = priority;
 
 		return QUEUE_UPDATED;
 	}
 
 	/* Moved items next */
-	data = tracker_priority_queue_pop (fs->priv->items_moved,
-	                                   &priority);
+	data = tracker_priority_queue_peek (fs->priv->items_moved,
+	                                    &priority);
 	if (data) {
 		trace_eq_pop_head_2 ("MOVED", data->file, data->source_file);
 
@@ -2342,15 +2327,10 @@ item_queue_get_next_file (TrackerMinerFS  *fs,
 			*source_file = NULL;
 
 			trace_eq_push_head_2 ("MOVED", data->source_file, data->file, "Should wait");
-
-			/* Need to postpone event... */
-			if (item_reenqueue_full (fs, fs->priv->items_moved, data->file, data, priority - 1)) {
-				return QUEUE_WAIT;
-			} else {
-				return QUEUE_NONE;
-			}
+			return QUEUE_WAIT;
 		}
 
+		tracker_priority_queue_pop (fs->priv->items_moved, NULL);
 		*file = g_object_ref (data->file);
 		*source_file = g_object_ref (data->source_file);
 		*priority_out = priority;

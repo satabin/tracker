@@ -13,7 +13,7 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [1])
 m4_define([tracker_minor_version], [7])
-m4_define([tracker_micro_version], [4])
+m4_define([tracker_micro_version], [5])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -2705,6 +2705,7 @@ AC_CONFIG_FILES([
 	tests/libtracker-data/graph/Makefile
 	tests/libtracker-data/nie/Makefile
 	tests/libtracker-data/nmo/Makefile
+	tests/libtracker-data/mixed-cardinality/Makefile
 	tests/libtracker-data/optional/Makefile
 	tests/libtracker-data/regex/Makefile
 	tests/libtracker-data/sort/Makefile

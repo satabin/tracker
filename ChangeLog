@@ -1,4 +1,178 @@
+2016-03-14  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.7.5
+
+	tests: distcheck fix
+
+	libtracker-miner: Ensure the directory root is removed when its indexing root is
+	If the directory is currently being inspected, and in the query (rather
+	than crawling) phase, TrackerCrawler::finished won't be called, so the
+	current index root might not be cleared yet.
+
+	This code is very similar to file_notifier_current_root_check_remove_directory,
+	and the same considerations apply.
+
+	libtracker-miner: Initialize all NodeData memory
+	we were leaving fields uninitialized.
+
+	tracker-extract: Ensure all cue sheet MusicPieces have a nfo:duration
+	The last entry in the TrackerToc may lack duration information, because
+	it's not specified in the cue file, but is determined from the audio
+	file itself. In this case, fill this info in.
+
+	tracker-extract: Plug leak in cue sheet parsing
+
+	tracker-extract: Use safer method to insert tags in PNG module
+	The current way of inserting the nao:hasTag relationship on the
+	extracted file involves one join operation per tag being inserted.
+	This has performance implications, plus we can feasibly hit the
+	sqlite limit of 64 tables in joins.
+
+	Instead insert the tags in separate inserts, that will be as fast
+	as it gets, plus there's no limit in the number of tags.
+
+	tracker-extract: Use safer method to insert tags in TIFF module
+	The current way of inserting the nao:hasTag relationship on the
+	extracted file involves one join operation per tag being inserted.
+	This has performance implications, plus we can feasibly hit the
+	sqlite limit of 64 tables in joins.
+
+	Instead insert the tags in separate inserts, that will be as fast
+	as it gets, plus there's no limit in the number of tags.
+
+	tracker-extract: Use safer method to insert tags in JPEG module
+	The current way of inserting the nao:hasTag relationship on the
+	extracted file involves one join operation per tag being inserted.
+	This has performance implications, plus we can feasibly hit the
+	sqlite limit of 64 tables in joins.
+
+	Instead insert the tags in separate inserts, that will be as fast
+	as it gets, plus there's no limit in the number of tags.
+
+	tracker-extract: Use safer method to insert tags in GIF module
+	The current way of inserting the nao:hasTag relationship on the
+	extracted file involves one join operation per tag being inserted.
+	This has performance implications, plus we can feasibly hit the
+	sqlite limit of 64 tables in joins.
+
+	Instead insert the tags in separate inserts, that will be as fast
+	as it gets, plus there's no limit in the number of tags.
+
+	tracker-extract: Use safer method to insert tags in PDF module
+	The current way of inserting the nao:hasTag relationship on the
+	extracted file involves one join operation per tag being inserted.
+	This has performance implications, plus we can feasibly hit the
+	sqlite limit of 64 tables in joins.
+
+	Instead insert the tags in separate inserts, that will be as fast
+	as it gets, plus there's no limit in the number of tags.
+
+	tracker-extract: Propagate urn to the TrackerExtractInfo
+	Now that extraction is performed after the file got initially
+	inserted and has an URN, there's no reason we can't pass the
+	URN to the TrackerExtractInfo. This would make URNs available
+	to extract modules, which have some places where the SPARQL
+	produced would be clearer.
+
+	This actually opens the path for quite a cleanup, we might
+	pass a single TrackerSparqlBuilder to extract modules instead
+	of doing the postprocessing we currently perform.
+
+	tracker-extract: Remove old dbus interface xml
+	This interface is unused and not implemented nowadays, remove.
+
+	libtracker-extract: Delete TrackerExtractClient
+	It's dead code since tracker-extract is a TrackerDecorator, delete.
+
+	libtracker-miner: Avoid changing order of elements in the processing queue
+	If should_wait() returns TRUE for an element, we end up putting the file in
+	the queue again and incrementing its reentry counter. This situation should
+	be deemed normal, so we can just peek the element, and only pop it if we
+	should not wait.
+
+	libtracker-miner: Cut some slack on the reentry counter
+	REENTRY_MAX is 2 currently, so counter<2 is effectively 1, which
+	doesn't make much for "reentry".
+
+	tracker-extract: Add missing application/msword mimetype
+	Somehow that went missing.
+
+	tracker-extract: Check string length before parsing XMP in the PDF extractor
+	tracker_xmp_new() may warn if we're given an empty string here.
+
+	tracker-extract: Protect all single valued properties in html extractor
+	In case of malformed documents or unexpected input, avoid creating sparql
+	that will break cardinality constraints, and ignore those, because there's
+	so much broken html around.
+
+	tracker-extract: Protect all single valued properties in oasis extractor
+	In case of malformed documents or unexpected input, avoid creating sparql
+	that will break cardinality constraints, warn nicely instead.
+
+	tracker-extract: Protect all single valued properties in ooxml extractor
+	In case of malformed documents or unexpected input, avoid creating sparql
+	that will break cardinality constraints, warn nicely instead.
+
+	tracker-extract: Protect all single valued properties in EPUB extractor
+	In case of malformed documents or unexpected input, avoid creating sparql
+	that will break cardinality constraints, warn nicely instead.
+
+	tracker-extract: Protect all single valued properties in abiword extractor
+	In case of malformed documents or unexpected input, avoid creating sparql
+	that will break cardinality constraints, warn nicely instead.
+
+2016-03-13  Carlos Garnacho  <carlosg@gnome.org>
+
+	tests: Add tests to prove the last commit
+	Reverting it will make the first test fail with:
+
+	Unable to insert multiple values for subject `http://example.com/foo' and
+	single valued property `example:propertyA' (old_value: 'foo', new value: 'bar')
+
+	libtracker-data: Handle inserts where the subproperty cardinality is larger than the parents'
+	This is the case of properties like nco:creator, which has unrestricted
+	cardinality, but is subproperty of dc:creator, which has its cardinality
+	limited to 1.
+
+	In cases like this, inserts of multiple values shouldn't fail because of
+	the restricted cardinality in superproperties which this one supersedes.
+	So make it sure we don't propagate inserts to superproperties if its
+	cardinality is already satisfied.
+
+	Updates already work fine in this regard, with the difference that it's
+	the last value which will prevail in the single-valued superproperty, this
+	seems consistent with the nature of updates.
+
+2016-03-11  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Avoid querying file type in crawling queries
+	We only really need the file type from the database when checking
+	for contents that are no longer in the filesystem. This spares us
+	the OPTIONAL in the (by far) most commonly performed query here,
+	the one checking the contents that do exist in the filesystem.
+
+	Also, modify the "deleted contents check" query so it performs
+	better with a larger number of elements.
+
+2016-03-06  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract: Use gst_tag_list_new_empty() in cue sheet helpers
+	It is the right way to create empty tag lists.
+
+	tracker-extract: Fix gstreamer module cuesheet handling
+	When a single nfo:FileDataObject represents multiple nmm:MusicPieces
+	(eg. flac files with a cue sheet). We attempted to drop the nmm:MusicPiece
+	aspect from the nfo:FileDataObject, but we dropped the entire resource
+	instead.
+
+	What was intended here is only dropping the nmm:MusicPiece, so the file
+	resource remains a nfo:Audio and nfo:FileDataObject, and the per-track
+	nmm:MusicPiece backreference to it through nie:isStoredAs.
+
 2016-03-01  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-miner-fs: Add back .trackerignore to ignored-directories-with-content
+	It is not the antique I thought it was, actually it's actively used around.
 
 	Release 1.7.4
 

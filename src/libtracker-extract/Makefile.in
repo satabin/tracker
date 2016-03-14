@@ -153,8 +153,7 @@ libtracker_extract_la_DEPENDENCIES = $(top_builddir)/src/libtracker-sparql-backe
 	$(am__DEPENDENCIES_2)
 am__libtracker_extract_la_SOURCES_DIST = tracker-data.h \
 	tracker-encoding.c tracker-encoding.h tracker-exif.c \
-	tracker-exif.h tracker-extract.h tracker-extract-client.c \
-	tracker-extract-client.h tracker-extract-info.c \
+	tracker-exif.h tracker-extract.h tracker-extract-info.c \
 	tracker-extract-info.h tracker-guarantee.c tracker-guarantee.h \
 	tracker-iptc.c tracker-iptc.h tracker-module-manager.c \
 	tracker-module-manager.h tracker-utils.c tracker-utils.h \
@@ -166,10 +165,9 @@ am__libtracker_extract_la_SOURCES_DIST = tracker-data.h \
 @HAVE_MEEGOTOUCH_TRUE@am__objects_2 = tracker-encoding-meegotouch.lo
 @HAVE_LIBICU_CHARSET_DETECTION_TRUE@am__objects_3 = tracker-encoding-libicu.lo
 am_libtracker_extract_la_OBJECTS = tracker-encoding.lo tracker-exif.lo \
-	tracker-extract-client.lo tracker-extract-info.lo \
-	tracker-guarantee.lo tracker-iptc.lo tracker-module-manager.lo \
-	tracker-utils.lo tracker-xmp.lo $(am__objects_1) \
-	$(am__objects_2) $(am__objects_3)
+	tracker-extract-info.lo tracker-guarantee.lo tracker-iptc.lo \
+	tracker-module-manager.lo tracker-utils.lo tracker-xmp.lo \
+	$(am__objects_1) $(am__objects_2) $(am__objects_3)
 libtracker_extract_la_OBJECTS = $(am_libtracker_extract_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -594,8 +592,7 @@ libtracker_extract_la_LIBADD = $(top_builddir)/src/libtracker-sparql-backend/lib
 	$(BUILD_LIBS) $(LIBTRACKER_EXTRACT_LIBS) $(am__append_5)
 libtracker_extract_la_SOURCES = tracker-data.h tracker-encoding.c \
 	tracker-encoding.h tracker-exif.c tracker-exif.h \
-	tracker-extract.h tracker-extract-client.c \
-	tracker-extract-client.h tracker-extract-info.c \
+	tracker-extract.h tracker-extract-info.c \
 	tracker-extract-info.h tracker-guarantee.c tracker-guarantee.h \
 	tracker-iptc.c tracker-iptc.h tracker-module-manager.c \
 	tracker-module-manager.h tracker-utils.c tracker-utils.h \
@@ -605,7 +602,6 @@ noinst_HEADERS = \
 	tracker-data.h                                 \
 	tracker-encoding.h                             \
 	tracker-exif.h                                 \
-	tracker-extract-client.h                       \
 	tracker-extract-info.h                         \
 	tracker-extract.h                              \
 	tracker-guarantee.h                            \
@@ -698,7 +694,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-encoding-meegotouch.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-encoding.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-exif.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-client.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-info.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-guarantee.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-iptc.Plo@am__quote@

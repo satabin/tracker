@@ -1464,7 +1464,6 @@ EXTRA_DIST = $(rules_files) $(autostart_DATA:.desktop=.desktop.in.in) \
 # DBus interfaces (XML files) and services
 configdir = $(datadir)/tracker
 config_DATA = \
-	tracker-extract.xml \
 	tracker-extract-priority.xml
 
 servicedir = $(DBUS_SERVICES_DIR)

@@ -1013,6 +1013,16 @@ extract_track_metadata (MetadataExtractor    *extractor,
 	if (toc_entry->duration > 0) {
 		tracker_sparql_builder_predicate (postupdate, "nfo:duration");
 		tracker_sparql_builder_object_int64 (postupdate, (gint64)toc_entry->duration);
+	} else if (extractor->toc->entry_list &&
+	           toc_entry == g_list_last (extractor->toc->entry_list)->data) {
+		/* The last element may not have a duration, because it depends
+		 * on the duration of the media file rather than info from the
+		 * cue sheet. In this case figure the data out from the total
+		 * duration.
+		 */
+		tracker_sparql_builder_predicate (postupdate, "nfo:duration");
+		tracker_sparql_builder_object_int64 (postupdate,
+						     (gint64) extractor->duration - toc_entry->start);
 	}
 
 	tracker_sparql_builder_predicate (postupdate, "nfo:audioOffset");
@@ -1046,7 +1056,7 @@ delete_existing_tracks (TrackerSparqlBuilder *postupdate,
 
 	tracker_sparql_builder_subject_variable (postupdate, "track");
 	tracker_sparql_builder_predicate (postupdate, "a");
-	tracker_sparql_builder_object (postupdate, "rdfs:Resource");
+	tracker_sparql_builder_object (postupdate, "nmm:MusicPiece");
 
 	if (graph) {
 		tracker_sparql_builder_graph_close (postupdate);

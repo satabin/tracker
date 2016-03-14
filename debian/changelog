@@ -1,6 +1,7 @@
 tracker (1.7.5-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Remove old, unused dbus interface for tracker-extract.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 15 Mar 2016 00:31:05 +0100
 

@@ -1,8 +1,8 @@
-tracker (1.8.0-1) UNRELEASED; urgency=medium
+tracker (1.8.0-1) experimental; urgency=medium
 
   * New upstream release.
 
- -- Michael Biebl <biebl@debian.org>  Mon, 21 Mar 2016 23:31:16 +0100
+ -- Michael Biebl <biebl@debian.org>  Mon, 21 Mar 2016 23:36:00 +0100
 
 tracker (1.7.5-1) experimental; urgency=medium
 

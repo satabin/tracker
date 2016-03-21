@@ -12,8 +12,8 @@ AC_PREREQ([2.64])
 # if backwards compatibility has been broken,
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [1])
-m4_define([tracker_minor_version], [7])
-m4_define([tracker_micro_version], [5])
+m4_define([tracker_minor_version], [8])
+m4_define([tracker_micro_version], [0])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -2388,6 +2388,11 @@ if test "x$enable_libcue" != "xno" ; then
 
    if test "x$have_libcue" = "xyes"; then
       AC_DEFINE(HAVE_LIBCUE, [], [Define if we have libcue])
+
+      PKG_CHECK_EXISTS([libcue >= 2.0.0], have_libcue2=yes, have_libcue2=no)
+      if test "x$have_libcue2" = "xyes"; then
+        AC_DEFINE(HAVE_LIBCUE2, [], [Define if we have libcue 2 or up])
+      fi
    fi
 else
    have_libcue="no  (disabled)"
@@ -2398,8 +2403,6 @@ if test "x$enable_libcue" = "xyes"; then
       AC_MSG_ERROR([Could not find libcue.])
    fi
 fi
-
-AM_CONDITIONAL(HAVE_LIBCUE, test "x$have_libcue" = "xyes")
 
 ####################################################################
 # Check for tracker-extract: AbiWord
@@ -2830,7 +2833,7 @@ Metadata Extractors:
 	Support XML / HTML:                     $have_libxml2
 	Support embedded / sidecar XMP:         $have_exempi
 	Support generic media formats:          $have_generic_media_handler ($have_generic_media_handler_app) (backend: $gstreamer_backend)
-	Support cue sheet parsing:              $have_libcue
+	Support cue sheet parsing:              $have_libcue (libcue2.0: $have_libcue2)
 	Support playlists (w/ Totem):           $have_playlist
 	Support ISO image parsing:              $have_libosinfo
 	Support AbiWord document parsing:       $have_abiword

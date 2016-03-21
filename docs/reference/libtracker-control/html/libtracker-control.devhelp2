@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<book xmlns="http://www.devhelp.net/book" title="Tracker Control Library Reference Manual" link="index.html" author="" name="libtracker-control" version="2" language="c" online="http://library.gnome.org/devel/libtracker-miner/unstable/">
+<book xmlns="http://www.devhelp.net/book" title="Tracker Control Library Reference Manual" link="index.html" author="" name="libtracker-control" version="2" language="c">
   <chapters>
     <sub name="Reference" link="libtracker-miner-reference.html">
       <sub name="Tracker control objects" link="ch01.html">

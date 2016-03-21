@@ -1,3 +1,19 @@
+2016-03-21  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.8.0
+
+2016-03-21  fosero  <fosero@users.noreply.github.com>
+
+	tracker-extract: adapt to libcue 2.0.0 API
+	Allow optional support for the libcue 2.0.0 API changes: new location of
+	libcue.h and a renamed enum.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=762512
+
+2016-03-20  Ask Hjorth Larsen  <asklarsen@gmail.com>
+
+	Updated Danish translation
+
 2016-03-14  Carlos Garnacho  <carlosg@gnome.org>
 
 	Release 1.7.5

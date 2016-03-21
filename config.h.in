@@ -88,6 +88,9 @@
 /* Define if we have libcue */
 #undef HAVE_LIBCUE
 
+/* Define if we have libcue 2 or up */
+#undef HAVE_LIBCUE2
+
 /* Define if we have libexif */
 #undef HAVE_LIBEXIF
 
@@ -306,8 +309,7 @@
 /* Define to 1 if you have the `up_client_get_on_low_battery' function. */
 #undef HAVE_UP_CLIENT_GET_ON_LOW_BATTERY
 
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
 #undef LT_OBJDIR
 
 /* Define if we are on win32 */

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<book xmlns="http://www.devhelp.net/book" title="Tracker Ontology Reference Manual" link="index.html" author="" name="ontology" version="2" language="c" online="http://library.gnome.org/devel/ontology/unstable">
+<book xmlns="http://www.devhelp.net/book" title="Tracker Ontology Reference Manual" link="index.html" author="" name="ontology" version="2" language="c">
   <chapters>
     <sub name="Overview" link="overview.html"/>
     <sub name="Ontology" link="ontology.html">

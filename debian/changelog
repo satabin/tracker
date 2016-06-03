@@ -3,7 +3,10 @@ tracker (1.8.0-3) UNRELEASED; urgency=medium
   [ Pino Toscano ]
   * Enable parallel building (Closes: #823268)
 
- -- Pino Toscano <pino@debian.org>  Mon, 02 May 2016 22:14:00 +0200
+  [ Laurent Bigonville ]
+  * Drop dependency against gnome-icon-theme, this package is deprecated
+
+ -- Laurent Bigonville <bigon@debian.org>  Fri, 03 Jun 2016 18:30:58 +0200
 
 tracker (1.8.0-2) unstable; urgency=medium
 

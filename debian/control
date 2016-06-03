@@ -251,8 +251,7 @@ Section: gnome
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         tracker (= ${binary:Version}),
-         gnome-icon-theme
+         tracker (= ${binary:Version})
 Breaks: tracker-search-tool (<< 0.8.1-1),
         tracker (<< 0.8.1-1)
 Replaces: tracker-search-tool (<< 0.8.1-1),

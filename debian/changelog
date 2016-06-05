@@ -1,5 +1,6 @@
-tracker (1.8.0-3) UNRELEASED; urgency=medium
+tracker (1.8.0-3) unstable; urgency=medium
 
+  * Team upload.
   [ Pino Toscano ]
   * Enable parallel building (Closes: #823268)
 
@@ -7,7 +8,7 @@ tracker (1.8.0-3) UNRELEASED; urgency=medium
   * Drop dependency against gnome-icon-theme, this package is deprecated
   * Bump Standards-Version to 3.8.9 (no further changes)
 
- -- Laurent Bigonville <bigon@debian.org>  Sun, 05 Jun 2016 12:21:36 +0200
+ -- Laurent Bigonville <bigon@debian.org>  Sun, 05 Jun 2016 12:21:51 +0200
 
 tracker (1.8.0-2) unstable; urgency=medium
 

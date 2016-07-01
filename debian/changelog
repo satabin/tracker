@@ -1,3 +1,10 @@
+tracker (1.8.0-4) UNRELEASED; urgency=medium
+
+  * Do not delete xml directory when redoing docs as this might lead to build
+    failures due to race conditions.
+
+ -- Michael Biebl <biebl@debian.org>  Sat, 02 Jul 2016 00:36:45 +0200
+
 tracker (1.8.0-3) unstable; urgency=medium
 
   * Team upload.

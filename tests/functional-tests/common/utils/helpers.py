@@ -32,7 +32,7 @@ import options
 class NoMetadataException (Exception):
     pass
 
-REASONABLE_TIMEOUT = 5
+REASONABLE_TIMEOUT = 30
 
 def log (message):
     if options.is_verbose ():
@@ -106,15 +106,20 @@ class Helper:
         self.loop.quit()
 
     def _process_watch_cb (self):
+        if self.process_watch_timeout == 0:
+            # The GLib seems to call the timeout after we've removed it
+            # sometimes, which causes errors unless we detect it.
+            return False
+
         status = self.process.poll ()
 
         if status is None:
-            return True
-
-        if status == 0 and not self.abort_if_process_exits_with_status_0:
-            return True
-
-        raise Exception("%s exited with status: %i" % (self.PROCESS_NAME, status))
+            return True    # continue
+        elif status == 0 and not self.abort_if_process_exits_with_status_0:
+            return True    # continue
+        else:
+            self.process_watch_timeout = 0
+            raise Exception("%s exited with status: %i" % (self.PROCESS_NAME, status))
 
     def _timeout_on_idle_cb (self):
         log ("[%s] Timeout waiting... asumming idle." % self.PROCESS_NAME)
@@ -161,8 +166,8 @@ class Helper:
 
         start = time.time()
         if self.process.poll() == None:
-            # It should step out of this loop when the miner disappear from the bus
             GLib.source_remove(self.process_watch_timeout)
+            self.process_watch_timeout = 0
 
             self.process.terminate()
 
@@ -183,6 +188,10 @@ class Helper:
         self.process = None
 
     def kill (self):
+        if options.is_manual_start():
+            log ("kill(): ignoring, because process was started manually.")
+            return
+
         self.process.kill ()
 
         # Name owner changed callback should take us out from this loop
@@ -305,7 +314,6 @@ class StoreHelper (Helper):
             required_property_id = self.get_resource_id_by_uri(required_property)
             log ("Required property %s id %i" % (required_property, required_property_id))
 
-        known_subjects = set ()
         def find_resource_insertion (inserts_list):
             matched_creation = (self.matched_resource_id is not None)
             matched_required_property = False
@@ -317,9 +325,7 @@ class StoreHelper (Helper):
             for insert in inserts_list:
                 id = insert[1]
 
-                if not matched_creation and id not in known_subjects:
-                    known_subjects.add (id)
-
+                if not matched_creation:
                     where = "  ?urn a %s " % rdf_class
 
                     if url is not None:
@@ -549,15 +555,22 @@ class MinerFsHelper (Helper):
         self.miner_fs = Gio.DBusProxy.new_sync(
             self.bus, Gio.DBusProxyFlags.DO_NOT_AUTO_START, None,
             cfg.MINERFS_BUSNAME, cfg.MINERFS_OBJ_PATH, cfg.MINER_IFACE)
+        self.index = Gio.DBusProxy.new_sync(
+            self.bus, Gio.DBusProxyFlags.DO_NOT_AUTO_START, None,
+            cfg.MINERFS_BUSNAME, cfg.MINERFS_INDEX_OBJ_PATH, cfg.MINER_INDEX_IFACE)
 
     def stop (self):
         Helper.stop (self)
+
+    def index_file (self, uri):
+        return self.index.IndexFile('(s)', uri)
 
 
 class ExtractorHelper (Helper):
 
     PROCESS_NAME = 'tracker-extract'
     BUS_NAME = cfg.TRACKER_EXTRACT_BUSNAME
+
 
 class WritebackHelper (Helper):
 

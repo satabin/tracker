@@ -523,6 +523,9 @@ miner_files_initable_init (GInitable     *initable,
 	g_signal_connect (mf->private->config, "notify::ignored-files",
 	                  G_CALLBACK (trigger_recheck_cb),
 	                  mf);
+	g_signal_connect (mf->private->config, "notify::enable-monitors",
+	                  G_CALLBACK (trigger_recheck_cb),
+	                  mf);
 	g_signal_connect (mf->private->config, "notify::index-removable-devices",
 	                  G_CALLBACK (index_volumes_changed_cb),
 	                  mf);
@@ -1736,7 +1739,7 @@ miner_files_force_recheck_idle (gpointer user_data)
 	for (l = roots; l; l = l->next)	{
 		GFile *root = l->data;
 
-		g_signal_emit_by_name (indexing_tree, "directory-updated", root);
+		tracker_indexing_tree_notify_update (indexing_tree, root, FALSE);
 	}
 
 	miner_files->private->force_recheck_id = 0;

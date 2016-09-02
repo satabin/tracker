@@ -8,7 +8,7 @@
 <link rel="up" href="ch04.html" title="Miner classes for file system">
 <link rel="prev" href="libtracker-miner-TrackerFileEnumerator.html" title="TrackerFileEnumerator">
 <link rel="next" href="ch05.html" title="Utilities">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -42,7 +42,7 @@
 </colgroup>
 <tbody><tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<span class="returnvalue">gint</span>
 </td>
 <td class="function_name">
 <a class="link" href="TrackerDecoratorFS.html#tracker-decorator-fs-prepend-file" title="tracker_decorator_fs_prepend_file ()">tracker_decorator_fs_prepend_file</a> <span class="c_punctuation">()</span>
@@ -71,7 +71,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerDecoratorFS.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+<pre class="screen">    GObject
     <span class="lineart">╰──</span> <a class="link" href="TrackerMiner.html" title="TrackerMiner">TrackerMiner</a>
         <span class="lineart">╰──</span> <a class="link" href="TrackerDecorator.html" title="TrackerDecorator">TrackerDecorator</a>
             <span class="lineart">╰──</span> TrackerDecoratorFS
@@ -81,7 +81,7 @@
 <a name="TrackerDecoratorFS.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 TrackerDecoratorFS implements
- <a href="https://developer.gnome.org/gio/unstable/GInitable.html">GInitable</a>.</p>
+ GInitable.</p>
 </div>
 <div class="refsect1">
 <a name="TrackerDecoratorFS.includes"></a><h2>Includes</h2>
@@ -97,12 +97,12 @@ for resources on file systems that are mounted or unmounted.</p>
 <a name="TrackerDecoratorFS.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="tracker-decorator-fs-prepend-file"></a><h3>tracker_decorator_fs_prepend_file ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<pre class="programlisting"><span class="returnvalue">gint</span>
 tracker_decorator_fs_prepend_file (<em class="parameter"><code><a class="link" href="TrackerDecoratorFS.html" title="TrackerDecoratorFS"><span class="type">TrackerDecoratorFS</span></a> *decorator</code></em>,
-                                   <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GFile.html"><span class="type">GFile</span></a> *file</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">GFile</span> *file</code></em>);</pre>
 <p>Prepends a file for processing.</p>
 <div class="refsect3">
-<a name="id-1.3.5.5.9.2.5"></a><h4>Parameters</h4>
+<a name="tracker-decorator-fs-prepend-file.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -117,14 +117,14 @@ tracker_decorator_fs_prepend_file (<em class="parameter"><code><a class="link" h
 </tr>
 <tr>
 <td class="parameter_name"><p>file</p></td>
-<td class="parameter_description"><p>a <a href="https://developer.gnome.org/gio/unstable/GFile.html"><span class="type">GFile</span></a> to process</p></td>
+<td class="parameter_description"><p>a <span class="type">GFile</span> to process</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.5.5.9.2.6"></a><h4>Returns</h4>
+<a name="tracker-decorator-fs-prepend-file.returns"></a><h4>Returns</h4>
 <p> the tracker:id of the element corresponding to the file</p>
 </div>
 <p class="since">Since: 1.2</p>
@@ -150,25 +150,18 @@ tracker_decorator_fs_prepend_file (<em class="parameter"><code><a class="link" h
 <p>A class that takes care of resources on mount points added or
 removed, this is based on <a class="link" href="TrackerDecorator.html#TrackerDecoratorClass" title="struct TrackerDecoratorClass"><span class="type">TrackerDecoratorClass</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.5.5.10.3.5"></a><h4>Members</h4>
+<a name="TrackerDecoratorFSClass.members"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">
 <col width="200px" class="struct_members_annotations">
 </colgroup>
-<tbody>
-<tr>
-<td class="struct_member_name"><p><a class="link" href="TrackerDecorator.html#TrackerDecoratorClass" title="struct TrackerDecoratorClass"><span class="type">TrackerDecoratorClass</span></a> <em class="structfield"><code><a name="TrackerDecoratorFSClass.parent-class"></a>parent_class</code></em>;</p></td>
-<td class="struct_member_description"><p>parent object class.</p></td>
-<td class="struct_member_annotations"> </td>
-</tr>
-<tr>
-<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> <em class="structfield"><code><a name="TrackerDecoratorFSClass.padding"></a>padding</code></em>[10];</p></td>
+<tbody><tr>
+<td class="struct_member_name"><p><span class="type">gpointer</span> <em class="structfield"><code><a name="TrackerDecoratorFSClass.padding"></a>padding</code></em>[10];</p></td>
 <td class="struct_member_description"><p>Reserved for future API improvements.</p></td>
 <td class="struct_member_annotations"> </td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 </div>
@@ -179,6 +172,6 @@ removed, this is based on <a class="link" href="TrackerDecorator.html#TrackerDec
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

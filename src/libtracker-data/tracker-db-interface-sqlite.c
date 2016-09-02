@@ -63,6 +63,12 @@ typedef struct {
 	guint max;
 } TrackerDBStatementLru;
 
+typedef struct {
+	GRegex *syntax_check;
+	GRegex *replacement;
+	GRegex *unescape;
+} TrackerDBReplaceFuncChecks;
+
 struct TrackerDBInterface {
 	GObject parent_instance;
 
@@ -70,6 +76,9 @@ struct TrackerDBInterface {
 	sqlite3 *db;
 
 	GHashTable *dynamic_statements;
+
+	/* Compiled regular expressions */
+	TrackerDBReplaceFuncChecks replace_func_checks;
 
 	GSList *function_data;
 
@@ -569,6 +578,179 @@ function_sparql_regex (sqlite3_context *context,
 	sqlite3_result_int (context, ret);
 }
 
+static void
+ensure_replace_checks (TrackerDBInterface *db_interface)
+{
+	if (db_interface->replace_func_checks.syntax_check != NULL)
+		return;
+
+	db_interface->replace_func_checks.syntax_check =
+		g_regex_new ("(?<!\\\\)\\$\\D", G_REGEX_OPTIMIZE, 0, NULL);
+	db_interface->replace_func_checks.replacement =
+		g_regex_new("(?<!\\\\)\\$(\\d)", G_REGEX_OPTIMIZE, 0, NULL);
+	db_interface->replace_func_checks.unescape =
+		g_regex_new("\\\\\\$", G_REGEX_OPTIMIZE, 0, NULL);
+}
+
+static void
+function_sparql_replace (sqlite3_context *context,
+                         int              argc,
+                         sqlite3_value   *argv[])
+{
+	TrackerDBInterface *db_interface = sqlite3_user_data (context);
+	TrackerDBReplaceFuncChecks *checks = &db_interface->replace_func_checks;
+	gboolean store_regex = FALSE, store_replace_regex = FALSE;
+	const gchar *input, *pattern, *replacement, *flags;
+	gchar *err_str, *output, *replaced = NULL, *unescaped = NULL;
+	GError *error = NULL;
+	GRegexCompileFlags regex_flags = 0;
+	GRegex *regex, *replace_regex;
+	gint capture_count, i;
+
+	ensure_replace_checks (db_interface);
+
+	if (argc == 3) {
+		flags = "";
+	} else if (argc == 4) {
+		flags = sqlite3_value_text (argv[3]);
+	} else {
+		sqlite3_result_error (context, "Invalid argument count", -1);
+		return;
+	}
+
+	input = sqlite3_value_text (argv[0]);
+	regex = sqlite3_get_auxdata (context, 1);
+	replacement = sqlite3_value_text (argv[2]);
+
+	if (regex == NULL) {
+		pattern = sqlite3_value_text (argv[1]);
+
+		for (i = 0; flags[i]; i++) {
+			switch (flags[i]) {
+			case 's':
+				regex_flags |= G_REGEX_DOTALL;
+				break;
+			case 'm':
+				regex_flags |= G_REGEX_MULTILINE;
+				break;
+			case 'i':
+				regex_flags |= G_REGEX_CASELESS;
+				break;
+			case 'x':
+				regex_flags |= G_REGEX_EXTENDED;
+				break;
+			default:
+				err_str = g_strdup_printf ("Invalid SPARQL regex flag '%c'", flags[i]);
+				sqlite3_result_error (context, err_str, -1);
+				g_free (err_str);
+				return;
+			}
+		}
+
+		regex = g_regex_new (pattern, regex_flags, 0, &error);
+
+		if (error) {
+			sqlite3_result_error (context, error->message, -1);
+			g_clear_error (&error);
+			return;
+		}
+
+		/* According to the XPath 2.0 standard, an error shall be raised, if the given
+		 * pattern matches a zero-length string.
+		 */
+		if (g_regex_match (regex, "", 0, NULL)) {
+			err_str = g_strdup_printf ("The given pattern '%s' matches a zero-length string.",
+			                           pattern);
+			sqlite3_result_error (context, err_str, -1);
+			g_regex_unref (regex);
+			g_free (err_str);
+			return;
+		}
+
+		store_regex = TRUE;
+	}
+
+	/* According to the XPath 2.0 standard, an error shall be raised, if all dollar
+	 * signs ($) of the given replacement string are not immediately followed by
+	 * a digit 0-9 or not immediately preceded by a \.
+	 */
+	if (g_regex_match (checks->syntax_check, replacement, 0, NULL)) {
+		err_str = g_strdup_printf ("The replacement string '%s' contains a \"$\" character "
+		                           "that is not immediately followed by a digit 0-9 and "
+		                           "not immediately preceded by a \"\\\".",
+		                           replacement);
+		sqlite3_result_error (context, err_str, -1);
+		g_free (err_str);
+		return;
+	}
+
+	/* According to the XPath 2.0 standard, the dollar sign ($) followed by a number
+	 * indicates backreferences. GRegex uses the backslash (\) for this purpose.
+	 * So the ($) backreferences in the given replacement string are replaced by (\)
+	 * backreferences to support the standard.
+	 */
+	capture_count = g_regex_get_capture_count (regex);
+	replace_regex = sqlite3_get_auxdata (context, 2);
+
+	if (capture_count > 9 && !replace_regex) {
+		gint i;
+		GString *backref_range;
+		gchar *regex_interpret;
+
+		/* S ... capture_count, N ... the given decimal number.
+		 * If N>S and N>9, The last digit of N is taken to be a literal character
+		 * to be included "as is" in the replacement string, and the rules are
+		 * reapplied using the number N formed by stripping off this last digit.
+		 */
+		backref_range = g_string_new ("(");
+		for (i = 10; i <= capture_count; i++) {
+			g_string_append_printf (backref_range, "%d|", i);
+		}
+
+		g_string_append (backref_range, "\\d)");
+		regex_interpret = g_strdup_printf ("(?<!\\\\)\\$%s",
+		                                   backref_range->str);
+
+		replace_regex = g_regex_new (regex_interpret, 0, 0, NULL);
+
+		g_string_free (backref_range, TRUE);
+		g_free (regex_interpret);
+
+		store_replace_regex = TRUE;
+	} else if (capture_count <= 9) {
+		replace_regex = checks->replacement;
+	}
+
+	replaced = g_regex_replace (replace_regex,
+	                            replacement, -1, 0, "\\\\g<\\1>", 0, &error);
+
+	if (replaced) {
+		/* All '\$' pairs are replaced by '$' */
+		unescaped = g_regex_replace (checks->unescape,
+		                             replaced, -1, 0, "$", 0, &error);
+	}
+
+	if (unescaped) {
+		output = g_regex_replace (regex, input, -1, 0, unescaped, 0, &error);
+	}
+
+	if (error) {
+		sqlite3_result_error (context, error->message, -1);
+		g_clear_error (&error);
+		return;
+	}
+
+	sqlite3_result_text (context, output, -1, g_free);
+
+	if (store_replace_regex)
+		sqlite3_set_auxdata (context, 2, replace_regex, (GDestroyNotify) g_regex_unref);
+	if (store_regex)
+		sqlite3_set_auxdata (context, 1, regex, (GDestroyNotify) g_regex_unref);
+
+	g_free (replaced);
+	g_free (unescaped);
+}
+
 #ifdef HAVE_LIBUNISTRING
 
 static void
@@ -592,6 +774,31 @@ function_sparql_lower_case (sqlite3_context *context,
 	nInput = sqlite3_value_bytes16 (argv[0]);
 
 	zOutput = u16_tolower (zInput, nInput/2, NULL, NULL, NULL, &written);
+
+	sqlite3_result_text16 (context, zOutput, written * 2, free);
+}
+
+static void
+function_sparql_upper_case (sqlite3_context *context,
+                            int              argc,
+                            sqlite3_value   *argv[])
+{
+	const uint16_t *zInput;
+	uint16_t *zOutput;
+	size_t written = 0;
+	int nInput;
+
+	g_assert (argc == 1);
+
+	zInput = sqlite3_value_text16 (argv[0]);
+
+	if (!zInput) {
+		return;
+	}
+
+	nInput = sqlite3_value_bytes16 (argv[0]);
+
+	zOutput = u16_toupper (zInput, nInput / 2, NULL, NULL, NULL, &written);
 
 	sqlite3_result_text16 (context, zOutput, written * 2, free);
 }
@@ -728,6 +935,48 @@ function_sparql_lower_case (sqlite3_context *context,
 	if (!U_SUCCESS (status)){
 		char zBuf[128];
 		sqlite3_snprintf (128, zBuf, "ICU error: u_strToLower(): %s", u_errorName (status));
+		zBuf[127] = '\0';
+		sqlite3_free (zOutput);
+		sqlite3_result_error (context, zBuf, -1);
+		return;
+	}
+
+	sqlite3_result_text16 (context, zOutput, -1, sqlite3_free);
+}
+
+static void
+function_sparql_upper_case (sqlite3_context *context,
+                            int              argc,
+                            sqlite3_value   *argv[])
+{
+	const UChar *zInput;
+	UChar *zOutput;
+	int nInput;
+	int nOutput;
+	UErrorCode status = U_ZERO_ERROR;
+
+	g_assert (argc == 1);
+
+	zInput = sqlite3_value_text16 (argv[0]);
+
+	if (!zInput) {
+		return;
+	}
+
+	nInput = sqlite3_value_bytes16 (argv[0]);
+
+	nOutput = nInput * 2 + 2;
+	zOutput = sqlite3_malloc (nOutput);
+
+	if (!zOutput) {
+		return;
+	}
+
+	u_strToUpper (zOutput, nOutput / 2, zInput, nInput / 2, NULL, &status);
+
+	if (!U_SUCCESS (status)){
+		char zBuf[128];
+		sqlite3_snprintf (128, zBuf, "ICU error: u_strToUpper(): %s", u_errorName (status));
 		zBuf[127] = '\0';
 		sqlite3_free (zOutput);
 		sqlite3_result_error (context, zBuf, -1);
@@ -1141,69 +1390,90 @@ open_database (TrackerDBInterface  *db_interface,
 	sqlite3_progress_handler (db_interface->db, 100,
 	                          check_interrupt, db_interface);
 
-	sqlite3_create_function (db_interface->db, "SparqlRegex", 3, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlRegex", 3,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_regex,
 	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlHaversineDistance", 4, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlHaversineDistance", 4,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_haversine_distance,
 	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlCartesianDistance", 4, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlCartesianDistance", 4,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_cartesian_distance,
 	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlStringFromFilename", 1, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlStringFromFilename", 1,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_string_from_filename,
 	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlStringJoin", -1, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlStringJoin", -1,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_string_join,
 	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlUriIsParent", 2, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlUriIsParent", 2,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_uri_is_parent,
 	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlUriIsDescendant", -1, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlUriIsDescendant", -1,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_uri_is_descendant,
 	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlLowerCase", 1, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlLowerCase", 1,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_lower_case,
 	                         NULL, NULL);
+	sqlite3_create_function (db_interface->db, "SparqlUpperCase", 1,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
+	                         db_interface, &function_sparql_upper_case,
+	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlCaseFold", 1, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlCaseFold", 1,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_case_fold,
 	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlNormalize", 2, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlNormalize", 2,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_normalize,
 	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlUnaccent", 1, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlUnaccent", 1,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_unaccent,
 	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlFormatTime", 1, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlFormatTime", 1,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_format_time,
 	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlEncodeForUri", 1, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlEncodeForUri", 1,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_encode_for_uri,
 	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlStringBefore", 2, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlStringBefore", 2,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_string_before,
 	                         NULL, NULL);
-	sqlite3_create_function (db_interface->db, "SparqlStringAfter", 2, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlStringAfter", 2,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_string_after,
 	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlCeil", 1, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlCeil", 1,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_ceil,
 	                         NULL, NULL);
-	sqlite3_create_function (db_interface->db, "SparqlFloor", 1, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlFloor", 1,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_floor,
 	                         NULL, NULL);
 
@@ -1211,8 +1481,14 @@ open_database (TrackerDBInterface  *db_interface,
 	                         db_interface, &function_sparql_rand,
 	                         NULL, NULL);
 
-	sqlite3_create_function (db_interface->db, "SparqlChecksum", 2, SQLITE_ANY,
+	sqlite3_create_function (db_interface->db, "SparqlChecksum", 2,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
 	                         db_interface, &function_sparql_checksum,
+	                         NULL, NULL);
+
+	sqlite3_create_function (db_interface->db, "SparqlReplace", -1,
+	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
+	                         db_interface, &function_sparql_replace,
 	                         NULL, NULL);
 
 	sqlite3_extended_result_codes (db_interface->db, 0);
@@ -1298,6 +1574,13 @@ close_database (TrackerDBInterface *db_interface)
 		g_hash_table_unref (db_interface->dynamic_statements);
 		db_interface->dynamic_statements = NULL;
 	}
+
+	if (db_interface->replace_func_checks.syntax_check)
+		g_regex_unref (db_interface->replace_func_checks.syntax_check);
+	if (db_interface->replace_func_checks.replacement)
+		g_regex_unref (db_interface->replace_func_checks.replacement);
+	if (db_interface->replace_func_checks.unescape)
+		g_regex_unref (db_interface->replace_func_checks.unescape);
 
 	if (db_interface->function_data) {
 		g_slist_foreach (db_interface->function_data, (GFunc) g_free, NULL);

@@ -94,10 +94,13 @@ libexec_PROGRAMS = tracker-store$(EXEEXT)
 subdir = src/tracker-store
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/attributes.m4 \
-	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/intltool.m4 \
+	$(top_srcdir)/m4/gsettings.m4 $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/introspection.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
+	$(top_srcdir)/m4/pkg.m4 \
+	$(top_srcdir)/m4/sqlite-auto-extension.m4 \
 	$(top_srcdir)/m4/sqlite-builtin-fts5.m4 \
 	$(top_srcdir)/m4/sqlite-threadsafe.m4 \
 	$(top_srcdir)/m4/tracker.m4 $(top_srcdir)/configure.ac
@@ -109,9 +112,9 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__installdirs = "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(man5dir)" \
+am__installdirs = "$(DESTDIR)$(libexecdir)" \
 	"$(DESTDIR)$(autostartdir)" "$(DESTDIR)$(configdir)" \
-	"$(DESTDIR)$(servicedir)"
+	"$(DESTDIR)$(servicedir)" "$(DESTDIR)$(systemd_userdir)"
 PROGRAMS = $(libexec_PROGRAMS)
 am_tracker_store_OBJECTS = tracker-backup.$(OBJEXT) \
 	tracker-config.$(OBJEXT) tracker-dbus.$(OBJEXT) \
@@ -206,10 +209,8 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-man5dir = $(mandir)/man5
-NROFF = nroff
-MANS = $(man_MANS)
-DATA = $(autostart_DATA) $(config_DATA) $(service_DATA)
+DATA = $(autostart_DATA) $(config_DATA) $(service_DATA) \
+	$(systemd_user_DATA)
 HEADERS = $(noinst_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
@@ -504,7 +505,6 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
-XSLTPROC = @XSLTPROC@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -621,7 +621,8 @@ tracker_store_LDADD = \
 EXTRA_DIST = tracker-config.vapi tracker-events.vapi \
 	tracker-locale-change.vapi tracker-writeback.vapi \
 	$(autostart_DATA:.desktop=.desktop.in.in) \
-	$(service_DATA:.service=.service.in) $(config_DATA) \
+	$(service_DATA:.service=.service.in) \
+	$(systemd_user_DATA:.service=.service.in) $(config_DATA) \
 	$(gsettings_SCHEMAS:.xml=.xml.in) $(man_MANS)
 
 # DBus interfaces (XML files) and services
@@ -634,6 +635,8 @@ config_DATA = \
 
 servicedir = $(DBUS_SERVICES_DIR)
 service_DATA = org.freedesktop.Tracker1.service
+systemd_userdir = $(prefix)/lib/systemd/user
+systemd_user_DATA = tracker-store.service
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = tracker-store.desktop
 
@@ -643,15 +646,13 @@ gsettings_ENUM_FILES = $(top_srcdir)/src/libtracker-common/tracker-enums.h
 gsettings_SCHEMAS = $(schemalist) $(config)
 config = org.freedesktop.Tracker.Store.gschema.xml
 schemalist = org.freedesktop.Tracker.gschema.xml
-@HAVE_XSLTPROC_TRUE@DATE = `date +'%B %Y'`
-@HAVE_XSLTPROC_FALSE@man_MANS = 
-@HAVE_XSLTPROC_TRUE@man_MANS = $(libexec_PROGRAMS).cfg.5
 
 # Dist / Clean rules for all data
 CLEANFILES = \
 	$(autostart_DATA) \
 	$(autostart_DATA:.desktop=.desktop.in) \
 	$(service_DATA) \
+	$(systemd_user_DATA) \
 	$(gsettings_SCHEMAS) \
 	$(man_MANS)
 
@@ -836,49 +837,6 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
-install-man5: $(man_MANS)
-	@$(NORMAL_INSTALL)
-	@list1=''; \
-	list2='$(man_MANS)'; \
-	test -n "$(man5dir)" \
-	  && test -n "`echo $$list1$$list2`" \
-	  || exit 0; \
-	echo " $(MKDIR_P) '$(DESTDIR)$(man5dir)'"; \
-	$(MKDIR_P) "$(DESTDIR)$(man5dir)" || exit 1; \
-	{ for i in $$list1; do echo "$$i"; done;  \
-	if test -n "$$list2"; then \
-	  for i in $$list2; do echo "$$i"; done \
-	    | sed -n '/\.5[a-z]*$$/p'; \
-	fi; \
-	} | while read p; do \
-	  if test -f $$p; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; echo "$$p"; \
-	done | \
-	sed -e 'n;s,.*/,,;p;h;s,.*\.,,;s,^[^5][0-9a-z]*$$,5,;x' \
-	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,' | \
-	sed 'N;N;s,\n, ,g' | { \
-	list=; while read file base inst; do \
-	  if test "$$base" = "$$inst"; then list="$$list $$file"; else \
-	    echo " $(INSTALL_DATA) '$$file' '$(DESTDIR)$(man5dir)/$$inst'"; \
-	    $(INSTALL_DATA) "$$file" "$(DESTDIR)$(man5dir)/$$inst" || exit $$?; \
-	  fi; \
-	done; \
-	for i in $$list; do echo "$$i"; done | $(am__base_list) | \
-	while read files; do \
-	  test -z "$$files" || { \
-	    echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(man5dir)'"; \
-	    $(INSTALL_DATA) $$files "$(DESTDIR)$(man5dir)" || exit $$?; }; \
-	done; }
-
-uninstall-man5:
-	@$(NORMAL_UNINSTALL)
-	@list=''; test -n "$(man5dir)" || exit 0; \
-	files=`{ for i in $$list; do echo "$$i"; done; \
-	l2='$(man_MANS)'; for i in $$l2; do echo "$$i"; done | \
-	  sed -n '/\.5[a-z]*$$/p'; \
-	} | sed -e 's,.*/,,;h;s,.*\.,,;s,^[^5][0-9a-z]*$$,5,;x' \
-	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,'`; \
-	dir='$(DESTDIR)$(man5dir)'; $(am__uninstall_files_from_dir)
 install-autostartDATA: $(autostart_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(autostart_DATA)'; test -n "$(autostartdir)" || list=; \
@@ -942,6 +900,27 @@ uninstall-serviceDATA:
 	@list='$(service_DATA)'; test -n "$(servicedir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(servicedir)'; $(am__uninstall_files_from_dir)
+install-systemd_userDATA: $(systemd_user_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(systemd_user_DATA)'; test -n "$(systemd_userdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(systemd_userdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(systemd_userdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(systemd_userdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(systemd_userdir)" || exit $$?; \
+	done
+
+uninstall-systemd_userDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(systemd_user_DATA)'; test -n "$(systemd_userdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(systemd_userdir)'; $(am__uninstall_files_from_dir)
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -1028,9 +1007,9 @@ distdir: $(DISTFILES)
 check-am: all-am
 check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
-all-am: Makefile $(PROGRAMS) $(MANS) $(DATA) $(HEADERS)
+all-am: Makefile $(PROGRAMS) $(DATA) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(man5dir)" "$(DESTDIR)$(autostartdir)" "$(DESTDIR)$(configdir)" "$(DESTDIR)$(servicedir)"; do \
+	for dir in "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(autostartdir)" "$(DESTDIR)$(configdir)" "$(DESTDIR)$(servicedir)" "$(DESTDIR)$(systemd_userdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -1107,8 +1086,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-autostartDATA install-configDATA install-man \
-	install-serviceDATA
+install-data-am: install-autostartDATA install-configDATA \
+	install-serviceDATA install-systemd_userDATA
 
 install-dvi: install-dvi-am
 
@@ -1124,7 +1103,7 @@ install-info: install-info-am
 
 install-info-am:
 
-install-man: install-man5
+install-man:
 
 install-pdf: install-pdf-am
 
@@ -1155,9 +1134,8 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-autostartDATA uninstall-configDATA \
-	uninstall-libexecPROGRAMS uninstall-man uninstall-serviceDATA
-
-uninstall-man: uninstall-man5
+	uninstall-libexecPROGRAMS uninstall-serviceDATA \
+	uninstall-systemd_userDATA
 
 .MAKE: all check install install-am install-strip
 
@@ -1169,15 +1147,15 @@ uninstall-man: uninstall-man5
 	install-configDATA install-data install-data-am install-dvi \
 	install-dvi-am install-exec install-exec-am install-html \
 	install-html-am install-info install-info-am \
-	install-libexecPROGRAMS install-man install-man5 install-pdf \
-	install-pdf-am install-ps install-ps-am install-serviceDATA \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags tags-am uninstall uninstall-am \
-	uninstall-autostartDATA uninstall-configDATA \
-	uninstall-libexecPROGRAMS uninstall-man uninstall-man5 \
-	uninstall-serviceDATA
+	install-libexecPROGRAMS install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-serviceDATA install-strip \
+	install-systemd_userDATA installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-am uninstall \
+	uninstall-am uninstall-autostartDATA uninstall-configDATA \
+	uninstall-libexecPROGRAMS uninstall-serviceDATA \
+	uninstall-systemd_userDATA
 
 .PRECIOUS: Makefile
 
@@ -1195,13 +1173,6 @@ uninstall-man: uninstall-man5
 @INTLTOOL_XML_NOMERGE_RULE@
 
 @GSETTINGS_RULES@
-
-%.cfg.5: $(config)
-	$(AM_V_GEN)$(XSLTPROC) \
-	  --stringparam version "${VERSION}" \
-	  --stringparam current-date "${DATE}" \
-	  --stringparam config-file "$(@:.cfg.5=.cfg)" \
-	  $(top_srcdir)/docs/manpages/gsettings.xsl $^ > $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

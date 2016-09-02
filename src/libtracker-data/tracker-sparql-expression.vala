@@ -532,6 +532,11 @@ class Tracker.Sparql.Expression : Object {
 			translate_expression_as_string (sql);
 			sql.append (")");
 			return PropertyType.STRING;
+		} else if (uri == FN_NS + "upper-case") {
+			sql.append ("SparqlUpperCase (");
+			translate_expression_as_string (sql);
+			sql.append (")");
+			return PropertyType.STRING;
 		} else if (uri == TRACKER_NS + "normalize") {
 			// conversion to string
 			sql.append ("SparqlNormalize (");
@@ -682,7 +687,7 @@ class Tracker.Sparql.Expression : Object {
 
 			return PropertyType.INTEGER;
 		} else if (uri == FN_NS + "replace") {
-			sql.append ("replace(");
+			sql.append ("SparqlReplace(");
 			translate_expression_as_string (sql);
 			sql.append (", ");
 
@@ -693,9 +698,11 @@ class Tracker.Sparql.Expression : Object {
 			expect (SparqlTokenType.COMMA);
 			translate_expression_as_string (sql);
 
-			// FIXME: No regex (nor its modifier flags) support
+			if (accept (SparqlTokenType.COMMA)) {
+				sql.append (", ");
+				sql.append (escape_sql_string_literal (parse_string_literal ()));
+			}
 			sql.append (")");
-
 			return PropertyType.STRING;
 		} else if (uri == FTS_NS + "rank") {
 			bool is_var;
@@ -1143,7 +1150,7 @@ class Tracker.Sparql.Expression : Object {
 			string variable_name = get_last_string ().substring (1);
 			var variable = context.get_variable (variable_name);
 
-			if (context == variable.origin_context && variable.binding != null) {
+			if (context.in_bind && variable.binding != null) {
 				sql.append (variable.binding.sql_expression);
 			} else {
 				sql.append (variable.sql_expression);
@@ -1680,7 +1687,17 @@ class Tracker.Sparql.Expression : Object {
 		if (accept (SparqlTokenType.DISTINCT)) {
 			sql.append ("DISTINCT ");
 		}
+
+		bool is_var = (current () == SparqlTokenType.VAR);
 		var optype = translate_expression (sql);
+
+		if (is_var) {
+			var variable = context.get_variable (get_last_string ().substring (1));
+			if (variable.binding == null) {
+				throw get_error ("use of undefined variable `%s'".printf (variable.name));
+			}
+		}
+
 		expect (SparqlTokenType.CLOSE_PARENS);
 		return optype;
 	}

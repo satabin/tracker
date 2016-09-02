@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<book xmlns="http://www.devhelp.net/book" title="Tracker Miner Library Reference Manual" link="index.html" author="" name="libtracker-miner" version="2" language="c">
+<book xmlns="http://www.devhelp.net/book" title="Tracker Miner Library Reference Manual" link="index.html" author="" name="libtracker-miner" version="2" language="c" online="http://library.gnome.org/devel/libtracker-miner/unstable/">
   <chapters>
     <sub name="Overview" link="tracker-overview.html">
       <sub name="Compiling applications" link="tracker-overview-compiling.html"/>
@@ -132,6 +132,7 @@
     <keyword type="struct" name="TrackerIndexingTreeClass" link="TrackerIndexingTree.html#TrackerIndexingTreeClass"/>
     <keyword type="property" name="The “filter-hidden” property" link="TrackerIndexingTree.html#TrackerIndexingTree--filter-hidden"/>
     <keyword type="property" name="The “root” property" link="TrackerIndexingTree.html#TrackerIndexingTree--root"/>
+    <keyword type="signal" name="The “child-updated” signal" link="TrackerIndexingTree.html#TrackerIndexingTree-child-updated"/>
     <keyword type="signal" name="The “directory-added” signal" link="TrackerIndexingTree.html#TrackerIndexingTree-directory-added"/>
     <keyword type="signal" name="The “directory-removed” signal" link="TrackerIndexingTree.html#TrackerIndexingTree-directory-removed"/>
     <keyword type="signal" name="The “directory-updated” signal" link="TrackerIndexingTree.html#TrackerIndexingTree-directory-updated"/>
@@ -204,6 +205,7 @@
     <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_PRESERVE" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-PRESERVE:CAPS"/>
     <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_PRIORITY" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-PRIORITY:CAPS"/>
     <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_NO_STAT" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-NO-STAT:CAPS"/>
+    <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_CHECK_DELETED" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-CHECK-DELETED:CAPS"/>
     <keyword type="constant" name="TRACKER_FILTER_FILE" link="libtracker-miner-Enumerations.html#TRACKER-FILTER-FILE:CAPS"/>
     <keyword type="constant" name="TRACKER_FILTER_DIRECTORY" link="libtracker-miner-Enumerations.html#TRACKER-FILTER-DIRECTORY:CAPS"/>
     <keyword type="constant" name="TRACKER_FILTER_PARENT_DIRECTORY" link="libtracker-miner-Enumerations.html#TRACKER-FILTER-PARENT-DIRECTORY:CAPS"/>
@@ -223,5 +225,44 @@
     <keyword type="constant" name="TRACKER_DECORATOR_ERROR_EMPTY" link="TrackerDecorator.html#TRACKER-DECORATOR-ERROR-EMPTY:CAPS"/>
     <keyword type="constant" name="TRACKER_DECORATOR_ERROR_PAUSED" link="TrackerDecorator.html#TRACKER-DECORATOR-ERROR-PAUSED:CAPS"/>
     <keyword type="constant" name="TRACKER_MINER_FS_ERROR_INIT" link="TrackerMinerFS.html#TRACKER-MINER-FS-ERROR-INIT:CAPS"/>
+    <keyword type="member" name="TrackerMinerClass.started" link="TrackerMiner.html#TrackerMinerClass.started"/>
+    <keyword type="member" name="TrackerMinerClass.stopped" link="TrackerMiner.html#TrackerMinerClass.stopped"/>
+    <keyword type="member" name="TrackerMinerClass.paused" link="TrackerMiner.html#TrackerMinerClass.paused"/>
+    <keyword type="member" name="TrackerMinerClass.resumed" link="TrackerMiner.html#TrackerMinerClass.resumed"/>
+    <keyword type="member" name="TrackerMinerClass.progress" link="TrackerMiner.html#TrackerMinerClass.progress"/>
+    <keyword type="member" name="TrackerMinerClass.ignore-next-update" link="TrackerMiner.html#TrackerMinerClass.ignore-next-update"/>
+    <keyword type="member" name="TrackerMinerClass.padding" link="TrackerMiner.html#TrackerMinerClass.padding"/>
+    <keyword type="member" name="TrackerMinerOnlineClass.connected" link="TrackerMinerOnline.html#TrackerMinerOnlineClass.connected"/>
+    <keyword type="member" name="TrackerMinerOnlineClass.disconnected" link="TrackerMinerOnline.html#TrackerMinerOnlineClass.disconnected"/>
+    <keyword type="member" name="TrackerMinerOnlineClass.padding" link="TrackerMinerOnline.html#TrackerMinerOnlineClass.padding"/>
+    <keyword type="member" name="TrackerDataProviderIface.begin" link="TrackerDataProvider.html#TrackerDataProviderIface.begin"/>
+    <keyword type="member" name="TrackerDataProviderIface.begin-async" link="TrackerDataProvider.html#TrackerDataProviderIface.begin-async"/>
+    <keyword type="member" name="TrackerDataProviderIface.begin-finish" link="TrackerDataProvider.html#TrackerDataProviderIface.begin-finish"/>
+    <keyword type="member" name="TrackerDataProviderIface.end" link="TrackerDataProvider.html#TrackerDataProviderIface.end"/>
+    <keyword type="member" name="TrackerDataProviderIface.end-async" link="TrackerDataProvider.html#TrackerDataProviderIface.end-async"/>
+    <keyword type="member" name="TrackerDataProviderIface.end-finish" link="TrackerDataProvider.html#TrackerDataProviderIface.end-finish"/>
+    <keyword type="member" name="TrackerEnumeratorIface.next" link="libtracker-miner-TrackerEnumerator.html#TrackerEnumeratorIface.next"/>
+    <keyword type="member" name="TrackerEnumeratorIface.next-async" link="libtracker-miner-TrackerEnumerator.html#TrackerEnumeratorIface.next-async"/>
+    <keyword type="member" name="TrackerEnumeratorIface.next-finish" link="libtracker-miner-TrackerEnumerator.html#TrackerEnumeratorIface.next-finish"/>
+    <keyword type="member" name="TrackerDecoratorClass.items-available" link="TrackerDecorator.html#TrackerDecoratorClass.items-available"/>
+    <keyword type="member" name="TrackerDecoratorClass.finished" link="TrackerDecorator.html#TrackerDecoratorClass.finished"/>
+    <keyword type="member" name="TrackerDecoratorClass.padding" link="TrackerDecorator.html#TrackerDecoratorClass.padding"/>
+    <keyword type="member" name="TrackerIndexingTreeClass.directory-added" link="TrackerIndexingTree.html#TrackerIndexingTreeClass.directory-added"/>
+    <keyword type="member" name="TrackerIndexingTreeClass.directory-removed" link="TrackerIndexingTree.html#TrackerIndexingTreeClass.directory-removed"/>
+    <keyword type="member" name="TrackerIndexingTreeClass.directory-updated" link="TrackerIndexingTree.html#TrackerIndexingTreeClass.directory-updated"/>
+    <keyword type="member" name="TrackerIndexingTreeClass.child-updated" link="TrackerIndexingTree.html#TrackerIndexingTreeClass.child-updated"/>
+    <keyword type="member" name="TrackerIndexingTreeClass.padding" link="TrackerIndexingTree.html#TrackerIndexingTreeClass.padding"/>
+    <keyword type="member" name="TrackerMinerFSClass.parent" link="TrackerMinerFS.html#TrackerMinerFSClass.parent"/>
+    <keyword type="member" name="TrackerMinerFSClass.process-file" link="TrackerMinerFS.html#TrackerMinerFSClass.process-file"/>
+    <keyword type="member" name="TrackerMinerFSClass.ignore-next-update-file" link="TrackerMinerFS.html#TrackerMinerFSClass.ignore-next-update-file"/>
+    <keyword type="member" name="TrackerMinerFSClass.finished" link="TrackerMinerFS.html#TrackerMinerFSClass.finished"/>
+    <keyword type="member" name="TrackerMinerFSClass.process-file-attributes" link="TrackerMinerFS.html#TrackerMinerFSClass.process-file-attributes"/>
+    <keyword type="member" name="TrackerMinerFSClass.writeback-file" link="TrackerMinerFS.html#TrackerMinerFSClass.writeback-file"/>
+    <keyword type="member" name="TrackerMinerFSClass.finished-root" link="TrackerMinerFS.html#TrackerMinerFSClass.finished-root"/>
+    <keyword type="member" name="TrackerMinerFSClass.remove-file" link="TrackerMinerFS.html#TrackerMinerFSClass.remove-file"/>
+    <keyword type="member" name="TrackerMinerFSClass.padding" link="TrackerMinerFS.html#TrackerMinerFSClass.padding"/>
+    <keyword type="member" name="TrackerDecoratorFSClass.padding" link="TrackerDecoratorFS.html#TrackerDecoratorFSClass.padding"/>
+    <keyword type="member" name="TrackerThumbnailer.parent" link="libtracker-miner-TrackerThumbnailer.html#TrackerThumbnailer.parent"/>
+    <keyword type="member" name="TrackerThumbnailerClass.parent" link="libtracker-miner-TrackerThumbnailer.html#TrackerThumbnailerClass.parent"/>
   </functions>
 </book>

@@ -94,10 +94,13 @@ host_triplet = @host@
 subdir = src/libtracker-common
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/attributes.m4 \
-	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/intltool.m4 \
+	$(top_srcdir)/m4/gsettings.m4 $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/introspection.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
+	$(top_srcdir)/m4/pkg.m4 \
+	$(top_srcdir)/m4/sqlite-auto-extension.m4 \
 	$(top_srcdir)/m4/sqlite-builtin-fts5.m4 \
 	$(top_srcdir)/m4/sqlite-threadsafe.m4 \
 	$(top_srcdir)/m4/tracker.m4 $(top_srcdir)/configure.ac
@@ -535,7 +538,6 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
-XSLTPROC = @XSLTPROC@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -1064,12 +1066,12 @@ uninstall-am: uninstall-libtracker_commonLTLIBRARIES
 
 
 tracker-parser-sha1.h: $(TRACKER_PARSER_FILES)
-	$(AM_V_GEN) echo -n "#define TRACKER_PARSER_SHA1 \""`git log -n1 --format=format:%H -- $(TRACKER_PARSER_FILES)`"\"" > $@
+	$(AM_V_GEN) echo $(ECHO_N) "#define TRACKER_PARSER_SHA1 \""`git log -n1 --format=format:%H -- $^`"\"$(ECHO_C)" > $@
 
-tracker-enum-types.h: tracker-enum-types.h.template $(NOINST_H_FILES)
+tracker-enum-types.h: tracker-enum-types.h.template tracker-enums.h
 	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template tracker-enum-types.h.template $(noinst_HEADERS)) > $@
 
-tracker-enum-types.c: tracker-enum-types.c.template $(NOINST_H_FILES)
+tracker-enum-types.c: tracker-enum-types.c.template tracker-enums.h
 	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template tracker-enum-types.c.template $(noinst_HEADERS)) > $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -70,9 +70,11 @@ typedef struct {
 	                            GFile               *directory);
 	void (* directory_updated) (TrackerIndexingTree *indexing_tree,
 	                            GFile               *directory);
-
+	void (* child_updated)     (TrackerIndexingTree *indexing_tree,
+	                            GFile               *root,
+	                            GFile               *child);
 	/* <Private> */
-	gpointer padding[10];
+	gpointer padding[9];
 } TrackerIndexingTreeClass;
 
 GType                 tracker_indexing_tree_get_type (void) G_GNUC_CONST;
@@ -86,6 +88,9 @@ void      tracker_indexing_tree_add                  (TrackerIndexingTree   *tre
                                                       TrackerDirectoryFlags  flags);
 void      tracker_indexing_tree_remove               (TrackerIndexingTree   *tree,
                                                       GFile                 *directory);
+gboolean  tracker_indexing_tree_notify_update        (TrackerIndexingTree   *tree,
+                                                      GFile                 *root,
+                                                      gboolean               recursive);
 
 void      tracker_indexing_tree_add_filter           (TrackerIndexingTree  *tree,
                                                       TrackerFilterType     filter,

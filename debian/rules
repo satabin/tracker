@@ -47,7 +47,7 @@ override_dh_auto_configure:
 		--enable-icon \
 		--enable-text \
 		--enable-gtk-doc \
-		--disable-unit-tests \
+		--enable-unit-tests \
 		--disable-network-manager \
 		--disable-miner-rss \
 		--disable-miner-evolution \
@@ -72,3 +72,8 @@ override_dh_makeshlibs:
 
 override_dh_strip:
 	dh_strip --dbgsym-migration='tracker-dbg (<< 1.7.4-1~)'
+
+override_dh_auto_test:
+ifeq (, $(filter nocheck, $(DEB_BUILD_OPTIONS)))
+	make check -k || ( @echo "Tests FAILED, dumping logs"; find -name test-suite.log -exec cat {} \;; exit 0; )
+endif

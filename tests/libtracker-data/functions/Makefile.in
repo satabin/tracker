@@ -123,10 +123,13 @@ check_PROGRAMS = $(am__EXEEXT_2)
 subdir = tests/libtracker-data/functions
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/attributes.m4 \
-	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/intltool.m4 \
+	$(top_srcdir)/m4/gsettings.m4 $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/introspection.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
+	$(top_srcdir)/m4/pkg.m4 \
+	$(top_srcdir)/m4/sqlite-auto-extension.m4 \
 	$(top_srcdir)/m4/sqlite-builtin-fts5.m4 \
 	$(top_srcdir)/m4/sqlite-threadsafe.m4 \
 	$(top_srcdir)/m4/tracker.m4 $(top_srcdir)/configure.ac
@@ -642,7 +645,6 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
-XSLTPROC = @XSLTPROC@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -721,20 +723,25 @@ DISTCLEANFILES =
 MAINTAINERCLEANFILES = 
 EXTRA_DIST = $(all_dist_test_scripts) $(all_dist_test_data) \
 	data-1.ontology data-1.ttl data-2.ontology data-2.ttl \
-	data-3.ontology data-3.ttl functions-property-1.out \
-	functions-property-1.rq functions-tracker-1.out \
-	functions-tracker-1.rq functions-tracker-2.out \
-	functions-tracker-2.rq functions-tracker-loc-1.rq \
-	functions-tracker-loc-1.out functions-xpath-1.out \
-	functions-xpath-1.rq functions-xpath-2.out \
-	functions-xpath-2.rq functions-xpath-3.out \
-	functions-xpath-3.rq functions-xpath-4.out \
-	functions-xpath-4.rq functions-xpath-5.out \
-	functions-xpath-5.rq functions-xpath-6.rq \
-	functions-xpath-6.out functions-xpath-7.rq \
-	functions-xpath-7.out functions-xpath-8.rq \
-	functions-xpath-8.out functions-xpath-9.rq \
-	functions-xpath-9.out
+	data-3.ontology data-3.ttl data-4.ontology data-4.ttl \
+	functions-property-1.out functions-property-1.rq \
+	functions-tracker-1.out functions-tracker-1.rq \
+	functions-tracker-2.out functions-tracker-2.rq \
+	functions-tracker-loc-1.rq functions-tracker-loc-1.out \
+	functions-xpath-1.out functions-xpath-1.rq \
+	functions-xpath-2.out functions-xpath-2.rq \
+	functions-xpath-3.out functions-xpath-3.rq \
+	functions-xpath-4.out functions-xpath-4.rq \
+	functions-xpath-5.out functions-xpath-5.rq \
+	functions-xpath-6.rq functions-xpath-6.out \
+	functions-xpath-7.rq functions-xpath-7.out \
+	functions-xpath-8.rq functions-xpath-8.out \
+	functions-xpath-9.rq functions-xpath-9.out \
+	functions-xpath-10.rq functions-xpath-10.out \
+	functions-xpath-11.rq functions-xpath-11.out \
+	functions-xpath-12.rq functions-xpath-12.out \
+	functions-xpath-13.rq functions-xpath-13.out \
+	functions-xpath-14.rq functions-xpath-14.out
 installed_test_LTLIBRARIES = $(am__append_12)
 installed_test_SCRIPTS = $(am__append_10)
 nobase_installed_test_DATA = $(am__append_11)

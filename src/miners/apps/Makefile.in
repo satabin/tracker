@@ -93,10 +93,13 @@ libexec_PROGRAMS = tracker-miner-apps$(EXEEXT)
 subdir = src/miners/apps
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/attributes.m4 \
-	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/intltool.m4 \
+	$(top_srcdir)/m4/gsettings.m4 $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/introspection.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
+	$(top_srcdir)/m4/pkg.m4 \
+	$(top_srcdir)/m4/sqlite-auto-extension.m4 \
 	$(top_srcdir)/m4/sqlite-builtin-fts5.m4 \
 	$(top_srcdir)/m4/sqlite-threadsafe.m4 \
 	$(top_srcdir)/m4/tracker.m4 $(top_srcdir)/configure.ac
@@ -108,7 +111,8 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(libexecdir)" \
-	"$(DESTDIR)$(autostartdir)" "$(DESTDIR)$(servicedir)"
+	"$(DESTDIR)$(autostartdir)" "$(DESTDIR)$(servicedir)" \
+	"$(DESTDIR)$(systemd_userdir)"
 PROGRAMS = $(libexec_PROGRAMS)
 am_tracker_miner_apps_OBJECTS = tracker-main.$(OBJEXT) \
 	tracker-miner-applications.$(OBJEXT)
@@ -190,7 +194,7 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-DATA = $(autostart_DATA) $(service_DATA)
+DATA = $(autostart_DATA) $(service_DATA) $(systemd_user_DATA)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
 # and print each of them once, without duplicates.  Input order is
@@ -481,7 +485,6 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
-XSLTPROC = @XSLTPROC@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -564,6 +567,8 @@ tracker_miner_apps_LDADD = \
 
 servicedir = $(DBUS_SERVICES_DIR)
 service_DATA = org.freedesktop.Tracker1.Miner.Applications.service
+systemd_userdir = $(prefix)/lib/systemd/user
+systemd_user_DATA = tracker-miner-apps.service
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = tracker-miner-apps.desktop
 
@@ -572,11 +577,15 @@ CLEANFILES = \
 	$(autostart_DATA) \
 	$(autostart_DATA:.desktop=.desktop.in) \
 	$(service_DATA) \
-	$(service_DATA:.service=.service.in)
+	$(service_DATA:.service=.service.in) \
+	$(systemd_user_DATA) \
+	$(NULL)
 
 EXTRA_DIST = \
 	$(autostart_DATA:.desktop=.desktop.in.in) \
-	$(service_DATA:.service=.service.in.in)
+	$(service_DATA:.service=.service.in.in) \
+	$(systemd_user_DATA:.service=.service.in) \
+	$(NULL)
 
 all: all-am
 
@@ -742,6 +751,27 @@ uninstall-serviceDATA:
 	@list='$(service_DATA)'; test -n "$(servicedir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(servicedir)'; $(am__uninstall_files_from_dir)
+install-systemd_userDATA: $(systemd_user_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(systemd_user_DATA)'; test -n "$(systemd_userdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(systemd_userdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(systemd_userdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(systemd_userdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(systemd_userdir)" || exit $$?; \
+	done
+
+uninstall-systemd_userDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(systemd_user_DATA)'; test -n "$(systemd_userdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(systemd_userdir)'; $(am__uninstall_files_from_dir)
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -829,7 +859,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(PROGRAMS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(autostartdir)" "$(DESTDIR)$(servicedir)"; do \
+	for dir in "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(autostartdir)" "$(DESTDIR)$(servicedir)" "$(DESTDIR)$(systemd_userdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -886,7 +916,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-autostartDATA install-serviceDATA
+install-data-am: install-autostartDATA install-serviceDATA \
+	install-systemd_userDATA
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 install-dvi: install-dvi-am
@@ -934,7 +965,8 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-autostartDATA uninstall-libexecPROGRAMS \
-	uninstall-local uninstall-serviceDATA
+	uninstall-local uninstall-serviceDATA \
+	uninstall-systemd_userDATA
 
 .MAKE: install-am install-data-am install-strip
 
@@ -948,12 +980,13 @@ uninstall-am: uninstall-autostartDATA uninstall-libexecPROGRAMS \
 	install-html-am install-info install-info-am \
 	install-libexecPROGRAMS install-man install-pdf install-pdf-am \
 	install-ps install-ps-am install-serviceDATA install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-am uninstall uninstall-am uninstall-autostartDATA \
-	uninstall-libexecPROGRAMS uninstall-local \
-	uninstall-serviceDATA
+	install-systemd_userDATA installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-am uninstall \
+	uninstall-am uninstall-autostartDATA uninstall-libexecPROGRAMS \
+	uninstall-local uninstall-serviceDATA \
+	uninstall-systemd_userDATA
 
 .PRECIOUS: Makefile
 
@@ -962,6 +995,9 @@ uninstall-am: uninstall-autostartDATA uninstall-libexecPROGRAMS \
 %.service.in: %.service.in.in
 	@sed -e "s|@libexecdir[@]|${libexecdir}|" $< > $@
 @INTLTOOL_SERVICE_RULE@
+
+tracker-miner-apps.service: tracker-miner-apps.service.in Makefile
+	@sed -e "s|@libexecdir[@]|${libexecdir}|" $< > $@
 
 install-data-hook:
 	$(MKDIR_P) "$(DESTDIR)$(datadir)/tracker/miners" && \

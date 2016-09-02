@@ -93,10 +93,13 @@ host_triplet = @host@
 subdir = src/libtracker-sparql
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/attributes.m4 \
-	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/intltool.m4 \
+	$(top_srcdir)/m4/gsettings.m4 $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/introspection.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
+	$(top_srcdir)/m4/pkg.m4 \
+	$(top_srcdir)/m4/sqlite-auto-extension.m4 \
 	$(top_srcdir)/m4/sqlite-builtin-fts5.m4 \
 	$(top_srcdir)/m4/sqlite-threadsafe.m4 \
 	$(top_srcdir)/m4/tracker.m4 $(top_srcdir)/configure.ac
@@ -114,6 +117,7 @@ libtracker_sparql_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 am_libtracker_sparql_la_OBJECTS = tracker-namespace.lo \
 	tracker-builder.lo tracker-connection.lo tracker-cursor.lo \
+	tracker-namespace-manager.lo tracker-resource.lo \
 	tracker-utils.lo tracker-uri.lo tracker-version.lo
 libtracker_sparql_la_OBJECTS = $(am_libtracker_sparql_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -496,7 +500,6 @@ VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 WARN_VALACFLAGS = @WARN_VALACFLAGS@
 XGETTEXT = @XGETTEXT@
-XSLTPROC = @XSLTPROC@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -578,8 +581,13 @@ libtracker_sparql_la_SOURCES = \
 	tracker-builder.vala                           \
 	tracker-connection.vala                        \
 	tracker-cursor.vala                            \
+	tracker-namespace-manager.c                    \
+	tracker-namespace-manager.h                    \
+	tracker-resource.c                             \
+	tracker-resource.h                             \
 	tracker-utils.vala                             \
 	tracker-uri.c                                  \
+	tracker-uri.h                                  \
 	tracker-ontologies.h \
 	tracker-version.c \
 	tracker-version.h
@@ -593,7 +601,9 @@ libtracker_sparql_la_LIBADD = \
 vala_header = tracker-generated.h
 libtracker_sparqlinclude_HEADERS = \
 	$(vala_header)                                 \
+	tracker-namespace-manager.h                    \
 	tracker-ontologies.h \
+	tracker-resource.h                             \
 	tracker-sparql.h                               \
 	tracker-version.h
 
@@ -692,7 +702,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-builder.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-connection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-cursor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-namespace-manager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-namespace.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-resource.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-uri.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-version.Plo@am__quote@

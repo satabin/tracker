@@ -1894,6 +1894,23 @@ item_move (TrackerMinerFS *fs,
 		g_free (uri);
 
 		return retval;
+	} else if (!source_exists) {
+		gboolean retval;
+
+		/* The source file might not be indexed yet (eg. temporary save
+		 * files that are immediately renamed to the definitive path).
+		 * Deal with those as newly added items.
+		 */
+		g_debug ("Source file '%s' not yet in store, indexing '%s' "
+		         "from scratch", source_uri, uri);
+
+		retval = item_add_or_update (fs, file, G_PRIORITY_DEFAULT);
+
+		g_free (source_uri);
+		g_free (uri);
+		g_object_unref (file_info);
+
+		return retval;
 	}
 
 	g_debug ("Moving item from '%s' to '%s'",
@@ -1925,10 +1942,10 @@ item_move (TrackerMinerFS *fs,
 	                        "} WHERE { "
 	                        "  <%s> nfo:fileName ?f ; "
 	                        "       nie:url ?u ; "
-	                        "       nie:isStoredAs ?s ; "
-	                        "       nfo:belongsToContainer ?b"
+	                        "       nie:isStoredAs ?s . "
+	                        "       OPTIONAL { <%s> nfo:belongsToContainer ?b }"
 	                        "} ",
-	                        source_iri, source_iri);
+	                        source_iri, source_iri, source_iri);
 
 	display_name = tracker_sparql_escape_string (g_file_info_get_display_name (file_info));
 
@@ -1944,7 +1961,7 @@ item_move (TrackerMinerFS *fs,
 		                        "       nie:isStoredAs <%s> ; "
 		                        "       nfo:belongsToContainer \"%s\""
 		                        "}"   ,
-		                        source_iri, source_iri,
+		                        TRACKER_OWN_GRAPH_URN, source_iri,
 		                        display_name, uri,
 		                        source_iri,
 		                        new_parent_iri);
@@ -1957,7 +1974,7 @@ item_move (TrackerMinerFS *fs,
 		                        "       nie:url \"%s\" ; "
 		                        "       nie:isStoredAs <%s>"
 		                        "} ",
-		                        source_iri, source_iri,
+		                        TRACKER_OWN_GRAPH_URN, source_iri,
 		                        display_name, uri,
 		                        source_iri);
 	}
@@ -2562,6 +2579,7 @@ item_queue_handlers_cb (gpointer user_data)
 
 		if (!parent ||
 		    tracker_indexing_tree_file_is_root (fs->priv->indexing_tree, file) ||
+		    !tracker_indexing_tree_get_root (fs->priv->indexing_tree, file, NULL) ||
 		    lookup_file_urn (fs, parent, TRUE)) {
 			keep_processing = item_add_or_update (fs, file, priority);
 		} else {

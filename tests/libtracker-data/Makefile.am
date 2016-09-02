@@ -6,6 +6,7 @@ SUBDIRS =                                              \
 	anon                                           \
 	ask                                            \
 	basic                                          \
+	bind                                           \
 	bnode-coreference                              \
 	bound                                          \
 	datetime                                       \
@@ -21,6 +22,7 @@ SUBDIRS =                                              \
 	subqueries                                     \
 	error                                          \
 	backup                                         \
+	update                                         \
 	turtle
 
 noinst_PROGRAMS += $(test_programs)

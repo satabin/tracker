@@ -6,9 +6,9 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker SPARQL Library Reference Manual">
 <link rel="up" href="libtracker-sparql-reference.html" title="Part II. Reference">
-<link rel="prev" href="libtracker-sparql-reference.html" title="Part II. Reference">
+<link rel="prev" href="libtracker-sparql-TrackerNamespaceManager.html" title="TrackerNamespaceManager">
 <link rel="next" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -21,7 +21,7 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="libtracker-sparql-reference.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="libtracker-sparql-reference.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="libtracker-sparql-TrackerNamespaceManager.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="TrackerSparqlConnection.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
@@ -84,7 +84,7 @@ justifications.
 </td>
 </tr>
 <tr>
-<td class="function_type">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<td class="function_type">const <span class="returnvalue">gchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-get-result" title="tracker_sparql_builder_get_result ()">tracker_sparql_builder_get_result</a> <span class="c_punctuation">()</span>
@@ -92,7 +92,7 @@ justifications.
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<span class="returnvalue">gint</span>
 </td>
 <td class="function_name">
 <a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-get-length" title="tracker_sparql_builder_get_length ()">tracker_sparql_builder_get_length</a> <span class="c_punctuation">()</span>
@@ -327,13 +327,13 @@ justifications.
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a></td>
+<td class="property_type"><span class="type">gint</span></td>
 <td class="property_name"><a class="link" href="TrackerSparqlBuilder.html#TrackerSparqlBuilder--length" title="The “length” property">length</a></td>
 <td class="property_flags">Read</td>
 </tr>
 <tr>
 <td class="property_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<span class="type">gchar</span> *</td>
 <td class="property_name"><a class="link" href="TrackerSparqlBuilder.html#TrackerSparqlBuilder--result" title="The “result” property">result</a></td>
 <td class="property_flags">Read</td>
 </tr>
@@ -354,8 +354,8 @@ justifications.
 </colgroup>
 <tbody>
 <tr>
-<td class="datatype_keyword">struct</td>
-<td class="function_name"><a class="link" href="TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct" title="struct TrackerSparqlBuilder">TrackerSparqlBuilder</a></td>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct" title="TrackerSparqlBuilder">TrackerSparqlBuilder</a></td>
 </tr>
 <tr>
 <td class="datatype_keyword">enum</td>
@@ -366,9 +366,9 @@ justifications.
 </div>
 <div class="refsect1">
 <a name="TrackerSparqlBuilder.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-Enumeration-and-Flag-Types.html">GEnum</a>
+<pre class="screen">    <a href="/home/carlos/Build/gnome/share/gtk-doc/html/gobject/gobject-Enumeration-and-Flag-Types.html">GEnum</a>
     <span class="lineart">╰──</span> TrackerSparqlBuilderState
-    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    GObject
     <span class="lineart">╰──</span> TrackerSparqlBuilder
 </pre>
 </div>
@@ -397,8 +397,8 @@ for the same subject, and several objects for the same predicate.
 tracker_sparql_builder_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Creates a stateless <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.2.5"></a><h4>Returns</h4>
-<p> a newly created <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>. Free with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> when done</p>
+<a name="tracker-sparql-builder-new.returns"></a><h4>Returns</h4>
+<p> a newly created <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>. Free with <code class="function">g_object_unref()</code> when done</p>
 </div>
 <p class="since">Since: 0.10</p>
 </div>
@@ -412,8 +412,8 @@ tracker_sparql_builder_new_embedded_insert
 inserts, the subject is implied (responsibility of the embedder), so only calls to
 append predicates and objects for the given subject are allowed.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.3.5"></a><h4>Returns</h4>
-<p> a newly created <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>. Free with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> when done</p>
+<a name="tracker-sparql-builder-new-embedded-insert.returns"></a><h4>Returns</h4>
+<p> a newly created <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>. Free with <code class="function">g_object_unref()</code> when done</p>
 </div>
 <p class="since">Since: 0.10</p>
 </div>
@@ -424,8 +424,8 @@ append predicates and objects for the given subject are allowed.</p>
 tracker_sparql_builder_new_update (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Creates an empty <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> for an update query.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.4.5"></a><h4>Returns</h4>
-<p> a newly created <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>. Free with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> when done</p>
+<a name="tracker-sparql-builder-new-update.returns"></a><h4>Returns</h4>
+<p> a newly created <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>. Free with <code class="function">g_object_unref()</code> when done</p>
 </div>
 <p class="since">Since: 0.10</p>
 </div>
@@ -437,7 +437,7 @@ tracker_sparql_builder_get_state (<em class="parameter"><code><a class="link" hr
 <p>Returns the current state of <em class="parameter"><code>self</code></em>
 </p>
 <div class="refsect3">
-<a name="id-1.3.3.10.5.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-get-state.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -452,7 +452,7 @@ tracker_sparql_builder_get_state (<em class="parameter"><code><a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.3.10.5.6"></a><h4>Returns</h4>
+<a name="tracker-sparql-builder-get-state.returns"></a><h4>Returns</h4>
 <p> a <a class="link" href="TrackerSparqlBuilder.html#TrackerSparqlBuilderState" title="enum TrackerSparqlBuilderState"><span class="type">TrackerSparqlBuilderState</span></a> defining the current state of <em class="parameter"><code>self</code></em>
 </p>
 </div>
@@ -461,11 +461,11 @@ tracker_sparql_builder_get_state (<em class="parameter"><code><a class="link" hr
 <hr>
 <div class="refsect2">
 <a name="tracker-sparql-builder-get-result"></a><h3>tracker_sparql_builder_get_result ()</h3>
-<pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
 tracker_sparql_builder_get_result (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
 <p>Retrieves a string representation of the constructed SPARQL query.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.6.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-get-result.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -480,7 +480,7 @@ tracker_sparql_builder_get_result (<em class="parameter"><code><a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.3.10.6.6"></a><h4>Returns</h4>
+<a name="tracker-sparql-builder-get-result.returns"></a><h4>Returns</h4>
 <p> the created SPARQL query. The string is contained in the
 <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> object, and should not be freed by the caller.</p>
 </div>
@@ -489,12 +489,12 @@ tracker_sparql_builder_get_result (<em class="parameter"><code><a class="link" h
 <hr>
 <div class="refsect2">
 <a name="tracker-sparql-builder-get-length"></a><h3>tracker_sparql_builder_get_length ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<pre class="programlisting"><span class="returnvalue">gint</span>
 tracker_sparql_builder_get_length (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
 <p>Returns the number of objects added to <em class="parameter"><code>self</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.7.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-get-length.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -509,7 +509,7 @@ tracker_sparql_builder_get_length (<em class="parameter"><code><a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.3.10.7.6"></a><h4>Returns</h4>
+<a name="tracker-sparql-builder-get-length.returns"></a><h4>Returns</h4>
 <p> the number of objects contained.</p>
 </div>
 <p class="since">Since: 0.10</p>
@@ -519,11 +519,11 @@ tracker_sparql_builder_get_length (<em class="parameter"><code><a class="link" h
 <a name="tracker-sparql-builder-append"></a><h3>tracker_sparql_builder_append ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_append (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                               <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *raw</code></em>);</pre>
+                               <em class="parameter"><code>const <span class="type">gchar</span> *raw</code></em>);</pre>
 <p>Appends raw, unvalidated content to <em class="parameter"><code>self</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.8.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-append.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -551,11 +551,11 @@ tracker_sparql_builder_append (<em class="parameter"><code><a class="link" href=
 <a name="tracker-sparql-builder-prepend"></a><h3>tracker_sparql_builder_prepend ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_prepend (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *raw</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">gchar</span> *raw</code></em>);</pre>
 <p>Prepends raw, unvalidated content to <em class="parameter"><code>self</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.9.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-prepend.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -583,10 +583,10 @@ tracker_sparql_builder_prepend (<em class="parameter"><code><a class="link" href
 <a name="tracker-sparql-builder-insert-open"></a><h3>tracker_sparql_builder_insert_open ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_insert_open (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                    <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>);</pre>
+                                    <em class="parameter"><code>const <span class="type">gchar</span> *graph</code></em>);</pre>
 <p>Opens an insertion statement.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.10.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-insert-open.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -601,7 +601,7 @@ tracker_sparql_builder_insert_open (<em class="parameter"><code><a class="link" 
 </tr>
 <tr>
 <td class="parameter_name"><p>graph</p></td>
-<td class="parameter_description"><p>graph name, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_description"><p>graph name, or <code class="literal">NULL</code>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -615,10 +615,10 @@ tracker_sparql_builder_insert_open (<em class="parameter"><code><a class="link" 
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_insert_silent_open
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">gchar</span> *graph</code></em>);</pre>
 <p>Opens a silent insertion statement.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.11.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-insert-silent-open.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -633,7 +633,7 @@ tracker_sparql_builder_insert_silent_open
 </tr>
 <tr>
 <td class="parameter_name"><p>graph</p></td>
-<td class="parameter_description"><p>graph name, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_description"><p>graph name, or <code class="literal">NULL</code>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -648,7 +648,7 @@ tracker_sparql_builder_insert_silent_open
 tracker_sparql_builder_insert_close (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
 <p>Closes an insertion statement opened with <a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-insert-open" title="tracker_sparql_builder_insert_open ()"><code class="function">tracker_sparql_builder_insert_open()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.12.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-insert-close.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -672,7 +672,7 @@ tracker_sparql_builder_where_open (<em class="parameter"><code><a class="link" h
 <p>Opens a WHERE clause. Data triples may be appended then to narrow the scope
 to which the update query applies.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.13.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-where-open.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -695,7 +695,7 @@ to which the update query applies.</p>
 tracker_sparql_builder_where_close (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
 <p>Closes a WHERE clause opened through <a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-where-open" title="tracker_sparql_builder_where_open ()"><code class="function">tracker_sparql_builder_where_open()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.14.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-where-close.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -716,11 +716,11 @@ tracker_sparql_builder_where_close (<em class="parameter"><code><a class="link" 
 <a name="tracker-sparql-builder-delete-open"></a><h3>tracker_sparql_builder_delete_open ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_delete_open (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                    <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>);</pre>
+                                    <em class="parameter"><code>const <span class="type">gchar</span> *graph</code></em>);</pre>
 <p>Opens a DELETE clause. Data triples may be appended in order to prepare
 a query to delete them.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.15.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-delete-open.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -735,7 +735,7 @@ a query to delete them.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>graph</p></td>
-<td class="parameter_description"><p>graph name, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_description"><p>graph name, or <code class="literal">NULL</code>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -750,7 +750,7 @@ a query to delete them.</p>
 tracker_sparql_builder_delete_close (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
 <p>Closes a DELETE clause opened through <a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-delete-open" title="tracker_sparql_builder_delete_open ()"><code class="function">tracker_sparql_builder_delete_open()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.16.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-delete-close.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -771,10 +771,10 @@ tracker_sparql_builder_delete_close (<em class="parameter"><code><a class="link"
 <a name="tracker-sparql-builder-graph-open"></a><h3>tracker_sparql_builder_graph_open ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_graph_open (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                   <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>);</pre>
+                                   <em class="parameter"><code>const <span class="type">gchar</span> *graph</code></em>);</pre>
 <p>Opens a GRAPH clause within INSERT, DELETE, or WHERE.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.17.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-graph-open.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -804,7 +804,7 @@ tracker_sparql_builder_graph_open (<em class="parameter"><code><a class="link" h
 tracker_sparql_builder_graph_close (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
 <p>Closes a GRAPH clause opened through <a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-graph-open" title="tracker_sparql_builder_graph_open ()"><code class="function">tracker_sparql_builder_graph_open()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.18.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-graph-close.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -826,10 +826,10 @@ tracker_sparql_builder_graph_close (<em class="parameter"><code><a class="link" 
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_subject_variable
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *var_name</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">gchar</span> *var_name</code></em>);</pre>
 <p>Appends a subject as a SPARQL variable, such as "?urn".</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.19.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-subject-variable.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -857,11 +857,11 @@ tracker_sparql_builder_subject_variable
 <a name="tracker-sparql-builder-subject-iri"></a><h3>tracker_sparql_builder_subject_iri ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_subject_iri (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                    <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *iri</code></em>);</pre>
+                                    <em class="parameter"><code>const <span class="type">gchar</span> *iri</code></em>);</pre>
 <p>Appends a subject as an IRI, such as "&lt;urn:file:1234-5678&gt;". IRIs
 univocally identify a resource in tracker-store.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.20.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-subject-iri.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -889,10 +889,10 @@ univocally identify a resource in tracker-store.</p>
 <a name="tracker-sparql-builder-subject"></a><h3>tracker_sparql_builder_subject ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_subject (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *s</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">gchar</span> *s</code></em>);</pre>
 <p>Appends a subject.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.21.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-subject.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -920,10 +920,10 @@ tracker_sparql_builder_subject (<em class="parameter"><code><a class="link" href
 <a name="tracker-sparql-builder-predicate-iri"></a><h3>tracker_sparql_builder_predicate_iri ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_predicate_iri (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                      <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *iri</code></em>);</pre>
+                                      <em class="parameter"><code>const <span class="type">gchar</span> *iri</code></em>);</pre>
 <p>Appends a predicate as an IRI.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.22.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-predicate-iri.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -951,10 +951,10 @@ tracker_sparql_builder_predicate_iri (<em class="parameter"><code><a class="link
 <a name="tracker-sparql-builder-predicate"></a><h3>tracker_sparql_builder_predicate ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_predicate (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                  <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *s</code></em>);</pre>
+                                  <em class="parameter"><code>const <span class="type">gchar</span> *s</code></em>);</pre>
 <p>Appends a predicate for the previously appended subject.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.23.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-predicate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -982,10 +982,10 @@ tracker_sparql_builder_predicate (<em class="parameter"><code><a class="link" hr
 <a name="tracker-sparql-builder-object-iri"></a><h3>tracker_sparql_builder_object_iri ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_iri (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                   <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *iri</code></em>);</pre>
+                                   <em class="parameter"><code>const <span class="type">gchar</span> *iri</code></em>);</pre>
 <p>Appends an object as an IRI.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.24.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-object-iri.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1013,10 +1013,10 @@ tracker_sparql_builder_object_iri (<em class="parameter"><code><a class="link" h
 <a name="tracker-sparql-builder-object"></a><h3>tracker_sparql_builder_object ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                               <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *s</code></em>);</pre>
+                               <em class="parameter"><code>const <span class="type">gchar</span> *s</code></em>);</pre>
 <p>Appends a free-form object for the previously appended subject and predicate.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.25.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-object.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1044,12 +1044,12 @@ tracker_sparql_builder_object (<em class="parameter"><code><a class="link" href=
 <a name="tracker-sparql-builder-object-string"></a><h3>tracker_sparql_builder_object_string ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_string (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                      <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *literal</code></em>);</pre>
+                                      <em class="parameter"><code>const <span class="type">gchar</span> *literal</code></em>);</pre>
 <p>Appends an object formatted as an string. <em class="parameter"><code>literal</code></em>
  will be escaped and surrounded
 by double quotes.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.26.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-object-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1077,10 +1077,10 @@ by double quotes.</p>
 <a name="tracker-sparql-builder-object-boolean"></a><h3>tracker_sparql_builder_object_boolean ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_boolean (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> literal</code></em>);</pre>
-<p>Appends a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> value as an object.</p>
+                                       <em class="parameter"><code><span class="type">gboolean</span> literal</code></em>);</pre>
+<p>Appends a <span class="type">gboolean</span> value as an object.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.27.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-object-boolean.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1095,7 +1095,7 @@ tracker_sparql_builder_object_boolean (<em class="parameter"><code><a class="lin
 </tr>
 <tr>
 <td class="parameter_name"><p>literal</p></td>
-<td class="parameter_description"><p>object as a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></p></td>
+<td class="parameter_description"><p>object as a <span class="type">gboolean</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1108,10 +1108,10 @@ tracker_sparql_builder_object_boolean (<em class="parameter"><code><a class="lin
 <a name="tracker-sparql-builder-object-int64"></a><h3>tracker_sparql_builder_object_int64 ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_int64 (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> literal</code></em>);</pre>
-<p>Appends a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> value as an object.</p>
+                                     <em class="parameter"><code><span class="type">gint64</span> literal</code></em>);</pre>
+<p>Appends a <span class="type">gint64</span> value as an object.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.28.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-object-int64.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1126,7 +1126,7 @@ tracker_sparql_builder_object_int64 (<em class="parameter"><code><a class="link"
 </tr>
 <tr>
 <td class="parameter_name"><p>literal</p></td>
-<td class="parameter_description"><p>object as a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a></p></td>
+<td class="parameter_description"><p>object as a <span class="type">gint64</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1144,7 +1144,7 @@ tracker_sparql_builder_object_date (<em class="parameter"><code><a class="link" 
  will be converted
 to a string in the date format used by tracker-store.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.29.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-object-date.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1172,10 +1172,10 @@ to a string in the date format used by tracker-store.</p>
 <a name="tracker-sparql-builder-object-double"></a><h3>tracker_sparql_builder_object_double ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_double (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> literal</code></em>);</pre>
-<p>Appends a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> value as an object.</p>
+                                      <em class="parameter"><code><span class="type">gdouble</span> literal</code></em>);</pre>
+<p>Appends a <span class="type">gdouble</span> value as an object.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.30.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-object-double.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1190,7 +1190,7 @@ tracker_sparql_builder_object_double (<em class="parameter"><code><a class="link
 </tr>
 <tr>
 <td class="parameter_name"><p>literal</p></td>
-<td class="parameter_description"><p>object as a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a></p></td>
+<td class="parameter_description"><p>object as a <span class="type">gdouble</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1204,10 +1204,10 @@ tracker_sparql_builder_object_double (<em class="parameter"><code><a class="link
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_variable
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *var_name</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">gchar</span> *var_name</code></em>);</pre>
 <p>Appends an object as a SparQL variable, such as "?urn".</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.31.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-object-variable.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1240,7 +1240,7 @@ tracker_sparql_builder_object_blank_open
 anonymous nodes for not previously known data without the need of a
 separate insertion.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.32.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-object-blank-open.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1264,7 +1264,7 @@ tracker_sparql_builder_object_blank_close
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
 <p>Closes an anomymous blank node opened with <a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-open" title="tracker_sparql_builder_object_blank_open ()"><code class="function">tracker_sparql_builder_object_blank_open()</code></a></p>
 <div class="refsect3">
-<a name="id-1.3.3.10.33.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-object-blank-close.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1286,10 +1286,10 @@ tracker_sparql_builder_object_blank_close
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_unvalidated
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">gchar</span> *value</code></em>);</pre>
 <p>Appends a string not validated as UTF-8 as an object.</p>
 <div class="refsect3">
-<a name="id-1.3.3.10.34.5"></a><h4>Parameters</h4>
+<a name="tracker-sparql-builder-object-unvalidated.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1316,8 +1316,8 @@ tracker_sparql_builder_object_unvalidated
 <div class="refsect1">
 <a name="TrackerSparqlBuilder.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
-<a name="TrackerSparqlBuilder-struct"></a><h3>struct TrackerSparqlBuilder</h3>
-<pre class="programlisting">struct TrackerSparqlBuilder;</pre>
+<a name="TrackerSparqlBuilder-struct"></a><h3>TrackerSparqlBuilder</h3>
+<pre class="programlisting">typedef struct _TrackerSparqlBuilder TrackerSparqlBuilder;</pre>
 <p>The <span class="structname">TrackerSparqlBuilder</span> object represents an
 insertion/update SPARQL query.</p>
 </div>
@@ -1326,7 +1326,7 @@ insertion/update SPARQL query.</p>
 <a name="TrackerSparqlBuilderState"></a><h3>enum TrackerSparqlBuilderState</h3>
 <p>Enumeration with the possible states of the SPARQL Builder</p>
 <div class="refsect3">
-<a name="id-1.3.3.11.3.4"></a><h4>Members</h4>
+<a name="TrackerSparqlBuilderState.members"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1413,7 +1413,7 @@ insertion/update SPARQL query.</p>
 <a name="TrackerSparqlBuilder.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="TrackerSparqlBuilder--length"></a><h3>The <code class="literal">“length”</code> property</h3>
-<pre class="programlisting">  “length”                   <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a></pre>
+<pre class="programlisting">  “length”                   <span class="type">gint</span></pre>
 <p>Number of objects added to the <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>.</p>
 <p>Flags: Read</p>
 <p>Default value: 0</p>
@@ -1422,7 +1422,7 @@ insertion/update SPARQL query.</p>
 <hr>
 <div class="refsect2">
 <a name="TrackerSparqlBuilder--result"></a><h3>The <code class="literal">“result”</code> property</h3>
-<pre class="programlisting">  “result”                   <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<pre class="programlisting">  “result”                   <span class="type">gchar</span> *</pre>
 <p>String containing the constructed SPARQL in the <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>.</p>
 <p>Flags: Read</p>
 <p>Default value: NULL</p>
@@ -1440,6 +1440,6 @@ insertion/update SPARQL query.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

@@ -83,14 +83,12 @@ namespace Tracker.Sparql {
 		public string sql_expression { get; private set; }
 		public VariableBinding binding;
 		string sql_identifier;
-		public weak Context origin_context { get; private set; }
 
-		public Variable (string name, int index, Context context) {
+		public Variable (string name, int index) {
 			this.name = name;
 			this.index = index;
 			this.sql_identifier = "%d_u".printf (index);
 			this.sql_expression = "\"%s\"".printf (sql_identifier);
-			this.origin_context = context;
 		}
 
 		public string get_extra_sql_expression (string suffix) {
@@ -122,6 +120,7 @@ namespace Tracker.Sparql {
 		public HashTable<Variable,PredicateVariable> predicate_variable_map;
 
 		public bool scalar_subquery;
+		public bool in_bind;
 
 		public Context (Query query, Context? parent_context = null) {
 			this.query = query;
@@ -153,7 +152,7 @@ namespace Tracker.Sparql {
 		internal unowned Variable get_variable (string name) {
 			unowned Variable result = this.var_map.lookup (name);
 			if (result == null) {
-				var variable = new Variable (name, ++query.last_var_index, this);
+				var variable = new Variable (name, ++query.last_var_index);
 				this.var_map.insert (name, variable);
 
 				result = variable;
@@ -645,19 +644,20 @@ public class Tracker.Sparql.Query : Object {
 				// INSERT/DELETE DATA are simpler variants
 				// that don't support variables
 				data = true;
-			} else if (current() == SparqlTokenType.WHERE) {
+			} else if (accept (SparqlTokenType.WHERE)) {
 				// DELETE WHERE is a short form where the pattern
 				// is also used as the template for deletion
 				delete_where = true;
 			}
 
+			delete_location = get_location ();
+
 			if (!data && !delete_where) {
-				delete_location = get_location ();
 				skip_braces ();
 			}
 		}
 
-		if (!data && accept (SparqlTokenType.INSERT)) {
+		if (!data && !delete_where && accept (SparqlTokenType.INSERT)) {
 			if (accept (SparqlTokenType.OR)) {
 				expect (SparqlTokenType.REPLACE);
 				insert_is_update = true;
@@ -678,8 +678,13 @@ public class Tracker.Sparql.Query : Object {
 				data = true;
 			}
 
-			if (!data && current () == SparqlTokenType.OPEN_BRACE) {
-				insert_location = get_location ();
+			if (current () != SparqlTokenType.OPEN_BRACE) {
+				throw get_error ("Expected '{' beginning a quad data/pattern block");
+			}
+
+			insert_location = get_location ();
+
+			if (!data) {
 				skip_braces ();
 			}
 		}
@@ -689,7 +694,7 @@ public class Tracker.Sparql.Query : Object {
 		var sql = new StringBuilder ();
 
 		if (!data) {
-			if (accept (SparqlTokenType.WHERE)) {
+			if (delete_where || accept (SparqlTokenType.WHERE)) {
 				pattern.current_graph = current_graph;
 				context = pattern.translate_group_graph_pattern (pattern_sql);
 				pattern.current_graph = null;
@@ -699,7 +704,11 @@ public class Tracker.Sparql.Query : Object {
 				pattern_sql.append ("SELECT 1");
 			}
 		} else {
-			// WHERE pattern not supported for INSERT/DELETE DATA
+			// WHERE pattern not supported for INSERT/DELETE DATA,
+			// nor unbound values in the quad data.
+			if (quad_data_unbound_var_count () > 0) {
+				throw get_error ("INSERT/DELETE DATA do not allow unbound values");
+			}
 
 			context = new Context (this);
 
@@ -806,6 +815,31 @@ public class Tracker.Sparql.Query : Object {
 			throw get_error ("use of undefined prefix `%s'".printf (prefix));
 		}
 		return ns + local_name;
+	}
+
+	int quad_data_unbound_var_count () throws Sparql.Error {
+		SourceLocation current_pos = get_location ();
+		int n_braces = 1;
+		int n_unbound = 0;
+
+		expect (SparqlTokenType.OPEN_BRACE);
+		while (n_braces > 0) {
+			if (accept (SparqlTokenType.OPEN_BRACE)) {
+				n_braces++;
+			} else if (accept (SparqlTokenType.CLOSE_BRACE)) {
+				n_braces--;
+			} else if (current () == SparqlTokenType.EOF) {
+				throw get_error ("unexpected end of query, expected }");
+			} else {
+				if (current () == SparqlTokenType.VAR)
+					n_unbound++;
+				// ignore everything else
+				next ();
+			}
+		}
+
+		set_location (current_pos);
+		return n_unbound;
 	}
 
 	void skip_braces () throws Sparql.Error {

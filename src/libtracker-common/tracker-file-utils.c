@@ -240,6 +240,8 @@ tracker_file_get_mime_type (GFile *file)
 
 #ifdef __linux__
 
+#define __bsize f_bsize
+
 #ifdef __USE_LARGEFILE64
 #define __statvfs statfs64
 #else
@@ -247,6 +249,8 @@ tracker_file_get_mime_type (GFile *file)
 #endif
 
 #else /* __linux__ */
+
+#define __bsize f_frsize
 
 #if HAVE_STATVFS64
 #define __statvfs statvfs64
@@ -294,7 +298,8 @@ tracker_file_system_get_remaining_space (const gchar *path)
 
 	if (statvfs_helper (path, &st)) {
 		available = (geteuid () == 0) ? st.f_bfree : st.f_bavail;
-		return st.f_bsize * available;
+		/* __bsize is a platform dependent #define above */
+		return st.__bsize * available;
 	} else {
 		return 0;
 	}
@@ -513,15 +518,16 @@ const struct {
 };
 
 
-static gchar *
-get_user_special_dir_if_not_home (const gchar *path)
+static gboolean
+get_user_special_dir_if_not_home (const gchar  *path,
+                                  gchar       **special_dir)
 {
 	int i;
 	const gchar *real_path;
 	GFile *home, *file;
-	gboolean res;
 
 	real_path = NULL;
+	*special_dir = NULL;
 
 	for (i = 0; i < G_N_ELEMENTS(special_dirs); i++) {
 		if (strcmp (path, special_dirs[i].symbol) == 0) {
@@ -537,21 +543,20 @@ get_user_special_dir_if_not_home (const gchar *path)
 	}
 
 	if (real_path == NULL)
-		return NULL;
+		return FALSE;
 
 	file = g_file_new_for_path (real_path);
 	home = g_file_new_for_path (g_get_home_dir ());
 
-	res = g_file_equal (file, home);
+	/* ignore XDG directories set to $HOME */
+	if (!g_file_equal (file, home)) {
+		*special_dir = g_strdup (real_path);
+	}
+
 	g_object_unref (file);
 	g_object_unref (home);
 
-	if (res) {
-		/* ignore XDG directories set to $HOME */
-		return NULL;
-	} else {
-		return g_strdup (real_path);
-	}
+	return TRUE;
 }
 
 
@@ -572,13 +577,10 @@ tracker_path_evaluate_name (const gchar *path)
 	}
 
 	/* See if it is a special directory name. */
-	special_dir_path = get_user_special_dir_if_not_home (path);
-
-	if (special_dir_path != NULL) {
+	if (get_user_special_dir_if_not_home (path, &special_dir_path))
 		return special_dir_path;
-	}
 
-	/* First check the simple case of using tilder */
+	/* First check the simple case of using tilde */
 	if (path[0] == '~') {
 		const gchar *home;
 

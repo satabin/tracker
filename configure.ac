@@ -12,8 +12,8 @@ AC_PREREQ([2.64])
 # if backwards compatibility has been broken,
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [1])
-m4_define([tracker_minor_version], [8])
-m4_define([tracker_micro_version], [0])
+m4_define([tracker_minor_version], [9])
+m4_define([tracker_micro_version], [1])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -42,7 +42,7 @@ m4_define([tracker_binary_version], [1.0.0])
 
 AC_INIT([tracker],
         [tracker_version],
-        [http://bugzilla.gnome.org/],
+        [http://bugzilla.gnome.org/enter_bug.cgi?product=tracker],
         [tracker],
         [https://wiki.gnome.org/Projects/Tracker])
 
@@ -55,6 +55,12 @@ AC_CONFIG_HEADERS([config.h])
 # See: https://www.gnu.org/software/autoconf/manual/autoconf-2.64/html_node/Posix-Variants.html
 AC_USE_SYSTEM_EXTENSIONS
 
+# Adding the 'subdir-objects' Automake option here will fix some Automake
+# warnings, but it will also break the build. I believe that it triggers
+# <http://debbugs.gnu.org/cgi/bugreport.cgi?bug=13928>. That bug will
+# be fixed in Automake 1.16, so we should be eventually able to use
+# 'subdir-objects' (which is apparently will be on by default in Automake 2.0),
+# but we'll need to require Automake 1.16 before we can do so.
 AM_INIT_AUTOMAKE([1.11 no-define tar-ustar -Wno-portability no-dist-gzip dist-xz])
 
 AC_PROG_LIBTOOL
@@ -119,7 +125,6 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-AC_PROG_RANLIB
 
 # Checks for libraries.
 # FIXME: Replace `main' with a function in `-lm':
@@ -197,18 +202,14 @@ PYTHON_REQUIRED=2.6
 
 # Library required versions
 DBUS_REQUIRED=1.3.1
-GLIB_REQUIRED=2.40.0
-PANGO_REQUIRED=1.0.0
+GLIB_REQUIRED=2.44.0
 GTK_REQUIRED=3.0.0
 LIBXML2_REQUIRED=2.6
-LIBNOTIFY_REQUIRED=0.4.3
 HAL_REQUIRED=0.5
 UPOWER_REQUIRED=0.9.0
-GDKPIXBUF_REQUIRED=2.12.0
 MEEGOTOUCH_REQUIRED=0.20
 POPPLER_REQUIRED=0.16.0
 CAIRO_REQUIRED=1.0
-GDK_REQUIRED=1.0
 LIBICU_REQUIRED=4.8.1.1
 LIBJPEG_REQUIRED="any version"
 LIBGIF_REQUIRED="any version"
@@ -226,11 +227,10 @@ CAMEL_REQUIRED=2.32.0
 GEE_REQUIRED=0.3
 TAGLIB_REQUIRED=1.6
 LIBGRSS_REQUIRED=0.7
-REST_REQUIRED=0.6
 NETWORK_MANAGER_REQUIRED=0.8
 GSTREAMER_REQUIRED=0.10.31
 GUPNP_DLNA_REQUIRED=0.9.4
-LIBPNG_REQUIRED=0.89
+LIBPNG_REQUIRED=1.2
 LIBMEDIAART_REQUIRED=1.9.0
 
 # 3.6.11 for sqlite_backup API
@@ -238,7 +238,8 @@ LIBMEDIAART_REQUIRED=1.9.0
 # 3.6.17 for shared cache mode with virtual tables
 # 3.7.0 for WAL
 # 3.7.9 for FTS4 content= support
-SQLITE_REQUIRED=3.7.9
+# 3.7.15 for sqlite3_errstr() support
+SQLITE_REQUIRED=3.7.15
 
 # Needed to generate .gir files,
 # see http://live.gnome.org/GnomeGoals/AddGObjectIntrospectionSupport
@@ -246,11 +247,6 @@ GOBJECT_INTROSPECTION_CHECK([0.9.5])
 
 GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
 AC_SUBST(GLIB_PREFIX)
-
-# Check for libpng 1.2 or higher
-PKG_CHECK_MODULES(LIBPNG, [libpng >= 1.2])
-AC_SUBST(LIBPNG_CFLAGS)
-AC_SUBST(LIBPNG_LIBS)
 
 # Check requirements for gvdb
 GVDB_REQUIRED="glib-2.0 >= $GLIB_REQUIRED"
@@ -826,6 +822,12 @@ if test "x$have_tracker_fts" = "xyes"; then
       AC_DEFINE(HAVE_BUILTIN_FTS, [], [Defined if Sqlite has FTS5 compiled in])
    else
       have_builtin_fts5="no"
+
+      # Make sure SQLite has extension loading enabled
+      AX_SQLITE_AUTO_EXTENSION
+      if test "x$ax_cv_sqlite_auto_extension" != "xyes"; then
+        AC_MSG_ERROR([sqlite3 cannot load extensions])
+      fi
    fi
 else
    AC_DEFINE(HAVE_TRACKER_FTS, [0], [Define to 0 if tracker FTS is not compiled])
@@ -1781,32 +1783,6 @@ fi
 
 AM_CONDITIONAL(HAVE_LIBXML2, test "x$have_libxml2" = "xyes")
 
-##################################################################
-# Check for xsltproc, used to generate cfg man pages (5)
-##################################################################
-
-AC_ARG_ENABLE([cfg-man-pages],
-              AS_HELP_STRING([--enable-cfg-man-pages],
-                             [enable man pages for config (.cfg) files [[default=yes]]]),
-              [enable_cfg_man_pages=$enableval],
-              [enable_cfg_man_pages=yes])
-
-if test "x$enable_cfg_man_pages" != "xno" ; then
-   # Check for graphviz if we are building gtk_doc
-   AC_PATH_PROG(XSLTPROC, xsltproc)
-   AC_SUBST(XSLTPROC)
-else
-   have_xsltproc="no  (disabled)"
-fi
-
-if test "x$enable_cfg_man_pages" = "xyes"; then
-   if test -z "$XSLTPROC"; then
-      AC_MSG_ERROR([Could not find xsltproc, try installing libxslt.])
-   fi
-fi
-
-AM_CONDITIONAL(HAVE_XSLTPROC, test -n "$XSLTPROC")
-
 ####################################################################
 # Check for tracker-extract: gstreamer/etc
 ####################################################################
@@ -2700,6 +2676,7 @@ AC_CONFIG_FILES([
 	tests/libtracker-data/anon/Makefile
 	tests/libtracker-data/ask/Makefile
 	tests/libtracker-data/basic/Makefile
+	tests/libtracker-data/bind/Makefile
 	tests/libtracker-data/bnode-coreference/Makefile
 	tests/libtracker-data/bound/Makefile
 	tests/libtracker-data/datetime/Makefile
@@ -2716,6 +2693,7 @@ AC_CONFIG_FILES([
 	tests/libtracker-data/error/Makefile
 	tests/libtracker-data/backup/Makefile
 	tests/libtracker-data/turtle/Makefile
+	tests/libtracker-data/update/Makefile
 	tests/libtracker-miner/Makefile
 	tests/libtracker-fts/Makefile
 	tests/libtracker-fts/limits/Makefile
@@ -2781,7 +2759,6 @@ Build Configuration:
 	Win32:                                  $native_win32
 
 	Enable gtk doc (for documentation):     $enable_gtk_doc
-	Enable man pages for GSettings:         $enable_cfg_man_pages
 
 	Enable functional tests:                $enable_functional_tests
 	Enable unit tests:                      $have_unit_tests

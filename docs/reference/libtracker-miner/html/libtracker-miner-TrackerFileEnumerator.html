@@ -8,7 +8,7 @@
 <link rel="up" href="ch04.html" title="Miner classes for file system">
 <link rel="prev" href="libtracker-miner-TrackerFileDataProvider.html" title="TrackerFileDataProvider">
 <link rel="next" href="TrackerDecoratorFS.html" title="TrackerDecoratorFS">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -77,19 +77,19 @@
 <p><a class="link" href="libtracker-miner-TrackerFileEnumerator.html#TrackerFileEnumerator" title="TrackerFileEnumerator"><span class="type">TrackerFileEnumerator</span></a> is a local file implementation of the
 <a class="link" href="libtracker-miner-TrackerEnumerator.html#TrackerEnumerator" title="TrackerEnumerator"><span class="type">TrackerEnumerator</span></a> interface, charged with handling all file:// type URIs.</p>
 <p>Underneath it all, this implementation makes use of the
-<a href="https://developer.gnome.org/gio/unstable/GFileEnumerator.html"><span class="type">GFileEnumerator</span></a> APIs.</p>
+<span class="type">GFileEnumerator</span> APIs.</p>
 </div>
 <div class="refsect1">
 <a name="libtracker-miner-TrackerFileEnumerator.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="tracker-file-enumerator-new"></a><h3>tracker_file_enumerator_new ()</h3>
 <pre class="programlisting"><a class="link" href="libtracker-miner-TrackerEnumerator.html#TrackerEnumerator" title="TrackerEnumerator"><span class="returnvalue">TrackerEnumerator</span></a> *
-tracker_file_enumerator_new (<em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GFileEnumerator.html"><span class="type">GFileEnumerator</span></a> *file_enumerator</code></em>);</pre>
+tracker_file_enumerator_new (<em class="parameter"><code><span class="type">GFileEnumerator</span> *file_enumerator</code></em>);</pre>
 <p>Creates a new TrackerEnumerator which can be used to create new
 <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> classes. See <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> for an example of how
 to use your <a class="link" href="libtracker-miner-TrackerEnumerator.html#TrackerEnumerator" title="TrackerEnumerator"><span class="type">TrackerEnumerator</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.5.4.7.2.5"></a><h4>Parameters</h4>
+<a name="tracker-file-enumerator-new.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -98,15 +98,15 @@ to use your <a class="link" href="libtracker-miner-TrackerEnumerator.html#Tracke
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>file_enumerator</p></td>
-<td class="parameter_description"><p>the <a href="https://developer.gnome.org/gio/unstable/GFileEnumerator.html"><span class="type">GFileEnumerator</span></a> used to enumerate with</p></td>
+<td class="parameter_description"><p>the <span class="type">GFileEnumerator</span> used to enumerate with</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.5.4.7.2.6"></a><h4>Returns</h4>
+<a name="tracker-file-enumerator-new.returns"></a><h4>Returns</h4>
 <p> a <a class="link" href="libtracker-miner-TrackerEnumerator.html#TrackerEnumerator" title="TrackerEnumerator"><span class="type">TrackerEnumerator</span></a> which must be
-unreferenced with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. </p>
+unreferenced with <code class="function">g_object_unref()</code>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 1.2</p>
@@ -122,18 +122,14 @@ unreferenced with <a href="https://developer.gnome.org/gobject/unstable/gobject-
 </pre>
 <p>Prototype for the class implementation.</p>
 <div class="refsect3">
-<a name="id-1.3.5.4.8.2.5"></a><h4>Members</h4>
+<a name="TrackerFileEnumeratorClass.members"></a><h4>Members</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">
 <col width="200px" class="struct_members_annotations">
 </colgroup>
-<tbody><tr>
-<td class="struct_member_name"><p><a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObjectClass"><span class="type">GObjectClass</span></a> <em class="structfield"><code><a name="TrackerFileEnumeratorClass.parent-class"></a>parent_class</code></em>;</p></td>
-<td class="struct_member_description"><p>Parent object class.</p></td>
-<td class="struct_member_annotations"> </td>
-</tr></tbody>
+<tbody></tbody>
 </table></div>
 </div>
 </div>
@@ -146,6 +142,6 @@ unreferenced with <a href="https://developer.gnome.org/gobject/unstable/gobject-
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

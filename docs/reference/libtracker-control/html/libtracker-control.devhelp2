@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<book xmlns="http://www.devhelp.net/book" title="Tracker Control Library Reference Manual" link="index.html" author="" name="libtracker-control" version="2" language="c">
+<book xmlns="http://www.devhelp.net/book" title="Tracker Control Library Reference Manual" link="index.html" author="" name="libtracker-control" version="2" language="c" online="http://library.gnome.org/devel/libtracker-miner/unstable/">
   <chapters>
     <sub name="Reference" link="libtracker-miner-reference.html">
       <sub name="Tracker control objects" link="ch01.html">
@@ -26,6 +26,9 @@
     <keyword type="function" name="tracker_miner_manager_index_file ()" link="TrackerMinerManager.html#tracker-miner-manager-index-file" since="0.10"/>
     <keyword type="function" name="tracker_miner_manager_index_file_async ()" link="TrackerMinerManager.html#tracker-miner-manager-index-file-async" since="0.16"/>
     <keyword type="function" name="tracker_miner_manager_index_file_finish ()" link="TrackerMinerManager.html#tracker-miner-manager-index-file-finish" since="0.16"/>
+    <keyword type="function" name="tracker_miner_manager_index_file_for_process ()" link="TrackerMinerManager.html#tracker-miner-manager-index-file-for-process" since="1.10"/>
+    <keyword type="function" name="tracker_miner_manager_index_file_for_process_async ()" link="TrackerMinerManager.html#tracker-miner-manager-index-file-for-process-async" since="1.10"/>
+    <keyword type="function" name="tracker_miner_manager_index_file_for_process_finish ()" link="TrackerMinerManager.html#tracker-miner-manager-index-file-for-process-finish" since="1.10"/>
     <keyword type="function" name="tracker_miner_manager_ignore_next_update ()" link="TrackerMinerManager.html#tracker-miner-manager-ignore-next-update" deprecated="0.12" since="0.8"/>
     <keyword type="macro" name="TRACKER_MINER_MANAGER_ERROR" link="TrackerMinerManager.html#TRACKER-MINER-MANAGER-ERROR:CAPS"/>
     <keyword type="enum" name="enum TrackerMinerManagerError" link="TrackerMinerManager.html#TrackerMinerManagerError" since="0.8"/>
@@ -39,5 +42,10 @@
     <keyword type="signal" name="The “miner-resumed” signal" link="TrackerMinerManager.html#TrackerMinerManager-miner-resumed"/>
     <keyword type="constant" name="TRACKER_MINER_MANAGER_ERROR_NOT_AVAILABLE" link="TrackerMinerManager.html#TRACKER-MINER-MANAGER-ERROR-NOT-AVAILABLE:CAPS"/>
     <keyword type="constant" name="TRACKER_MINER_MANAGER_ERROR_NOENT" link="TrackerMinerManager.html#TRACKER-MINER-MANAGER-ERROR-NOENT:CAPS"/>
+    <keyword type="member" name="TrackerMinerManagerClass.miner-progress" link="TrackerMinerManager.html#TrackerMinerManagerClass.miner-progress"/>
+    <keyword type="member" name="TrackerMinerManagerClass.miner-paused" link="TrackerMinerManager.html#TrackerMinerManagerClass.miner-paused"/>
+    <keyword type="member" name="TrackerMinerManagerClass.miner-resumed" link="TrackerMinerManager.html#TrackerMinerManagerClass.miner-resumed"/>
+    <keyword type="member" name="TrackerMinerManagerClass.miner-activated" link="TrackerMinerManager.html#TrackerMinerManagerClass.miner-activated"/>
+    <keyword type="member" name="TrackerMinerManagerClass.miner-deactivated" link="TrackerMinerManager.html#TrackerMinerManagerClass.miner-deactivated"/>
   </functions>
 </book>

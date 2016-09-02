@@ -70,6 +70,9 @@ config_DATA = tracker-writeback.xml
 servicedir = $(DBUS_SERVICES_DIR)
 service_DATA = org.freedesktop.Tracker1.Writeback.service
 
+systemd_userdir = $(prefix)/lib/systemd/user
+systemd_user_DATA = tracker-writeback.service
+
 # Configuration / GSettings
 gsettings_ENUM_NAMESPACE = org.freedesktop.Tracker
 gsettings_ENUM_FILES = $(top_srcdir)/src/libtracker-common/tracker-enums.h
@@ -80,28 +83,16 @@ gsettings_SCHEMAS = org.freedesktop.Tracker.Writeback.gschema.xml
 
 @GSETTINGS_RULES@
 
-if HAVE_XSLTPROC
-DATE=`date +'%B %Y'`
-man_MANS = $(libexec_PROGRAMS).cfg.5
-else
-man_MANS =
-endif
-
-%.cfg.5: $(gsettings_SCHEMAS)
-	$(AM_V_GEN)$(XSLTPROC) \
-	  --stringparam version "${VERSION}" \
-	  --stringparam current-date "${DATE}" \
-	  --stringparam config-file "$(@:.cfg.5=.cfg)" \
-	  $(top_srcdir)/docs/manpages/gsettings.xsl $^ > $@
-
 # Dist / Clean rules for all data
 CLEANFILES = \
 	$(service_DATA) \
+	$(systemd_user_DATA) \
 	$(gsettings_SCHEMAS) \
 	$(man_MANS)
 
 EXTRA_DIST = \
 	$(service_DATA:.service=.service.in) \
+	$(systemd_user_DATA:.service=.service.in) \
 	$(config_DATA) \
 	$(gsettings_SCHEMAS:.xml=.xml.in) \
 	$(man_MANS)

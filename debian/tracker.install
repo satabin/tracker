@@ -1,5 +1,8 @@
 usr/bin/tracker
 
+usr/lib/systemd/user/tracker-store.service
+usr/lib/systemd/user/tracker-writeback.service
+
 usr/share/dbus-1/services/org.freedesktop.Tracker1.service
 usr/share/dbus-1/services/org.freedesktop.Tracker1.Writeback.service
 

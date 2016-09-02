@@ -4,6 +4,9 @@ usr/lib/tracker/tracker-miner-apps
 etc/xdg/autostart/tracker-miner-fs.desktop
 etc/xdg/autostart/tracker-miner-user-guides.desktop
 etc/xdg/autostart/tracker-miner-apps.desktop
+usr/lib/systemd/user/tracker-miner-apps.service
+usr/lib/systemd/user/tracker-miner-fs.service
+usr/lib/systemd/user/tracker-miner-user-guides.service
 usr/share/dbus-1/services/org.freedesktop.Tracker1.Miner.Applications.service
 usr/share/dbus-1/services/org.freedesktop.Tracker1.Miner.Files.service
 usr/share/dbus-1/services/org.freedesktop.Tracker1.Miner.Userguides.service

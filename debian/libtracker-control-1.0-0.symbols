@@ -10,6 +10,9 @@ libtracker-control-1.0.so.0 libtracker-control-1.0-0 #MINVER#
  tracker_miner_manager_index_file@Base 0.17.4
  tracker_miner_manager_index_file_async@Base 0.17.4
  tracker_miner_manager_index_file_finish@Base 0.17.4
+ tracker_miner_manager_index_file_for_process@Base 1.9.1
+ tracker_miner_manager_index_file_for_process_async@Base 1.9.1
+ tracker_miner_manager_index_file_for_process_finish@Base 1.9.1
  tracker_miner_manager_is_active@Base 0.17.4
  tracker_miner_manager_is_paused@Base 0.17.4
  tracker_miner_manager_new@Base 0.17.4

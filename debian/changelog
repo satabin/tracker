@@ -1,3 +1,9 @@
+tracker (1.9.2-1) UNRELEASED; urgency=medium
+
+  * New upstream release.
+
+ -- Michael Biebl <biebl@debian.org>  Sat, 17 Sep 2016 11:11:57 +0200
+
 tracker (1.9.1-2) unstable; urgency=medium
 
   * Install systemd user service files.

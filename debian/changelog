@@ -4,6 +4,7 @@ tracker (1.9.2-1) UNRELEASED; urgency=medium
   * Install nautilus extension into multiarch path.
   * Bump debhelper compat level to 10.
   * Use dbus-run-session to run the test-suite.
+  * Depend on default-dbus-session-bus | dbus-session-bus instead of dbus.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 17 Sep 2016 11:11:57 +0200
 

@@ -22,7 +22,6 @@ tracker_directory_flags_get_type (void)
       { TRACKER_DIRECTORY_FLAG_PRESERVE, "TRACKER_DIRECTORY_FLAG_PRESERVE", "preserve" },
       { TRACKER_DIRECTORY_FLAG_PRIORITY, "TRACKER_DIRECTORY_FLAG_PRIORITY", "priority" },
       { TRACKER_DIRECTORY_FLAG_NO_STAT, "TRACKER_DIRECTORY_FLAG_NO_STAT", "no-stat" },
-      { TRACKER_DIRECTORY_FLAG_CHECK_DELETED, "TRACKER_DIRECTORY_FLAG_CHECK_DELETED", "check-deleted" },
       { 0, NULL, NULL }
     };
     GType g_define_type_id = 

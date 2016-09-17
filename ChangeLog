@@ -1,3 +1,128 @@
+2016-09-14  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.9.2
+
+	utils: Require python2 for generate script
+	Seems too attached to python2 doings, so make it require python2
+	for the time being.
+
+	tests: Ensure folder is deleted
+	If it previously fails somewhere here, the ttl folder will be
+	created from earlier attempts, and mkdir will fail. Attempt to
+	delete the folder before, just in case it exists.
+
+2016-09-12  Bastien Nocera  <hadess@hadess.net>
+
+	tracker-extract: Add new mime-types for comic books
+	The mime-type changed from application/x-cbz to
+	application/vnd.comicbook+zip, but the alias application/x-cbz was added
+	to keep the backwards compatibility.
+
+	See https://bugs.freedesktop.org/show_bug.cgi?id=97688
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=771106
+
+2016-09-12  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Add more options to XGETTEXT_OPTIONS in po/Makevars
+
+2016-09-11  Baurzhan Muftakhidinov  <baurthefirst@gmail.com>
+
+	Added Kazakh translation
+
+2016-09-10  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2016-09-09  Fran Dieguez  <fran.dieguez@mabishu.com>
+
+	Updated Galician translations
+
+2016-09-08  Rūdolfs Mazurs  <rudolfsm@src.gnome.org>
+
+	Update Latvian translation
+
+2016-09-08  Anders Jonsson  <anders.jonsson@norsjovallen.se>
+
+	Updated Swedish translation
+
+2016-09-08  Trần Ngọc Quân  <vnwildman@gmail.com>
+
+	Init Vietnamese translation
+
+2016-09-05  Fabio Tomat  <f.t.public@gmail.com>
+
+	Updated Friulian translation
+
+	Updated Friulian translation
+
+	Updated Friulian translation
+
+	Updated Friulian translation
+
+	Updated Friulian translation
+
+	Updated Friulian translation
+
+2016-09-04  Charles Monzat  <superboa@hotmail.fr>
+
+	Updated French translation
+
+2016-09-03  Debarshi Ray  <debarshir@gnome.org>
+
+	libtracker-extract: Restore trailing colon in nfo:Equipment URIs
+	Fall out from 032e2a7ed874bacce4ca5f0dd9ddbad6ab8f5f81
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=767472
+
+2016-09-03  Sam Thursfield  <sam@afuera.me.uk>
+
+	tests: Avoid horrible hang in test-tracker-resource
+	Seems that missing the 'return' statement from a
+	g_test_trap_subprocess() block can result in hanging Linux completely;
+	some kind of fork bomb I guess. The problem only hits when the test is
+	failing, so I didn't spot the mistake before.
+
+2016-09-03  Seong-ho Cho  <shcho@gnome.org>
+
+	Updated Korean translation
+
+2016-09-02  Fabio Tomat  <f.t.public@gmail.com>
+
+	Updated Friulian translation
+
+	Updated Friulian translation
+
+	Updated Friulian translation
+
+2016-09-01  Fabio Tomat  <f.t.public@gmail.com>
+
+	Updated Friulian translation
+
+	Updated Friulian translation
+
+2016-08-31  Fabio Tomat  <f.t.public@gmail.com>
+
+	Updated Friulian translation
+
+	Updated Friulian translation
+
+2016-08-30  Rafael Fontenelle  <rafaelff@gnome.org>
+
+	Updated Brazilian Portuguese translation
+
+2016-08-28  Мирослав Николић  <miroslavnikolic@rocketmail.com>
+
+	Updated Serbian translation
+
+2016-08-26  Fabio Tomat  <f.t.public@gmail.com>
+
+	Added Friulian translation
+
+2016-08-26  Ask Hjorth Larsen  <asklarsen@gmail.com>
+
+	Updated Danish translation
+
 2016-08-23  Carlos Garnacho  <carlosg@gnome.org>
 
 	Release 1.9.1

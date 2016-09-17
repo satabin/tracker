@@ -75,5 +75,5 @@ override_dh_strip:
 
 override_dh_auto_test:
 ifeq (, $(filter nocheck, $(DEB_BUILD_OPTIONS)))
-	make check -k || ( @echo "Tests FAILED, dumping logs"; find -name test-suite.log -exec cat {} \;; exit 0; )
+	dbus-run-session -- $(MAKE) check -k VERBOSE=1 || true
 endif

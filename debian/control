@@ -44,7 +44,8 @@ Build-Depends: debhelper (>= 10),
                gobject-introspection (>= 0.10),
                libosinfo-1.0-dev (>= 0.2.9),
                libtagc0-dev (>= 1.6),
-               libcue-dev
+               libcue-dev,
+               dbus (>= 1.8) <!nocheck>,
 Standards-Version: 3.9.8
 Vcs-Git: git://anonscm.debian.org/collab-maint/tracker.git
 Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/tracker.git

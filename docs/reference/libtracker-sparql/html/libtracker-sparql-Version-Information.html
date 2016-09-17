@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Version Information: Tracker SPARQL Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="Tracker SPARQL Library Reference Manual">
 <link rel="up" href="libtracker-sparql-reference.html" title="Part II. Reference">
 <link rel="prev" href="libtracker-sparql-Utilities.html" title="Utilities">
@@ -33,14 +33,14 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="libtracker-sparql-Version-Information.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
 </colgroup>
 <tbody>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="libtracker-sparql-Version-Information.html#tracker-check-version" title="tracker_check_version ()">tracker_check_version</a> <span class="c_punctuation">()</span>
@@ -57,7 +57,7 @@
 </div>
 <div class="refsect1">
 <a name="libtracker-sparql-Version-Information.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -93,10 +93,10 @@
 <a name="libtracker-sparql-Version-Information.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="tracker-check-version"></a><h3>tracker_check_version ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
-tracker_check_version (<em class="parameter"><code><span class="type">guint</span> required_major</code></em>,
-                       <em class="parameter"><code><span class="type">guint</span> required_minor</code></em>,
-                       <em class="parameter"><code><span class="type">guint</span> required_micro</code></em>);</pre>
+<pre class="programlisting">const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+tracker_check_version (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint"><span class="type">guint</span></a> required_major</code></em>,
+                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint"><span class="type">guint</span></a> required_minor</code></em>,
+                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint"><span class="type">guint</span></a> required_micro</code></em>);</pre>
 <p>Checks that the Tracker library in use is compatible with the
 given version. Generally you would pass in the constants
 <span class="type">TRACKER_MAJOR_VERSION</span>, <span class="type">TRACKER_MINOR_VERSION</span>, <span class="type">TRACKER_MICRO_VERSION</span>
@@ -116,7 +116,7 @@ version <em class="parameter"><code>required_major.required_minor</code></em>
 (same major version.)</p>
 <div class="refsect3">
 <a name="tracker-check-version.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -143,7 +143,7 @@ version <em class="parameter"><code>required_major.required_minor</code></em>
 </div>
 <div class="refsect3">
 <a name="tracker-check-version.returns"></a><h4>Returns</h4>
-<p> <code class="literal">NULL</code> if the Tracker library is compatible with the
+<p> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the Tracker library is compatible with the
 given version, or a string describing the version mismatch.
 The returned string is owned by Tracker and must not be modified
 or freed.</p>
@@ -172,7 +172,7 @@ if (!TRACKER_CHECK_VERSION (0, 10, 7)) {
 </div>
 <br class="example-break"><div class="refsect3">
 <a name="TRACKER-CHECK-VERSION.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">

@@ -1,4 +1,4 @@
-tracker (1.9.2-1) UNRELEASED; urgency=medium
+tracker (1.9.2-1) unstable; urgency=medium
 
   * New upstream release.
   * Install nautilus extension into multiarch path.
@@ -6,7 +6,7 @@ tracker (1.9.2-1) UNRELEASED; urgency=medium
   * Use dbus-run-session to run the test-suite.
   * Depend on default-dbus-session-bus | dbus-session-bus instead of dbus.
 
- -- Michael Biebl <biebl@debian.org>  Sat, 17 Sep 2016 11:11:57 +0200
+ -- Michael Biebl <biebl@debian.org>  Sat, 17 Sep 2016 14:29:09 +0200
 
 tracker (1.9.1-2) unstable; urgency=medium
 

@@ -77,14 +77,14 @@
 <p><a class="link" href="libtracker-miner-TrackerFileEnumerator.html#TrackerFileEnumerator" title="TrackerFileEnumerator"><span class="type">TrackerFileEnumerator</span></a> is a local file implementation of the
 <a class="link" href="libtracker-miner-TrackerEnumerator.html#TrackerEnumerator" title="TrackerEnumerator"><span class="type">TrackerEnumerator</span></a> interface, charged with handling all file:// type URIs.</p>
 <p>Underneath it all, this implementation makes use of the
-<a href="/usr/share/gtk-doc/html/gioGFileEnumerator.html#GFileEnumerator-struct"><span class="type">GFileEnumerator</span></a> APIs.</p>
+<span class="type">GFileEnumerator</span> APIs.</p>
 </div>
 <div class="refsect1">
 <a name="libtracker-miner-TrackerFileEnumerator.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="tracker-file-enumerator-new"></a><h3>tracker_file_enumerator_new ()</h3>
 <pre class="programlisting"><a class="link" href="libtracker-miner-TrackerEnumerator.html#TrackerEnumerator" title="TrackerEnumerator"><span class="returnvalue">TrackerEnumerator</span></a> *
-tracker_file_enumerator_new (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGFileEnumerator.html#GFileEnumerator-struct"><span class="type">GFileEnumerator</span></a> *file_enumerator</code></em>);</pre>
+tracker_file_enumerator_new (<em class="parameter"><code><span class="type">GFileEnumerator</span> *file_enumerator</code></em>);</pre>
 <p>Creates a new TrackerEnumerator which can be used to create new
 <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> classes. See <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> for an example of how
 to use your <a class="link" href="libtracker-miner-TrackerEnumerator.html#TrackerEnumerator" title="TrackerEnumerator"><span class="type">TrackerEnumerator</span></a>.</p>
@@ -98,7 +98,7 @@ to use your <a class="link" href="libtracker-miner-TrackerEnumerator.html#Tracke
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>file_enumerator</p></td>
-<td class="parameter_description"><p>the <a href="/usr/share/gtk-doc/html/gioGFileEnumerator.html#GFileEnumerator-struct"><span class="type">GFileEnumerator</span></a> used to enumerate with</p></td>
+<td class="parameter_description"><p>the <span class="type">GFileEnumerator</span> used to enumerate with</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
@@ -106,7 +106,7 @@ to use your <a class="link" href="libtracker-miner-TrackerEnumerator.html#Tracke
 <div class="refsect3">
 <a name="tracker-file-enumerator-new.returns"></a><h4>Returns</h4>
 <p> a <a class="link" href="libtracker-miner-TrackerEnumerator.html#TrackerEnumerator" title="TrackerEnumerator"><span class="type">TrackerEnumerator</span></a> which must be
-unreferenced with <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. </p>
+unreferenced with <code class="function">g_object_unref()</code>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 1.2</p>

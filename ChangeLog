@@ -1,3 +1,76 @@
+2016-10-14  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.10.1
+
+2016-10-13  Fabio Tomat  <f.t.public@gmail.com>
+
+	Update Friulian translation
+
+2016-10-12  Fabio Tomat  <f.t.public@gmail.com>
+
+	Update Friulian translation
+
+2016-10-12  Andrew Branson  <andrew.branson@jollamobile.com>
+
+	tracker-extract: FLAC metadata iterator wasn't closed
+	It must be closed after iterating, otherwise we leak fds.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=772799
+
+2016-10-11  Gianvito Cavasoli  <gianvito@gmx.it>
+
+	Update Italian translation
+
+2016-10-09  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-fts: Do not hardcode fts5 table in query
+	And also attempt to drop the fts5_TMP table, in case it's left there
+	from previous broken attempts.
+
+	libtracker-data: Fix typo
+
+2016-10-09  Andrew Branson  <andrew.branson@jollamobile.com>
+
+	Fix FLAC artist and album tag parsing, and add 'audio/flac' mime type to the extract rules.
+	https://bugzilla.gnome.org/show_bug.cgi?id=772596
+
+	Fix tracker-extract-libav memory leak
+	https://bugzilla.gnome.org/show_bug.cgi?id=772611
+
+2016-10-09  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-data: Be more lenient towards NULLs in fn:uri-is-descendant
+	And actually check all arguments, not just first/last. The check is meant
+	to catch non-string types (eg. ints, doubles) being wrongly passed here,
+	NULLs are more arguably acceptable strings, even if it's to fast path
+	to returning FALSE.
+
+	This fixes the "Invalid child(0)" errors some users see in gnome-music,
+	sometimes the query planner would call the function with a NULL argument
+	even though the query would return no results.
+
+2016-10-04  Matthias Berndt  <matthias_berndt@gmx.de>
+
+	Override Sparql.Connection.update_array_async() with correct return-type
+	"Error" is an unqualified identifier and can thus refer to different types
+	in different contexts. In the context of tracker-connection.vala it refers
+	to Tracker.Sparql.Error, in the context of tracker-bus.vala it refers to
+	GLib.Error.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=772381
+
+2016-09-25  Jordi Mas  <jmas@softcatala.org>
+
+	Fixes to Catalan translation
+
+2016-09-20  Sam Thursfield  <sam@afuera.me.uk>
+
+	functional-tests: Fix brokenness introduced in e4493c677f721193c3e641
+
+2016-09-19  Inaki Larranaga Murgoitio  <dooteo@zundan.com>
+
+	Update Basque language
+
 2016-09-19  Carlos Garnacho  <carlosg@gnome.org>
 
 	Release 1.10.0

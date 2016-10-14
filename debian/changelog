@@ -1,10 +1,10 @@
-tracker (1.10.1-1) UNRELEASED; urgency=medium
+tracker (1.10.1-1) unstable; urgency=medium
 
   * New upstream release.
   * Use sysctl to increase the inotify watches instead of running the SysV
     init script from procps.
 
- -- Michael Biebl <biebl@debian.org>  Fri, 14 Oct 2016 14:19:46 +0200
+ -- Michael Biebl <biebl@debian.org>  Fri, 14 Oct 2016 16:09:14 +0200
 
 tracker (1.10.0-1) unstable; urgency=medium
 

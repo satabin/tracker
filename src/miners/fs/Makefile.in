@@ -116,9 +116,10 @@ am__installdirs = "$(DESTDIR)$(libexecdir)" \
 PROGRAMS = $(libexec_PROGRAMS)
 am__tracker_miner_fs_SOURCES_DIST = tracker-power-hal.c \
 	tracker-power-upower.c tracker-power.h tracker-config.c \
-	tracker-config.h tracker-main.c tracker-miner-files.c \
-	tracker-miner-files.h tracker-miner-files-index.c \
-	tracker-miner-files-index.h \
+	tracker-config.h tracker-extract-watchdog.c \
+	tracker-extract-watchdog.h tracker-main.c \
+	tracker-miner-files.c tracker-miner-files.h \
+	tracker-miner-files-index.c tracker-miner-files-index.h \
 	tracker-miner-files-peer-listener.c \
 	tracker-miner-files-peer-listener.h tracker-storage.c \
 	tracker-storage.h tracker-writeback-listener.c \
@@ -130,8 +131,8 @@ am__tracker_miner_fs_SOURCES_DIST = tracker-power-hal.c \
 @HAVE_UPOWER_TRUE@am__objects_1 = tracker-power-upower.$(OBJEXT)
 am__objects_2 =
 am_tracker_miner_fs_OBJECTS = $(am__objects_1) $(am__objects_2) \
-	tracker-config.$(OBJEXT) tracker-main.$(OBJEXT) \
-	tracker-miner-files.$(OBJEXT) \
+	tracker-config.$(OBJEXT) tracker-extract-watchdog.$(OBJEXT) \
+	tracker-main.$(OBJEXT) tracker-miner-files.$(OBJEXT) \
 	tracker-miner-files-index.$(OBJEXT) \
 	tracker-miner-files-peer-listener.$(OBJEXT) \
 	tracker-storage.$(OBJEXT) tracker-writeback-listener.$(OBJEXT) \
@@ -375,6 +376,8 @@ LIBOSINFO_LIBS = @LIBOSINFO_LIBS@
 LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
 LIBPNG_LIBS = @LIBPNG_LIBS@
 LIBS = @LIBS@
+LIBSECCOMP_CFLAGS = @LIBSECCOMP_CFLAGS@
+LIBSECCOMP_LIBS = @LIBSECCOMP_LIBS@
 LIBTIFF_CFLAGS = @LIBTIFF_CFLAGS@
 LIBTIFF_LIBS = @LIBTIFF_LIBS@
 LIBTOOL = @LIBTOOL@
@@ -596,6 +599,8 @@ tracker_miner_fs_SOURCES = \
 	$(power_headers)                               \
 	tracker-config.c                               \
 	tracker-config.h                               \
+	tracker-extract-watchdog.c                     \
+	tracker-extract-watchdog.h                     \
 	tracker-main.c                                 \
 	tracker-miner-files.c                          \
 	tracker-miner-files.h                          \
@@ -753,6 +758,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-config.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-watchdog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-files-index.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-files-peer-listener.Po@am__quote@

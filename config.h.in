@@ -130,6 +130,9 @@
 /* Define if we have libpng */
 #undef HAVE_LIBPNG
 
+/* Define if we have libseccomp */
+#undef HAVE_LIBSECCOMP
+
 /* Define to 1 if you have the `sqlite3' library (-lsqlite3). */
 #undef HAVE_LIBSQLITE3
 

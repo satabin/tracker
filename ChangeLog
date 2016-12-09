@@ -1,3 +1,124 @@
+2016-12-08  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-data: Return NULL SQL expression if the binding is not yet setup
+	Recent vala changed property setters so they compare with the previous
+	value before emitting anything, this triggers the property getter called
+	at a time when we just don't have a DataTable to construct the SQL
+	expression (and it's being set anyway).
+
+	So ensure the binding is in the right state before trying to construct a
+	SQL expression for it.
+
+	Release 1.10.2
+
+	tracker-miner-fs: Watch after tracker-extract process
+	Ensure it's restarted after going away (eg. due to unintended
+	crashes), the extractor will eventually skip over the file and
+	keep going.
+
+	tracker-extract: Sandbox extractor threads through seccomp
+	Those deal with plugins and potentially malicious content, make it
+	sure that any potential exploit is deprived of all tools that could
+	make it harmful.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=764786
+
+	libtracker-common: Implement sandboxing through libseccomp
+	The threads calling the new tracker_seccomp_init() function, and all
+	threads/processes spawned from these, will enter a restricted mode
+	where only a few sensible syscalls are allowed, and more specifically,
+	filesystem/socket access are restricted to being respectively
+	readonly and local only.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=764786
+
+	libtracker-extract: Ditch ThreadAwareness module configuration toggle
+	It's basically unused, just use a private thread per-module so they're
+	easier to isolate.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=764786
+
+2016-11-11  Marinus Schraal  <mschraal@src.gnome.org>
+
+	tracker-extract: Fix flac albumartistsort tag parsing
+	Albumartist tag can have a sort variant too.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=772596
+
+2016-11-08  Marinus Schraal  <mschraal@src.gnome.org>
+
+	tracker-extract: Revert libflac as default rule
+	Keep gstreamer as the primary extractor as long as the libflac extractor
+	is not on-par with it.
+
+	tracker-extract: Pass the flac metadata
+	Oversight from the move to TrackerResource, the flac extractor was not
+	passing the metadata on for further processing.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=774062
+
+	tracker-extract: Albumartist may be NULL in flac
+	album_artist is a TrackerResource, but may be NULL: do not just unref
+	it.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=774062
+
+2016-11-03  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-data: Handle overflows on libicu-based normalization
+	We allocate by default double the string size, which is a pretty
+	generous allotment most usually. If that is not enough for storing
+	the normalized string, just reallocate the buffer with the given
+	expected size and try again.
+
+	Also, refactor string normalization to a separate function, so
+	it's shared by both tracker:normalize and tracker:unaccent.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=769982
+
+	libtracker-miner: Start TrackerDecorator queries on TrackerMiner::started
+	This should not be done in the initable vfunc, as the miner should remain
+	idle until tracker_miner_start() is called on it.
+
+	This fixes a possible race condition in tracker-extract, where this query
+	is already in flight at the time TrackerPersistence handles blacklisting
+	of files that caused earlier crashes of tracker-extract. So the query might
+	contain the file that's being blacklisted right away. tracker_miner_start()
+	is called after TrackerPersistence did the blacklisting job, so the first
+	query will get the up-to-date info.
+
+2016-11-03  Marinus Schraal  <mschraal@src.gnome.org>
+
+	tracker-extract: Fix album disc uri in gstreamer
+	It should build the album disc uri with the album_artist_name.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=773607
+
+2016-10-27  Marinus Schraal  <mschraal@src.gnome.org>
+
+	tracker-extract: Only use CUE info as last resort in gstreamer
+	CUE data was overriding file tags in the gstreamer extractor, however
+	CUE data is notoriously unreliable. Instead, only use the CUE data if we
+	have nothing else.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=773524
+
+2016-10-18  Dz Chen  <wsxy162@gmail.com>
+
+	Update zh_CN translation
+
+2016-10-16  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-sparql: Avoid C++ keyword in variable
+	"namespace" is a C++ keyword, better to avoid in public headers,
+	spotted by Christoph Cullmann <cullmann@kde.org>.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=772979
+
+2016-10-15  Kjartan Maraas  <kmaraas@gnome.org>
+
+	Updated Norwegian bokmål translation.
+
 2016-10-14  Carlos Garnacho  <carlosg@gnome.org>
 
 	Release 1.10.1

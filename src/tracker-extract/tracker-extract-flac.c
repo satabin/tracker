@@ -88,7 +88,7 @@ parse_vorbis_comments (FLAC__StreamMetadata_VorbisComment *comment,
 			}
 		} else if (g_ascii_strncasecmp (entry.entry, "album=", 6) == 0) {
 			fd->album = g_strdup (entry.entry + 6);
-		} else if (g_ascii_strncasecmp (entry.entry, "albumartist", 11) == 0) {
+		} else if (g_ascii_strncasecmp (entry.entry, "albumartist=", 12) == 0) {
 			fd->albumartist = g_strdup (entry.entry + 12);
 		} else if (g_ascii_strncasecmp (entry.entry, "trackcount", 10) == 0) {
 			fd->trackcount = g_strdup (entry.entry + 11);
@@ -254,7 +254,7 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 		tracker_resource_set_relation (metadata, "nmm:musicAlbumDisc", album_disc);
 
 		g_object_unref (album_disc);
-		g_object_unref (album_artist);
+		g_clear_object (&album_artist);
 	}
 
 	tracker_guarantee_resource_title_from_file (metadata, "nie:title", fd.title, uri, NULL);
@@ -282,6 +282,11 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 		tracker_resource_set_int64 (metadata, "nfo:channels", stream->data.stream_info.channels);
 		tracker_resource_set_int64 (metadata, "nfo:averageBitrate", stream->data.stream_info.bits_per_sample);
 		tracker_resource_set_int64 (metadata, "nfo:duration", stream->data.stream_info.total_samples / stream->data.stream_info.sample_rate);
+	}
+
+	if (metadata) {
+		tracker_extract_info_set_resource (info, metadata);
+		g_object_unref (metadata);
 	}
 
 	g_free (fd.artist);

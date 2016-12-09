@@ -1,6 +1,10 @@
 tracker (1.10.2-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Add Build-Depends on libseccomp-dev on Linux.
+    This is a new dependency which was added to let the extractor threads run
+    in a sandbox. Filesystem and network access are limited to being read and
+    local only.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 09 Dec 2016 21:45:44 +0100
 

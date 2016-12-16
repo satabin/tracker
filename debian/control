@@ -59,6 +59,7 @@ Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          shared-mime-info,
+         libglib2.0-bin,
          default-dbus-session-bus | dbus-session-bus
 Recommends: tracker-gui,
             tracker-miner-fs,

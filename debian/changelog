@@ -3,6 +3,8 @@ tracker (1.10.3-1) UNRELEASED; urgency=medium
   * Update debian/watch to version 4 and use new "special strings" to
     standardize format. Track stable releases only.
   * New upstream release.
+  * Add Depends on libglib2.0-bin. The tracker-store autostart file uses gdbus
+    to start the service via D-Bus.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 16 Dec 2016 14:34:42 +0100
 

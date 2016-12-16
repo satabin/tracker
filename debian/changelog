@@ -1,7 +1,8 @@
-tracker (1.10.2-2) UNRELEASED; urgency=medium
+tracker (1.10.3-1) UNRELEASED; urgency=medium
 
   * Update debian/watch to version 4 and use new "special strings" to
     standardize format. Track stable releases only.
+  * New upstream release.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 16 Dec 2016 14:34:42 +0100
 

@@ -1,4 +1,31 @@
+2016-12-16  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.10.3
+
+	tracker-miner-fs: Hook name acquired handler properly
+	In the right circumstances it might cause tracker-miner-fs to
+	miss tracker-extract disappearing the first time, which might
+	lead to it not being re-activated as expected.
+
+	libtracker-common: Whitelist clock_gettime/getres
+	Reported to trigger false positives on Ubuntu.
+
+	libtracker-common: Whitelist more syscalls used on non-x86_64 arches
+	These ones were spotted after compiling Tracker on i686.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=776117
+
+2016-12-15  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-common: Whitelist *64() stat/getdents syscalls
+	Those variants may end up called depending on architecture and other
+	factors, there's no reason for those to be blacklisted.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=776117
+
 2016-12-08  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.10.2
 
 	libtracker-data: Return NULL SQL expression if the binding is not yet setup
 	Recent vala changed property setters so they compare with the previous
@@ -8,8 +35,6 @@
 
 	So ensure the binding is in the right state before trying to construct a
 	SQL expression for it.
-
-	Release 1.10.2
 
 	tracker-miner-fs: Watch after tracker-extract process
 	Ensure it's restarted after going away (eg. due to unintended

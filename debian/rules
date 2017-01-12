@@ -27,7 +27,7 @@ override_dh_auto_configure:
 		--enable-nautilus-extension \
 		--enable-libiptcdata \
 		--enable-exempi \
-		--enable-libmediaart \
+		--disable-libmediaart \
 		--enable-libexif \
 		--enable-libgif \
 		--enable-libjpeg \

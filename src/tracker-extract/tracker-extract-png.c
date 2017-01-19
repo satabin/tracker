@@ -414,7 +414,11 @@ read_metadata (TrackerResource      *metadata,
 	}
 
 	if (md.orientation) {
-		tracker_resource_set_string (metadata, "nfo:orientation", md.orientation);
+		TrackerResource *orientation;
+
+		orientation = tracker_resource_new (md.orientation);
+		tracker_resource_set_relation (metadata, "nfo:orientation", orientation);
+		g_object_unref (orientation);
 	}
 
 	if (md.exposure_time) {
@@ -426,7 +430,11 @@ read_metadata (TrackerResource      *metadata,
 	}
 
 	if (md.white_balance) {
-		tracker_resource_set_string (metadata, "nmm:whiteBalance", md.white_balance);
+		TrackerResource *white_balance;
+
+		white_balance = tracker_resource_new (md.white_balance);
+		tracker_resource_set_relation (metadata, "nmm:meteringMode", white_balance);
+		g_object_unref (white_balance);
 	}
 
 	if (md.fnumber) {
@@ -434,16 +442,24 @@ read_metadata (TrackerResource      *metadata,
 	}
 
 	if (md.flash) {
-		tracker_resource_set_string (metadata, "nmm:flash", md.flash); }
+		TrackerResource *flash;
+
+		flash = tracker_resource_new (md.flash);
+		tracker_resource_set_relation (metadata, "nmm:flash", flash);
+		g_object_unref (flash);
+	}
 
 	if (md.focal_length) {
 		tracker_resource_set_string (metadata, "nmm:focalLength", md.focal_length);
 	}
 
 	if (md.metering_mode) {
-		tracker_resource_set_string (metadata, "nmm:meteringMode", md.metering_mode);
-	}
+		TrackerResource *metering;
 
+		metering = tracker_resource_new (md.metering_mode);
+		tracker_resource_set_relation (metadata, "nmm:meteringMode", metering);
+		g_object_unref (metering);
+	}
 
 	if (xd->keywords) {
 		tracker_keywords_parse (keywords, xd->keywords);

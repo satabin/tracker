@@ -1,3 +1,69 @@
+2017-01-19  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.10.4
+
+	libtracker-sparql: Print resources referenced in cardinality>1 properties
+	Those were not being printed, just referenced in the parent resource.
+	Fixes properties like slo:location being lost on newly indexed photos.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=776723
+
+	tracker-extract: Insert nfo:orientation as a resource
+	This is not an string, but a builtin class, so it must be dealt
+	with as a resource.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=776723
+
+	tracker-extract: Insert nmm:whiteBalance as a resource
+	This is not an string, but a builtin class, so it must be dealt
+	with as a resource.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=776723
+
+	tracker-extract: Insert nmm:meteringMode as a resource
+	This is not an string, but a builtin class, so it must be dealt
+	with as a resource.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=776723
+
+	tracker-extract: Insert nmm:flash as a Resource
+	This is not an string, but a builtin class, so it must be dealt
+	with as a resource.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=776723
+
+	libtracker-sparql: Fix sparql/turtle generation of builtin classes
+	We don't need to generate sparql/turtle for builtin classes
+	(eg. nmm:flash-on).
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=776723
+
+	libtracker-common: Whitelist dup/dup2/dup3
+	dup2/3 have special requirements, as they can close underlying
+	fds, they are not allowed on stdin/out/err.
+
+	libtracker-common: Whitelist umask
+	Let's give extractor modules the illusion that they can write
+	something, they actually can't.
+
+	libtracker-common: Whitelist getpid() syscall
+	https://bugzilla.gnome.org/show_bug.cgi?id=776117
+
+	libtracker-common: Allow querying process stats/limits
+	Modifying those is not allowed though.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=776117
+
+	libtracker-common: Handle mlock*/munlock* syscalls
+	Disallow pinning memory on RAM, but make it softly fail with EPERM.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=776117
+
+2016-12-17  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-common: Whitelist gettimeofday() syscall
+	https://bugzilla.gnome.org/show_bug.cgi?id=776117
+
 2016-12-16  Carlos Garnacho  <carlosg@gnome.org>
 
 	Release 1.10.3

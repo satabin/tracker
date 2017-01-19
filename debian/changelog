@@ -1,3 +1,12 @@
+tracker (1.10.4-1) UNRELEASED; urgency=medium
+
+  * New upstream release.
+    - tracker-extract: Whitelist multiple innocuous syscalls that were
+      reported to raise false positives in the extraction sandbox.
+      (Closes: #848842, #849936, LP: #1649035, LP: #1649004)
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 19 Jan 2017 12:43:48 +0100
+
 tracker (1.10.3-1) unstable; urgency=medium
 
   * Update debian/watch to version 4 and use new "special strings" to

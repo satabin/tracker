@@ -1,11 +1,18 @@
-tracker (1.10.4-1) UNRELEASED; urgency=medium
+tracker (1.10.4-1) unstable; urgency=medium
 
+  [ Michael Biebl ]
   * New upstream release.
     - tracker-extract: Whitelist multiple innocuous syscalls that were
       reported to raise false positives in the extraction sandbox.
       (Closes: #848842, #849936, LP: #1649035, LP: #1649004)
 
- -- Michael Biebl <biebl@debian.org>  Thu, 19 Jan 2017 12:43:48 +0100
+  [ Simon McVittie ]
+  * Disable libmediaart. It makes tracker-extract write to the filesystem (in
+    its cache directory), which is incompatible with the seccomp sandbox
+    introduced in 1.10.2.
+  * Don't immediately restart tracker-extract on SIGSYS. Mitigates: #851148
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 19 Jan 2017 13:04:10 +0100
 
 tracker (1.10.3-1) unstable; urgency=medium
 

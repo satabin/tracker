@@ -40,6 +40,8 @@
 
 #define ALLOW_RULE(call) G_STMT_START { if (seccomp_rule_add (ctx, SCMP_ACT_ALLOW, SCMP_SYS(call), 0) < 0) goto out; } G_STMT_END
 
+#define ERROR_RULE(call, error) G_STMT_START { if (seccomp_rule_add (ctx, SCMP_ACT_ERRNO (error), SCMP_SYS(call), 0) < 0) goto out; } G_STMT_END
+
 gboolean
 tracker_seccomp_init (void)
 {
@@ -57,6 +59,11 @@ tracker_seccomp_init (void)
 	ALLOW_RULE (mremap);
 	ALLOW_RULE (mprotect);
 	ALLOW_RULE (madvise);
+	ERROR_RULE (mlock, EPERM);
+	ERROR_RULE (mlock2, EPERM);
+	ERROR_RULE (munlock, EPERM);
+	ERROR_RULE (mlockall, EPERM);
+	ERROR_RULE (munlockall, EPERM);
 	/* Process management */
 	ALLOW_RULE (exit_group);
 	ALLOW_RULE (getuid);
@@ -65,7 +72,10 @@ tracker_seccomp_init (void)
 	ALLOW_RULE (geteuid32);
 	ALLOW_RULE (getppid);
 	ALLOW_RULE (gettid);
+	ALLOW_RULE (getpid);
 	ALLOW_RULE (exit);
+	ALLOW_RULE (getrusage);
+	ALLOW_RULE (getrlimit);
 	/* Basic filesystem access */
 	ALLOW_RULE (fstat);
 	ALLOW_RULE (fstat64);
@@ -83,6 +93,7 @@ tracker_seccomp_init (void)
 	ALLOW_RULE (utime);
 	ALLOW_RULE (time);
 	ALLOW_RULE (fsync);
+	ALLOW_RULE (umask);
 	/* Processes and threads */
 	ALLOW_RULE (clone);
 	ALLOW_RULE (futex);
@@ -108,6 +119,7 @@ tracker_seccomp_init (void)
 	ALLOW_RULE (getrandom);
 	ALLOW_RULE (clock_gettime);
 	ALLOW_RULE (clock_getres);
+	ALLOW_RULE (gettimeofday);
 	/* Descriptors */
 	ALLOW_RULE (close);
 	ALLOW_RULE (read);
@@ -117,6 +129,7 @@ tracker_seccomp_init (void)
 	ALLOW_RULE (fadvise64);
 	ALLOW_RULE (write);
 	ALLOW_RULE (writev);
+	ALLOW_RULE (dup);
 	/* Needed by some GStreamer modules doing crazy stuff, less
 	 * scary thanks to the restriction below about sockets being
 	 * local.
@@ -165,6 +178,14 @@ tracker_seccomp_init (void)
 		goto out;
 	if (seccomp_rule_add (ctx, SCMP_ACT_ERRNO (EACCES), SCMP_SYS(open), 1,
 	                      SCMP_CMP(1, SCMP_CMP_MASKED_EQ, O_RDWR, O_RDWR)) < 0)
+		goto out;
+
+	/* Special requirements for dup2/dup3, no fiddling with stdin/out/err */
+	if (seccomp_rule_add (ctx, SCMP_ACT_ALLOW, SCMP_SYS(dup2), 1,
+	                      SCMP_CMP(1, SCMP_CMP_GT, 2)) < 0)
+		goto out;
+	if (seccomp_rule_add (ctx, SCMP_ACT_ALLOW, SCMP_SYS(dup3), 1,
+	                      SCMP_CMP(1, SCMP_CMP_GT, 2)) < 0)
 		goto out;
 
 	g_debug ("Loading seccomp rules.");

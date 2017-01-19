@@ -466,7 +466,11 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 		}
 
 		if (xd->orientation) {
-			tracker_resource_set_string (metadata, "nfo:orientation", xd->orientation);
+			TrackerResource *orientation;
+
+			orientation = tracker_resource_new (xd->orientation);
+			tracker_resource_set_relation (metadata, "nfo:orientation", orientation);
+			g_object_unref (orientation);
 		}
 
 		if (xd->rights) {
@@ -474,7 +478,11 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 		}
 
 		if (xd->white_balance) {
-			tracker_resource_set_string (metadata, "nmm:whiteBalance", xd->white_balance);
+			TrackerResource *white_balance;
+
+			white_balance = tracker_resource_new (xd->white_balance);
+			tracker_resource_set_relation (metadata, "nmm:meteringMode", white_balance);
+			g_object_unref (white_balance);
 		}
 
 		if (xd->fnumber) {
@@ -485,7 +493,11 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 		}
 
 		if (xd->flash) {
-			tracker_resource_set_string (metadata, "nmm:flash", xd->flash);
+			TrackerResource *flash;
+
+			flash = tracker_resource_new (xd->flash);
+			tracker_resource_set_relation (metadata, "nmm:flash", flash);
+			g_object_unref (flash);
 		}
 
 		if (xd->focal_length) {
@@ -529,7 +541,11 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 		}
 
 		if (xd->metering_mode) {
-			tracker_resource_set_string (metadata, "nmm:meteringMode", xd->metering_mode);
+			TrackerResource *metering;
+
+			metering = tracker_resource_new (xd->metering_mode);
+			tracker_resource_set_relation (metadata, "nmm:meteringMode", metering);
+			g_object_unref (metering);
 		}
 
 		if (xd->address || xd->state || xd->country || xd->city ||

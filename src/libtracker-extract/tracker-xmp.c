@@ -977,7 +977,11 @@ tracker_xmp_apply_to_resource (TrackerResource *resource,
 	}
 
 	if (data->orientation) {
-		tracker_resource_set_string (resource, "nfo:orientation", data->orientation);
+		TrackerResource *orientation;
+
+		orientation = tracker_resource_new (data->orientation);
+		tracker_resource_set_relation (resource, "nfo:orientation", orientation);
+		g_object_unref (orientation);
 	}
 
 	if (data->rights || data->copyright) {
@@ -987,7 +991,11 @@ tracker_xmp_apply_to_resource (TrackerResource *resource,
 	}
 
 	if (data->white_balance) {
-		tracker_resource_set_string (resource, "nmm:whiteBalance", data->white_balance);
+		TrackerResource *white_balance;
+
+		white_balance = tracker_resource_new (data->white_balance);
+		tracker_resource_set_relation (resource, "nmm:meteringMode", white_balance);
+		g_object_unref (white_balance);
 	}
 
 	if (data->fnumber) {
@@ -995,7 +1003,11 @@ tracker_xmp_apply_to_resource (TrackerResource *resource,
 	}
 
 	if (data->flash) {
-		tracker_resource_set_string (resource, "nmm:flash", data->flash);
+		TrackerResource *flash;
+
+		flash = tracker_resource_new (data->flash);
+		tracker_resource_set_relation (resource, "nmm:flash", flash);
+		g_object_unref (flash);
 	}
 
 	if (data->focal_length) {
@@ -1031,7 +1043,11 @@ tracker_xmp_apply_to_resource (TrackerResource *resource,
 	}
 
 	if (data->metering_mode) {
-		tracker_resource_set_string (resource, "nmm:meteringMode", data->metering_mode);
+		TrackerResource *metering;
+
+		metering = tracker_resource_new (data->metering_mode);
+		tracker_resource_set_relation (resource, "nmm:meteringMode", metering);
+		g_object_unref (metering);
 	}
 
 	if (data->creator) {

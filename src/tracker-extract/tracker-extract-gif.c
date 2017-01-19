@@ -298,7 +298,11 @@ read_metadata (GifFileType          *gifFile,
 	}
 
 	if (xd->orientation) {
-		tracker_resource_set_string (metadata, "nfo:orientation", xd->orientation);
+		TrackerResource *orientation;
+
+		orientation = tracker_resource_new (xd->orientation);
+		tracker_resource_set_relation (metadata, "nfo:orientation", orientation);
+		g_object_unref (orientation);
 	}
 
 	if (xd->exposure_time) {
@@ -310,7 +314,11 @@ read_metadata (GifFileType          *gifFile,
 	}
 
 	if (xd->white_balance) {
-		tracker_resource_set_string (metadata, "nmm:whiteBalance", xd->white_balance);
+		TrackerResource *white_balance;
+
+		white_balance = tracker_resource_new (xd->white_balance);
+		tracker_resource_set_relation (metadata, "nmm:meteringMode", white_balance);
+		g_object_unref (white_balance);
 	}
 
 	if (xd->fnumber) {
@@ -318,14 +326,23 @@ read_metadata (GifFileType          *gifFile,
 	}
 
 	if (xd->flash) {
-		tracker_resource_set_string (metadata, "nmm:flash", xd->flash); }
+		TrackerResource *flash;
+
+		flash = tracker_resource_new (xd->flash);
+		tracker_resource_set_relation (metadata, "nmm:flash", flash);
+		g_object_unref (flash);
+	}
 
 	if (xd->focal_length) {
 		tracker_resource_set_string (metadata, "nmm:focalLength", xd->focal_length);
 	}
 
 	if (xd->metering_mode) {
-		tracker_resource_set_string (metadata, "nmm:meteringMode", xd->metering_mode);
+		TrackerResource *metering;
+
+		metering = tracker_resource_new (xd->metering_mode);
+		tracker_resource_set_relation (metadata, "nmm:meteringMode", metering);
+		g_object_unref (metering);
 	}
 
 	keywords = g_ptr_array_new_with_free_func ((GDestroyNotify) g_free);

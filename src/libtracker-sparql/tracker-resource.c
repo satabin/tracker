@@ -963,10 +963,30 @@ is_blank_node (const char *uri_or_curie_or_blank)
 	return (strncmp(uri_or_curie_or_blank, "_:", 2) == 0);
 }
 
+gboolean
+is_builtin_class (const gchar             *uri_or_curie,
+                  TrackerNamespaceManager *namespaces)
+{
+	gchar *prefix = NULL;
+
+	prefix = g_uri_parse_scheme (uri_or_curie);
+
+	if (prefix &&
+	    tracker_namespace_manager_has_prefix (namespaces, prefix))
+		return TRUE;
+
+	return FALSE;
+}
+
 void
 generate_nested_turtle_resource (TrackerResource    *resource,
                                  GenerateTurtleData *data)
 {
+	/* We don't need to produce turtle for builtin classes */
+	if (is_builtin_class (tracker_resource_get_identifier (resource),
+	                      data->all_namespaces))
+		return;
+
 	if (g_list_find_custom (data->done_list, resource, (GCompareFunc) tracker_resource_compare) == NULL) {
 		generate_turtle (resource, data);
 
@@ -1261,7 +1281,38 @@ generate_sparql_relation_inserts_foreach (gpointer key,
 	if (G_VALUE_HOLDS (value, TRACKER_TYPE_RESOURCE)) {
 		TrackerResource *relation = g_value_get_object (value);
 
+		/* We don't need to produce inserts for builtin classes */
+		if (is_builtin_class (tracker_resource_get_identifier (relation),
+		                      data->namespaces))
+			return;
+
 		if (g_list_find_custom (data->done_list, relation, (GCompareFunc) tracker_resource_compare) == NULL) {
+			generate_sparql_insert_pattern (relation, data);
+			data->done_list = g_list_prepend (data->done_list, relation);
+		}
+	} else if (G_VALUE_HOLDS (value, G_TYPE_PTR_ARRAY)) {
+		GPtrArray *array = g_value_get_boxed (value);
+		const GValue *array_value;
+		TrackerResource *relation;
+		gint i;
+
+		for (i = 0; i < array->len; i++) {
+			array_value = g_ptr_array_index (array, i);
+
+			if (!G_VALUE_HOLDS (array_value, TRACKER_TYPE_RESOURCE))
+				continue;
+
+			relation = g_value_get_object (array_value);
+
+			/* We don't need to produce inserts for builtin classes */
+			if (is_builtin_class (tracker_resource_get_identifier (relation),
+					      data->namespaces))
+				continue;
+
+			if (g_list_find_custom (data->done_list, relation,
+						(GCompareFunc) tracker_resource_compare) != NULL)
+				continue;
+
 			generate_sparql_insert_pattern (relation, data);
 			data->done_list = g_list_prepend (data->done_list, relation);
 		}

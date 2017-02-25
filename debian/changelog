@@ -1,9 +1,12 @@
-tracker (1.10.5-1) UNRELEASED; urgency=medium
+tracker (1.10.5-1) unstable; urgency=medium
 
   * New upstream release
     - tracker-extract: Further sandboxing fixes. (Closes: #853723)
+  * Use the same URL for Vcs-Git and Vcs-Browser, both via https
+  * Update URLs in debian/copyright to use https
+  * Rebase patches
 
- -- Michael Biebl <biebl@debian.org>  Sat, 25 Feb 2017 17:30:49 +0100
+ -- Michael Biebl <biebl@debian.org>  Sat, 25 Feb 2017 17:45:33 +0100
 
 tracker (1.10.4-1) unstable; urgency=medium
 

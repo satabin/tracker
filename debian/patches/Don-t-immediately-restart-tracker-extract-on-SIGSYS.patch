@@ -8,7 +8,7 @@ Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=851148
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/src/tracker-extract/tracker-extract.service.in b/src/tracker-extract/tracker-extract.service.in
-index b7bc6c140..415e130e1 100644
+index b7bc6c1..415e130 100644
 --- a/src/tracker-extract/tracker-extract.service.in
 +++ b/src/tracker-extract/tracker-extract.service.in
 @@ -7,4 +7,5 @@ BusName=org.freedesktop.Tracker1.Miner.Extract

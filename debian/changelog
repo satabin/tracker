@@ -1,3 +1,10 @@
+tracker (1.10.5-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+    - tracker-extract: Further sandboxing fixes. (Closes: #853723)
+
+ -- Michael Biebl <biebl@debian.org>  Sat, 25 Feb 2017 17:30:49 +0100
+
 tracker (1.10.4-1) unstable; urgency=medium
 
   [ Michael Biebl ]

@@ -38,9 +38,19 @@
 
 #include <seccomp.h>
 
-#define ALLOW_RULE(call) G_STMT_START { if (seccomp_rule_add (ctx, SCMP_ACT_ALLOW, SCMP_SYS(call), 0) < 0) goto out; } G_STMT_END
+#define ALLOW_RULE(call) G_STMT_START { \
+	int allow_rule_syscall_number = seccomp_syscall_resolve_name (G_STRINGIFY (call)); \
+	if (allow_rule_syscall_number == __NR_SCMP_ERROR || \
+	    seccomp_rule_add (ctx, SCMP_ACT_ALLOW, allow_rule_syscall_number, 0) < 0) \
+		goto out; \
+} G_STMT_END
 
-#define ERROR_RULE(call, error) G_STMT_START { if (seccomp_rule_add (ctx, SCMP_ACT_ERRNO (error), SCMP_SYS(call), 0) < 0) goto out; } G_STMT_END
+#define ERROR_RULE(call, error) G_STMT_START { \
+	int error_rule_syscall_number = seccomp_syscall_resolve_name (G_STRINGIFY (call)); \
+	if (error_rule_syscall_number == __NR_SCMP_ERROR || \
+	    seccomp_rule_add (ctx, SCMP_ACT_ERRNO (error), error_rule_syscall_number, 0) < 0) \
+		goto out; \
+} G_STMT_END
 
 gboolean
 tracker_seccomp_init (void)
@@ -103,6 +113,9 @@ tracker_seccomp_init (void)
 	ALLOW_RULE (sched_yield);
 	ALLOW_RULE (sched_getaffinity);
 	ALLOW_RULE (nanosleep);
+	ALLOW_RULE (waitid);
+	ALLOW_RULE (waitpid);
+	ALLOW_RULE (wait4);
 	/* Main loops */
 	ALLOW_RULE (poll);
 	ALLOW_RULE (ppoll);
@@ -130,6 +143,8 @@ tracker_seccomp_init (void)
 	ALLOW_RULE (write);
 	ALLOW_RULE (writev);
 	ALLOW_RULE (dup);
+	ALLOW_RULE (dup2);
+	ALLOW_RULE (dup3);
 	/* Needed by some GStreamer modules doing crazy stuff, less
 	 * scary thanks to the restriction below about sockets being
 	 * local.
@@ -178,14 +193,6 @@ tracker_seccomp_init (void)
 		goto out;
 	if (seccomp_rule_add (ctx, SCMP_ACT_ERRNO (EACCES), SCMP_SYS(open), 1,
 	                      SCMP_CMP(1, SCMP_CMP_MASKED_EQ, O_RDWR, O_RDWR)) < 0)
-		goto out;
-
-	/* Special requirements for dup2/dup3, no fiddling with stdin/out/err */
-	if (seccomp_rule_add (ctx, SCMP_ACT_ALLOW, SCMP_SYS(dup2), 1,
-	                      SCMP_CMP(1, SCMP_CMP_GT, 2)) < 0)
-		goto out;
-	if (seccomp_rule_add (ctx, SCMP_ACT_ALLOW, SCMP_SYS(dup3), 1,
-	                      SCMP_CMP(1, SCMP_CMP_GT, 2)) < 0)
 		goto out;
 
 	g_debug ("Loading seccomp rules.");

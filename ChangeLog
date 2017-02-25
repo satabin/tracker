@@ -1,4 +1,50 @@
+2017-02-23  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.10.5
+
+	libtracker-data: Clear possible error
+	The same GError may be reused further ahead, which would doubly free
+	it as it gets non-NULL again to error handling paths.
+
+	libtracker-common: Be more lenient with dup2/dup3
+	And allow these to manipulate stdin/out/err. They may close file
+	descriptors, but they don't grant access to anything the process
+	wouldn't have already access for, anyway.
+
+2017-02-23  Philip Withnall  <withnall@endlessm.com>
+
+	tracker-seccomp: Check syscall availability at runtime not compile time
+	This makes our seccomp() protection independent of the exact kernel
+	version Tracker is built against.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=777591
+
+	tracker-seccomp: Rewrap macros to make them clearer
+	This introduces no functional changes.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=777591
+
+2017-02-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	tracker-seccomp: Add checks for mlock2() and getrandom() syscalls
+	On older kernels, these syscalls did not exist, so the __NR_* syscall
+	number definition does not exist for them, and compilation fails. Make
+	the seccomp rules for them conditional on the syscall numbers existing.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=777591
+
+2017-01-31  Debarshi Ray  <debarshir@gnome.org>
+
+	tracker-extract-png: Insert "nfo:image-category-screenshot" as a URI
+	This is not a string, but a builtin class, so it must be dealt with as
+	a URI.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=776723
+
 2017-01-19  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-common: Whitelist waitid/waitpid/wait4
+	https://bugzilla.gnome.org/show_bug.cgi?id=776117
 
 	Release 1.10.4
 

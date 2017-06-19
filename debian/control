@@ -45,6 +45,8 @@ Build-Depends: debhelper (>= 10),
                libtagc0-dev (>= 1.6),
                libcue-dev,
                libseccomp-dev (>= 2.0) [linux-any],
+               libjson-glib-dev (>= 1.0),
+               libsoup2.4-dev (>= 2.40),
                dbus (>= 1.8) <!nocheck>,
 Standards-Version: 3.9.8
 Vcs-Git: https://anonscm.debian.org/git/collab-maint/tracker.git

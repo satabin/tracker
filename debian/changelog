@@ -1,3 +1,14 @@
+tracker (1.12.0-1) unstable; urgency=medium
+
+  * New upstream version 1.12.0
+  * Drop no longer needed Build-Depends on libgee-0.8-dev
+  * Add Build-Depends on libjson-glib-dev and libsoup2.4-dev
+  * Update symbols file for libtracker-sparql-1.0-0
+  * Add gir related lintian overrides
+  * Revert "Drop lintian overrides, tracker now sets RUNPATH rather than RPATH"
+
+ -- Michael Biebl <biebl@debian.org>  Mon, 19 Jun 2017 15:36:53 +0200
+
 tracker (1.10.5-1) unstable; urgency=medium
 
   * New upstream release

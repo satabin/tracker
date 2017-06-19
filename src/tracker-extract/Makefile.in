@@ -839,6 +839,8 @@ LIBTRACKER_FTS_LIBS = @LIBTRACKER_FTS_LIBS@
 LIBTRACKER_MINER_CFLAGS = @LIBTRACKER_MINER_CFLAGS@
 LIBTRACKER_MINER_LIBS = @LIBTRACKER_MINER_LIBS@
 LIBTRACKER_MINER_PC_REQUIRES = @LIBTRACKER_MINER_PC_REQUIRES@
+LIBTRACKER_REMOTE_CFLAGS = @LIBTRACKER_REMOTE_CFLAGS@
+LIBTRACKER_REMOTE_LIBS = @LIBTRACKER_REMOTE_LIBS@
 LIBTRACKER_SPARQL_CFLAGS = @LIBTRACKER_SPARQL_CFLAGS@
 LIBTRACKER_SPARQL_LIBS = @LIBTRACKER_SPARQL_LIBS@
 LIBVORBIS_CFLAGS = @LIBVORBIS_CFLAGS@
@@ -1117,7 +1119,7 @@ libextract_mp3_la_LIBADD = \
 
 
 # Vorbis (OGG)
-libextract_vorbis_la_SOURCES = tracker-extract-vorbis.c $(escape_sources)
+libextract_vorbis_la_SOURCES = tracker-extract-vorbis.c
 libextract_vorbis_la_CFLAGS = $(TRACKER_EXTRACT_MODULES_CFLAGS)
 libextract_vorbis_la_LDFLAGS = $(module_flags)
 libextract_vorbis_la_LIBADD = \
@@ -1129,7 +1131,7 @@ libextract_vorbis_la_LIBADD = \
 
 
 # Flac
-libextract_flac_la_SOURCES = tracker-extract-flac.c $(escape_sources)
+libextract_flac_la_SOURCES = tracker-extract-flac.c
 libextract_flac_la_CFLAGS = $(TRACKER_EXTRACT_MODULES_CFLAGS)
 libextract_flac_la_LDFLAGS = $(module_flags)
 libextract_flac_la_LIBADD = \
@@ -1469,11 +1471,11 @@ BUILT_SOURCES = \
 CLEANFILES = $(BUILT_SOURCES) $(autostart_DATA) \
 	$(autostart_DATA:.desktop=.desktop.in) $(service_DATA) \
 	$(service_DATA:.service=.service.in) $(systemd_user_DATA) \
-	$(gsettings_SCHEMAS) $(man_MANS)
+	$(gsettings_SCHEMAS)
 EXTRA_DIST = $(rules_files) $(autostart_DATA:.desktop=.desktop.in.in) \
 	$(config_DATA) $(service_DATA:.service=.service.in.in) \
 	$(systemd_user_DATA:.service=.service.in) \
-	$(gsettings_SCHEMAS:.xml=.xml.in) $(man_MANS)
+	$(gsettings_SCHEMAS:.xml=.xml.in)
 
 # DBus interfaces (XML files) and services
 configdir = $(datadir)/tracker

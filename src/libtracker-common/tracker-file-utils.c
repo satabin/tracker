@@ -94,7 +94,8 @@ tracker_file_close (FILE     *file,
 
 #ifdef HAVE_POSIX_FADVISE
 	if (!need_again_soon) {
-		posix_fadvise (fileno (file), 0, 0, POSIX_FADV_DONTNEED);
+		if (posix_fadvise (fileno (file), 0, 0, POSIX_FADV_DONTNEED) != 0)
+			g_warning ("posix_fadvise() call failed: %m");
 	}
 #endif /* HAVE_POSIX_FADVISE */
 
@@ -459,14 +460,13 @@ tracker_path_list_filter_duplicates (GSList      *roots,
 				reset = TRUE;
 
 				continue;
-			}
-			else if (is_recursive && tracker_path_is_in_path (in_path, path)) {
+			} else if (is_recursive && tracker_path_is_in_path (in_path, path)) {
 				g_debug ("Removing path:'%s', it is in path:'%s'",
 				         in_path, path);
 
 				g_free (l2->data);
 				new_list = g_slist_delete_link (new_list, l2);
-				l1 = new_list;
+				l2 = new_list;
 
 				reset = TRUE;
 
@@ -630,12 +630,8 @@ tracker_path_evaluate_name (const gchar *path)
 	 * symbolic links to other places, returning only the REAL
 	 * location.
 	 */
-	if (tokens) {
-		expanded = g_strjoinv (G_DIR_SEPARATOR_S, tokens);
-		g_strfreev (tokens);
-	} else {
-		expanded = g_strdup (path);
-	}
+	expanded = g_strjoinv (G_DIR_SEPARATOR_S, tokens);
+	g_strfreev (tokens);
 
 	/* Only resolve relative paths if there is a directory
 	 * separator in the path, otherwise it is just a name.

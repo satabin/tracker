@@ -278,6 +278,7 @@ opf_xml_text_handler (GMarkupParseContext   *context,
 			tracker_resource_set_string (publisher, "nco:fullname", text);
 
 			tracker_resource_set_relation (data->resource, "nco:publisher", publisher);
+			g_object_unref (publisher);
 
 			data->has_publisher = TRUE;
 		}
@@ -286,7 +287,7 @@ opf_xml_text_handler (GMarkupParseContext   *context,
 	case OPF_TAG_TYPE_EDITOR:
 	case OPF_TAG_TYPE_ILLUSTRATOR:
 	case OPF_TAG_TYPE_CONTRIBUTOR: {
-		TrackerResource *contact, *artist;
+		TrackerResource *contact, *artist = NULL;
 		gchar *fname, *gname, *oname;
 		const gchar *fullname = NULL;
 		gchar *role_uri = NULL;
@@ -424,6 +425,8 @@ opf_xml_text_handler (GMarkupParseContext   *context,
 		}
 
 		tracker_resource_set_relation (data->resource, "nco:creator", contact);
+		g_clear_object (&artist);
+		g_object_unref (contact);
 
 		break;
 	}

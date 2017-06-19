@@ -60,8 +60,7 @@ static GOptionEntry entries[] = {
 	  NULL },
 	{ "file", 'f', 0, G_OPTION_ARG_FILENAME, &filename,
 	  N_("Erase indexed information about a file, works recursively for directories"),
-	  N_("FILE"),
-	  NULL },
+	  N_("FILE") },
 	{ NULL }
 };
 
@@ -211,8 +210,8 @@ reset_run (void)
 	GError *error = NULL;
 
 	if (hard_reset && soft_reset) {
-		/* TRANSLATORS: --hard and --soft are commandline arguments */
 		g_printerr ("%s\n",
+		            /* TRANSLATORS: --hard and --soft are commandline arguments */
 		            _("You can not use the --hard and --soft arguments together"));
 		return EXIT_FAILURE;
 	}
@@ -223,7 +222,7 @@ reset_run (void)
 		g_print (CRIT_BEGIN "%s" CRIT_END "\n%s\n\n%s %s: ",
 		         _("CAUTION: This process may irreversibly delete data."),
 		         _("Although most content indexed by Tracker can "
-		           "be safely reindexed, it can't be assured that "
+		           "be safely reindexed, it can’t be assured that "
 		           "this is the case for all data. Be aware that "
 		           "you may be incurring in a data loss situation, "
 		           "proceed at your own risk."),
@@ -372,7 +371,7 @@ reset_run (void)
 
 			g_print ("  %s\n", c->name);
 
-			keys = g_settings_list_keys (c->settings);
+			keys = g_settings_schema_list_keys (c->schema);
 			for (p = keys; p && *p; p++) {
 				g_print ("    %s\n", *p);
 				g_settings_reset (c->settings, *p);

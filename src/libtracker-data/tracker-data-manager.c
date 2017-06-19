@@ -1053,7 +1053,6 @@ tracker_data_ontology_load_statement (const gchar *ontology_path,
 		tracker_property_set_range (property, range);
 	} else if (g_strcmp0 (predicate, NRL_MAX_CARDINALITY) == 0) {
 		TrackerProperty *property;
-		gboolean is_new;
 
 		property = tracker_ontologies_get_property_by_uri (subject);
 		if (property == NULL) {
@@ -1133,7 +1132,6 @@ tracker_data_ontology_load_statement (const gchar *ontology_path,
 		}
 	} else if (g_strcmp0 (predicate, TRACKER_PREFIX_TRACKER "fulltextIndexed") == 0) {
 		TrackerProperty *property;
-		gboolean is_new;
 
 		property = tracker_ontologies_get_property_by_uri (subject);
 		if (property == NULL) {
@@ -1334,10 +1332,6 @@ static void
 check_for_max_cardinality_change (TrackerProperty  *property,
                                   GError          **error)
 {
-	TrackerClass *class;
-	gchar *query = NULL;
-	TrackerDBCursor *cursor;
-	gboolean changed = TRUE;
 	gboolean orig_multiple_values = tracker_property_get_orig_multiple_values (property);
 	gboolean new_multiple_values = tracker_property_get_multiple_values (property);
 	GError *n_error = NULL;
@@ -3559,10 +3553,11 @@ tracker_data_manager_reload (TrackerBusyCallback   busy_callback,
 	return status;
 }
 
-static void
+static gboolean
 write_ontologies_gvdb (gboolean   overwrite,
                        GError   **error)
 {
+	gboolean retval = TRUE;
 	gchar *filename;
 
 	filename = g_build_filename (g_get_user_cache_dir (),
@@ -3571,10 +3566,12 @@ write_ontologies_gvdb (gboolean   overwrite,
 	                             NULL);
 
 	if (overwrite || !g_file_test (filename, G_FILE_TEST_EXISTS)) {
-		tracker_ontologies_write_gvdb (filename, error);
+		retval = tracker_ontologies_write_gvdb (filename, error);
 	}
 
 	g_free (filename);
+
+	return retval;
 }
 
 static void
@@ -4600,7 +4597,7 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 #endif /* DISABLE_JOURNAL */
 
 	/* If locale changed, re-create indexes */
-	if (!read_only && tracker_db_manager_locale_changed ()) {
+	if (!read_only && tracker_db_manager_locale_changed (NULL)) {
 		/* Report OPERATION - STATUS */
 		busy_status = g_strdup_printf ("%s - %s",
 		                               busy_operation,

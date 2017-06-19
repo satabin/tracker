@@ -12,8 +12,8 @@ AC_PREREQ([2.64])
 # if backwards compatibility has been broken,
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [1])
-m4_define([tracker_minor_version], [10])
-m4_define([tracker_micro_version], [5])
+m4_define([tracker_minor_version], [12])
+m4_define([tracker_micro_version], [0])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -186,6 +186,12 @@ if test "x$have_function" = "xno" ; then
             [Defined for compilers not supporting __FUNCTION__])
 fi
 
+case $host in
+    *-*-linux*)
+        tracker_os_linux=yes
+        ;;
+esac
+
 # Remember CFLAGS upon entering configure...
 CFLAGS="$CFLAGS"
 
@@ -224,7 +230,6 @@ EVO_REQUIRED=2.32.0
 EVO_SHELL_REQUIRED=2.32.0
 EDS_REQUIRED=2.32.0
 CAMEL_REQUIRED=2.32.0
-GEE_REQUIRED=0.3
 TAGLIB_REQUIRED=1.6
 LIBGRSS_REQUIRED=0.7
 NETWORK_MANAGER_REQUIRED=0.8
@@ -232,6 +237,8 @@ GSTREAMER_REQUIRED=0.10.31
 GUPNP_DLNA_REQUIRED=0.9.4
 LIBPNG_REQUIRED=1.2
 LIBMEDIAART_REQUIRED=1.9.0
+JSON_GLIB_REQUIRED=1.0
+LIBSOUP_REQUIRED=2.40
 
 # 3.6.11 for sqlite_backup API
 # 3.6.16 to fix test failures
@@ -285,6 +292,14 @@ LIBTRACKER_DIRECT_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
 
 PKG_CHECK_MODULES(LIBTRACKER_DIRECT, [$LIBTRACKER_DIRECT_REQUIRED])
 
+# Check requirements for libtracker-remote
+LIBTRACKER_REMOTE_REQUIRED="glib-2.0       >= $GLIB_REQUIRED
+                            libsoup-2.4    >= $LIBSOUP_REQUIRED
+                            libxml-2.0     >= $LIBXML2_REQUIRED
+                            json-glib-1.0  >= $JSON_GLIB_REQUIRED"
+
+PKG_CHECK_MODULES(LIBTRACKER_REMOTE, [$LIBTRACKER_REMOTE_REQUIRED])
+
 # Check requirements for libtracker-extract
 LIBTRACKER_EXTRACT_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
                              gio-unix-2.0 >= $GLIB_REQUIRED
@@ -326,8 +341,7 @@ TRACKER_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
 PKG_CHECK_MODULES(TRACKER, [$TRACKER_REQUIRED])
 
 # Check requirements for tracker-resdump
-TRACKER_RESDUMP_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
-                          gee-0.8      >= $GEE_REQUIRED"
+TRACKER_RESDUMP_REQUIRED="glib-2.0     >= $GLIB_REQUIRED"
 
 PKG_CHECK_MODULES(TRACKER_RESDUMP, [$TRACKER_RESDUMP_REQUIRED],
                   [have_tracker_resdump=yes],
@@ -1140,9 +1154,9 @@ if test "x$enable_libmediaart" != "xno" ; then
    LIBTRACKER_MINER_PC_REQUIRES="libmediaart-2.0"
    AC_SUBST(LIBTRACKER_MINER_PC_REQUIRES)
 
-   if test "x$have_libmediaart" = "xyes"; then
-      AC_DEFINE(HAVE_LIBMEDIAART, [], [Define if we have libmediaart])
-   fi
+#   if test "x$have_libmediaart" = "xyes"; then
+#      AC_DEFINE(HAVE_LIBMEDIAART, [], [Define if we have libmediaart])
+#   fi
 else
    have_libmediaart="no  (disabled)"
 fi
@@ -1789,7 +1803,7 @@ AM_CONDITIONAL(HAVE_LIBXML2, test "x$have_libxml2" = "xyes")
 
 AC_ARG_ENABLE(generic-media-extractor,
               AS_HELP_STRING([--enable-generic-media-extractor=ARG],
-                             [enables one of the (gstreamer, libav, external, auto) generic media extractor backends [[default=auto]]]),
+                             [enables one of the (gstreamer, libav, auto) generic media extractor backends [[default=auto]]]),
               [enable_generic_media_extractor=$enableval],
               [enable_generic_media_extractor=auto])
 
@@ -1829,38 +1843,38 @@ AC_SUBST(AVUTIL_LIBS)
 if test "x$enable_generic_media_extractor" = "xauto"; then
    if test "$have_libgstreamer" = "yes"; then
       have_generic_media_handler="yes"
-      have_generic_media_handler_app="GStreamer"
+      generic_media_handler_name="GStreamer"
    elif test "$have_libav" = "yes"; then
-      have_generic_media_handler_app="libav"
+      generic_media_handler_name="libav"
       have_generic_media_handler="yes"
    else
-      have_generic_media_handler="?"
-      have_generic_media_handler_app="An external generic_media player will be called"
+      have_generic_media_handler="no"
+      generic_media_handler_name="none"
    fi
 elif test "x$enable_generic_media_extractor" = "xgstreamer"; then
    if test "$have_libgstreamer" = "yes"; then
-      have_generic_media_handler_app="GStreamer"
+      generic_media_handler_name="GStreamer"
       have_generic_media_handler="yes"
    else
       AC_MSG_ERROR([Could not find GStreamer >= $GSTREAMER_REQUIRED])
    fi
 elif test "x$enable_generic_media_extractor" = "xlibav"; then
    if test "$have_libavformat" = "yes" && test "$have_libavcodec" = "yes" && test "$have_libavutil" = "yes"; then
-      have_generic_media_handler_app="libav"
+      generic_media_handler_name="libav"
       have_generic_media_handler="yes"
    else
       AC_MSG_ERROR([Could not find libav])
    fi
 else
-   have_generic_media_handler="?"
-   have_generic_media_handler_app="An external generic media player will be called"
+   have_generic_media_handler="no"
+   generic_media_handler_name="none"
 fi
 
-if test "$have_generic_media_handler_app" = "GStreamer"; then
+if test "$generic_media_handler_name" = "GStreamer"; then
    AC_DEFINE(HAVE_GSTREAMER, [], [Define if we have GStreamer])
    AM_CONDITIONAL(HAVE_GSTREAMER, true)
    AM_CONDITIONAL(HAVE_LIBAV, false)
-elif test "$have_generic_media_handler_app" = "libav"; then
+elif test "$generic_media_handler_name" = "libav"; then
    AC_DEFINE(HAVE_LIBAV, [], [Define if we have libav])
    AM_CONDITIONAL(HAVE_LIBAV, true)
    AM_CONDITIONAL(HAVE_GSTREAMER, false)
@@ -1879,7 +1893,7 @@ AC_ARG_WITH([gstreamer-backend],
             [with_gstreamer_backend=$withval],
             [with_gstreamer_backend=discoverer])
 
-if test "$have_generic_media_handler_app" != "GStreamer"; then
+if test "$generic_media_handler_name" != "GStreamer"; then
    AC_MSG_WARN([No need to specify a GStreamer backend if not using GStreamer])
    gstreamer_backend="N/A"
 else
@@ -2604,6 +2618,9 @@ if test "$have_libseccomp" = "yes"; then
    LIBTRACKER_COMMON_LIBS="$LIBTRACKER_COMMON_LIBS $LIBSECCOMP_LIBS"
    LIBTRACKER_COMMON_CFLAGS="$LIBTRACKER_COMMON_CFLAGS $LIBSECCOMP_CFLAGS"
    AC_DEFINE(HAVE_LIBSECCOMP, [], [Define if we have libseccomp])
+# seccomp is a linux thing
+elif test "$tracker_os_linux" = "yes"; then
+   AC_MSG_ERROR([Libseccomp is mandatory for sandboxed metadata extraction])
 fi
 
 ##################################################################
@@ -2636,6 +2653,7 @@ AC_CONFIG_FILES([
 	src/libtracker-control/tracker-control.pc
 	src/libtracker-data/Makefile
 	src/libtracker-direct/Makefile
+	src/libtracker-remote/Makefile
 	src/libtracker-sparql-backend/Makefile
 	src/libtracker-fts/Makefile
 	src/libtracker-extract/Makefile
@@ -2823,7 +2841,7 @@ Metadata Extractors:
 	Support MS & Open Office:               $have_libgsf
 	Support XML / HTML:                     $have_libxml2
 	Support embedded / sidecar XMP:         $have_exempi
-	Support generic media formats:          $have_generic_media_handler ($have_generic_media_handler_app) (backend: $gstreamer_backend)
+	Support generic media formats:          $have_generic_media_handler ($generic_media_handler_name) (backend: $gstreamer_backend)
 	Support cue sheet parsing:              $have_libcue (libcue2.0: $have_libcue2)
 	Support playlists (w/ Totem):           $have_playlist
 	Support ISO image parsing:              $have_libosinfo

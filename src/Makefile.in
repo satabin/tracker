@@ -167,9 +167,9 @@ ETAGS = etags
 CTAGS = ctags
 DIST_SUBDIRS = ontologies gvdb libtracker-common libtracker-sparql \
 	libtracker-fts libtracker-bus libtracker-data \
-	libtracker-direct libtracker-sparql-backend libtracker-extract \
-	libtracker-miner libtracker-control tracker miners plugins \
-	tracker-store tracker-extract tracker-writeback \
+	libtracker-direct libtracker-remote libtracker-sparql-backend \
+	libtracker-extract libtracker-miner libtracker-control tracker \
+	miners plugins tracker-store tracker-extract tracker-writeback \
 	tracker-preferences tracker-needle
 am__DIST_COMMON = $(srcdir)/Makefile.in
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -353,6 +353,8 @@ LIBTRACKER_FTS_LIBS = @LIBTRACKER_FTS_LIBS@
 LIBTRACKER_MINER_CFLAGS = @LIBTRACKER_MINER_CFLAGS@
 LIBTRACKER_MINER_LIBS = @LIBTRACKER_MINER_LIBS@
 LIBTRACKER_MINER_PC_REQUIRES = @LIBTRACKER_MINER_PC_REQUIRES@
+LIBTRACKER_REMOTE_CFLAGS = @LIBTRACKER_REMOTE_CFLAGS@
+LIBTRACKER_REMOTE_LIBS = @LIBTRACKER_REMOTE_LIBS@
 LIBTRACKER_SPARQL_CFLAGS = @LIBTRACKER_SPARQL_CFLAGS@
 LIBTRACKER_SPARQL_LIBS = @LIBTRACKER_SPARQL_LIBS@
 LIBVORBIS_CFLAGS = @LIBVORBIS_CFLAGS@
@@ -529,10 +531,10 @@ top_srcdir = @top_srcdir@
 @HAVE_TRACKER_FTS_TRUE@libtrackerfts_dir = libtracker-fts
 SUBDIRS = ontologies gvdb libtracker-common libtracker-sparql \
 	$(libtrackerfts_dir) libtracker-bus libtracker-data \
-	libtracker-direct libtracker-sparql-backend libtracker-extract \
-	libtracker-miner libtracker-control tracker miners plugins \
-	tracker-store $(am__append_1) $(am__append_2) $(am__append_3) \
-	$(am__append_4)
+	libtracker-direct libtracker-remote libtracker-sparql-backend \
+	libtracker-extract libtracker-miner libtracker-control tracker \
+	miners plugins tracker-store $(am__append_1) $(am__append_2) \
+	$(am__append_3) $(am__append_4)
 all: all-recursive
 
 .SUFFIXES:

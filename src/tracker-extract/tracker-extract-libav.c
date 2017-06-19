@@ -41,6 +41,7 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 	GFile *file;
 	TrackerResource *metadata;
 	gchar *absolute_file_path;
+	gchar *content_created = NULL;
 	gchar *uri;
 	AVFormatContext *format = NULL;
 	AVStream *audio_stream = NULL;
@@ -83,6 +84,13 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 	}
 
 	metadata = tracker_resource_new (NULL);
+
+	if ((tag = av_dict_get (format->metadata, "creation_time", NULL, 0))) {
+		content_created = tracker_date_guess (tag->value);
+		if (content_created) {
+			tracker_resource_set_string (metadata, "nie:contentCreated", content_created);
+		}
+	}
 
 	if (audio_stream) {
 		if (audio_stream->codec->sample_rate > 0) {
@@ -167,24 +175,14 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 
 		if ((tag = av_dict_get (format->metadata, "artist", tag, 0))) {
 			performer = tracker_extract_new_artist (tag->value);
-			if (!album_artist) {
-				album_artist_name = tag->value;
-				album_artist = performer;
-			}
 		}
 
 		if (!performer && (tag = av_dict_get (format->metadata, "performer", tag, 0))) {
 			performer = tracker_extract_new_artist (tag->value);
-			if (!album_artist) {
-				album_artist_name = tag->value;
-				album_artist = performer;
-			}
 		}
 
 		if (performer) {
 			tracker_resource_set_relation (metadata, "nmm:performer", performer);
-		} else if (album_artist) {
-			tracker_resource_set_relation (metadata, "nmm:performer", album_artist);
 		}
 
 		if ((tag = av_dict_get (format->metadata, "composer", tag, 0))) {
@@ -201,7 +199,7 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 				disc_number = atoi (tag->value);
 			}
 
-			album_disc = tracker_extract_new_music_album_disc (album_title, album_artist, disc_number);
+			album_disc = tracker_extract_new_music_album_disc (album_title, album_artist, disc_number, content_created);
 
 			tracker_resource_set_relation (metadata, "nmm:musicAlbumDisc", album_disc);
 			tracker_resource_set_relation (metadata, "nmm:musicAlbum", tracker_resource_get_first_relation (album_disc, "nmm:albumDiscAlbum"));
@@ -241,21 +239,12 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 		tracker_resource_set_int64 (metadata, "nfo:averageBitrate", format->bit_rate);
 	}
 
-
 	if ((tag = av_dict_get (format->metadata, "comment", NULL, 0))) {
 		tracker_resource_set_string (metadata, "nie:comment", tag->value);
 	}
 
 	if ((tag = av_dict_get (format->metadata, "copyright", NULL, 0))) {
 		tracker_resource_set_string (metadata, "nie:copyright", tag->value);
-	}
-
-	if ((tag = av_dict_get (format->metadata, "creation_time", NULL, 0))) {
-		gchar *content_created = tracker_date_guess (tag->value);
-		if (content_created) {
-			tracker_resource_set_string (metadata, "nie:contentCreated", content_created);
-			g_free (content_created);
-		}
 	}
 
 	if ((tag = av_dict_get (format->metadata, "description", NULL, 0))) {
@@ -276,6 +265,7 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 
 	tracker_guarantee_resource_title_from_file (metadata, "nie:title", title, uri, NULL);
 
+	g_free (content_created);
 	g_free (uri);
 
 	avformat_close_input (&format);

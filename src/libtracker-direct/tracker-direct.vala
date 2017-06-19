@@ -20,18 +20,15 @@
 public class Tracker.Direct.Connection : Tracker.Sparql.Connection {
 	static int use_count;
 	bool initialized;
+	private Mutex mutex = Mutex ();
 
 	public Connection () throws Sparql.Error, IOError, DBusError {
-		DBManager.lock ();
-
 		try {
 			if (use_count == 0) {
 				// make sure that current locale vs db locale are the same,
 				// otherwise return an error
 				Locale.init ();
-				if (DBManager.locale_changed ()) {
-					throw new Sparql.Error.INTERNAL ("Locale mismatch, cannot use direct connection");
-				}
+				DBManager.locale_changed ();
 
 				uint select_cache_size = 100;
 				string env_cache_size = Environment.get_variable ("TRACKER_SPARQL_CACHE_SIZE");
@@ -40,15 +37,13 @@ public class Tracker.Direct.Connection : Tracker.Sparql.Connection {
 					select_cache_size = int.parse (env_cache_size);
 				}
 
-				Data.Manager.init (DBManagerFlags.READONLY, null, null, false, false, select_cache_size, 0, null, null);
+				Data.Manager.init (DBManagerFlags.READONLY | DBManagerFlags.ENABLE_MUTEXES, null, null, false, false, select_cache_size, 0, null, null);
 			}
 
 			use_count++;
 			initialized = true;
 		} catch (Error e) {
 			throw new Sparql.Error.INTERNAL (e.message);
-		} finally {
-			DBManager.unlock ();
 		}
 	}
 
@@ -59,23 +54,17 @@ public class Tracker.Direct.Connection : Tracker.Sparql.Connection {
 		}
 
 		// Clean up connection
-		DBManager.lock ();
+		use_count--;
 
-		try {
-			use_count--;
-
-			if (use_count == 0) {
-				Data.Manager.shutdown ();
-			}
-		} finally {
-			DBManager.unlock ();
+		if (use_count == 0) {
+			Data.Manager.shutdown ();
 		}
 	}
 
 	Sparql.Cursor query_unlocked (string sparql) throws Sparql.Error, DBusError {
 		try {
 			var query_object = new Sparql.Query (sparql);
-			var cursor = query_object.execute_cursor (true);
+			var cursor = query_object.execute_cursor ();
 			cursor.connection = this;
 			return cursor;
 		} catch (DBInterfaceError e) {
@@ -92,11 +81,11 @@ public class Tracker.Direct.Connection : Tracker.Sparql.Connection {
 			throw new IOError.CANCELLED ("Operation was cancelled");
 		}
 
-		DBManager.lock ();
+		mutex.lock ();
 		try {
 			return query_unlocked (sparql);
 		} finally {
-			DBManager.unlock ();
+			mutex.unlock ();
 		}
 	}
 

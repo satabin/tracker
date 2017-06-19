@@ -178,17 +178,16 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 
 		if (vd.album_artist) {
 			album_artist = tracker_extract_new_artist (vd.album_artist);
-		} else if (md.creator) {
-			album_artist = g_object_ref (md.creator);
 		} else {
 			album_artist = NULL;
 		}
 
 		album_disc = tracker_extract_new_music_album_disc (vd.album,
 		                                                   album_artist,
-		                                                   vd.disc_number ? atoi(vd.disc_number) : 1);
+		                                                   vd.disc_number ? atoi(vd.disc_number) : 1,
+		                                                   vd.date);
 
-		g_object_unref (album_artist);
+		g_clear_object (&album_artist);
 
 		album = tracker_resource_get_first_relation (album_disc, "nmm:albumDiscAlbum");
 
@@ -373,7 +372,8 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 	g_object_unref (md.creator);
 
 #ifdef HAVE_POSIX_FADVISE
-	posix_fadvise (fileno (f), 0, 0, POSIX_FADV_DONTNEED);
+	if (posix_fadvise (fileno (f), 0, 0, POSIX_FADV_DONTNEED) != 0)
+		g_warning ("posix_fadvise() call failed: %m");
 #endif /* HAVE_POSIX_FADVISE */
 
 	/* NOTE: This calls fclose on the file */

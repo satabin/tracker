@@ -115,10 +115,12 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libtracker_sparql_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
-am_libtracker_sparql_la_OBJECTS = tracker-namespace.lo \
-	tracker-builder.lo tracker-connection.lo tracker-cursor.lo \
-	tracker-namespace-manager.lo tracker-resource.lo \
-	tracker-utils.lo tracker-uri.lo tracker-version.lo
+am__objects_1 = tracker-sparql-enum-types.lo
+am_libtracker_sparql_la_OBJECTS = $(am__objects_1) \
+	tracker-namespace.lo tracker-builder.lo tracker-connection.lo \
+	tracker-cursor.lo tracker-namespace-manager.lo \
+	tracker-notifier.lo tracker-resource.lo tracker-utils.lo \
+	tracker-uri.lo tracker-version.lo
 libtracker_sparql_la_OBJECTS = $(am_libtracker_sparql_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -388,6 +390,8 @@ LIBTRACKER_FTS_LIBS = @LIBTRACKER_FTS_LIBS@
 LIBTRACKER_MINER_CFLAGS = @LIBTRACKER_MINER_CFLAGS@
 LIBTRACKER_MINER_LIBS = @LIBTRACKER_MINER_LIBS@
 LIBTRACKER_MINER_PC_REQUIRES = @LIBTRACKER_MINER_PC_REQUIRES@
+LIBTRACKER_REMOTE_CFLAGS = @LIBTRACKER_REMOTE_CFLAGS@
+LIBTRACKER_REMOTE_LIBS = @LIBTRACKER_REMOTE_LIBS@
 LIBTRACKER_SPARQL_CFLAGS = @LIBTRACKER_SPARQL_CFLAGS@
 LIBTRACKER_SPARQL_LIBS = @LIBTRACKER_SPARQL_LIBS@
 LIBVORBIS_CFLAGS = @LIBVORBIS_CFLAGS@
@@ -578,13 +582,20 @@ AM_CPPFLAGS = \
 	$(LIBTRACKER_SPARQL_CFLAGS)
 
 libtracker_sparqlincludedir = $(includedir)/tracker-$(TRACKER_API_VERSION)/libtracker-sparql
+ENUM_SOURCES = \
+	tracker-sparql-enum-types.c                    \
+	tracker-sparql-enum-types.h
+
 libtracker_sparql_la_SOURCES = \
+	$(ENUM_SOURCES)                                \
 	tracker-namespace.vala                         \
 	tracker-builder.vala                           \
 	tracker-connection.vala                        \
 	tracker-cursor.vala                            \
 	tracker-namespace-manager.c                    \
 	tracker-namespace-manager.h                    \
+	tracker-notifier.c                             \
+	tracker-notifier.h                             \
 	tracker-resource.c                             \
 	tracker-resource.h                             \
 	tracker-utils.vala                             \
@@ -604,7 +615,8 @@ vala_header = tracker-generated.h
 libtracker_sparqlinclude_HEADERS = \
 	$(vala_header)                                 \
 	tracker-namespace-manager.h                    \
-	tracker-ontologies.h \
+	tracker-notifier.h                             \
+	tracker-ontologies.h                           \
 	tracker-resource.h                             \
 	tracker-sparql.h                               \
 	tracker-version.h
@@ -613,7 +625,7 @@ libtracker_sparqlinclude_HEADERS = \
 # PkgConfig
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = tracker-sparql-$(TRACKER_API_VERSION).pc
-CLEANFILES = tracker-sparql-$(TRACKER_API_VERSION).pc \
+CLEANFILES = $(ENUM_SOURCES) tracker-sparql-$(TRACKER_API_VERSION).pc \
 	tracker-sparql-$(TRACKER_API_VERSION).vapi
 
 # Vala bindings
@@ -631,6 +643,8 @@ MAINTAINERCLEANFILES = \
 	$(vala_header:.h=-no-checks.h)
 
 EXTRA_DIST = \
+	tracker-sparql-enum-types.c.template           \
+	tracker-sparql-enum-types.h.template           \
 	tracker-sparql-$(TRACKER_API_VERSION).deps     \
 	tracker-sparql.deps                            \
 	$(vala_header:.h=-no-checks.h)
@@ -706,7 +720,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-cursor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-namespace-manager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-namespace.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-notifier.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-resource.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-sparql-enum-types.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-uri.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-version.Plo@am__quote@
@@ -1125,6 +1141,12 @@ uninstall-am: uninstall-girDATA \
 
 .PRECIOUS: Makefile
 
+
+tracker-sparql-enum-types.h: tracker-sparql-enum-types.h.template tracker-notifier.h
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template tracker-sparql-enum-types.h.template tracker-notifier.h) > $@
+
+tracker-sparql-enum-types.c: tracker-sparql-enum-types.c.template tracker-sparql-enum-types.h
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template tracker-sparql-enum-types.c.template tracker-notifier.h) > $@
 
 # We wrap the generated .h file with a check to make sure it's
 # not included directly. All other .[ch] headers have this.

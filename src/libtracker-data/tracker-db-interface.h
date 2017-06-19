@@ -127,9 +127,8 @@ TrackerDBCursor *       tracker_db_statement_start_cursor            (TrackerDBS
 TrackerDBCursor *       tracker_db_statement_start_sparql_cursor     (TrackerDBStatement         *stmt,
                                                                       TrackerPropertyType        *types,
                                                                       gint                        n_types,
-                                                                      const gchar               **variable_names,
+                                                                      const gchar * const        *variable_names,
                                                                       gint                        n_variable_names,
-                                                                      gboolean                    threadsafe,
                                                                       GError                    **error);
 void                    tracker_db_interface_set_busy_handler        (TrackerDBInterface         *db_interface,
                                                                       TrackerBusyCallback         busy_callback,

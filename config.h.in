@@ -121,9 +121,6 @@
 /* Define to 1 if you have the `m' library (-lm). */
 #undef HAVE_LIBM
 
-/* Define if we have libmediaart */
-#undef HAVE_LIBMEDIAART
-
 /* Define if we have libosinfo */
 #undef HAVE_LIBOSINFO
 

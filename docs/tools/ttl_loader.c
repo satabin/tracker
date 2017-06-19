@@ -185,7 +185,7 @@ load_in_memory (Ontology    *ontology,
 			if (prop) {
 				prop->description = g_strdup (turtle_object);
 			} else {
-				g_error ("UHUMMM %s", turtle_subject);
+				g_error ("Error in comment (%s doesn't exist)", turtle_subject);
 			}
 		}
 
@@ -342,7 +342,7 @@ ttl_loader_load_ontology (const gchar *ttl_file)
 {
 	Ontology *ontology;
 
-	g_print ("Loading ontology... %s\n", ttl_file);
+	g_debug ("Loading ontology... %s\n", ttl_file);
 	ontology = g_new0 (Ontology, 1);
 	ontology->classes = g_hash_table_new_full (g_str_hash,
 	                                           g_str_equal,

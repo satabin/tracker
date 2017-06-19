@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="Tracker SPARQL Library Reference Manual">
 <link rel="up" href="libtracker-sparql-reference.html" title="Part II. Reference">
-<link rel="prev" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor">
+<link rel="prev" href="TrackerNotifier.html" title="TrackerNotifier">
 <link rel="next" href="libtracker-sparql-Version-Information.html" title="Version Information">
 <meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -19,7 +19,7 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="libtracker-sparql-reference.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="TrackerSparqlCursor.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="TrackerNotifier.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="libtracker-sparql-Version-Information.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
@@ -176,7 +176,8 @@ string precision pitfalls documented in <code class="function">g_strdup_printf()
 <div class="refsect3">
 <a name="tracker-sparql-escape-uri-printf.returns"></a><h4>Returns</h4>
 <p> a newly-allocated string holding the result.The returned string
-should be freed with <code class="function">g_free()</code> when no longer needed.</p>
+should be freed with <code class="function">g_free()</code> when no longer needed. </p>
+<p><span class="annotation">[transfer-full]</span></p>
 </div>
 <p class="since">Since: 0.10</p>
 </div>
@@ -218,7 +219,8 @@ string precision pitfalls documented in <code class="function">g_strdup_printf()
 <div class="refsect3">
 <a name="tracker-sparql-escape-uri-vprintf.returns"></a><h4>Returns</h4>
 <p> a newly-allocated string holding the result. The returned string
-should be freed with <code class="function">g_free()</code> when no longer needed.</p>
+should be freed with <code class="function">g_free()</code> when no longer needed. </p>
+<p><span class="annotation">[transfer-full]</span></p>
 </div>
 <p class="since">Since: 0.10</p>
 </div>

@@ -241,10 +241,10 @@ status_stat (void)
 		}
 
 		if (output->len > 0) {
+			g_string_prepend (output, "\n");
 			/* To translators: This is to say there are no
 			 * statistics found. We use a "Statistics:
 			 * None" with multiple print statements */
-			g_string_prepend (output, "\n");
 			g_string_prepend (output, _("Statistics:"));
 		} else {
 			g_string_append_printf (output,
@@ -352,7 +352,7 @@ collect_debug (void)
 				continue;
 			}
 
-			keys = g_settings_list_keys (c->settings);
+			keys = g_settings_schema_list_keys (c->schema);
 			for (p = keys; p && *p; p++) {
 				GVariant *v;
 				gchar *printed;
@@ -519,7 +519,10 @@ get_file_and_folder_count (int *files,
 
 		cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
 
-		if (error || !tracker_sparql_cursor_next (cursor, NULL, NULL)) {
+		if (cursor)
+			tracker_sparql_cursor_next (cursor, NULL, &error);
+
+		if (error) {
 			g_printerr ("%s, %s\n",
 			            _("Could not get basic status for Tracker"),
 			            error->message);

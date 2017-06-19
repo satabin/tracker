@@ -374,6 +374,7 @@
 			</parameters>
 		</function>
 		<function name="get_direct_async" c:identifier="tracker_sparql_connection_get_direct_async" deprecated="">
+			<attribute name="version.deprecated" value="true"/>
 			<return-value transfer-ownership="none">
 				<type name="none"/>
 			</return-value>
@@ -390,6 +391,7 @@
 			</parameters>
 		</function>
 		<function name="get_direct_finish" c:identifier="tracker_sparql_connection_get_direct_finish" throws="1" deprecated="">
+			<attribute name="version.deprecated" value="true"/>
 			<return-value transfer-ownership="full">
 				<type name="Tracker.SparqlConnection" c:type="TrackerSparqlConnection*"/>
 			</return-value>
@@ -400,12 +402,23 @@
 			</parameters>
 		</function>
 		<function name="get_direct" c:identifier="tracker_sparql_connection_get_direct" throws="1" deprecated="">
+			<attribute name="version.deprecated" value="true"/>
 			<return-value transfer-ownership="full">
 				<type name="Tracker.SparqlConnection" c:type="TrackerSparqlConnection*"/>
 			</return-value>
 			<parameters>
 				<parameter name="cancellable" transfer-ownership="none" allow-none="1">
 					<type name="Gio.Cancellable" c:type="GCancellable*"/>
+				</parameter>
+			</parameters>
+		</function>
+		<function name="remote_new" c:identifier="tracker_sparql_connection_remote_new">
+			<return-value transfer-ownership="full">
+				<type name="Tracker.SparqlConnection" c:type="TrackerSparqlConnection*"/>
+			</return-value>
+			<parameters>
+				<parameter name="uri_base" transfer-ownership="none">
+					<type name="utf8" c:type="const gchar*"/>
 				</parameter>
 			</parameters>
 		</function>
@@ -1732,6 +1745,16 @@
 		</field>
 	</record>
 	<record name="SparqlCursorPrivate" c:type="TrackerSparqlCursorPrivate" disguised="1"/>
+	<function name="sparql_escape_uri" c:identifier="tracker_sparql_escape_uri">
+		<return-value transfer-ownership="full">
+			<type name="utf8" c:type="gchar*"/>
+		</return-value>
+		<parameters>
+			<parameter name="uri" transfer-ownership="none">
+				<type name="utf8" c:type="const gchar*"/>
+			</parameter>
+		</parameters>
+	</function>
 	<function name="sparql_escape_string" c:identifier="tracker_sparql_escape_string">
 		<return-value transfer-ownership="full">
 			<type name="utf8" c:type="gchar*"/>

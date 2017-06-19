@@ -247,7 +247,9 @@ journal_read_string (JournalReader  *jreader,
 		}
 
 		result = g_malloc (found_pos + 1);
-		g_input_stream_read (G_INPUT_STREAM (bstream), result, found_pos + 1, NULL, NULL);
+
+		if (g_input_stream_read (G_INPUT_STREAM (bstream), result, found_pos + 1, NULL, error) < 0)
+			return NULL;
 	} else {
 		gsize str_length;
 
@@ -2136,7 +2138,14 @@ tracker_db_journal_rotate (GError **error)
 
 	fullpath = g_strdup_printf ("%s.%d", writer.journal_filename, ++max);
 
-	g_rename (writer.journal_filename, fullpath);
+	if (g_rename (writer.journal_filename, fullpath) < 0) {
+		g_set_error (error, TRACKER_DB_JOURNAL_ERROR,
+			     TRACKER_DB_JOURNAL_ERROR_COULD_NOT_WRITE,
+		             "Could not rotate journal file %s: %s",
+			     writer.journal_filename,
+		             g_strerror (errno));
+		return FALSE;
+	}
 
 	/* Recalculate progress next time */
 	rotating_settings.rotate_progress_flag = FALSE;

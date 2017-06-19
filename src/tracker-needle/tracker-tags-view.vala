@@ -260,23 +260,17 @@ public class TrackerTagsView : Box {
 		var builder = new Gtk.Builder ();
 
 		try {
-			debug ("Trying to use UI file:'%s'", SRCDIR + UI_FILE);
-			builder.add_from_file (SRCDIR + UI_FILE);
+			debug ("Trying to use UI file:'%s'", UIDIR + UI_FILE);
+			builder.add_from_file (UIDIR + UI_FILE);
 		} catch (GLib.Error e) {
-			//now the install location
-			try {
-				debug ("Trying to use UI file:'%s'", UIDIR + UI_FILE);
-				builder.add_from_file (UIDIR + UI_FILE);
-			} catch (GLib.Error e) {
-				var msg = new MessageDialog (null,
-				                             DialogFlags.MODAL,
-				                             MessageType.ERROR,
-				                             ButtonsType.CANCEL,
-				                             "Failed to load UI file, %s\n",
-				                             e.message);
-				msg.run ();
-				Gtk.main_quit ();
-			}
+			var msg = new MessageDialog (null,
+			                             DialogFlags.MODAL,
+			                             MessageType.ERROR,
+			                             ButtonsType.CANCEL,
+			                             "Failed to load UI file, %s\n",
+			                             e.message);
+			msg.run ();
+			Gtk.main_quit ();
 		}
 
 		// Get widgets from .ui file
@@ -373,7 +367,7 @@ public class TrackerTagsView : Box {
 			string str = dngettext (null,
 			                        "_Set the tags you want to associate with the %d selected item:",
 			                        "_Set the tags you want to associate with the %d selected items:",
-			                        files.length ()).printf (files.length ());
+			                        files.length ()).printf ((int) files.length ());
 			label.set_text_with_mnemonic (str);
 			vbox.sensitive = true;
 		} else {
@@ -520,7 +514,11 @@ public class TrackerTagsView : Box {
 			yield connection.update_async (query, Priority.DEFAULT, td.cancellable);
 
 			debug ("Tag removed");
+			#if VALA_0_36
+			store.remove (ref td.iter);
+			#else
 			store.remove (td.iter);
+			#endif
 		} catch (GLib.Error e) {
 			warning ("Could not run Sparql update query: %s", e.message);
 			show_error_dialog (_("Could not remove tag"), e);

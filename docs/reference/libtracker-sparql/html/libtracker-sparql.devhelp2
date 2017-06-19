@@ -12,6 +12,7 @@
       <sub name="TrackerSparqlBuilder" link="TrackerSparqlBuilder.html"/>
       <sub name="TrackerSparqlConnection" link="TrackerSparqlConnection.html"/>
       <sub name="TrackerSparqlCursor" link="TrackerSparqlCursor.html"/>
+      <sub name="TrackerNotifier" link="TrackerNotifier.html"/>
       <sub name="Utilities" link="libtracker-sparql-Utilities.html"/>
       <sub name="Version Information" link="libtracker-sparql-Version-Information.html"/>
     </sub>
@@ -144,6 +145,20 @@
     <keyword type="enum" name="enum TrackerSparqlValueType" link="TrackerSparqlCursor.html#TrackerSparqlValueType" since="0.10"/>
     <keyword type="property" name="The “connection” property" link="TrackerSparqlCursor.html#TrackerSparqlCursor--connection"/>
     <keyword type="property" name="The “n-columns” property" link="TrackerSparqlCursor.html#TrackerSparqlCursor--n-columns"/>
+    <keyword type="function" name="tracker_notifier_new ()" link="TrackerNotifier.html#tracker-notifier-new" since="1.12"/>
+    <keyword type="function" name="tracker_notifier_event_get_event_type ()" link="TrackerNotifier.html#tracker-notifier-event-get-event-type" since="1.12"/>
+    <keyword type="function" name="tracker_notifier_event_get_id ()" link="TrackerNotifier.html#tracker-notifier-event-get-id" since="1.12"/>
+    <keyword type="function" name="tracker_notifier_event_get_type ()" link="TrackerNotifier.html#tracker-notifier-event-get-type" since="1.12"/>
+    <keyword type="function" name="tracker_notifier_event_get_urn ()" link="TrackerNotifier.html#tracker-notifier-event-get-urn" since="1.12"/>
+    <keyword type="function" name="tracker_notifier_event_get_location ()" link="TrackerNotifier.html#tracker-notifier-event-get-location" since="1.12"/>
+    <keyword type="enum" name="enum TrackerNotifierFlags" link="TrackerNotifier.html#TrackerNotifierFlags"/>
+    <keyword type="struct" name="TrackerNotifier" link="TrackerNotifier.html#TrackerNotifier-struct"/>
+    <keyword type="struct" name="struct TrackerNotifierClass" link="TrackerNotifier.html#TrackerNotifierClass"/>
+    <keyword type="enum" name="enum TrackerNotifierEventType" link="TrackerNotifier.html#TrackerNotifierEventType"/>
+    <keyword type="struct" name="TrackerNotifierEvent" link="TrackerNotifier.html#TrackerNotifierEvent"/>
+    <keyword type="property" name="The “classes” property" link="TrackerNotifier.html#TrackerNotifier--classes"/>
+    <keyword type="property" name="The “flags” property" link="TrackerNotifier.html#TrackerNotifier--flags"/>
+    <keyword type="signal" name="The “events” signal" link="TrackerNotifier.html#TrackerNotifier-events"/>
     <keyword type="function" name="tracker_sparql_get_uuid_urn ()" link="libtracker-sparql-Utilities.html#tracker-sparql-get-uuid-urn" since="0.10"/>
     <keyword type="function" name="tracker_sparql_escape_string ()" link="libtracker-sparql-Utilities.html#tracker-sparql-escape-string" since="0.10"/>
     <keyword type="function" name="tracker_sparql_escape_uri_printf ()" link="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-printf" since="0.10"/>
@@ -181,5 +196,12 @@
     <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_DATETIME" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-DATETIME:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_BLANK_NODE" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-BLANK-NODE:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_BOOLEAN" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-BOOLEAN:CAPS"/>
+    <keyword type="constant" name="TRACKER_NOTIFIER_FLAG_NONE" link="TrackerNotifier.html#TRACKER-NOTIFIER-FLAG-NONE:CAPS"/>
+    <keyword type="constant" name="TRACKER_NOTIFIER_FLAG_QUERY_URN" link="TrackerNotifier.html#TRACKER-NOTIFIER-FLAG-QUERY-URN:CAPS"/>
+    <keyword type="constant" name="TRACKER_NOTIFIER_FLAG_QUERY_LOCATION" link="TrackerNotifier.html#TRACKER-NOTIFIER-FLAG-QUERY-LOCATION:CAPS"/>
+    <keyword type="constant" name="TRACKER_NOTIFIER_FLAG_NOTIFY_UNEXTRACTED" link="TrackerNotifier.html#TRACKER-NOTIFIER-FLAG-NOTIFY-UNEXTRACTED:CAPS"/>
+    <keyword type="constant" name="TRACKER_NOTIFIER_EVENT_CREATE" link="TrackerNotifier.html#TRACKER-NOTIFIER-EVENT-CREATE:CAPS"/>
+    <keyword type="constant" name="TRACKER_NOTIFIER_EVENT_DELETE" link="TrackerNotifier.html#TRACKER-NOTIFIER-EVENT-DELETE:CAPS"/>
+    <keyword type="constant" name="TRACKER_NOTIFIER_EVENT_UPDATE" link="TrackerNotifier.html#TRACKER-NOTIFIER-EVENT-UPDATE:CAPS"/>
   </functions>
 </book>

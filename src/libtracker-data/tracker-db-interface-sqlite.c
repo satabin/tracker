@@ -80,12 +80,6 @@ struct TrackerDBInterface {
 	/* Compiled regular expressions */
 	TrackerDBReplaceFuncChecks replace_func_checks;
 
-	GSList *function_data;
-
-	/* Collation and locale change */
-	gpointer locale_notification_id;
-	gint collator_reset_requested;
-
 	/* Number of active cursors */
 	gint n_active_cursors;
 
@@ -100,6 +94,10 @@ struct TrackerDBInterface {
 	gchar *busy_status;
 
 	gchar *fts_properties;
+
+	/* Used if TRACKER_DB_MANAGER_ENABLE_MUTEXES is set */
+	GMutex mutex;
+	guint use_mutex;
 };
 
 struct TrackerDBInterfaceClass {
@@ -115,10 +113,6 @@ struct TrackerDBCursor {
 	gint n_types;
 	gchar **variable_names;
 	gint n_variable_names;
-
-	/* used for direct access as libtracker-sparql is thread-safe and
-	   uses a single shared connection with SQLite mutex disabled */
-	gboolean threadsafe;
 };
 
 struct TrackerDBCursorClass {
@@ -126,10 +120,10 @@ struct TrackerDBCursorClass {
 };
 
 struct TrackerDBStatement {
-	GObject parent_instance;
+	GInitiallyUnowned parent_instance;
 	TrackerDBInterface *db_interface;
 	sqlite3_stmt *stmt;
-	gboolean stmt_is_sunk;
+	gboolean stmt_is_used;
 	TrackerDBStatement *next;
 	TrackerDBStatement *prev;
 };
@@ -142,13 +136,11 @@ static void                tracker_db_interface_initable_iface_init (GInitableIf
 static TrackerDBStatement *tracker_db_statement_sqlite_new          (TrackerDBInterface    *db_interface,
                                                                      sqlite3_stmt          *sqlite_stmt);
 static void                tracker_db_statement_sqlite_reset        (TrackerDBStatement    *stmt);
-static TrackerDBCursor    *tracker_db_cursor_sqlite_new             (sqlite3_stmt          *sqlite_stmt,
-                                                                     TrackerDBStatement    *ref_stmt,
+static TrackerDBCursor    *tracker_db_cursor_sqlite_new             (TrackerDBStatement    *ref_stmt,
                                                                      TrackerPropertyType   *types,
                                                                      gint                   n_types,
-                                                                     const gchar          **variable_names,
-                                                                     gint                   n_variable_names,
-                                                                     gboolean               threadsafe);
+                                                                     const gchar * const   *variable_names,
+                                                                     gint                   n_variable_names);
 static gboolean            tracker_db_cursor_get_boolean            (TrackerSparqlCursor   *cursor,
                                                                      guint                  column);
 static gboolean            db_cursor_iter_next                      (TrackerDBCursor       *cursor,
@@ -170,7 +162,7 @@ G_DEFINE_TYPE_WITH_CODE (TrackerDBInterface, tracker_db_interface, G_TYPE_OBJECT
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
                                                 tracker_db_interface_initable_iface_init));
 
-G_DEFINE_TYPE (TrackerDBStatement, tracker_db_statement, G_TYPE_OBJECT)
+G_DEFINE_TYPE (TrackerDBStatement, tracker_db_statement, G_TYPE_INITIALLY_UNOWNED)
 
 G_DEFINE_TYPE (TrackerDBCursor, tracker_db_cursor, TRACKER_SPARQL_TYPE_CURSOR)
 
@@ -196,11 +188,11 @@ function_sparql_string_join (sqlite3_context *context,
 		return;
 	}
 
-	separator = sqlite3_value_text (argv[argc-1]);
+	separator = (gchar *)sqlite3_value_text (argv[argc-1]);
 
 	for (i = 0;i < argc-1; i++) {
 		if (sqlite3_value_type (argv[argc-1]) == SQLITE_TEXT) {
-			const gchar *text = sqlite3_value_text (argv[i]);
+			const gchar *text = (gchar *)sqlite3_value_text (argv[i]);
 
 			if (text != NULL) {
 				if (!str) {
@@ -239,7 +231,7 @@ function_sparql_string_from_filename (sqlite3_context *context,
 	/* "/home/user/path/title_of_the_movie.movie" -> "title of the movie"
 	 * Only for local files currently, do we need to change? */
 
-	name = g_filename_display_basename (sqlite3_value_text (argv[0]));
+	name = g_filename_display_basename ((gchar *)sqlite3_value_text (argv[0]));
 
 	if (!name) {
 		sqlite3_result_null (context);
@@ -271,8 +263,8 @@ function_sparql_uri_is_parent (sqlite3_context *context,
 		return;
 	}
 
-	parent = sqlite3_value_text (argv[0]);
-	uri = sqlite3_value_text (argv[1]);
+	parent = (gchar *)sqlite3_value_text (argv[0]);
+	uri = (gchar *)sqlite3_value_text (argv[1]);
 
 	if (!parent || !uri) {
 		sqlite3_result_error (context, "Invalid arguments", -1);
@@ -395,11 +387,11 @@ function_sparql_uri_is_descendant (sqlite3_context *context,
 		}
 	}
 
-	child = sqlite3_value_text (argv[argc-1]);
+	child = (gchar *)sqlite3_value_text (argv[argc-1]);
 
 	for (i = 0; i < argc - 1 && !match; i++) {
 		if (sqlite3_value_type (argv[i]) == SQLITE_TEXT) {
-			const gchar *parent = sqlite3_value_text (argv[i]);
+			const gchar *parent = (gchar *)sqlite3_value_text (argv[i]);
 			guint parent_len = sqlite3_value_bytes (argv[i]);
 
 			if (!parent)
@@ -525,14 +517,14 @@ function_sparql_regex (sqlite3_context *context,
 
 	regex = sqlite3_get_auxdata (context, 1);
 
-	text = sqlite3_value_text (argv[0]);
-	flags = sqlite3_value_text (argv[2]);
+	text = (gchar *)sqlite3_value_text (argv[0]);
+	flags = (gchar *)sqlite3_value_text (argv[2]);
 
 	if (regex == NULL) {
 		gchar *err_str;
 		GError *error = NULL;
 
-		pattern = sqlite3_value_text (argv[1]);
+		pattern = (gchar *)sqlite3_value_text (argv[1]);
 
 		regex_flags = 0;
 		while (*flags) {
@@ -601,7 +593,7 @@ function_sparql_replace (sqlite3_context *context,
 	TrackerDBReplaceFuncChecks *checks = &db_interface->replace_func_checks;
 	gboolean store_regex = FALSE, store_replace_regex = FALSE;
 	const gchar *input, *pattern, *replacement, *flags;
-	gchar *err_str, *output, *replaced = NULL, *unescaped = NULL;
+	gchar *err_str, *output = NULL, *replaced = NULL, *unescaped = NULL;
 	GError *error = NULL;
 	GRegexCompileFlags regex_flags = 0;
 	GRegex *regex, *replace_regex;
@@ -612,18 +604,18 @@ function_sparql_replace (sqlite3_context *context,
 	if (argc == 3) {
 		flags = "";
 	} else if (argc == 4) {
-		flags = sqlite3_value_text (argv[3]);
+		flags = (gchar *)sqlite3_value_text (argv[3]);
 	} else {
 		sqlite3_result_error (context, "Invalid argument count", -1);
 		return;
 	}
 
-	input = sqlite3_value_text (argv[0]);
+	input = (gchar *)sqlite3_value_text (argv[0]);
 	regex = sqlite3_get_auxdata (context, 1);
-	replacement = sqlite3_value_text (argv[2]);
+	replacement = (gchar *)sqlite3_value_text (argv[2]);
 
 	if (regex == NULL) {
-		pattern = sqlite3_value_text (argv[1]);
+		pattern = (gchar *)sqlite3_value_text (argv[1]);
 
 		for (i = 0; flags[i]; i++) {
 			switch (flags[i]) {
@@ -724,13 +716,13 @@ function_sparql_replace (sqlite3_context *context,
 	replaced = g_regex_replace (replace_regex,
 	                            replacement, -1, 0, "\\\\g<\\1>", 0, &error);
 
-	if (replaced) {
+	if (!error) {
 		/* All '\$' pairs are replaced by '$' */
 		unescaped = g_regex_replace (checks->unescape,
 		                             replaced, -1, 0, "$", 0, &error);
 	}
 
-	if (unescaped) {
+	if (!error) {
 		output = g_regex_replace (regex, input, -1, 0, unescaped, 0, &error);
 	}
 
@@ -1035,7 +1027,7 @@ normalize_string (const gunichar2    *string,
                   gsize              *len_out,    /* In gunichar2s */
                   UErrorCode         *status)
 {
-	int nInput, nOutput;
+	int nOutput;
 	gunichar2 *zOutput;
 
 	nOutput = (string_len * 2) + 1;
@@ -1086,7 +1078,7 @@ function_sparql_normalize (sqlite3_context *context,
 		return;
 	}
 
-	nfstr = sqlite3_value_text (argv[1]);
+	nfstr = (gchar *)sqlite3_value_text (argv[1]);
 	if (g_ascii_strcasecmp (nfstr, "nfc") == 0)
 		nf = UNORM_NFC;
 	else if (g_ascii_strcasecmp (nfstr, "nfd") == 0)
@@ -1120,7 +1112,6 @@ function_sparql_unaccent (sqlite3_context *context,
                           int              argc,
                           sqlite3_value   *argv[])
 {
-	const gchar *nfstr;
 	const uint16_t *zInput;
 	uint16_t *zOutput;
 	int nInput;
@@ -1168,7 +1159,7 @@ function_sparql_encode_for_uri (sqlite3_context *context,
 		return;
 	}
 
-	str = sqlite3_value_text (argv[0]);
+	str = (gchar *)sqlite3_value_text (argv[0]);
 	encoded = g_uri_escape_string (str, NULL, FALSE);
 	sqlite3_result_text (context, encoded, -1, g_free);
 }
@@ -1179,7 +1170,6 @@ function_sparql_string_before (sqlite3_context *context,
                                sqlite3_value   *argv[])
 {
 	const gchar *str, *substr, *loc;
-	gchar *encoded;
 	gint len;
 
 	if (argc != 2) {
@@ -1193,8 +1183,8 @@ function_sparql_string_before (sqlite3_context *context,
 		return;
 	}
 
-	str = sqlite3_value_text (argv[0]);
-	substr = sqlite3_value_text (argv[1]);
+	str = (gchar *)sqlite3_value_text (argv[0]);
+	substr = (gchar *)sqlite3_value_text (argv[1]);
 	len = strlen (substr);
 
 	if (len == 0) {
@@ -1218,7 +1208,6 @@ function_sparql_string_after (sqlite3_context *context,
                               sqlite3_value   *argv[])
 {
 	const gchar *str, *substr, *loc;
-	gchar *encoded;
 	gint len;
 
 	if (argc != 2) {
@@ -1232,8 +1221,8 @@ function_sparql_string_after (sqlite3_context *context,
 		return;
 	}
 
-	str = sqlite3_value_text (argv[0]);
-	substr = sqlite3_value_text (argv[1]);
+	str = (gchar *)sqlite3_value_text (argv[0]);
+	substr = (gchar *)sqlite3_value_text (argv[1]);
 	len = strlen (substr);
 
 	if (len == 0) {
@@ -1310,8 +1299,8 @@ function_sparql_checksum (sqlite3_context *context,
 		return;
 	}
 
-	str = sqlite3_value_text (argv[0]);
-	checksumstr = sqlite3_value_text (argv[1]);
+	str = (gchar *)sqlite3_value_text (argv[0]);
+	checksumstr = (gchar *)sqlite3_value_text (argv[1]);
 
 	if (!str || !checksumstr) {
 		sqlite3_result_error (context, "Invalid arguments", -1);
@@ -1376,6 +1365,86 @@ check_interrupt (void *user_data)
 }
 
 static void
+initialize_functions (TrackerDBInterface *db_interface)
+{
+	gint i;
+	struct {
+		gchar *name;
+		int n_args;
+		int mods;
+		void (*func) (sqlite3_context *, int, sqlite3_value**);
+	} functions[] = {
+		/* Geolocation */
+		{ "SparqlHaversineDistance", 4, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_haversine_distance },
+		{ "SparqlCartesianDistance", 4, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_cartesian_distance },
+		/* Date/time */
+		{ "SparqlFormatTime", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_format_time },
+		/* Paths and filenames */
+		{ "SparqlStringFromFilename", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_string_from_filename },
+		{ "SparqlUriIsParent", 2, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_uri_is_parent },
+		{ "SparqlUriIsDescendant", -1, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_uri_is_descendant },
+		{ "SparqlEncodeForUri", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_encode_for_uri },
+		/* Strings */
+		{ "SparqlRegex", 3, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_regex },
+		{ "SparqlStringJoin", -1, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_string_join },
+		{ "SparqlLowerCase", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_lower_case },
+		{ "SparqlUpperCase", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_upper_case },
+		{ "SparqlCaseFold", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_case_fold },
+		{ "SparqlNormalize", 2, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_normalize },
+		{ "SparqlUnaccent", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_unaccent },
+		{ "SparqlStringBefore", 2, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_string_before },
+		{ "SparqlStringAfter", 2, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_string_after },
+		{ "SparqlReplace", -1, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_replace },
+		{ "SparqlChecksum", 2, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_checksum },
+		/* Numbers */
+		{ "SparqlCeil", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_ceil },
+		{ "SparqlFloor", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_floor },
+		{ "SparqlRand", 0, SQLITE_ANY, function_sparql_rand },
+	};
+
+	for (i = 0; i < G_N_ELEMENTS (functions); i++) {
+		sqlite3_create_function (db_interface->db,
+		                         functions[i].name, functions[i].n_args,
+		                         functions[i].mods, db_interface,
+		                         functions[i].func, NULL, NULL);
+	}
+}
+
+static inline void
+tracker_db_interface_lock (TrackerDBInterface *iface)
+{
+	if (iface->use_mutex)
+		g_mutex_lock (&iface->mutex);
+}
+
+static inline void
+tracker_db_interface_unlock (TrackerDBInterface *iface)
+{
+	if (iface->use_mutex)
+		g_mutex_unlock (&iface->mutex);
+}
+
+static void
 open_database (TrackerDBInterface  *db_interface,
                GError             **error)
 {
@@ -1410,106 +1479,7 @@ open_database (TrackerDBInterface  *db_interface,
 	sqlite3_progress_handler (db_interface->db, 100,
 	                          check_interrupt, db_interface);
 
-	sqlite3_create_function (db_interface->db, "SparqlRegex", 3,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_regex,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlHaversineDistance", 4,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_haversine_distance,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlCartesianDistance", 4,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_cartesian_distance,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlStringFromFilename", 1,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_string_from_filename,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlStringJoin", -1,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_string_join,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlUriIsParent", 2,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_uri_is_parent,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlUriIsDescendant", -1,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_uri_is_descendant,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlLowerCase", 1,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_lower_case,
-	                         NULL, NULL);
-	sqlite3_create_function (db_interface->db, "SparqlUpperCase", 1,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_upper_case,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlCaseFold", 1,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_case_fold,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlNormalize", 2,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_normalize,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlUnaccent", 1,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_unaccent,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlFormatTime", 1,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_format_time,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlEncodeForUri", 1,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_encode_for_uri,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlStringBefore", 2,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_string_before,
-	                         NULL, NULL);
-	sqlite3_create_function (db_interface->db, "SparqlStringAfter", 2,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_string_after,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlCeil", 1,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_ceil,
-	                         NULL, NULL);
-	sqlite3_create_function (db_interface->db, "SparqlFloor", 1,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_floor,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlRand", 0, SQLITE_ANY,
-	                         db_interface, &function_sparql_rand,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlChecksum", 2,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_checksum,
-	                         NULL, NULL);
-
-	sqlite3_create_function (db_interface->db, "SparqlReplace", -1,
-	                         SQLITE_ANY | SQLITE_DETERMINISTIC,
-	                         db_interface, &function_sparql_replace,
-	                         NULL, NULL);
+	initialize_functions (db_interface);
 
 	sqlite3_extended_result_codes (db_interface->db, 0);
 	sqlite3_busy_timeout (db_interface->db, 100000);
@@ -1601,12 +1571,6 @@ close_database (TrackerDBInterface *db_interface)
 		g_regex_unref (db_interface->replace_func_checks.replacement);
 	if (db_interface->replace_func_checks.unescape)
 		g_regex_unref (db_interface->replace_func_checks.unescape);
-
-	if (db_interface->function_data) {
-		g_slist_foreach (db_interface->function_data, (GFunc) g_free, NULL);
-		g_slist_free (db_interface->function_data);
-		db_interface->function_data = NULL;
-	}
 
 	if (db_interface->db) {
 		rc = sqlite3_close (db_interface->db);
@@ -1959,6 +1923,8 @@ static void
 tracker_db_interface_init (TrackerDBInterface *db_interface)
 {
 	db_interface->ro = FALSE;
+	db_interface->use_mutex = (tracker_db_manager_get_flags (NULL, NULL) &
+	                           TRACKER_DB_MANAGER_ENABLE_MUTEXES) != 0;
 
 	prepare_database (db_interface);
 }
@@ -2004,6 +1970,185 @@ tracker_db_interface_set_busy_handler (TrackerDBInterface  *db_interface,
 	}
 }
 
+static sqlite3_stmt *
+tracker_db_interface_prepare_stmt (TrackerDBInterface  *db_interface,
+                                   const gchar         *full_query,
+                                   GError             **error)
+{
+	sqlite3_stmt *sqlite_stmt;
+	int retval;
+
+	g_debug ("Preparing query: '%s'", full_query);
+	retval = sqlite3_prepare_v2 (db_interface->db, full_query, -1, &sqlite_stmt, NULL);
+
+	if (retval != SQLITE_OK) {
+		sqlite_stmt = NULL;
+
+		if (retval == SQLITE_INTERRUPT) {
+			g_set_error (error,
+			             TRACKER_DB_INTERFACE_ERROR,
+			             TRACKER_DB_INTERRUPTED,
+			             "Interrupted");
+		} else {
+			g_set_error (error,
+			             TRACKER_DB_INTERFACE_ERROR,
+			             TRACKER_DB_QUERY_ERROR,
+			             "%s",
+			             sqlite3_errmsg (db_interface->db));
+		}
+	}
+
+	return sqlite_stmt;
+}
+
+static TrackerDBStatement *
+tracker_db_interface_lru_lookup (TrackerDBInterface          *db_interface,
+                                 TrackerDBStatementCacheType *cache_type,
+                                 const gchar                 *full_query)
+{
+	TrackerDBStatement *stmt;
+
+	g_return_val_if_fail (*cache_type == TRACKER_DB_STATEMENT_CACHE_TYPE_UPDATE ||
+	                      *cache_type == TRACKER_DB_STATEMENT_CACHE_TYPE_SELECT,
+	                      NULL);
+
+	/* There are three kinds of queries:
+	 * a) Cached queries: SELECT and UPDATE ones (cache_type)
+	 * b) Non-Cached queries: NONE ones (cache_type)
+	 * c) Forced Non-Cached: in case of a stmt being already in use, we can't
+	 *    reuse it (you can't use two different loops on a sqlite3_stmt, of
+	 *    course). This happens with recursive uses of a cursor, for example.
+	 */
+
+	stmt = g_hash_table_lookup (db_interface->dynamic_statements,
+	                            full_query);
+	if (!stmt) {
+		/* Query not in LRU */
+		return NULL;
+	}
+
+	/* a) Cached */
+
+	if (stmt && stmt->stmt_is_used) {
+		/* c) Forced non-cached
+		 * prepared statement is still in use, create new uncached one
+		 */
+		stmt = NULL;
+		/* Make sure to set cache_type here, to avoid replacing
+		 * the current statement.
+		 */
+		*cache_type = TRACKER_DB_STATEMENT_CACHE_TYPE_NONE;
+	}
+
+	return stmt;
+}
+
+static void
+tracker_db_interface_lru_insert_unchecked (TrackerDBInterface          *db_interface,
+                                           TrackerDBStatementCacheType  cache_type,
+                                           TrackerDBStatement          *stmt)
+{
+	TrackerDBStatementLru *stmt_lru;
+
+	g_return_if_fail (cache_type == TRACKER_DB_STATEMENT_CACHE_TYPE_UPDATE ||
+	                  cache_type == TRACKER_DB_STATEMENT_CACHE_TYPE_SELECT);
+
+	/* LRU holds a reference to the stmt */
+	stmt_lru = cache_type == TRACKER_DB_STATEMENT_CACHE_TYPE_UPDATE ?
+		&db_interface->update_stmt_lru : &db_interface->select_stmt_lru;
+
+	/* use replace instead of insert to make sure we store the string that
+	 * belongs to the right sqlite statement to ensure the lifetime of the string
+	 * matches the statement
+	 */
+	g_hash_table_replace (db_interface->dynamic_statements,
+	                      (gpointer) sqlite3_sql (stmt->stmt),
+	                      g_object_ref_sink (stmt));
+
+	/* So the ring looks a bit like this: *
+	 *                                    *
+	 *    .--tail  .--head                *
+	 *    |        |                      *
+	 *  [p-n] -> [p-n] -> [p-n] -> [p-n]  *
+	 *    ^                          |    *
+	 *    `- [n-p] <- [n-p] <--------'    *
+	 *                                    */
+
+	if (stmt_lru->size >= stmt_lru->max) {
+		TrackerDBStatement *new_head;
+
+		/* We reached max-size of the LRU stmt cache. Destroy current
+		 * least recently used (stmt_lru.head) and fix the ring. For
+		 * that we take out the current head, and close the ring.
+		 * Then we assign head->next as new head.
+		 */
+		new_head = stmt_lru->head->next;
+		g_hash_table_remove (db_interface->dynamic_statements,
+		                     (gpointer) sqlite3_sql (stmt_lru->head->stmt));
+		stmt_lru->size--;
+		stmt_lru->head = new_head;
+	} else {
+		if (stmt_lru->size == 0) {
+			stmt_lru->head = stmt;
+			stmt_lru->tail = stmt;
+		}
+	}
+
+	/* Set the current stmt (which is always new here) as the new tail
+	 * (new most recent used). We insert current stmt between head and
+	 * current tail, and we set tail to current stmt.
+	 */
+	stmt_lru->size++;
+	stmt->next = stmt_lru->head;
+	stmt_lru->head->prev = stmt;
+
+	stmt_lru->tail->next = stmt;
+	stmt->prev = stmt_lru->tail;
+	stmt_lru->tail = stmt;
+}
+
+static void
+tracker_db_interface_lru_update (TrackerDBInterface          *db_interface,
+                                 TrackerDBStatementCacheType  cache_type,
+                                 TrackerDBStatement          *stmt)
+{
+	TrackerDBStatementLru *stmt_lru;
+
+	g_return_if_fail (cache_type == TRACKER_DB_STATEMENT_CACHE_TYPE_UPDATE ||
+	                  cache_type == TRACKER_DB_STATEMENT_CACHE_TYPE_SELECT);
+
+	stmt_lru = cache_type == TRACKER_DB_STATEMENT_CACHE_TYPE_UPDATE ?
+		&db_interface->update_stmt_lru : &db_interface->select_stmt_lru;
+
+	tracker_db_statement_sqlite_reset (stmt);
+
+	if (stmt == stmt_lru->head) {
+		/* Current stmt is least recently used, shift head and tail
+		 * of the ring to efficiently make it most recently used.
+		 */
+		stmt_lru->head = stmt_lru->head->next;
+		stmt_lru->tail = stmt_lru->tail->next;
+	} else if (stmt != stmt_lru->tail) {
+		/* Current statement isn't most recently used, make it most
+		 * recently used now (less efficient way than above).
+		 */
+
+		/* Take stmt out of the list and close the ring */
+		stmt->prev->next = stmt->next;
+		stmt->next->prev = stmt->prev;
+
+		/* Put stmt as tail (most recent used) */
+		stmt->next = stmt_lru->head;
+		stmt_lru->head->prev = stmt;
+		stmt->prev = stmt_lru->tail;
+		stmt_lru->tail->next = stmt;
+		stmt_lru->tail = stmt;
+	}
+
+	/* if (stmt == tail), it's already the most recently used in the
+	 * ring, so in this case we do nothing of course */
+}
+
 TrackerDBStatement *
 tracker_db_interface_create_statement (TrackerDBInterface           *db_interface,
                                        TrackerDBStatementCacheType   cache_type,
@@ -2011,8 +2156,7 @@ tracker_db_interface_create_statement (TrackerDBInterface           *db_interfac
                                        const gchar                  *query,
                                        ...)
 {
-	TrackerDBStatementLru *stmt_lru = NULL;
-	TrackerDBStatement *stmt;
+	TrackerDBStatement *stmt = NULL;
 	va_list args;
 	gchar *full_query;
 
@@ -2022,153 +2166,42 @@ tracker_db_interface_create_statement (TrackerDBInterface           *db_interfac
 	full_query = g_strdup_vprintf (query, args);
 	va_end (args);
 
-	/* There are three kinds of queries:
-	 * a) Cached queries: SELECT and UPDATE ones (cache_type)
-	 * b) Non-Cached queries: NONE ones (cache_type)
-	 * c) Forced Non-Cached: in case of a stmt being already in use, we can't
-	 *    reuse it (you can't use two different loops on a sqlite3_stmt, of
-	 *    course). This happens with recursive uses of a cursor, for example */
+	tracker_db_interface_lock (db_interface);
 
 	if (cache_type != TRACKER_DB_STATEMENT_CACHE_TYPE_NONE) {
-		stmt = g_hash_table_lookup (db_interface->dynamic_statements, full_query);
-
-		if (stmt && stmt->stmt_is_sunk) {
-			/* c) Forced non-cached
-			 * prepared statement is still in use, create new uncached one */
-			stmt = NULL;
-			/* Make sure to set cache_type here, to ensure the right flow in the
-			 * LRU-cache below */
-			cache_type = TRACKER_DB_STATEMENT_CACHE_TYPE_NONE;
-		}
-
-		if (cache_type == TRACKER_DB_STATEMENT_CACHE_TYPE_UPDATE) {
-			/* a) Cached */
-			stmt_lru = &db_interface->update_stmt_lru;
-		} else {
-			/* a) Cached */
-			stmt_lru = &db_interface->select_stmt_lru;
-		}
-
-	} else {
-		/* b) Non-Cached */
-		stmt = NULL;
+		stmt = tracker_db_interface_lru_lookup (db_interface, &cache_type,
+		                                        full_query);
 	}
 
 	if (!stmt) {
 		sqlite3_stmt *sqlite_stmt;
-		int retval;
 
-		g_debug ("Preparing query: '%s'", full_query);
-
-		retval = sqlite3_prepare_v2 (db_interface->db, full_query, -1, &sqlite_stmt, NULL);
-
-		if (retval != SQLITE_OK) {
-
-			if (retval == SQLITE_INTERRUPT) {
-				g_set_error (error,
-				             TRACKER_DB_INTERFACE_ERROR,
-				             TRACKER_DB_INTERRUPTED,
-				             "Interrupted");
-			} else {
-				g_set_error (error,
-				             TRACKER_DB_INTERFACE_ERROR,
-				             TRACKER_DB_QUERY_ERROR,
-				             "%s",
-				             sqlite3_errmsg (db_interface->db));
-			}
-
-			g_free (full_query);
-
+		sqlite_stmt = tracker_db_interface_prepare_stmt (db_interface,
+		                                                 full_query,
+		                                                 error);
+		if (!sqlite_stmt) {
+			tracker_db_interface_unlock (db_interface);
 			return NULL;
 		}
 
-		stmt = tracker_db_statement_sqlite_new (db_interface, sqlite_stmt);
+		stmt = tracker_db_statement_sqlite_new (db_interface,
+		                                        sqlite_stmt);
 
 		if (cache_type != TRACKER_DB_STATEMENT_CACHE_TYPE_NONE) {
-			/* use replace instead of insert to make sure we store the string that
-			   belongs to the right sqlite statement to ensure the lifetime of the string
-			   matches the statement */
-			g_hash_table_replace (db_interface->dynamic_statements,
-			                      (gpointer) sqlite3_sql (sqlite_stmt),
-			                      stmt);
-
-			/* So the ring looks a bit like this: *
-			 *                                    *
-			 *    .--tail  .--head                *
-			 *    |        |                      *
-			 *  [p-n] -> [p-n] -> [p-n] -> [p-n]  *
-			 *    ^                          |    *
-			 *    `- [n-p] <- [n-p] <--------'    *
-			 *                                    */
-
-			if (stmt_lru->size >= stmt_lru->max) {
-				TrackerDBStatement *new_head;
-
-				/* We reached max-size of the LRU stmt cache. Destroy current
-				 * least recently used (stmt_lru.head) and fix the ring. For
-				 * that we take out the current head, and close the ring.
-				 * Then we assign head->next as new head. */
-
-				new_head = stmt_lru->head->next;
-				g_hash_table_remove (db_interface->dynamic_statements,
-				                     (gpointer) sqlite3_sql (stmt_lru->head->stmt));
-				stmt_lru->size--;
-				stmt_lru->head = new_head;
-			} else {
-				if (stmt_lru->size == 0) {
-					stmt_lru->head = stmt;
-					stmt_lru->tail = stmt;
-				}
-			}
-
-			/* Set the current stmt (which is always new here) as the new tail
-			 * (new most recent used). We insert current stmt between head and
-			 * current tail, and we set tail to current stmt. */
-
-			stmt_lru->size++;
-			stmt->next = stmt_lru->head;
-			stmt_lru->head->prev = stmt;
-
-			stmt_lru->tail->next = stmt;
-			stmt->prev = stmt_lru->tail;
-			stmt_lru->tail = stmt;
+			tracker_db_interface_lru_insert_unchecked (db_interface,
+			                                           cache_type,
+			                                           stmt);
 		}
-	} else {
-		tracker_db_statement_sqlite_reset (stmt);
-
-		if (cache_type != TRACKER_DB_STATEMENT_CACHE_TYPE_NONE) {
-			if (stmt == stmt_lru->head) {
-
-				/* Current stmt is least recently used, shift head and tail
-				 * of the ring to efficiently make it most recently used. */
-
-				stmt_lru->head = stmt_lru->head->next;
-				stmt_lru->tail = stmt_lru->tail->next;
-			} else if (stmt != stmt_lru->tail) {
-
-				/* Current statement isn't most recently used, make it most
-				 * recently used now (less efficient way than above). */
-
-				/* Take stmt out of the list and close the ring */
-				stmt->prev->next = stmt->next;
-				stmt->next->prev = stmt->prev;
-
-				/* Put stmt as tail (most recent used) */
-				stmt->next = stmt_lru->head;
-				stmt_lru->head->prev = stmt;
-				stmt->prev = stmt_lru->tail;
-				stmt_lru->tail->next = stmt;
-				stmt_lru->tail = stmt;
-			}
-
-			/* if (stmt == tail), it's already the most recently used in the
-			 * ring, so in this case we do nothing of course */
-		}
+	} else if (cache_type != TRACKER_DB_STATEMENT_CACHE_TYPE_NONE) {
+		tracker_db_interface_lru_update (db_interface, cache_type,
+		                                 stmt);
 	}
 
 	g_free (full_query);
 
-	return (cache_type != TRACKER_DB_STATEMENT_CACHE_TYPE_NONE) ? g_object_ref (stmt) : stmt;
+	tracker_db_interface_unlock (db_interface);
+
+	return g_object_ref_sink (stmt);
 }
 
 static void
@@ -2181,12 +2214,7 @@ execute_stmt (TrackerDBInterface  *interface,
 
 	result = SQLITE_OK;
 
-	/* Statement is going to start, check if we got a request to reset the
-	 * collator, and if so, do it. */
-	if (g_atomic_int_add (&interface->n_active_cursors, 1) == 0 &&
-	    g_atomic_int_compare_and_exchange (&(interface->collator_reset_requested), TRUE, FALSE)) {
-		tracker_db_interface_sqlite_reset_collator (interface);
-	}
+	g_atomic_int_inc (&interface->n_active_cursors);
 
 	while (result == SQLITE_OK  ||
 	       result == SQLITE_ROW) {
@@ -2213,18 +2241,9 @@ execute_stmt (TrackerDBInterface  *interface,
 		}
 	}
 
+	g_atomic_int_add (&interface->n_active_cursors, -1);
 
-	if (result == SQLITE_DONE) {
-		/* Statement finished, check if we got a request to reset the
-		 * collator, and if so, do it.
-		 */
-		if (g_atomic_int_dec_and_test (&interface->n_active_cursors) &&
-		    g_atomic_int_compare_and_exchange (&(interface->collator_reset_requested), TRUE, FALSE)) {
-			tracker_db_interface_sqlite_reset_collator (interface);
-		}
-	} else {
-		g_atomic_int_add (&interface->n_active_cursors, -1);
-
+	if (result != SQLITE_DONE) {
 		/* This is rather fatal */
 		if (errno != ENOSPC &&
 		    (sqlite3_errcode (interface->db) == SQLITE_IOERR ||
@@ -2281,40 +2300,25 @@ tracker_db_interface_execute_vquery (TrackerDBInterface  *db_interface,
 {
 	gchar *full_query;
 	sqlite3_stmt *stmt;
-	int retval;
+
+	tracker_db_interface_lock (db_interface);
 
 	full_query = g_strdup_vprintf (query, args);
-
-	/* g_debug ("Running query: '%s'", full_query); */
-	retval = sqlite3_prepare_v2 (db_interface->db, full_query, -1, &stmt, NULL);
-
-	if (retval != SQLITE_OK) {
-		g_set_error (error,
-		             TRACKER_DB_INTERFACE_ERROR,
-		             TRACKER_DB_QUERY_ERROR,
-		             "%s",
-		             sqlite3_errmsg (db_interface->db));
-		g_free (full_query);
-		return;
-	} else if (stmt == NULL) {
-		g_set_error (error,
-		             TRACKER_DB_INTERFACE_ERROR,
-		             TRACKER_DB_QUERY_ERROR,
-		             "Could not prepare SQL statement:'%s'",
-		             full_query);
-
-		g_free (full_query);
-		return;
+	stmt = tracker_db_interface_prepare_stmt (db_interface,
+	                                          full_query,
+	                                          error);
+	g_free (full_query);
+	if (stmt) {
+		execute_stmt (db_interface, stmt, NULL, error);
+		sqlite3_finalize (stmt);
 	}
 
-	execute_stmt (db_interface, stmt, NULL, error);
-	sqlite3_finalize (stmt);
-
-	g_free (full_query);
+	tracker_db_interface_unlock (db_interface);
 }
 
 TrackerDBInterface *
 tracker_db_interface_sqlite_new (const gchar  *filename,
+                                 gboolean      readonly,
                                  GError      **error)
 {
 	TrackerDBInterface *object;
@@ -2324,28 +2328,7 @@ tracker_db_interface_sqlite_new (const gchar  *filename,
 	                         NULL,
 	                         &internal_error,
 	                         "filename", filename,
-	                         NULL);
-
-	if (internal_error) {
-		g_propagate_error (error, internal_error);
-		return NULL;
-	}
-
-	return object;
-}
-
-TrackerDBInterface *
-tracker_db_interface_sqlite_new_ro (const gchar  *filename,
-                                    GError      **error)
-{
-	TrackerDBInterface *object;
-	GError *internal_error = NULL;
-
-	object = g_initable_new (TRACKER_TYPE_DB_INTERFACE,
-	                         NULL,
-	                         &internal_error,
-	                         "filename", filename,
-	                         "read-only", TRUE,
+	                         "read-only", !!readonly,
 	                         NULL);
 
 	if (internal_error) {
@@ -2376,7 +2359,7 @@ tracker_db_statement_finalize (GObject *object)
 	 * too often. We mustn't sqlite3_finalize the priv->stmt in this case,
 	 * though. It would crash&burn the cursor. */
 
-	g_assert (!stmt->stmt_is_sunk);
+	g_assert (!stmt->stmt_is_used);
 
 	sqlite3_finalize (stmt->stmt);
 
@@ -2401,9 +2384,30 @@ tracker_db_statement_sqlite_new (TrackerDBInterface *db_interface,
 
 	stmt->db_interface = db_interface;
 	stmt->stmt = sqlite_stmt;
-	stmt->stmt_is_sunk = FALSE;
+	stmt->stmt_is_used = FALSE;
 
 	return stmt;
+}
+
+static TrackerDBStatement *
+tracker_db_statement_sqlite_grab (TrackerDBStatement *stmt)
+{
+	g_assert (!stmt->stmt_is_used);
+	stmt->stmt_is_used = TRUE;
+	g_object_ref (stmt->db_interface);
+	return g_object_ref (stmt);
+}
+
+static void
+tracker_db_statement_sqlite_release (TrackerDBStatement *stmt)
+{
+	TrackerDBInterface *iface = stmt->db_interface;
+
+	g_assert (stmt->stmt_is_used);
+	stmt->stmt_is_used = FALSE;
+	tracker_db_statement_sqlite_reset (stmt);
+	g_object_unref (stmt);
+	g_object_unref (iface);
 }
 
 static void
@@ -2418,26 +2422,16 @@ tracker_db_cursor_close (TrackerDBCursor *cursor)
 		return;
 	}
 
-	/* As soon as we finalize the cursor, check if we need a collator reset
-	 * and notify the iface about the removed cursor */
 	iface = cursor->ref_stmt->db_interface;
-	if (g_atomic_int_dec_and_test (&iface->n_active_cursors) &&
-	    g_atomic_int_compare_and_exchange (&(iface->collator_reset_requested), TRUE, FALSE)) {
-		tracker_db_interface_sqlite_reset_collator (iface);
-	}
 
-	if (cursor->threadsafe) {
-		tracker_db_manager_lock ();
-	}
+	g_object_ref (iface);
+	g_atomic_int_add (&iface->n_active_cursors, -1);
 
-	cursor->ref_stmt->stmt_is_sunk = FALSE;
-	tracker_db_statement_sqlite_reset (cursor->ref_stmt);
-	g_object_unref (cursor->ref_stmt);
-	cursor->ref_stmt = NULL;
+	tracker_db_interface_lock (iface);
+	g_clear_pointer (&cursor->ref_stmt, tracker_db_statement_sqlite_release);
+	tracker_db_interface_unlock (iface);
 
-	if (cursor->threadsafe) {
-		tracker_db_manager_unlock ();
-	}
+	g_object_unref (iface);
 }
 
 static void
@@ -2544,36 +2538,24 @@ tracker_db_cursor_class_init (TrackerDBCursorClass *class)
 }
 
 static TrackerDBCursor *
-tracker_db_cursor_sqlite_new (sqlite3_stmt        *sqlite_stmt,
-                              TrackerDBStatement  *ref_stmt,
+tracker_db_cursor_sqlite_new (TrackerDBStatement  *ref_stmt,
                               TrackerPropertyType *types,
                               gint                 n_types,
-                              const gchar        **variable_names,
-                              gint                 n_variable_names,
-                              gboolean             threadsafe)
+                              const gchar * const *variable_names,
+                              gint                 n_variable_names)
 {
 	TrackerDBCursor *cursor;
 	TrackerDBInterface *iface;
 
-	/* As soon as we create a cursor, check if we need a collator reset
-	 * and notify the iface about the new cursor */
 	iface = ref_stmt->db_interface;
-	if (g_atomic_int_add (&iface->n_active_cursors, 1) == 0 &&
-	    g_atomic_int_compare_and_exchange (&(iface->collator_reset_requested), TRUE, FALSE)) {
-		tracker_db_interface_sqlite_reset_collator (iface);
-	}
+	g_atomic_int_inc (&iface->n_active_cursors);
 
 	cursor = g_object_new (TRACKER_TYPE_DB_CURSOR, NULL);
 
 	cursor->finished = FALSE;
 
-	/* used for direct access as libtracker-sparql is thread-safe and
-	   uses a single shared connection with SQLite mutex disabled */
-	cursor->threadsafe = threadsafe;
-
-	cursor->stmt = sqlite_stmt;
-	ref_stmt->stmt_is_sunk = TRUE;
-	cursor->ref_stmt = g_object_ref (ref_stmt);
+	cursor->stmt = ref_stmt->stmt;
+	cursor->ref_stmt = tracker_db_statement_sqlite_grab (ref_stmt);
 
 	if (types) {
 		gint i;
@@ -2605,7 +2587,7 @@ tracker_db_statement_bind_double (TrackerDBStatement *stmt,
 {
 	g_return_if_fail (TRACKER_IS_DB_STATEMENT (stmt));
 
-	g_assert (!stmt->stmt_is_sunk);
+	g_assert (!stmt->stmt_is_used);
 
 	sqlite3_bind_double (stmt->stmt, index + 1, value);
 }
@@ -2617,7 +2599,7 @@ tracker_db_statement_bind_int (TrackerDBStatement *stmt,
 {
 	g_return_if_fail (TRACKER_IS_DB_STATEMENT (stmt));
 
-	g_assert (!stmt->stmt_is_sunk);
+	g_assert (!stmt->stmt_is_used);
 
 	sqlite3_bind_int64 (stmt->stmt, index + 1, value);
 }
@@ -2628,7 +2610,7 @@ tracker_db_statement_bind_null (TrackerDBStatement *stmt,
 {
 	g_return_if_fail (TRACKER_IS_DB_STATEMENT (stmt));
 
-	g_assert (!stmt->stmt_is_sunk);
+	g_assert (!stmt->stmt_is_used);
 
 	sqlite3_bind_null (stmt->stmt, index + 1);
 }
@@ -2640,7 +2622,7 @@ tracker_db_statement_bind_text (TrackerDBStatement *stmt,
 {
 	g_return_if_fail (TRACKER_IS_DB_STATEMENT (stmt));
 
-	g_assert (!stmt->stmt_is_sunk);
+	g_assert (!stmt->stmt_is_used);
 
 	sqlite3_bind_text (stmt->stmt, index + 1, value, -1, SQLITE_TRANSIENT);
 }
@@ -2648,18 +2630,18 @@ tracker_db_statement_bind_text (TrackerDBStatement *stmt,
 void
 tracker_db_cursor_rewind (TrackerDBCursor *cursor)
 {
+	TrackerDBInterface *iface;
+
 	g_return_if_fail (TRACKER_IS_DB_CURSOR (cursor));
 
-	if (cursor->threadsafe) {
-		tracker_db_manager_lock ();
-	}
+	iface = cursor->ref_stmt->db_interface;
+
+	tracker_db_interface_lock (iface);
 
 	sqlite3_reset (cursor->stmt);
 	cursor->finished = FALSE;
 
-	if (cursor->threadsafe) {
-		tracker_db_manager_unlock ();
-	}
+	tracker_db_interface_unlock (iface);
 }
 
 gboolean
@@ -2686,9 +2668,7 @@ db_cursor_iter_next (TrackerDBCursor *cursor,
 	if (!cursor->finished) {
 		guint result;
 
-		if (cursor->threadsafe) {
-			tracker_db_manager_lock ();
-		}
+		tracker_db_interface_lock (iface);
 
 		if (g_cancellable_is_cancelled (cancellable)) {
 			result = SQLITE_INTERRUPT;
@@ -2714,9 +2694,7 @@ db_cursor_iter_next (TrackerDBCursor *cursor,
 
 		cursor->finished = (result != SQLITE_ROW);
 
-		if (cursor->threadsafe) {
-			tracker_db_manager_unlock ();
-		}
+		tracker_db_interface_unlock (iface);
 	}
 
 	return (!cursor->finished);
@@ -2763,17 +2741,16 @@ gint64
 tracker_db_cursor_get_int (TrackerDBCursor *cursor,
                            guint            column)
 {
+	TrackerDBInterface *iface;
 	gint64 result;
 
-	if (cursor->threadsafe) {
-		tracker_db_manager_lock ();
-	}
+	iface = cursor->ref_stmt->db_interface;
+
+	tracker_db_interface_lock (iface);
 
 	result = (gint64) sqlite3_column_int64 (cursor->stmt, column);
 
-	if (cursor->threadsafe) {
-		tracker_db_manager_unlock ();
-	}
+	tracker_db_interface_unlock (iface);
 
 	return result;
 }
@@ -2782,17 +2759,16 @@ gdouble
 tracker_db_cursor_get_double (TrackerDBCursor *cursor,
                               guint            column)
 {
+	TrackerDBInterface *iface;
 	gdouble result;
 
-	if (cursor->threadsafe) {
-		tracker_db_manager_lock ();
-	}
+	iface = cursor->ref_stmt->db_interface;
+
+	tracker_db_interface_lock (iface);
 
 	result = (gdouble) sqlite3_column_double (cursor->stmt, column);
 
-	if (cursor->threadsafe) {
-		tracker_db_manager_unlock ();
-	}
+	tracker_db_interface_unlock (iface);
 
 	return result;
 }
@@ -2809,20 +2785,19 @@ TrackerSparqlValueType
 tracker_db_cursor_get_value_type (TrackerDBCursor *cursor,
                                   guint            column)
 {
+	TrackerDBInterface *iface;
 	gint column_type;
 	gint n_columns = sqlite3_column_count (cursor->stmt);
 
 	g_return_val_if_fail (column < n_columns, TRACKER_SPARQL_VALUE_TYPE_UNBOUND);
 
-	if (cursor->threadsafe) {
-		tracker_db_manager_lock ();
-	}
+	iface = cursor->ref_stmt->db_interface;
+
+	tracker_db_interface_lock (iface);
 
 	column_type = sqlite3_column_type (cursor->stmt, column);
 
-	if (cursor->threadsafe) {
-		tracker_db_manager_unlock ();
-	}
+	tracker_db_interface_unlock (iface);
 
 	if (column_type == SQLITE_NULL) {
 		return TRACKER_SPARQL_VALUE_TYPE_UNBOUND;
@@ -2850,11 +2825,12 @@ const gchar*
 tracker_db_cursor_get_variable_name (TrackerDBCursor *cursor,
                                      guint            column)
 {
+	TrackerDBInterface *iface;
 	const gchar *result;
 
-	if (cursor->threadsafe) {
-		tracker_db_manager_lock ();
-	}
+	iface = cursor->ref_stmt->db_interface;
+
+	tracker_db_interface_lock (iface);
 
 	if (column < cursor->n_variable_names) {
 		result = cursor->variable_names[column];
@@ -2862,9 +2838,7 @@ tracker_db_cursor_get_variable_name (TrackerDBCursor *cursor,
 		result = sqlite3_column_name (cursor->stmt, column);
 	}
 
-	if (cursor->threadsafe) {
-		tracker_db_manager_unlock ();
-	}
+	tracker_db_interface_unlock (iface);
 
 	return result;
 }
@@ -2874,11 +2848,12 @@ tracker_db_cursor_get_string (TrackerDBCursor *cursor,
                               guint            column,
                               glong           *length)
 {
+	TrackerDBInterface *iface;
 	const gchar *result;
 
-	if (cursor->threadsafe) {
-		tracker_db_manager_lock ();
-	}
+	iface = cursor->ref_stmt->db_interface;
+
+	tracker_db_interface_lock (iface);
 
 	if (length) {
 		sqlite3_value *val = sqlite3_column_value (cursor->stmt, column);
@@ -2889,9 +2864,7 @@ tracker_db_cursor_get_string (TrackerDBCursor *cursor,
 		result = (const gchar *) sqlite3_column_text (cursor->stmt, column);
 	}
 
-	if (cursor->threadsafe) {
-		tracker_db_manager_unlock ();
-	}
+	tracker_db_interface_unlock (iface);
 
 	return result;
 }
@@ -2901,7 +2874,7 @@ tracker_db_statement_execute (TrackerDBStatement  *stmt,
                               GError             **error)
 {
 	g_return_if_fail (TRACKER_IS_DB_STATEMENT (stmt));
-	g_return_if_fail (!stmt->stmt_is_sunk);
+	g_return_if_fail (!stmt->stmt_is_used);
 
 	execute_stmt (stmt->db_interface, stmt->stmt, NULL, error);
 }
@@ -2911,24 +2884,23 @@ tracker_db_statement_start_cursor (TrackerDBStatement  *stmt,
                                    GError             **error)
 {
 	g_return_val_if_fail (TRACKER_IS_DB_STATEMENT (stmt), NULL);
-	g_return_val_if_fail (!stmt->stmt_is_sunk, NULL);
+	g_return_val_if_fail (!stmt->stmt_is_used, NULL);
 
-	return tracker_db_cursor_sqlite_new (stmt->stmt, stmt, NULL, 0, NULL, 0, FALSE);
+	return tracker_db_cursor_sqlite_new (stmt, NULL, 0, NULL, 0);
 }
 
 TrackerDBCursor *
 tracker_db_statement_start_sparql_cursor (TrackerDBStatement   *stmt,
                                           TrackerPropertyType  *types,
                                           gint                  n_types,
-                                          const gchar         **variable_names,
+                                          const gchar * const  *variable_names,
                                           gint                  n_variable_names,
-                                          gboolean              threadsafe,
                                           GError              **error)
 {
 	g_return_val_if_fail (TRACKER_IS_DB_STATEMENT (stmt), NULL);
-	g_return_val_if_fail (!stmt->stmt_is_sunk, NULL);
+	g_return_val_if_fail (!stmt->stmt_is_used, NULL);
 
-	return tracker_db_cursor_sqlite_new (stmt->stmt, stmt, types, n_types, variable_names, n_variable_names, threadsafe);
+	return tracker_db_cursor_sqlite_new (stmt, types, n_types, variable_names, n_variable_names);
 }
 
 static void
@@ -2944,7 +2916,7 @@ tracker_db_cursor_init (TrackerDBCursor *cursor)
 static void
 tracker_db_statement_sqlite_reset (TrackerDBStatement *stmt)
 {
-	g_assert (!stmt->stmt_is_sunk);
+	g_assert (!stmt->stmt_is_used);
 
 	sqlite3_reset (stmt->stmt);
 	sqlite3_clear_bindings (stmt->stmt);

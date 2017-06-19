@@ -47,7 +47,8 @@ typedef enum {
 	/* 1 << 3 Was low mem mode */
 	TRACKER_DB_MANAGER_REMOVE_ALL            = 1 << 4,
 	TRACKER_DB_MANAGER_READONLY              = 1 << 5,
-	TRACKER_DB_MANAGER_DO_NOT_CHECK_ONTOLOGY = 1 << 6
+	TRACKER_DB_MANAGER_DO_NOT_CHECK_ONTOLOGY = 1 << 6,
+	TRACKER_DB_MANAGER_ENABLE_MUTEXES        = 1 << 7,
 } TrackerDBManagerFlags;
 
 GType               tracker_db_get_type                       (void) G_GNUC_CONST;
@@ -71,10 +72,6 @@ gboolean            tracker_db_manager_has_enough_space       (void);
 void                tracker_db_manager_create_version_file    (void);
 void                tracker_db_manager_remove_version_file    (void);
 
-void                tracker_db_manager_lock                   (void);
-gboolean            tracker_db_manager_trylock                (void);
-void                tracker_db_manager_unlock                 (void);
-
 TrackerDBManagerFlags
                     tracker_db_manager_get_flags              (guint *select_cache_size,
                                                                guint *update_cache_size);
@@ -87,7 +84,7 @@ void                tracker_db_manager_set_first_index_done   (gboolean done);
 void                tracker_db_manager_set_last_crawl_done    (gboolean done);
 void                tracker_db_manager_set_need_mtime_check   (gboolean needed);
 
-gboolean            tracker_db_manager_locale_changed         (void);
+gboolean            tracker_db_manager_locale_changed         (GError **error);
 void                tracker_db_manager_set_current_locale     (void);
 
 gboolean            tracker_db_manager_get_tokenizer_changed  (void);

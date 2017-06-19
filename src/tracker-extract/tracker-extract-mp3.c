@@ -154,7 +154,6 @@ typedef struct {
 	const gchar *performer_name;
 	TrackerResource *performer;
 	const gchar *album_artist_name;
-	TrackerResource *album_artist;
 	const gchar *lyricist_name;
 	TrackerResource *lyricist;
 	const gchar *album_name;
@@ -447,6 +446,60 @@ strnlen (const char *str, size_t max)
 }
 
 #endif /* HAVE_STRNLEN */
+
+/* Helpers to get data from BE */
+inline static guint32
+extract_uint32 (gconstpointer data)
+{
+	const guint32 *ptr = data;
+	return GUINT32_FROM_BE (*ptr);
+}
+
+inline static guint16
+extract_uint16 (gconstpointer data)
+{
+	const guint16 *ptr = data;
+	return GUINT16_FROM_BE (*ptr);
+}
+
+inline static guint32
+extract_uint32_7bit (gconstpointer data)
+{
+	const guchar *ptr = data;
+#if (G_BYTE_ORDER == G_LITTLE_ENDIAN)
+	return (((ptr[0] & 0x7F) << 21) |
+	        ((ptr[1] & 0x7F) << 14) |
+	        ((ptr[2] & 0x7F) << 7) |
+	        ((ptr[3] & 0x7F) << 0));
+#elif (G_BYTE_ORDER == G_BIG_ENDIAN)
+	return (((ptr[0] & 0x7F) << 0) |
+	        ((ptr[1] & 0x7F) << 7) |
+	        ((ptr[2] & 0x7F) << 14) |
+	        ((ptr[3] & 0x7F) << 21));
+#else
+	g_warning ("Can't figure endianness");
+	return 0;
+#endif
+}
+
+/* id3v20 is odd... */
+inline static guint32
+extract_uint32_3byte (gconstpointer data)
+{
+	const guchar *ptr = data;
+#if (G_BYTE_ORDER == G_LITTLE_ENDIAN)
+	return ((ptr[0] << 16) |
+	        (ptr[1] << 8) |
+	        (ptr[2] << 0));
+#elif (G_BYTE_ORDER == G_BIG_ENDIAN)
+	return ((ptr[0] << 0) |
+	        (ptr[1] << 8) |
+	        (ptr[2] << 16));
+#else
+	g_warning ("Can't figure endianness");
+	return 0;
+#endif
+}
 
 static void
 id3tag_free (id3tag *tags)
@@ -1794,10 +1847,7 @@ parse_id3v24 (const gchar           *data,
 	 * unsychronisation, including padding, excluding the header
 	 * but not excluding the extended header (total tag size - 10)
 	 */
-	tsize = (((data[6] & 0x7F) << 21) |
-	         ((data[7] & 0x7F) << 14) |
-	         ((data[8] & 0x7F) << 7) |
-	         ((data[9] & 0x7F) << 0));
+	tsize = extract_uint32_7bit (&data[6]);
 
 	/* We don't handle experimental cases */
 	if (experimental) {
@@ -1824,10 +1874,7 @@ parse_id3v24 (const gchar           *data,
 		 *   Extended Flags         $xx xx
 		 *   Size of padding        $xx xx xx xx
 		 */
-		ext_header_size = (((data[10] & 0x7F) << 21) |
-		                   ((data[11] & 0x7F) << 14) |
-		                   ((data[12] & 0x7F) << 7) |
-		                   ((data[13] & 0x7F) << 0));
+		ext_header_size = extract_uint32_7bit (&data[10]);
 
 		/* Where the 'Extended header size', currently 6 or 10
 		 * bytes, excludes itself. The 'Size of padding' is
@@ -1875,13 +1922,17 @@ parse_id3v24 (const gchar           *data,
 
 		frame = id3v24_get_frame (frame_name);
 
-		csize = (((data[pos+4] & 0x7F) << 21) |
-		         ((data[pos+5] & 0x7F) << 14) |
-		         ((data[pos+6] & 0x7F) << 7) |
-		         ((data[pos+7] & 0x7F) << 0));
+		csize = (size_t) extract_uint32_7bit (&data[pos + 4]);
 
-		flags = (((unsigned char) (data[pos + 8]) << 8) +
-		         ((unsigned char) (data[pos + 9])));
+		if (pos + frame_size + csize > size) {
+			g_debug ("[v24] Size of current frame '%s' (%" G_GSIZE_FORMAT ") "
+			         "exceeds file boundaries (%" G_GSIZE_FORMAT "), "
+			         "not processing any more frames",
+			         frame_name, csize, size);
+			break;
+		}
+
+		flags = extract_uint16 (&data[pos + 8]);
 
 		pos += frame_size;
 
@@ -1998,10 +2049,7 @@ parse_id3v23 (const gchar          *data,
 	 * unsychronisation, including padding, excluding the header
 	 * but not excluding the extended header (total tag size - 10)
 	 */
-	tsize = (((data[6] & 0x7F) << 21) |
-	         ((data[7] & 0x7F) << 14) |
-	         ((data[8] & 0x7F) << 7) |
-	         ((data[9] & 0x7F) << 0));
+	tsize = extract_uint32_7bit (&data[6]);
 
 	/* We don't handle experimental cases */
 	if (experimental) {
@@ -2028,10 +2076,7 @@ parse_id3v23 (const gchar          *data,
 		 *   Extended Flags         $xx xx
 		 *   Size of padding        $xx xx xx xx
 		 */
-		ext_header_size = (((unsigned char)(data[10]) << 24) |
-		                   ((unsigned char)(data[11]) << 16) |
-		                   ((unsigned char)(data[12]) << 8) |
-		                   ((unsigned char)(data[13]) << 0));
+		ext_header_size = extract_uint32 (&data[10]);
 
 		/* Where the 'Extended header size', currently 6 or 10
 		 * bytes, excludes itself. The 'Size of padding' is
@@ -2073,13 +2118,17 @@ parse_id3v23 (const gchar          *data,
 
 		frame = id3v24_get_frame (frame_name);
 
-		csize = (((unsigned char)(data[pos + 4]) << 24) |
-		         ((unsigned char)(data[pos + 5]) << 16) |
-		         ((unsigned char)(data[pos + 6]) << 8)  |
-		         ((unsigned char)(data[pos + 7]) << 0) );
+		csize = (size_t) extract_uint32 (&data[pos + 4]);
 
-		flags = (((unsigned char)(data[pos + 8]) << 8) +
-		         ((unsigned char)(data[pos + 9])));
+		if (pos + frame_size + csize > size) {
+			g_debug ("[v23] Size of current frame '%s' (%" G_GSIZE_FORMAT ") "
+			         "exceeds file boundaries (%" G_GSIZE_FORMAT "), "
+			         "not processing any more frames",
+			         frame_name, csize, size);
+			break;
+		}
+
+		flags = extract_uint16 (&data[pos + 8]);
 
 		pos += frame_size;
 
@@ -2157,7 +2206,7 @@ parse_id3v20 (const gchar          *data,
 	guint tsize;
 	guint pos;
 
-	if ((size < 16) ||
+	if ((size < header_size + frame_size) ||
 	    (data[0] != 0x49) ||
 	    (data[1] != 0x44) ||
 	    (data[2] != 0x33) ||
@@ -2170,12 +2219,9 @@ parse_id3v20 (const gchar          *data,
 	}
 
 	unsync = (data[5] & 0x80) > 0;
-	tsize = (((data[6] & 0x7F) << 21) |
-	         ((data[7] & 0x7F) << 14) |
-	         ((data[8] & 0x7F) << 07) |
-	         ((data[9] & 0x7F) << 00));
+	tsize = extract_uint32_7bit (&data[6]);
 
-	if (tsize + header_size > size)  {
+	if (tsize > size - header_size)  {
 		g_message ("[v20] Expected MP3 tag size and header size to be within file size boundaries");
 		return;
 	}
@@ -2203,9 +2249,15 @@ parse_id3v20 (const gchar          *data,
 
 		frame = id3v2_get_frame (frame_name);
 
-		csize = (((unsigned char)(data[pos + 3]) << 16) +
-		         ((unsigned char)(data[pos + 4]) << 8) +
-		         ((unsigned char)(data[pos + 5]) ) );
+		csize = (size_t) extract_uint32_3byte (&data[pos + 3]);
+
+		if (csize > size - pos - frame_size) {
+			g_debug ("[v20] Size of current frame '%s' (%" G_GSIZE_FORMAT ") "
+			         "exceeds file boundaries (%" G_GSIZE_FORMAT "), "
+			         "not processing any more frames",
+			         frame_name, csize, size);
+			break;
+		}
 
 		pos += frame_size;
 
@@ -2319,7 +2371,8 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 	id3v1_buffer = read_id3v1_buffer (fd, size);
 
 #ifdef HAVE_POSIX_FADVISE
-	posix_fadvise (fd, 0, 0, POSIX_FADV_DONTNEED);
+	if (posix_fadvise (fd, 0, 0, POSIX_FADV_DONTNEED) != 0)
+		g_warning ("posix_fadvise() call failed: %m");
 #endif /* HAVE_POSIX_FADVISE */
 
 	close (fd);
@@ -2355,18 +2408,14 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 	                                           md.id3v23.composer,
 	                                           md.id3v22.composer);
 
-	md.performer_name = tracker_coalesce_strip (7, md.id3v24.performer1,
-	                                            md.id3v24.performer2,
+	md.performer_name = tracker_coalesce_strip (4, md.id3v24.performer1,
 	                                            md.id3v23.performer1,
-	                                            md.id3v23.performer2,
 	                                            md.id3v22.performer1,
-	                                            md.id3v22.performer2,
 	                                            md.id3v1.artist);
 
-	md.album_artist_name = tracker_coalesce_strip (4, md.id3v24.performer2,
+	md.album_artist_name = tracker_coalesce_strip (3, md.id3v24.performer2,
 	                                               md.id3v23.performer2,
-	                                               md.id3v22.performer2,
-	                                               md.performer_name);
+	                                               md.id3v22.performer2);
 
 	md.album_name = tracker_coalesce_strip (4, md.id3v24.album,
 	                                        md.id3v23.album,
@@ -2447,10 +2496,6 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 		md.performer = tracker_extract_new_artist (md.performer_name);
 	}
 
-	if (md.album_artist_name) {
-		md.album_artist = tracker_extract_new_artist (md.album_artist_name);
-	}
-
 	if (md.composer_name) {
 		md.composer = tracker_extract_new_artist (md.composer_name);
 	}
@@ -2460,23 +2505,27 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 	}
 
 	if (md.album_name) {
-		char *album_uri = tracker_sparql_escape_uri_printf ("urn:album:%s", md.album_name);
-		md.album = tracker_resource_new (album_uri);
+		TrackerResource *album_disc = NULL, *album_artist = NULL;
 
-		tracker_resource_set_uri (md.album, "rdf:type", "nmm:MusicAlbum");
-		/* FIXME: nmm:albumTitle is now deprecated
-		 * tracker_sparql_builder_predicate (preupdate, "nie:title");
-		 */
-		tracker_resource_set_string (md.album, "nmm:albumTitle", md.album_name);
+		if (md.album_artist_name)
+			album_artist = tracker_extract_new_artist (md.album_artist_name);
 
-		if (md.album_artist) {
-			tracker_resource_set_relation (md.album, "nmm:albumArtist", md.album_artist);
-			g_object_unref (md.album_artist);
-		}
+		album_disc = tracker_extract_new_music_album_disc (md.album_name,
+		                                                   album_artist,
+		                                                   md.set_number > 0 ? md.set_number : 1,
+		                                                   md.recording_time);
+
+		md.album = tracker_resource_get_first_relation (album_disc, "nmm:albumDiscAlbum");
+
+		tracker_resource_set_relation (main_resource, "nmm:musicAlbum", md.album);
+		tracker_resource_set_relation (main_resource, "nmm:musicAlbumDisc", album_disc);
 
 		if (md.track_count > 0) {
 			tracker_resource_set_int (md.album, "nmm:albumTrackCount", md.track_count);
 		}
+
+		g_object_unref (album_disc);
+		g_clear_object (&album_artist);
 	}
 
 	tracker_resource_add_uri (main_resource, "rdf:type", "nmm:MusicPiece");
@@ -2495,7 +2544,6 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 
 	if (md.performer) {
 		tracker_resource_set_relation (main_resource, "nmm:performer", md.performer);
-		g_object_unref (md.performer);
 	}
 
 	if (md.composer) {
@@ -2535,26 +2583,6 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 
 	if (md.track_number > 0) {
 		tracker_resource_set_int (main_resource, "nmm:trackNumber", md.track_number);
-	}
-
-	if (md.album) {
-		TrackerResource *album_disc;
-		gchar *album_disc_uri;
-
-		album_disc_uri = tracker_sparql_escape_uri_printf ("urn:album-disc:%s:Disc%d",
-		                                                   md.album_name,
-		                                                   md.set_number > 0 ? md.set_number : 1);
-
-		album_disc = tracker_resource_new (album_disc_uri);
-		tracker_resource_set_uri (album_disc, "rdf:type", "nmm:MusicAlbumDisc");
-		tracker_resource_set_int (album_disc, "nmm:setNumber", md.set_number > 0 ? md.set_number : 1);
-		tracker_resource_set_relation (album_disc, "nmm:albumDiscAlbum", md.album);
-
-		tracker_resource_set_relation (main_resource, "nmm:musicAlbumDisc", album_disc);
-
-		g_free (album_disc_uri);
-		g_object_unref (album_disc);
-		g_object_unref (md.album);
 	}
 
 	/* Get mp3 stream info */
@@ -2599,6 +2627,7 @@ tracker_extract_get_metadata (TrackerExtractInfo *info)
 		}
 	}
 #endif
+	g_clear_object (&md.performer);
 	g_free (md.media_art_data);
 	g_free (md.media_art_mime);
 

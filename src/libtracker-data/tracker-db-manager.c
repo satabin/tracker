@@ -146,9 +146,9 @@ static gboolean            db_exec_no_reply                        (TrackerDBInt
 static TrackerDBInterface *db_interface_create                      (TrackerDB            db,
                                                                      GError             **error);
 static TrackerDBInterface *tracker_db_manager_get_db_interfaces     (GError             **error,
-                                                                     gint                 num, ...);
-static TrackerDBInterface *tracker_db_manager_get_db_interfaces_ro  (GError             **error,
-                                                                     gint                 num, ...);
+                                                                     gboolean             readonly,
+                                                                     gint                 num,
+                                                                     ...);
 static void                db_remove_locale_file                    (void);
 
 static gboolean              initialized;
@@ -163,10 +163,8 @@ static guint                 u_cache_size;
 
 static GPrivate              interface_data_key = G_PRIVATE_INIT ((GDestroyNotify)g_object_unref);
 
-/* mutex used by singleton connection in libtracker-direct, not used by tracker-store */
-static GMutex                global_mutex;
-
-static TrackerDBInterface   *global_iface;
+/* mutex protecting DB manager initialization/shutdown */
+static GMutex                init_mutex;
 
 static const gchar *
 location_to_directory (TrackerDBLocation location)
@@ -211,6 +209,7 @@ static void
 db_set_params (TrackerDBInterface   *iface,
                gint                  cache_size,
                gint                  page_size,
+               gboolean              readonly,
                GError              **error)
 {
 	gchar *queries = NULL;
@@ -236,9 +235,14 @@ db_set_params (TrackerDBInterface   *iface,
 #else
 		tracker_db_interface_execute_query (iface, NULL, "PRAGMA synchronous = OFF;");
 #endif /* DISABLE_JOURNAL */
-		tracker_db_interface_execute_query (iface, NULL, "PRAGMA temp_store = FILE;");
 		tracker_db_interface_execute_query (iface, NULL, "PRAGMA encoding = \"UTF-8\"");
 		tracker_db_interface_execute_query (iface, NULL, "PRAGMA auto_vacuum = 0;");
+
+		if (readonly) {
+			tracker_db_interface_execute_query (iface, NULL, "PRAGMA temp_store = MEMORY;");
+		} else {
+			tracker_db_interface_execute_query (iface, NULL, "PRAGMA temp_store = FILE;");
+		}
 
 		stmt = tracker_db_interface_create_statement (iface, TRACKER_DB_STATEMENT_CACHE_TYPE_NONE,
 		                                              &internal_error,
@@ -323,7 +327,7 @@ db_interface_get (TrackerDB   type,
 	           path,
 	           db_type_to_string (type));
 
-	iface = tracker_db_interface_sqlite_new (path,
+	iface = tracker_db_interface_sqlite_new (path, FALSE,
 	                                         &internal_error);
 
 	if (internal_error) {
@@ -334,10 +338,12 @@ db_interface_get (TrackerDB   type,
 	db_set_params (iface,
 	               dbs[type].cache_size,
 	               dbs[type].page_size,
+	               TRUE,
 	               &internal_error);
 
 	if (internal_error) {
 		g_propagate_error (error, internal_error);
+		g_object_unref (iface);
 		return NULL;
 	}
 
@@ -646,7 +652,7 @@ db_set_locale (const gchar *locale)
 }
 
 gboolean
-tracker_db_manager_locale_changed (void)
+tracker_db_manager_locale_changed (GError **error)
 {
 	gchar *db_locale;
 	gchar *current_locale;
@@ -670,8 +676,11 @@ tracker_db_manager_locale_changed (void)
 	 * both to NULL is actually valid, they would default to
 	 * the unicode collation without locale-specific stuff. */
 	if (g_strcmp0 (db_locale, current_locale) != 0) {
-		g_message ("Locale change detected from '%s' to '%s'...",
-		           db_locale, current_locale);
+		g_set_error (error,
+		             TRACKER_DB_INTERFACE_ERROR,
+		             TRACKER_DB_OPEN_ERROR,
+		             "Locale change detected (DB:%s, User/App:%s)",
+		             db_locale, current_locale);
 		changed = TRUE;
 	} else {
 		g_message ("Current and DB locales match: '%s'", db_locale);
@@ -844,21 +853,20 @@ perform_recreate (gboolean *first_time, GError **error)
 	}
 }
 
-gboolean
-tracker_db_manager_init (TrackerDBManagerFlags   flags,
-                         gboolean               *first_time,
-                         gboolean                restoring_backup,
-                         gboolean                shared_cache,
-                         guint                   select_cache_size,
-                         guint                   update_cache_size,
-                         TrackerBusyCallback     busy_callback,
-                         gpointer                busy_user_data,
-                         const gchar            *busy_operation,
-                         GError                **error)
+static gboolean
+db_manager_init_unlocked (TrackerDBManagerFlags   flags,
+                          gboolean               *first_time,
+                          gboolean                restoring_backup,
+                          gboolean                shared_cache,
+                          guint                   select_cache_size,
+                          guint                   update_cache_size,
+                          TrackerBusyCallback     busy_callback,
+                          gpointer                busy_user_data,
+                          const gchar            *busy_operation,
+                          GError                **error)
 {
 	GType etype;
 	TrackerDBVersion version;
-	const gchar *dir;
 	gboolean need_reindex;
 	guint i;
 	int in_use_file;
@@ -1194,15 +1202,9 @@ tracker_db_manager_init (TrackerDBManagerFlags   flags,
 
 	initialized = TRUE;
 
-	if (flags & TRACKER_DB_MANAGER_READONLY) {
-		resources_iface = tracker_db_manager_get_db_interfaces_ro (&internal_error, 1,
-		                                                           TRACKER_DB_METADATA);
-		/* libtracker-direct does not use per-thread interfaces */
-		global_iface = resources_iface;
-	} else {
-		resources_iface = tracker_db_manager_get_db_interfaces (&internal_error, 1,
-		                                                        TRACKER_DB_METADATA);
-	}
+	resources_iface = tracker_db_manager_get_db_interfaces (&internal_error,
+	                                                        (flags & TRACKER_DB_MANAGER_READONLY) != 0,
+	                                                        1, TRACKER_DB_METADATA);
 
 	if (internal_error) {
 		if ((!restoring_backup) && (flags & TRACKER_DB_MANAGER_READONLY) == 0) {
@@ -1210,7 +1212,8 @@ tracker_db_manager_init (TrackerDBManagerFlags   flags,
 
 			perform_recreate (first_time, &new_error);
 			if (!new_error) {
-				resources_iface = tracker_db_manager_get_db_interfaces (&internal_error, 1,
+				resources_iface = tracker_db_manager_get_db_interfaces (&internal_error,
+				                                                        FALSE, 1,
 				                                                        TRACKER_DB_METADATA);
 			} else {
 				/* Most serious error is the recreate one here */
@@ -1237,14 +1240,40 @@ tracker_db_manager_init (TrackerDBManagerFlags   flags,
 	s_cache_size = select_cache_size;
 	u_cache_size = update_cache_size;
 
-	if ((flags & TRACKER_DB_MANAGER_READONLY) == 0)
-		g_private_replace (&interface_data_key, resources_iface);
+	g_private_replace (&interface_data_key, resources_iface);
 
 	return TRUE;
 }
 
-void
-tracker_db_manager_shutdown (void)
+gboolean
+tracker_db_manager_init (TrackerDBManagerFlags   flags,
+                         gboolean               *first_time,
+                         gboolean                restoring_backup,
+                         gboolean                shared_cache,
+                         guint                   select_cache_size,
+                         guint                   update_cache_size,
+                         TrackerBusyCallback     busy_callback,
+                         gpointer                busy_user_data,
+                         const gchar            *busy_operation,
+                         GError                **error)
+{
+	gboolean retval;
+
+	g_mutex_lock (&init_mutex);
+
+	retval = db_manager_init_unlocked (flags, first_time, restoring_backup,
+					   shared_cache,
+					   select_cache_size, update_cache_size,
+					   busy_callback, busy_user_data,
+					   busy_operation, error);
+
+	g_mutex_unlock (&init_mutex);
+
+	return retval;
+}
+
+static void
+db_manager_shutdown_unlocked (void)
 {
 	guint i;
 
@@ -1268,12 +1297,6 @@ tracker_db_manager_shutdown (void)
 	data_dir = NULL;
 	g_free (user_data_dir);
 	user_data_dir = NULL;
-
-	if (global_iface) {
-		/* libtracker-direct */
-		g_object_unref (global_iface);
-		global_iface = NULL;
-	}
 
 	/* shutdown db interface in all threads */
 	g_private_replace (&interface_data_key, NULL);
@@ -1300,6 +1323,14 @@ tracker_db_manager_shutdown (void)
 
 	g_free (in_use_filename);
 	in_use_filename = NULL;
+}
+
+void
+tracker_db_manager_shutdown (void)
+{
+	g_mutex_lock (&init_mutex);
+	db_manager_shutdown_unlocked ();
+	g_mutex_unlock (&init_mutex);
 }
 
 void
@@ -1362,8 +1393,10 @@ tracker_db_manager_get_file (TrackerDB db)
  * returns: (caller-owns): a database connection
  **/
 static TrackerDBInterface *
-tracker_db_manager_get_db_interfaces (GError **error,
-                                      gint num, ...)
+tracker_db_manager_get_db_interfaces (GError   **error,
+                                      gboolean   readonly,
+                                      gint       num,
+                                      ...)
 {
 	gint n_args;
 	va_list args;
@@ -1378,6 +1411,7 @@ tracker_db_manager_get_db_interfaces (GError **error,
 
 		if (!connection) {
 			connection = tracker_db_interface_sqlite_new (dbs[db].abs_filename,
+			                                              readonly,
 			                                              &internal_error);
 
 			if (internal_error) {
@@ -1389,14 +1423,14 @@ tracker_db_manager_get_db_interfaces (GError **error,
 			db_set_params (connection,
 			               dbs[db].cache_size,
 			               dbs[db].page_size,
+			               readonly,
 			               &internal_error);
 
 			if (internal_error) {
 				g_propagate_error (error, internal_error);
-				connection = NULL;
+				g_clear_object (&connection);
 				goto end_on_error;
 			}
-
 		} else {
 			db_exec_no_reply (connection,
 			                  "ATTACH '%s' as '%s'",
@@ -1404,57 +1438,6 @@ tracker_db_manager_get_db_interfaces (GError **error,
 			                  dbs[db].name);
 		}
 
-	}
-
-	end_on_error:
-
-	va_end (args);
-
-	return connection;
-}
-
-static TrackerDBInterface *
-tracker_db_manager_get_db_interfaces_ro (GError **error,
-                                         gint num, ...)
-{
-	gint n_args;
-	va_list args;
-	TrackerDBInterface *connection = NULL;
-	GError *internal_error = NULL;
-
-	g_return_val_if_fail (initialized != FALSE, NULL);
-
-	va_start (args, num);
-	for (n_args = 1; n_args <= num; n_args++) {
-		TrackerDB db = va_arg (args, TrackerDB);
-
-		if (!connection) {
-			connection = tracker_db_interface_sqlite_new_ro (dbs[db].abs_filename,
-			                                                 &internal_error);
-
-			if (internal_error) {
-				g_propagate_error (error, internal_error);
-				connection = NULL;
-				goto end_on_error;
-			}
-
-			db_set_params (connection,
-			               dbs[db].cache_size,
-			               dbs[db].page_size,
-			               &internal_error);
-
-			if (internal_error) {
-				g_propagate_error (error, internal_error);
-				connection = NULL;
-				goto end_on_error;
-			}
-
-		} else {
-			db_exec_no_reply (connection,
-			                  "ATTACH '%s' as '%s'",
-			                  dbs[db].abs_filename,
-			                  dbs[db].name);
-		}
 	}
 
 	end_on_error:
@@ -1481,17 +1464,16 @@ tracker_db_manager_get_db_interface (void)
 
 	g_return_val_if_fail (initialized != FALSE, NULL);
 
-	if (global_iface) {
-		/* libtracker-direct */
-		return global_iface;
-	}
-
 	interface = g_private_get (&interface_data_key);
 
 	/* Ensure the interface is there */
 	if (!interface) {
-		interface = tracker_db_manager_get_db_interfaces (&internal_error, 1,
-		                                                  TRACKER_DB_METADATA);
+		TrackerDBManagerFlags flags;
+
+		flags = tracker_db_manager_get_flags (NULL, NULL);
+		interface = tracker_db_manager_get_db_interfaces (&internal_error,
+		                                                  (flags & TRACKER_DB_MANAGER_READONLY) != 0,
+		                                                  1, TRACKER_DB_METADATA);
 
 		if (internal_error) {
 			g_critical ("Error opening database: %s", internal_error->message);
@@ -1774,24 +1756,6 @@ tracker_db_manager_set_need_mtime_check (gboolean needed)
 	}
 
 	g_free (filename);
-}
-
-void
-tracker_db_manager_lock (void)
-{
-	g_mutex_lock (&global_mutex);
-}
-
-gboolean
-tracker_db_manager_trylock (void)
-{
-	return g_mutex_trylock (&global_mutex);
-}
-
-void
-tracker_db_manager_unlock (void)
-{
-	g_mutex_unlock (&global_mutex);
 }
 
 inline static gchar *

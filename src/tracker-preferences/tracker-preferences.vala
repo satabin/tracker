@@ -24,10 +24,7 @@ using Tracker;
 using Posix;
 
 [CCode (cname = "TRACKER_UI_DIR")]
-extern static const string UIDIR;
-
-[CCode (cname = "SRCDIR")]
-extern static const string SRCDIR;
+extern const string UIDIR;
 
 public class Tracker.Preferences {
 	private GLib.Settings settings_fts = null;
@@ -107,23 +104,17 @@ public class Tracker.Preferences {
 		var builder = new Gtk.Builder ();
 
 		try {
-			debug ("Trying to use UI file:'%s'", SRCDIR + UI_FILE);
-			builder.add_from_file (SRCDIR + UI_FILE);
+			debug ("Trying to use UI file:'%s'", UIDIR + UI_FILE);
+			builder.add_from_file (UIDIR + UI_FILE);
 		} catch (GLib.Error e) {
-			//now the install location
-			try {
-				debug ("Trying to use UI file:'%s'", UIDIR + UI_FILE);
-				builder.add_from_file (UIDIR + UI_FILE);
-			} catch (GLib.Error e) {
-				var msg = new MessageDialog (null,
-				                             DialogFlags.MODAL,
-				                             MessageType.ERROR,
-				                             ButtonsType.CANCEL,
-				                             "Failed to load UI file, %s\n",
-				                             e.message);
-				msg.run ();
-				Gtk.main_quit();
-			}
+			var msg = new MessageDialog (null,
+			                             DialogFlags.MODAL,
+			                             MessageType.ERROR,
+			                             ButtonsType.CANCEL,
+			                             "Failed to load UI file, %s\n",
+			                             e.message);
+			msg.run ();
+			Gtk.main_quit();
 		}
 
 		// Get widgets from .ui file
@@ -437,7 +428,11 @@ public class Tracker.Preferences {
 				Value value;
 				store.get_value (iter, 0, out value);
 				if (value.get_string () == to_check) {
+					#if VALA_0_36
+					store.remove (ref iter);
+					#else
 					store.remove (iter);
+					#endif
 					valid = store.get_iter_first (out iter);
 				} else {
 					valid = store.iter_next (ref iter);
@@ -643,7 +638,11 @@ public class Tracker.Preferences {
 			// Check which UserDirectorys we match with str
 			UserDirectory[] matches = dir_match_user_directories (dir);
 
+			#if VALA_0_36
+			store.remove (ref iter);
+			#else
 			store.remove (iter);
+			#endif
 
 			// Check if we need to untoggle a button
 			toggles_update (matches, false);

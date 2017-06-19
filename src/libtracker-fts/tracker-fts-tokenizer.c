@@ -207,6 +207,7 @@ tracker_offsets_function (const Fts5ExtensionApi  *api,
 	GArray *offsets = NULL;
 	const gchar * const *property_names;
 	gint cur_col = -1;
+	gboolean first = TRUE;
 
 	if (n_args > 0) {
 		sqlite3_result_error (ctx, "Invalid argument count", -1);
@@ -228,7 +229,7 @@ tracker_offsets_function (const Fts5ExtensionApi  *api,
 
 		rc = api->xInst (fts_ctx, i, &phrase, &col, &n_token);
 
-		if (cur_col != col) {
+		if (first || cur_col != col) {
 			const char *text;
 			int length;
 
@@ -241,6 +242,8 @@ tracker_offsets_function (const Fts5ExtensionApi  *api,
 			                offsets, &offsets_tokenizer_func);
 			cur_col = col;
 		}
+
+		first = FALSE;
 
 		if (str->len != 0)
 			g_string_append_c (str, ',');
@@ -294,7 +297,7 @@ get_fts_weights (sqlite3_context *context)
 				guint weight;
 
 				weight = sqlite3_column_int (stmt, 0);
-				uri = sqlite3_column_text (stmt, 1);
+				uri = (gchar *)sqlite3_column_text (stmt, 1);
 
 				property = tracker_ontologies_get_property_by_uri (uri);
 				g_hash_table_insert (weights,
@@ -371,20 +374,17 @@ static fts5_api *
 get_fts5_api (sqlite3 *db) {
 	int rc = SQLITE_OK;
 	sqlite3_stmt *stmt;
-	fts5_api *api;
+	fts5_api *api = NULL;
 
 	rc = sqlite3_prepare_v2(db, "SELECT fts5()",
 	                        -1, &stmt, 0);
 
-	if (rc != SQLITE_OK) {
+	if (rc != SQLITE_OK)
 		return NULL;
-	}
 
-	if (sqlite3_step (stmt) != SQLITE_ROW) {
-		return NULL;
-	}
+	if (sqlite3_step (stmt) == SQLITE_ROW)
+		memcpy (&api, sqlite3_column_blob (stmt, 0), sizeof (api));
 
-	memcpy (&api, sqlite3_column_blob (stmt, 0), sizeof (api));
 	sqlite3_finalize (stmt);
 
 	return api;

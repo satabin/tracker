@@ -1001,7 +1001,6 @@ generate_turtle_resources_foreach (gpointer key,
                                    gpointer value_ptr,
                                    gpointer user_data)
 {
-	const char *property = key;
 	const GValue *value = value_ptr;
 	GenerateTurtleData *data = user_data;
 	TrackerResource *resource;
@@ -1056,6 +1055,8 @@ generate_turtle_uri_value (const char              *uri_or_curie_or_blank,
 			/* It's a full URI (or something invalid, but we can't really tell that here) */
 			g_string_append_printf (string, "<%s>", uri_or_curie_or_blank);
 		}
+
+		g_free (prefix);
 	}
 }
 
@@ -1090,7 +1091,7 @@ generate_turtle_value (const GValue            *value,
 	} else if (type == G_TYPE_DATE_TIME) {
 		char *datetime_string;
 		datetime_string = g_date_time_format (g_value_get_boxed (value),
-		                                      "\"%Y-%m-%dT%H:%M:%s%z\"^^<http://www.w3.org/2001/XMLSchema#dateTime>");
+		                                      "\"%Y-%m-%dT%H:%M:%S%z\"^^<http://www.w3.org/2001/XMLSchema#dateTime>");
 		g_string_append (string, datetime_string);
 		g_free (datetime_string);
 	} else if (type == G_TYPE_DOUBLE || type == G_TYPE_FLOAT) {
@@ -1151,7 +1152,6 @@ generate_turtle (TrackerResource    *resource,
                  GenerateTurtleData *data)
 {
 	TrackerResourcePrivate *priv = GET_PRIVATE (resource);
-	GString *result;
 	GHashTableIter iter;
 	const char *property;
 	const GValue *value;
@@ -1164,7 +1164,7 @@ generate_turtle (TrackerResource    *resource,
 	g_string_append (data->string, " ");
 
 	g_hash_table_iter_init (&iter, priv->properties);
-	if (g_hash_table_iter_next (&iter, (gpointer *)&property, (gpointer *)&value))
+	if (g_hash_table_iter_next (&iter, (gpointer *)&property, (gpointer *)&value)) {
 		while (TRUE) {
 			generate_turtle_property (property, value, data->string, data->all_namespaces, data->our_namespaces);
 
@@ -1177,6 +1177,7 @@ generate_turtle (TrackerResource    *resource,
 				break;
 			}
 		}
+	}
 }
 
 /**
@@ -1255,7 +1256,6 @@ generate_sparql_relation_deletes_foreach (gpointer key,
                                           gpointer value_ptr,
                                           gpointer user_data)
 {
-	const char *property = key;
 	const GValue *value = value_ptr;
 	GenerateSparqlData *data = user_data;
 
@@ -1274,7 +1274,6 @@ generate_sparql_relation_inserts_foreach (gpointer key,
                                           gpointer value_ptr,
                                           gpointer user_data)
 {
-	const char *property = key;
 	const GValue *value = value_ptr;
 	GenerateSparqlData *data = user_data;
 
@@ -1375,13 +1374,6 @@ generate_sparql_deletes (TrackerResource    *resource,
 {
 	TrackerResourcePrivate *priv = GET_PRIVATE (resource);
 
-	/* We have to generate a rather awkward query here, like:
-	 *
-	 *     DELETE { pattern } WHERE { pattern }
-	 *
-	 * It would be better if we could use "DELETE DATA { pattern }". This is
-	 * allowed in SPARQL update 1.1, but not yet supported by Tracker's store.
-	 */
 	if (! is_blank_node (priv->identifier)) {
 		if (g_hash_table_size (priv->overwrite) > 0) {
 			g_string_append (data->string, "DELETE {\n");
@@ -1469,7 +1461,6 @@ tracker_resource_print_sparql_update (TrackerResource         *resource,
 {
 	TrackerResourcePrivate *priv;
 	GenerateSparqlData context;
-	char *result;
 
 	g_return_val_if_fail (TRACKER_IS_RESOURCE (resource), "");
 
@@ -1513,6 +1504,9 @@ tracker_resource_print_sparql_update (TrackerResource         *resource,
 		g_string_append (context.string, "}\n");
 	}
 	g_string_append (context.string, "}\n");
+
+	g_list_free (context.done_list);
+	context.done_list = NULL;
 
 	return g_string_free (context.string, FALSE);
 }

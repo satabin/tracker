@@ -7,6 +7,15 @@ libtracker-sparql-1.0.so.0 libtracker-sparql-1.0-0 #MINVER#
  tracker_namespace_manager_lookup_prefix@Base 1.9.1
  tracker_namespace_manager_new@Base 1.9.1
  tracker_namespace_manager_print_turtle@Base 1.9.1
+ tracker_notifier_event_get_event_type@Base 1.12.0
+ tracker_notifier_event_get_id@Base 1.12.0
+ tracker_notifier_event_get_location@Base 1.12.0
+ tracker_notifier_event_get_type@Base 1.12.0
+ tracker_notifier_event_get_urn@Base 1.12.0
+ tracker_notifier_event_type_get_type@Base 1.12.0
+ tracker_notifier_flags_get_type@Base 1.12.0
+ tracker_notifier_get_type@Base 1.12.0
+ tracker_notifier_new@Base 1.12.0
  tracker_resource_add_boolean@Base 1.9.1
  tracker_resource_add_double@Base 1.9.1
  tracker_resource_add_gvalue@Base 1.9.1
@@ -91,6 +100,7 @@ libtracker-sparql-1.0.so.0 libtracker-sparql-1.0-0 #MINVER#
  tracker_sparql_connection_query@Base 0.10.0
  tracker_sparql_connection_query_async@Base 0.10.0
  tracker_sparql_connection_query_finish@Base 0.10.0
+ tracker_sparql_connection_remote_new@Base 1.12.0
  tracker_sparql_connection_statistics@Base 0.10.0
  tracker_sparql_connection_statistics_async@Base 0.10.0
  tracker_sparql_connection_statistics_finish@Base 0.10.0
@@ -121,6 +131,7 @@ libtracker-sparql-1.0.so.0 libtracker-sparql-1.0-0 #MINVER#
  tracker_sparql_cursor_set_connection@Base 0.10.0
  tracker_sparql_error_quark@Base 0.10.0
  tracker_sparql_escape_string@Base 0.10.0
+ tracker_sparql_escape_uri@Base 1.12.0
  tracker_sparql_escape_uri_printf@Base 0.10.0
  tracker_sparql_escape_uri_vprintf@Base 0.10.0
  tracker_sparql_get_uuid_urn@Base 0.10.0

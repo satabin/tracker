@@ -1,0 +1,6 @@
+usr/lib/tracker/tracker-miner-rss
+etc/xdg/autostart/tracker-miner-rss.desktop
+usr/lib/systemd/user/tracker-miner-rss.service
+usr/share/dbus-1/services/org.freedesktop.Tracker1.Miner.RSS.service
+usr/share/man/man1/tracker-miner-rss.1
+usr/share/tracker/miners/org.freedesktop.Tracker1.Miner.RSS.service

@@ -49,7 +49,7 @@ override_dh_auto_configure:
 		--enable-gtk-doc \
 		--enable-unit-tests \
 		--disable-network-manager \
-		--disable-miner-rss \
+		--enable-miner-rss \
 		--disable-miner-evolution \
 		--disable-miner-thunderbird \
 		--disable-miner-firefox \

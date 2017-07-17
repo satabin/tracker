@@ -48,6 +48,7 @@ Build-Depends: debhelper (>= 10),
                libjson-glib-dev (>= 1.0),
                libsoup2.4-dev (>= 2.40),
                dbus (>= 1.8) <!nocheck>,
+               libgrss-dev,
 Standards-Version: 3.9.8
 Vcs-Git: https://anonscm.debian.org/git/collab-maint/tracker.git
 Vcs-Browser: https://anonscm.debian.org/git/collab-maint/tracker.git
@@ -287,6 +288,19 @@ Depends: ${shlibs:Depends},
          procps
 Description: metadata database, indexer and search tool - filesystem indexer
  This package contains the tracker indexer for indexing your files and folders.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+
+Package: tracker-miner-rss
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         tracker (= ${binary:Version}),
+         libgrss0,
+Description: metadata database, indexer and search tool - RSS feed indexer
+ This package contains the tracker indexer for indexing your RSS feeds.
  .
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
